@@ -11,21 +11,21 @@ import { LocalLink } from "@/components/LocalizedNavigation";
 import ProductAttributes from "../product/Attributes";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import { IFullProduct, IProductAttribute } from "../../types";
 import Button from "../ui/Button";
 import { useTranslation } from "@/context/Translation";
 import useAddToCart from "@/hooks/useAddToCart";
 import LoadingSpinner from "../LoadingUi/LoadingSpinner";
+import { getProductDetails } from "@/services/products.service";
 
 export default function ProductMoreInfoOverlay() {
   const { setIsProductMoreInfoOpen, overlayProductId } = useAppStore();
 
   const productQuery = useQuery({
     queryKey: ["product", overlayProductId],
-    queryFn: () => axios.get<IFullProduct>(`/api/catalog/product/${overlayProductId}`).then((res) => res.data)
+    queryFn: () => getProductDetails(overlayProductId ?? ""),
+    enabled: !!overlayProductId
   });
-
   const product = productQuery.data;
 
   return (

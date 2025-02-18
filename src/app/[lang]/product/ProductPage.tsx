@@ -7,13 +7,13 @@ import ProductCard from "@/components/product/Card";
 import RateProductButton from "@/components/product/RateButton";
 import RatingStars from "@/components/ui/RatingStars";
 import SaveProductButton from "@/components/product/SaveButton";
-import axios from "@/lib/axios";
 import { selectDefaultAttributes } from "@/lib/misc";
 import { IFullProduct, IProductAttribute } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { homeFeed } from "@/services/products.service";
 
 type Props = {
   product: IFullProduct;
@@ -25,18 +25,10 @@ export default function ProductPage({ product }: Props) {
 
   const productsQuery = useQuery({
     queryKey: ["similarProducts", product.seName],
-    queryFn: () =>
-      axios.get<{ data: IFullProduct[] }>("api/catalog/homefeed", {
-        params: {
-          page: 1,
-          limit: 4
-        }
-      }),
-
+    queryFn: () => homeFeed({ page: 1, limit: 4 }),
     enabled: inView
   });
-
-  const products = productsQuery.data?.data.data ?? [];
+  const products = productsQuery.data ?? [];
 
   const handleAttributesChange = (attributeId: string, value: string[]) => {
     if (!product) return;

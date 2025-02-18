@@ -24,3 +24,11 @@ export async function followVendor(id: string) {
 export async function unfollowVendor(id: string) {
   return axios.post(`/api/user/unfollowVendor/${id}`);
 }
+
+export async function saveProduct(id: string) {
+  return axios.post(`/api/user/saveProduct/${id}`);
+}
+
+export async function unsaveProduct(id: string) {
+  return axios.post(`/api/user/unsaveProduct/${id}`);
+}

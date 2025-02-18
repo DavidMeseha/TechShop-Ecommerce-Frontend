@@ -1,19 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { IAddress, IFullProduct, IOrder, IProductAttribute } from "@/types";
 import CartItem from "../../../components/CartItem";
 import { useRouter } from "next-nprogress-bar";
 import BackArrow from "@/components/ui/BackArrow";
 import { useTranslation } from "@/context/Translation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import Button from "@/components/ui/Button";
 import { toast } from "react-toastify";
 import FormDropdownInput from "@/components/FormDropdownInput";
 import { useAppStore } from "@/stores/appStore";
 import RadioGroup from "@/components/RadioGroup";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { checkoutData, placeOrder, preperCardPayment } from "@/services/checkout.service";
 
 interface ICheckoutForm {
   shippingAddressId: string;
@@ -39,10 +38,7 @@ export default function CheckoutPage() {
 
   const placeOrderMutation = useMutation({
     mutationKey: ["placeOrder"],
-    mutationFn: () =>
-      axios.post<IOrder>(`/api/user/order/submit`, {
-        ...form
-      }),
+    mutationFn: () => placeOrder(form),
     onSuccess: (res) => {
       router.push(`/order-success/${res.data._id}`);
     }
@@ -50,26 +46,16 @@ export default function CheckoutPage() {
 
   const preperPaymentMutation = useMutation({
     mutationKey: ["preperPayment"],
-    mutationFn: () => axios.get<{ paymentSecret: string }>("/api/user/preperPayment")
+    mutationFn: () => preperCardPayment()
   });
 
   const checkoutQuery = useQuery({
     queryKey: ["checkoutData"],
     queryFn: () =>
-      axios
-        .get<{
-          total: number;
-          cartItems: {
-            product: IFullProduct;
-            quantity: number;
-            attributes: IProductAttribute[];
-          }[];
-          addresses: IAddress[];
-        }>("/api/common/checkout")
-        .then((res) => {
-          setForm({ ...form, shippingAddressId: res.data.addresses[0]._id });
-          return res.data;
-        })
+      checkoutData().then((data) => {
+        setForm({ ...form, shippingAddressId: data.addresses[0]._id });
+        return data;
+      })
   });
 
   const shoppingcartItems = checkoutQuery.data?.cartItems ?? [];

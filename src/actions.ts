@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import axios from "./lib/axios";
 import { redirect } from "next/navigation";
-import { IVendor, Language, User } from "./types";
+import { Language, User } from "./types";
 import { getPathnameLang, replacePathnameLang } from "./lib/misc";
 
 const axiosConfig = () => {
@@ -75,13 +75,4 @@ export async function changeLanguage(lang: Language, pathname: string) {
     return redirect(pathname + "?error=couldNotChangeLanguage");
   }
   return redirect(`/${lang}${pathOnly}`);
-}
-
-export async function followings(pathanme: string) {
-  try {
-    const res = await axios.get<IVendor[]>("/api/user/followingVendors", axiosConfig());
-    return res.data;
-  } catch {
-    return redirect(pathanme + "?error=faildToSubmitYourAction");
-  }
 }

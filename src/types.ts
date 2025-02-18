@@ -1,4 +1,5 @@
 import en from "@/dictionaries/en.json";
+
 export type FieldError = string | false;
 
 export type Language = "en" | "ar" | "fr";
@@ -503,4 +504,16 @@ export interface IFullProduct {
   inStock: boolean;
   _id: string;
   updatedAt: string;
+}
+
+export interface UserInfoForm {
+  email: string;
+  gender: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirthDay: number;
+  dateOfBirthMonth: number;
+  dateOfBirthYear: number;
+  phone: string;
+  imageUrl: string;
 }

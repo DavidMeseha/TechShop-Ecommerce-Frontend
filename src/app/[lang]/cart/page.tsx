@@ -3,14 +3,13 @@
 import CartItem from "@/components/CartItem";
 import { useTranslation } from "@/context/Translation";
 import { useQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
-import { IFullProduct, IProductAttribute } from "@/types";
 import Button from "@/components/ui/Button";
 import { useRouter } from "next-nprogress-bar";
 import BackArrow from "@/components/ui/BackArrow";
 import { LocalLink } from "../../../components/LocalizedNavigation";
 import { BiLoaderCircle } from "react-icons/bi";
 import { useUserStore } from "@/stores/userStore";
+import { checkoutData } from "@/services/checkout.service";
 
 export default function Page() {
   const { t } = useTranslation();
@@ -19,13 +18,7 @@ export default function Page() {
 
   const checkoutQuery = useQuery({
     queryKey: ["cartItems"],
-    queryFn: () =>
-      axios
-        .get<{
-          total: number;
-          cartItems: { product: IFullProduct; quantity: number; attributes: IProductAttribute[] }[];
-        }>("/api/common/checkout")
-        .then((res) => res.data)
+    queryFn: () => checkoutData()
   });
 
   const cartItems = checkoutQuery.data?.cartItems ?? [];

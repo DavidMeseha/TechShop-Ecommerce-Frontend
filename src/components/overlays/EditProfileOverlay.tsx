@@ -8,14 +8,15 @@ import Image from "next/image";
 import OverlayLayout from "./OverlayLayout";
 import { useTranslation } from "@/context/Translation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import RadioGroup from "../RadioGroup";
 import DateDropdownNumbers from "../ui/DateDropdownNumbers";
 import { toast } from "react-toastify";
 import Button from "../ui/Button";
 import { queryClient } from "../layout/MainLayout";
-import { FieldError, UserProfile } from "@/types";
+import { FieldError, UserInfoForm } from "@/types";
 import { useUserStore } from "@/stores/userStore";
+import { getUserInfo, updateUserInfo } from "@/services/user.service";
+import upload from "@/services/upload.service";
 
 interface ProfileErrors {
   email: FieldError;
@@ -30,22 +31,21 @@ interface ProfileErrors {
   avatar: FieldError;
 }
 
-const today = new Date();
-
 export default function EditProfileOverlay() {
+  const todyRef = useRef(new Date());
   const { setIsEditProfileOpen } = useAppStore();
   const { user } = useUserStore();
   const { t } = useTranslation();
   const cropperRef = useRef<CropperRef>(null);
   const [cropping, setCropping] = useState<string | null>(null);
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<UserInfoForm>({
     email: "",
     gender: "",
     firstName: "",
     lastName: "",
-    dateOfBirthDay: today.getDay(),
-    dateOfBirthMonth: today.getMonth(),
-    dateOfBirthYear: today.getFullYear(),
+    dateOfBirthDay: todyRef.current.getDay(),
+    dateOfBirthMonth: todyRef.current.getMonth(),
+    dateOfBirthYear: todyRef.current.getFullYear(),
     phone: "",
     imageUrl: "/images/placeholder.png"
   });
@@ -65,15 +65,15 @@ export default function EditProfileOverlay() {
   const userInfoQuery = useQuery({
     queryKey: ["userInfo"],
     queryFn: () =>
-      axios.get<UserProfile>("/api/user/info").then((res) => {
-        setForm({ ...res.data });
-        return res.data;
+      getUserInfo().then((data) => {
+        setForm({ ...data });
+        return data;
       })
   });
 
   const userInfoMutation = useMutation({
     mutationKey: ["updateUserInfo"],
-    mutationFn: () => axios.put("/api/user/info", { ...form }),
+    mutationFn: () => updateUserInfo(form),
     onSuccess: () => {
       toast.success("Profile Updated Successfuly");
       queryClient.invalidateQueries({ queryKey: ["userInfo"] });
@@ -82,13 +82,8 @@ export default function EditProfileOverlay() {
   });
 
   const uploadImageMutation = useMutation({
-    mutationFn: (formData: FormData) =>
-      axios.post<{ imageUrl: string }>("/api/common/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      }),
-
+    mutationKey: ["upload"],
+    mutationFn: (formData: FormData) => upload(formData),
     onSuccess: (data) => {
       setForm({ ...form, imageUrl: data.data.imageUrl });
       setCropping(null);
@@ -132,7 +127,7 @@ export default function EditProfileOverlay() {
     setForm({ ...form, [name]: value });
   };
 
-  const updateUserInfo = async () => {
+  const updateUserInfoSubmit = async () => {
     if (validate()) return;
     if (!user) return;
 
@@ -140,7 +135,6 @@ export default function EditProfileOverlay() {
   };
 
   const cropAndUpdateImage = async () => {
-    if (!user) return;
     if (!cropperRef.current) return;
     const canvas = cropperRef.current.getCanvas();
     if (!canvas) return;
@@ -226,10 +220,10 @@ export default function EditProfileOverlay() {
                 changeMonth={(value) => setForm({ ...form, dateOfBirthMonth: value })}
                 changeYear={(value) => setForm({ ...form, dateOfBirthYear: value })}
                 className="mb-4"
-                day={form.dateOfBirthDay ?? today.getDay()}
-                month={form.dateOfBirthMonth ?? today.getMonth()}
+                day={form.dateOfBirthDay ?? todyRef.current.getDay()}
+                month={form.dateOfBirthMonth ?? todyRef.current.getMonth()}
                 title="Date Of Birth"
-                year={form.dateOfBirthYear ?? today.getFullYear()}
+                year={form.dateOfBirthYear ?? todyRef.current.getFullYear()}
               />
               <FormTextInput
                 error={error.phone}
@@ -265,7 +259,7 @@ export default function EditProfileOverlay() {
                 <Button
                   className="bg-primary text-white"
                   isLoading={userInfoMutation.isPending}
-                  onClick={() => updateUserInfo()}
+                  onClick={() => updateUserInfoSubmit()}
                 >
                   Save
                 </Button>

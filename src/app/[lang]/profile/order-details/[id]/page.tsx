@@ -2,20 +2,19 @@
 
 import { useTranslation } from "@/context/Translation";
 import { useQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
-import { IFullProduct, IOrder, IProductAttribute } from "@/types";
+import { IFullProduct, IProductAttribute } from "@/types";
 import Image from "next/image";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { getOrder } from "@/services/user.service";
 
 export default function OrderDetailsPage({ params }: { params: { id: string } }) {
   const { t } = useTranslation();
 
   const orderQuery = useQuery({
     queryKey: ["order", params.id],
-    queryFn: () => axios.get<IOrder>(`/api/user/order/${params.id}`).then((res) => res.data)
+    queryFn: () => getOrder(params.id)
   });
-
-  const order = orderQuery.data ?? null;
+  const order = orderQuery.data;
 
   return (
     <>

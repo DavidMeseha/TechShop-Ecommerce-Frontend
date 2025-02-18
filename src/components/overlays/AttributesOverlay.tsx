@@ -6,10 +6,10 @@ import { useAppStore } from "@/stores/appStore";
 import { IProductAttribute } from "@/types";
 import { selectDefaultAttributes } from "@/lib/misc";
 import ProductAttributes from "../product/Attributes";
-import axios from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import Button from "../ui/Button";
 import AttributesOverlayLoading from "../LoadingUi/AttributesOverlayLoading";
+import { getProductAttributes } from "@/services/products.service";
 
 export default function AttributesOverlay() {
   const { setIsProductAttributesOpen, overlayProductId, action } = useAppStore();
@@ -17,16 +17,8 @@ export default function AttributesOverlay() {
 
   const productQuery = useQuery({
     queryKey: ["productAttributes", overlayProductId],
-    queryFn: () =>
-      axios
-        .get<{
-          _id: string;
-          productAttributes: IProductAttribute[];
-          name: string;
-        }>(`/api/product/attributes/${overlayProductId}`)
-        .then((res) => {
-          return res.data;
-        })
+    queryFn: () => getProductAttributes(overlayProductId ?? "0"),
+    enabled: !!overlayProductId
   });
   const product = productQuery.data;
 

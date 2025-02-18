@@ -4,11 +4,11 @@ import { useAppStore } from "@/stores/appStore";
 import { FieldError } from "@/types";
 import Button from "../ui/Button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import { toast } from "react-toastify";
 import { useTranslation } from "@/context/Translation";
 import FormTextInput from "../FormTextInput";
 import FormDropdownInput from "../FormDropdownInput";
+import { citiesInCountry, newAddress } from "@/services/user.service";
 
 interface FormErrors {
   address: FieldError;
@@ -29,12 +29,7 @@ export default function AddNewAddress() {
 
   const newAddressMutation = useMutation({
     mutationKey: ["addAddress"],
-    mutationFn: () =>
-      axios.post("/api/user/addresses/add", {
-        city: form.city,
-        country: form.country,
-        address: form.address
-      }),
+    mutationFn: () => newAddress(form),
     onSuccess: () => {
       toast.success("Address Added Successfully");
       queryClient.invalidateQueries({ queryKey: ["checkoutData"] });
@@ -44,9 +39,9 @@ export default function AddNewAddress() {
   const citiesQuery = useQuery({
     queryKey: ["cities", form.country],
     queryFn: () =>
-      axios.get<{ name: string; code: string; _id: string }[]>(`/api/common/cities/${form.country}`).then((res) => {
-        setForm({ ...form, city: res.data[0]._id });
-        return res.data;
+      citiesInCountry(form.country).then((data) => {
+        setForm({ ...form, city: data[0]._id });
+        return data;
       }),
     enabled: !!form.country
   });

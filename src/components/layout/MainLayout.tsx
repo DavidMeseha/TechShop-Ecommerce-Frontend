@@ -14,7 +14,7 @@ import SideNav from "./includes/SideNav";
 import NetworkErrors from "@/context/NetworkErrors";
 import { Language, Translation } from "@/types";
 import { useAppStore } from "@/stores/appStore";
-import UserSetupWrapper from "./includes/UserSetupWrapper";
+import UserSetup from "./includes/UserSetup";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -65,17 +65,16 @@ export default function MainLayout({ children, dictionary, lang, token }: MainLa
       <QueryClientProvider client={queryClient}>
         <TranslationProvider lang={lang} translation={dictionary}>
           <NetworkErrors>
-            <UserSetupWrapper>
-              <AllOverlays />
-              <Header />
-              <main className="mx-auto flex w-full justify-between px-0">
-                <SideNav />
-                <div className="relative mx-auto my-11 w-full md:mx-0 md:ms-[230px] md:mt-[60px]">
-                  <div className="m-auto max-w-[1200px] md:px-4">{children}</div>
-                </div>
-              </main>
-              <BottomNav />
-            </UserSetupWrapper>
+            <UserSetup />
+            <AllOverlays />
+            <Header />
+            <main className="mx-auto flex w-full justify-between px-0">
+              <SideNav />
+              <div className="relative mx-auto my-11 w-full md:mx-0 md:ms-[230px] md:mt-[60px]">
+                <div className="m-auto max-w-[1200px] md:px-4">{children}</div>
+              </div>
+            </main>
+            <BottomNav />
           </NetworkErrors>
         </TranslationProvider>
         <ReactQueryDevtools initialIsOpen={false} />

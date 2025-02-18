@@ -1,9 +1,9 @@
-import axios from "@/lib/axios";
 import { useUserStore } from "@/stores/userStore";
 import { IFullProduct } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "@/context/Translation";
 import { toast } from "react-toastify";
+import { saveProduct, unsaveProduct } from "@/services/userActions.service";
 
 interface SaveHookProps {
   product: IFullProduct;
@@ -18,7 +18,7 @@ export default function useSave({ product, onError, onClick }: SaveHookProps) {
 
   const saveMutation = useMutation({
     mutationKey: ["save", product.seName],
-    mutationFn: () => axios.post(`/api/user/saveProduct/${product._id}`),
+    mutationFn: () => saveProduct(product._id),
     onSuccess: async () => {
       setSaves();
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
@@ -28,7 +28,7 @@ export default function useSave({ product, onError, onClick }: SaveHookProps) {
 
   const unsaveMutation = useMutation({
     mutationKey: ["unsave", product.seName],
-    mutationFn: () => axios.post(`/api/user/unsaveProduct/${product._id}`),
+    mutationFn: () => unsaveProduct(product._id),
     onSuccess: async () => {
       setSaves();
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });

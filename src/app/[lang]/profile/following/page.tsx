@@ -8,16 +8,14 @@ import Image from "next/image";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import React from "react";
 import useFollow from "@/hooks/useFollow";
-import { followings } from "@/actions";
-import { usePathname } from "next/navigation";
 import Loading from "@/components/LoadingUi/LoadingSpinner";
 import { useUserStore } from "@/stores/userStore";
+import { getFollowingVendors } from "@/services/user.service";
 
 export default function FollowingPage() {
-  const pathname = usePathname();
   const follwingVendorsQuery = useQuery({
     queryKey: ["following"],
-    queryFn: () => followings(pathname)
+    queryFn: () => getFollowingVendors()
   });
 
   if (follwingVendorsQuery.isFetching) return <Loading />;

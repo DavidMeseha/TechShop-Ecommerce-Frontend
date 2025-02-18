@@ -1,34 +1,33 @@
 import { setToken } from "@/actions";
 import { useTranslation } from "@/context/Translation";
 import axios from "@/lib/axios";
+import { checkTokenValidity, getGuestToken, refreshToken } from "@/services/auth.service";
 import { useUserStore } from "@/stores/userStore";
-import { User } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useCallback } from "react";
 import { toast } from "react-toastify";
 
-export default function UserSetupWrapper({ children }: { children: React.ReactNode }) {
+export default function UserSetup() {
   const { setUserActions, setUser } = useUserStore();
   const { user } = useUserStore();
   const { t } = useTranslation();
 
-  const resetAxiosIterceptor = (token: string) => {
+  const resetAxiosIterceptor = useCallback((token: string) => {
     axios.interceptors.request.clear();
     axios.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${token}`;
       return config;
     });
-  };
+  }, []);
 
-  useQuery({
+  //check token validity
+  const _check = useQuery({
     queryKey: ["checkToken"],
     queryFn: () =>
-      axios
-        .get<User>("/api/auth/check")
-        .then((res) => {
-          setUser(res.data);
+      checkTokenValidity()
+        .then((data) => {
+          setUser(data);
           setUserActions();
-          return res.data;
         })
         .catch(() => {
           if (user?.isRegistered) toast.error(t("auth.forcedLogout"));
@@ -36,8 +35,9 @@ export default function UserSetupWrapper({ children }: { children: React.ReactNo
         })
   });
 
+  //new guest token
   const guestTokenMutation = useMutation({
-    mutationFn: () => axios.get<{ user: User; token: string }>("/api/auth/guest"),
+    mutationFn: () => getGuestToken(),
     onSuccess: async (res) => {
       setUser(res.data.user);
       await setToken(res.data.token);
@@ -46,11 +46,11 @@ export default function UserSetupWrapper({ children }: { children: React.ReactNo
     }
   });
 
-  useQuery({
+  //refresh Token(only active if user logged in)
+  const _refresh = useQuery({
     queryKey: ["refresh"],
     queryFn: () =>
-      axios
-        .get<{ token: string }>("/api/auth/refreshToken")
+      refreshToken()
         .then((res) => {
           setToken(res.data.token);
           resetAxiosIterceptor(res.data.token);
@@ -65,5 +65,5 @@ export default function UserSetupWrapper({ children }: { children: React.ReactNo
     refetchInterval: 1_680_000
   });
 
-  return children;
+  return <></>;
 }

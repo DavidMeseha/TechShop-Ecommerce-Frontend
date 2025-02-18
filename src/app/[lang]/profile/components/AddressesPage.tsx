@@ -2,15 +2,15 @@
 
 import FormDropdownInput from "@/components/FormDropdownInput";
 import FormTextInput from "@/components/FormTextInput";
-import { FieldError, IAddress } from "@/types";
+import { FieldError } from "@/types";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "@/context/Translation";
 import AddressItem from "./AddressItem";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import Button from "@/components/ui/Button";
 import { useAppStore } from "@/stores/appStore";
 import { toast } from "react-toastify";
+import { citiesInCountry, deleteAddress, newAddress, updateAddress, userAdresses } from "@/services/user.service";
 
 interface FormErrors {
   address: FieldError;
@@ -35,17 +35,12 @@ export default function AddressesPage() {
 
   const addresses = useQuery({
     queryKey: ["userAddresses"],
-    queryFn: () => axios.get<IAddress[]>("/api/user/addresses").then((res) => res.data)
+    queryFn: () => userAdresses()
   });
 
   const newAddressMutation = useMutation({
     mutationKey: ["addAddress"],
-    mutationFn: () =>
-      axios.post("/api/user/addresses/add", {
-        city: form.city,
-        country: form.country,
-        address: form.address
-      }),
+    mutationFn: () => newAddress(form),
     onSuccess: () => {
       addresses.refetch();
       toast.success("Address Added Successfully");
@@ -54,7 +49,7 @@ export default function AddressesPage() {
 
   const deleteAddressMutation = useMutation({
     mutationKey: ["addAddress"],
-    mutationFn: (id: string) => axios.delete(`/api/user/address/delete/${id}`),
+    mutationFn: (id: string) => deleteAddress(id),
     onSuccess: () => {
       addresses.refetch();
       toast.warn("Address deleted successfuly");
@@ -63,12 +58,7 @@ export default function AddressesPage() {
 
   const updateAddressMutation = useMutation({
     mutationKey: ["updateAddress"],
-    mutationFn: () =>
-      axios.put(`/api/user/addresses/edit/${form._id}`, {
-        city: form.city,
-        country: form.country,
-        address: form.address
-      }),
+    mutationFn: () => updateAddress(form),
     onSuccess: () => {
       addresses.refetch();
       toast.success("Address Updated Successfully");
@@ -78,9 +68,9 @@ export default function AddressesPage() {
   const citiesQuery = useQuery({
     queryKey: ["cities", form.country],
     queryFn: () =>
-      axios.get<{ name: string; code: string; _id: string }[]>(`/api/common/cities/${form.country}`).then((res) => {
-        setForm({ ...form, city: res.data.find((city) => city._id === form.city)?._id ?? res.data[0]._id });
-        return res.data;
+      citiesInCountry(form.country).then((data) => {
+        setForm({ ...form, city: data.find((city) => city._id === form.city)?._id ?? data[0]._id });
+        return data;
       }),
     enabled: !!form.country
   });
@@ -106,12 +96,12 @@ export default function AddressesPage() {
     return isError;
   };
 
-  const addNewAddress = () => {
+  const addNewAddressSubmit = () => {
     if (validate()) return;
     newAddressMutation.mutate();
   };
 
-  const updateAddress = () => {
+  const updateAddressSubmit = () => {
     if (validate()) return;
     updateAddressMutation.mutate();
   };
@@ -231,7 +221,7 @@ export default function AddressesPage() {
               <Button
                 className="w-full bg-primary py-2 text-white"
                 isLoading={newAddressMutation.isPending || addresses.isFetching}
-                onClick={() => (activeTap === "newaddress" ? addNewAddress() : updateAddress())}
+                onClick={() => (activeTap === "newaddress" ? addNewAddressSubmit() : updateAddressSubmit())}
               >
                 {activeTap === "newaddress" ? t("addresses.addAddress") : t("addresses.updateAddress")}
               </Button>

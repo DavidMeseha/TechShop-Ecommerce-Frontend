@@ -1,8 +1,6 @@
 import { useTranslation } from "@/context/Translation";
-import axios from "@/lib/axios";
 import { useAppStore } from "@/stores/appStore";
 import { useUserStore } from "@/stores/userStore";
-import { IFullProduct, IProductAttribute, UserProfile } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { UserActivity } from "./UserActivity";
@@ -12,6 +10,7 @@ import { BsBookmark, BsCart } from "react-icons/bs";
 import { BiLoaderCircle, BiPencil } from "react-icons/bi";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import ProductCard from "@/components/product/Card";
+import { getCartProducts, getSavedProducts, getUserInfo } from "@/services/user.service";
 
 export default function UserProfileDisplay() {
   const { t } = useTranslation();
@@ -22,26 +21,23 @@ export default function UserProfileDisplay() {
 
   const cartItemsQuery = useQuery({
     queryKey: ["cartItems"],
-    queryFn: () =>
-      axios
-        .get<{ product: IFullProduct; quantity: number; attributes: IProductAttribute[] }[]>("/api/common/cart")
-        .then((res) => res.data),
+    queryFn: () => getCartProducts(),
     enabled: isCart
   });
-  const cartProducts = cartItemsQuery.data ?? [];
 
   const savesQuery = useQuery({
     queryKey: ["savedProducts"],
-    queryFn: () => axios.get<IFullProduct[]>("/api/user/savedProducts").then((res) => res.data),
+    queryFn: () => getSavedProducts(),
     enabled: !isCart
   });
-  const savedProducts = savesQuery.data ?? [];
 
   const userInfoQuery = useQuery({
     queryKey: ["userInfo"],
-    queryFn: () => axios.get<UserProfile>("/api/user/info").then((res) => res.data)
+    queryFn: () => getUserInfo()
   });
 
+  const cartProducts = cartItemsQuery.data ?? [];
+  const savedProducts = savesQuery.data ?? [];
   const userInfo = userInfoQuery.data;
   const isFeatching = savesQuery.isFetching || cartItemsQuery.isFetching;
 
