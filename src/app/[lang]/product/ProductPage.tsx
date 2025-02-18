@@ -1,17 +1,16 @@
 "use client";
-import AddToCartButton from "@/components/AddToCartButton";
-import LikeProductButton from "@/components/LikeProductButton";
+import AddToCartButton from "@/components/product/AddToCartButton";
+import LikeProductButton from "@/components/product/LikeButton";
 import ProductsSectionLoading from "@/components/LoadingUi/ProductsSetLoading";
-import ProductAttributes from "@/components/ProductAttributes";
-import ProductCard from "@/components/ProductCard";
-import RateProductButton from "@/components/RateProductButton";
-import RatingStars from "@/components/RatingStars";
-import SaveProductButton from "@/components/SaveProductButton";
+import ProductAttributes from "@/components/product/Attributes";
+import ProductCard from "@/components/product/Card";
+import RateProductButton from "@/components/product/RateButton";
+import RatingStars from "@/components/ui/RatingStars";
+import SaveProductButton from "@/components/product/SaveButton";
 import axios from "@/lib/axios";
 import { selectDefaultAttributes } from "@/lib/misc";
-import { useUserStore } from "@/stores/userStore";
 import { IFullProduct, IProductAttribute } from "@/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -21,7 +20,6 @@ type Props = {
 };
 
 export default function ProductPage({ product }: Props) {
-  const { setCartItems, cartItems } = useUserStore();
   const [customAttributes, setCustomAttributes] = useState(selectDefaultAttributes(product.productAttributes));
   const [ref, inView] = useInView();
 
@@ -40,17 +38,6 @@ export default function ProductPage({ product }: Props) {
 
   const products = productsQuery.data?.data.data ?? [];
 
-  const addToCartMutation = useMutation({
-    mutationKey: ["addToCart"],
-    mutationFn: (props: { productId: string; attributes: IProductAttribute[]; quantity: number }) =>
-      axios.post(`/api/common/cart/add/${props.productId}`, {
-        ...props
-      }),
-    onSuccess: () => {
-      setCartItems();
-    }
-  });
-
   const handleAttributesChange = (attributeId: string, value: string[]) => {
     if (!product) return;
     let tempAttributes = [...customAttributes];
@@ -62,16 +49,6 @@ export default function ProductPage({ product }: Props) {
     tempAttributes[index] = { ...originalAttribute, values: selectedValues };
 
     setCustomAttributes(tempAttributes);
-  };
-
-  const addToCartClickHandle = () => {
-    cartItems.find((item) => product._id === item.product)
-      ? {}
-      : addToCartMutation.mutate({
-          productId: product._id,
-          attributes: customAttributes,
-          quantity: 1
-        });
   };
 
   return (
@@ -120,11 +97,7 @@ export default function ProductPage({ product }: Props) {
               <div className="mt-6 flex items-center gap-4 sm:mt-8">
                 <LikeProductButton product={product} />
                 <SaveProductButton product={product} />
-                <AddToCartButton
-                  isLoading={addToCartMutation.isPending}
-                  product={product}
-                  onClick={addToCartClickHandle}
-                />
+                <AddToCartButton attributes={customAttributes} product={product} />
                 <RateProductButton product={product} />
               </div>
 

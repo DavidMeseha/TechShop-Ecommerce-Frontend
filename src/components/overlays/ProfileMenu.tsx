@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import OverlayLayout from "./OverlayLayout";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { FiLogOut } from "react-icons/fi";
 import { useTranslation } from "@/context/Translation";
@@ -14,7 +14,7 @@ import { usePathname } from "next/navigation";
 
 export default function ProfileMenuOverlay() {
   const pathname = usePathname();
-  const { setIsProfileMenuOpen } = useGeneralStore();
+  const { setIsProfileMenuOpen } = useAppStore();
   const [activeTap, setActiveTap] = useState("main");
   const { t } = useTranslation();
 

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "@/context/Translation";
 import { UserActivity } from "./UserActivity";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import Image from "next/image";
 import { IFullProduct, IVendor, Pagination } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -12,8 +12,8 @@ import { useInView } from "react-intersection-observer";
 import { BiLoaderCircle } from "react-icons/bi";
 import { useUserStore } from "@/stores/userStore";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import ProductCard from "@/components/ProductCard";
-import useHandleFollow from "@/hooks/useHandleFollow";
+import ProductCard from "@/components/product/Card";
+import useFollow from "@/hooks/useFollow";
 
 type Props = {
   vendor: IVendor;
@@ -22,7 +22,7 @@ type Props = {
 export default function ViewVendorProfile({ vendor }: Props) {
   const { t } = useTranslation();
   const [ref, isInView] = useInView();
-  const { following } = useUserStore();
+  const { following, setFollowedVendors } = useUserStore();
   const [followersCount, setFollowersCount] = useState(vendor.followersCount);
 
   const activities = [
@@ -38,10 +38,13 @@ export default function ViewVendorProfile({ vendor }: Props) {
     }
   ];
 
-  const { handleFollow, isPending } = useHandleFollow({
+  const { handleFollow } = useFollow({
     vendor,
-    onSuccess: (follow) => {
+    onClick: (follow) => {
       setFollowersCount(followersCount + (follow ? 1 : -1));
+      const temp = [...following];
+      following.includes(vendor._id) ? temp.splice(temp.indexOf(vendor._id), 1) : temp.push(vendor._id);
+      setFollowedVendors([...temp]);
     }
   });
 
@@ -85,7 +88,6 @@ export default function ViewVendorProfile({ vendor }: Props) {
           </div>
           <Button
             className="item-center mt-3 block bg-primary px-8 py-1.5 text-[15px] font-semibold text-white"
-            isLoading={isPending}
             onClick={() => handleFollow(!following.includes(vendor._id))}
           >
             {following.includes(vendor._id) ? t("unfollow") : t("follow")}

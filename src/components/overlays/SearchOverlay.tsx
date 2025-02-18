@@ -1,13 +1,13 @@
 import React, { useRef, useState } from "react";
-import Input from "../Input";
+import Input from "../ui/Input";
 import { useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
-import Checkbox from "../Checkbox";
+import Checkbox from "../ui/Checkbox";
 import { ICategory, IFullProduct, ITag, IVendor } from "@/types";
 import Image from "next/image";
 import { RiCloseLine } from "react-icons/ri";
-import Button from "../Button";
-import { useGeneralStore } from "@/stores/generalStore";
+import Button from "../ui/Button";
+import { useAppStore } from "@/stores/appStore";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { BiLoaderCircle } from "react-icons/bi";
 import { Variants, motion } from "framer-motion";
@@ -30,7 +30,7 @@ const popupVariants: Variants = {
 };
 
 export default function SearchOverlay() {
-  const { setIsSearchOpen, isSearchOpen } = useGeneralStore();
+  const { setIsSearchOpen, isSearchOpen } = useAppStore();
   const [searchText, setSearchText] = useState("");
   const [options, setOptions] = useState({
     categories: false,

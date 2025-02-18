@@ -8,12 +8,12 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
 
 export default function Input({ label, className, ...props }: Props) {
   return (
-    <div className="mb-4 w-full">
+    <>
       <label className="mb-1 text-[15px]">{label}</label>
       <input
         {...props}
-        className={cn("w-full rounded-md border-secondary focus:border-primary focus:ring-primary", className)}
+        className={cn("mb-4 w-full rounded-md border-secondary focus:border-primary focus:ring-primary", className)}
       />
-    </div>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import Button from "@/components/Button";
-import RatingStars from "@/components/RatingStars";
+import Button from "@/components/ui/Button";
+import RatingStars from "@/components/ui/RatingStars";
 import axios from "@/lib/axios";
 import { IProductReview, Pagination } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";

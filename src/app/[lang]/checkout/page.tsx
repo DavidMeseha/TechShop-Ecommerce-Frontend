@@ -4,14 +4,14 @@ import { useState } from "react";
 import { IAddress, IFullProduct, IOrder, IProductAttribute } from "@/types";
 import CartItem from "../../../components/CartItem";
 import { useRouter } from "next-nprogress-bar";
-import BackArrow from "@/components/BackArrow";
+import BackArrow from "@/components/ui/BackArrow";
 import { useTranslation } from "@/context/Translation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import { toast } from "react-toastify";
 import FormDropdownInput from "@/components/FormDropdownInput";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import RadioGroup from "@/components/RadioGroup";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
@@ -33,7 +33,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [activeTap, setActiveTap] = useState<"shipping" | "billing" | "summary">("shipping");
   const [form, setForm] = useState(initialCheckoutForm);
-  const { setIsAddAddressOpen } = useGeneralStore();
+  const { setIsAddAddressOpen } = useAppStore();
   const { t } = useTranslation();
   const [orderProcessing, setIsProcessing] = useState(false);
 

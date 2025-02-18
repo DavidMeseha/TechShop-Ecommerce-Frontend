@@ -3,19 +3,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import CarouselIndecator from "./CarouselIndecator";
-import LikeProductButton from "./LikeProductButton";
-import RateProductButton from "./RateProductButton";
-import SaveProductButton from "./SaveProductButton";
+import CarouselIndecator from "../ui/CarouselIndecator";
+import LikeProductButton from "./LikeButton";
+import RateProductButton from "./RateButton";
+import SaveProductButton from "./SaveButton";
 import AddToCartButton from "./AddToCartButton";
 import { useTranslation } from "@/context/Translation";
 import Image from "next/image";
 import { manipulateDescription } from "@/lib/misc";
 import { IFullProduct } from "@/types";
 import { useUserStore } from "@/stores/userStore";
-import Button from "./Button";
-import ViewMoreButton from "./ViewMoreButton";
-import useHandleFollow from "@/hooks/useHandleFollow";
+import Button from "../ui/Button";
+import ViewMoreButton from "../ui/ViewMoreButton";
+import useFollow from "@/hooks/useFollow";
 
 export default function ProductSection({ product }: { product: IFullProduct }) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
@@ -27,7 +27,7 @@ export default function ProductSection({ product }: { product: IFullProduct }) {
   const [main, extend] = descriptionRef.current;
   const isFollowed = following.includes(product.vendor._id);
 
-  const followAction = useHandleFollow({ vendor: product.vendor });
+  const { handleFollow } = useFollow({ vendor: product.vendor });
 
   useEffect(() => {
     if (!carouselApi) return;
@@ -70,8 +70,7 @@ export default function ProductSection({ product }: { product: IFullProduct }) {
 
           <Button
             className="border border-primary bg-white fill-primary px-5 py-0.5 text-sm font-semibold text-primary hover:bg-[#ffeef2]"
-            isLoading={followAction.isPending}
-            onClick={() => followAction.handleFollow(!isFollowed)}
+            onClick={() => handleFollow(!isFollowed)}
           >
             {isFollowed ? t("unfollow") : t("follow")}
           </Button>

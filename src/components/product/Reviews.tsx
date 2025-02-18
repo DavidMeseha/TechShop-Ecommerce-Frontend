@@ -1,7 +1,7 @@
 import { IProductReview } from "@/types";
 import React from "react";
 import Image from "next/image";
-import RatingStars from "../RatingStars";
+import RatingStars from "../ui/RatingStars";
 import { BiLoaderCircle } from "react-icons/bi";
 
 export default function Reviews({ reviews, isLoading }: { reviews?: IProductReview[]; isLoading: boolean }) {

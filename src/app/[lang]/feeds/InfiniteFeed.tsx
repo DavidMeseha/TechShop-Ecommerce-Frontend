@@ -2,15 +2,15 @@
 
 import { BsSearch } from "react-icons/bs";
 import { BiLoaderCircle, BiMenu } from "react-icons/bi";
-import ProductSectionMobile from "@/components/ProductSectionMobile";
-import { useGeneralStore } from "@/stores/generalStore";
+import ProductSectionMobile from "@/components/product/ProductSectionMobile";
+import { useAppStore } from "@/stores/appStore";
 import HomeMenu from "@/components/overlays/HomeMenu";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useTranslation } from "@/context/Translation";
 import { IFullProduct, Pagination } from "../../../types";
-import Button from "@/components/Button";
-import ProductSection from "@/components/ProductSection";
+import Button from "@/components/ui/Button";
+import ProductSection from "@/components/product/ProductSection";
 
 type Props = {
   products: IFullProduct[];
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function InfiniteFeed({ products, loadMore }: Props) {
-  const { setIsHomeMenuOpen, setIsSearchOpen } = useGeneralStore();
+  const { setIsHomeMenuOpen, setIsSearchOpen } = useAppStore();
   const { t } = useTranslation();
 
   const [productsList, setProducts] = useState<IFullProduct[]>([...products]);

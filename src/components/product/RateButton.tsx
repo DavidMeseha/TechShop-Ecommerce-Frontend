@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { IFullProduct } from "../types";
-import { useGeneralStore } from "../stores/generalStore";
+import { IFullProduct } from "@/types";
+import { useAppStore } from "@/stores/appStore";
 import { BsStarFill } from "react-icons/bs";
 import { useUserStore } from "@/stores/userStore";
 import { toast } from "react-toastify";
@@ -13,7 +13,7 @@ type Props = {
 
 export default function RateProductButton({ product }: Props) {
   const { reviews, user } = useUserStore();
-  const { setIsAddReviewOpen } = useGeneralStore();
+  const { setIsAddReviewOpen } = useAppStore();
   const isReviewed = reviews.includes(product._id);
 
   const handleAddreviewClick = () => {

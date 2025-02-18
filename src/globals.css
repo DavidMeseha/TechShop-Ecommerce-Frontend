@@ -30,3 +30,7 @@
 .rmsc .dropdown-container {
   border-color: var(--secondary) !important;
 }
+
+.lh-0 {
+  line-height: 6px;
+}

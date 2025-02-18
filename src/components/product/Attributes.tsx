@@ -1,9 +1,9 @@
 import React from "react";
-import FormTextInput from "./FormTextInput";
-import RadioGroup from "./RadioGroup";
-import CheckboxGroup from "./CheckboxGroup";
-import FormDropdownInput from "./FormDropdownInput";
-import { IProductAttribute } from "../types";
+import FormTextInput from "../FormTextInput";
+import RadioGroup from "../RadioGroup";
+import CheckboxGroup from "../CheckboxGroup";
+import FormDropdownInput from "../FormDropdownInput";
+import { IProductAttribute } from "../../types";
 
 type Props = {
   productAttributes: IProductAttribute[];

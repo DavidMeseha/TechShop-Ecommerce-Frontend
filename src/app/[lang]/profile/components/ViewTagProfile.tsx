@@ -7,7 +7,7 @@ import axios from "@/lib/axios";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { BiLoaderCircle } from "react-icons/bi";
-import ProductCard from "@/components/ProductCard";
+import ProductCard from "@/components/product/Card";
 
 type Props = {
   tag: ITag;

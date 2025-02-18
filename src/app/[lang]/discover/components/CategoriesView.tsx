@@ -4,7 +4,7 @@ import { ICategory, Pagination } from "@/types";
 import { useTranslation } from "@/context/Translation";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import React from "react";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import axios from "@/lib/axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Loading from "@/components/LoadingUi/LoadingSpinner";

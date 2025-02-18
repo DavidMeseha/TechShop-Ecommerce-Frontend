@@ -1,7 +1,7 @@
-import DateDropdownNumbers from "@/components/DateDropdownNumbers";
+import DateDropdownNumbers from "@/components/ui/DateDropdownNumbers";
 import FormTextInput from "@/components/FormTextInput";
 import RadioGroup from "@/components/RadioGroup";
-import { SubmitButton } from "@/components/SubmitButton";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { getDictionary } from "@/dictionary";
 import { AxiosError } from "axios";
 import { redirect } from "next/navigation";

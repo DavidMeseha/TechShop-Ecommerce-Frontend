@@ -7,7 +7,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import { BiLoaderCircle } from "react-icons/bi";
 import { useInView } from "react-intersection-observer";
-import ProductCard from "@/components/ProductCard";
+import ProductCard from "@/components/product/Card";
 
 type Props = {
   category: ICategory;

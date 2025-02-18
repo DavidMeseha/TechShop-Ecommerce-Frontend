@@ -7,12 +7,11 @@ import { toast } from "react-toastify";
 
 interface SaveHookProps {
   product: IFullProduct;
-  onSuccess?: (saved: boolean) => void;
   onError?: (saved: boolean) => void;
   onClick?: (saved: boolean) => void;
 }
 
-export default function useHandleSave({ product, onSuccess, onError, onClick }: SaveHookProps) {
+export default function useSave({ product, onError, onClick }: SaveHookProps) {
   const { setSaves, user } = useUserStore();
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -21,28 +20,26 @@ export default function useHandleSave({ product, onSuccess, onError, onClick }: 
     mutationKey: ["save", product.seName],
     mutationFn: () => axios.post(`/api/user/saveProduct/${product._id}`),
     onSuccess: async () => {
-      await setSaves();
-      onSuccess?.(true);
+      setSaves();
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
     },
-    onError: () => onError?.(true),
+    onError: () => onError?.(true)
   });
 
   const unsaveMutation = useMutation({
     mutationKey: ["unsave", product.seName],
     mutationFn: () => axios.post(`/api/user/unsaveProduct/${product._id}`),
     onSuccess: async () => {
-      await setSaves();
-      onSuccess?.(false);
+      setSaves();
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
     },
-    onError: () => onError?.(false),
+    onError: () => onError?.(false)
   });
 
   const handleSave = async (shouldSave: boolean) => {
     if (!user) return;
     if (!user.isRegistered) {
-      return toast.warn(t('loginToPerformAction'), { toastId: 'saveError' });
+      return toast.warn(t("loginToPerformAction"), { toastId: "saveError" });
     }
     if (saveMutation.isPending || unsaveMutation.isPending) return;
 
@@ -55,7 +52,5 @@ export default function useHandleSave({ product, onSuccess, onError, onClick }: 
     }
   };
 
-  const isPending = saveMutation.isPending || unsaveMutation.isPending;
-
-  return { handleSave, isPending };
+  return { handleSave };
 }

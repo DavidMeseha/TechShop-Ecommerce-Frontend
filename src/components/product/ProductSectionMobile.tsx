@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { IFullProduct } from "../types";
+import { IFullProduct } from "../../types";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import CarouselIndecator from "./CarouselIndecator";
-import ProductVendorButton from "./ProductVendorButton";
-import LikeProductButton from "./LikeProductButton";
-import RateProductButton from "./RateProductButton";
-import SaveProductButton from "./SaveProductButton";
+import CarouselIndecator from "../ui/CarouselIndecator";
+import ProductVendorButton from "./VendorButton";
+import LikeProductButton from "./LikeButton";
+import RateProductButton from "./RateButton";
+import SaveProductButton from "./SaveButton";
 import AddToCartButton from "./AddToCartButton";
 import Image from "next/image";
-import ViewMoreButton from "./ViewMoreButton";
+import ViewMoreButton from "../ui/ViewMoreButton";
 
 export default function ProductSectionMobile({ product }: { product: IFullProduct }) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();

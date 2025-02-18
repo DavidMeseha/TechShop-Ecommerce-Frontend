@@ -1,4 +1,4 @@
-import { GeneralStore } from "@/stores/generalStore";
+import { GeneralStore } from "@/stores/appStore";
 import { UserStore } from "@/stores/userStore";
 import { IFullProduct } from "@/types";
 import { create } from "zustand";

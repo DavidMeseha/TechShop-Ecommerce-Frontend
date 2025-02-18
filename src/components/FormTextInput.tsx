@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { FieldError } from "../types";
-import { cn } from "@/lib/utils";
+import Input from "./ui/Input";
 
 export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -9,20 +9,15 @@ export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputEleme
   className?: string;
 }
 
-export default function FormTextInput({ label, error, className, ...props }: TextInputProps) {
+export default function FormTextInput({ label, error, ...props }: TextInputProps) {
   return (
-    <div className={cn("pb-1", className)}>
+    <>
       <label className="mb-1 block capitalize">
         {label}
         {props.required ? <span className="text-primary">*</span> : null}
       </label>
-      <input
-        autoComplete="off"
-        className="block w-full rounded-sm border border-secondary px-4 py-2 focus:border-primary focus:ring-primary"
-        {...props}
-      />
-
-      {<div className="min-h-[21px] text-[14px] font-semibold text-red-500">{error ? error : null}</div>}
-    </div>
+      <Input autoComplete="off" className="block w-full rounded-sm border border-secondary px-4 py-2" {...props} />
+      <div className="min-h-[21px] text-[14px] font-semibold text-red-500">{error ? error : null}</div>
+    </>
   );
 }

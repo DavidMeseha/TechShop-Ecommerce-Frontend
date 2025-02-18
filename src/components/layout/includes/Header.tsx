@@ -5,8 +5,8 @@ import { BiSearch, BiShoppingBag, BiUser } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
 import { useState } from "react";
-import { useGeneralStore } from "@/stores/generalStore";
-import Button from "@/components/Button";
+import { useAppStore } from "@/stores/appStore";
+import Button from "@/components/ui/Button";
 import { useTranslation } from "../../../context/Translation";
 import Image from "next/image";
 import { useRouter, startProgress, stopProgress } from "next-nprogress-bar";
@@ -24,7 +24,7 @@ export default function Header() {
   const pathname = usePathname();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const { t, lang } = useTranslation();
-  const { setIsSearchOpen } = useGeneralStore();
+  const { setIsSearchOpen } = useAppStore();
 
   const goTo = () => {
     if (!user || !user.isRegistered) return router.push(`/${lang}/login`);

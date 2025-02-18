@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useGeneralStore } from "../../stores/generalStore";
+import { useAppStore } from "../../stores/appStore";
 import EditProfileOverlay from "./EditProfileOverlay";
-import ShareOverlay from "./Share";
-import ProfileMenuOverlay from "./ProfileMenu";
 import { usePathname } from "next/navigation";
 import AttributesOverlay from "./AttributesOverlay";
 import ProductMoreInfoOverlay from "./ProductMoreInfo";
@@ -12,6 +10,7 @@ import AddReviewOverlay from "./AddReviewOverlay";
 import AddNewAddress from "./AddNewAddress";
 import SearchOverlay from "./SearchOverlay";
 import { AnimatePresence } from "framer-motion";
+import ProfileMenuOverlay from "./ProfileMenu";
 
 export default function AllOverlays() {
   const {
@@ -27,18 +26,16 @@ export default function AllOverlays() {
     setIsProductAttributesOpen,
     setIsEditProfileOpen,
     setIsSearchOpen,
-    setShare,
     setIsProfileMenuOpen,
     setIsProductMoreInfoOpen,
     setIsHomeMenuOpen,
     setIsAdvancedSearchOpen,
     setIsAddAddressOpen
-  } = useGeneralStore();
+  } = useAppStore();
   const pathname = usePathname();
 
   useEffect(() => {
     setIsEditProfileOpen(false);
-    setShare(false);
     setIsProfileMenuOpen(false);
     setIsProductAttributesOpen(false);
     setIsProductMoreInfoOpen(false);
@@ -78,7 +75,6 @@ export default function AllOverlays() {
   return (
     <AnimatePresence>
       {isEditProfileOpen ? <EditProfileOverlay /> : null}
-      {isShareOpen ? <ShareOverlay /> : null}
       {isProfileMenuOpen ? <ProfileMenuOverlay /> : null}
       {isAddToCartOpen ? <AttributesOverlay /> : null}
       {isProductMoreInfoOpen ? <ProductMoreInfoOverlay /> : null}

@@ -1,8 +1,8 @@
 "use client";
 
-import BackArrow from "@/components/BackArrow";
+import BackArrow from "@/components/ui/BackArrow";
 import { useTranslation } from "@/context/Translation";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import { useRouter } from "next-nprogress-bar";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { usePathname } from "next/navigation";
@@ -12,7 +12,7 @@ import { BsSearch } from "react-icons/bs";
 export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { setIsSearchOpen } = useGeneralStore();
+  const { setIsSearchOpen } = useAppStore();
   const { t } = useTranslation();
 
   return (

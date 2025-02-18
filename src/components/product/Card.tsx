@@ -1,17 +1,17 @@
 import { IFullProduct } from "@/types";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { LocalLink } from "./LocalizedNavigation";
+import { LocalLink } from "../LocalizedNavigation";
 import { RiBookmark2Line, RiHeart2Line, RiShoppingCartLine } from "react-icons/ri";
 import { useUserStore } from "@/stores/userStore";
-import Button from "./Button";
-import useHandleLike from "@/hooks/useHandleLike";
-import useHandleSave from "@/hooks/useHandleSave";
-import useHandleAddToCart from "@/hooks/useHandleAddToCart";
-import RatingStars from "./RatingStars";
+import Button from "../ui/Button";
+import useLike from "@/hooks/useLike";
+import useSave from "@/hooks/useSave";
+import useAddToCart from "@/hooks/useAddToCart";
+import RatingStars from "../ui/RatingStars";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import CarouselIndecator from "./CarouselIndecator";
-import { useGeneralStore } from "@/stores/generalStore";
+import CarouselIndecator from "../ui/CarouselIndecator";
+import { useAppStore } from "@/stores/appStore";
 import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
@@ -23,7 +23,7 @@ export default function ProductCard({ product }: Props) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [caroselImageIndex, setCaroselImageIndex] = useState(0);
   const { cartItems, likes, saves, setCartItems, setLikes, setSaves } = useUserStore();
-  const { setIsAddReviewOpen } = useGeneralStore();
+  const { setIsAddReviewOpen } = useAppStore();
   const { user } = useUserStore();
   const [counters, setCounters] = useState({
     carts: product.carts,
@@ -36,7 +36,7 @@ export default function ProductCard({ product }: Props) {
   const inLikes = likes.find((item) => item === product._id);
   const inSaves = saves.find((item) => item === product._id);
 
-  const likeHandler = useHandleLike({
+  const likeHandler = useLike({
     product,
     onClick: (state) => {
       setCounters({ ...counters, likes: counters.likes + (state ? 1 : -1) });
@@ -46,7 +46,7 @@ export default function ProductCard({ product }: Props) {
     }
   });
 
-  const saveHandler = useHandleSave({
+  const saveHandler = useSave({
     product,
     onClick: (state) => {
       setCounters({ ...counters, saves: counters.saves + (state ? 1 : -1) });
@@ -56,7 +56,7 @@ export default function ProductCard({ product }: Props) {
     }
   });
 
-  const addToCartHandler = useHandleAddToCart({
+  const addToCartHandler = useAddToCart({
     product,
     onSuccess: (state) => {
       setCounters({ ...counters, carts: counters.carts + (state ? 1 : -1) });
@@ -77,7 +77,7 @@ export default function ProductCard({ product }: Props) {
 
   const handleLikeAction = () => likeHandler.handleLike(!inLikes);
   const handleSaveAction = () => saveHandler.handleSave(!inSaves);
-  const handleAddToCart = () => addToCartHandler.handleAddToCart(!inCart, { attributes: [], quantity: 1 });
+  const handleAddToCart = () => addToCartHandler.handleAddToCart(!inCart);
 
   return (
     <div className="flex w-full flex-col justify-between overflow-hidden rounded-sm border bg-white">
@@ -142,7 +142,7 @@ export default function ProductCard({ product }: Props) {
                 className="px-2 text-lg text-primary"
                 onClick={() => setIsAddReviewOpen(true, product._id)}
               >
-                <div className="h-2">+</div>
+                <div className="lh-0 h-2">+</div>
               </button>
             ) : null}
           </div>

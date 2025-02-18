@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, devtools, createJSONStorage } from "zustand/middleware";
 import { getCartIds } from "@/actions";
 import { User } from "@/types";
-import { getFollowIds, getLikeIds, getReviewIds, getSaveIds, getUserActions } from "@/hooks/getUserActions";
+import { getFollowIds, getLikeIds, getReviewIds, getSaveIds, getUserActions } from "@/services/getUserActions.service";
 
 export interface UserStore {
   user: User | null;

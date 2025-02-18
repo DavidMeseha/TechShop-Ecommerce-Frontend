@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import { IFullProduct } from "@/types";
+import { IFullProduct, IProductAttribute } from "@/types";
 import { BsCartFill } from "react-icons/bs";
 import { BiLoaderCircle } from "react-icons/bi";
-import useHandleAddToCart from "@/hooks/useHandleAddToCart";
+import useAddToCart from "@/hooks/useAddToCart";
 import { useUserStore } from "@/stores/userStore";
 
 type Props = {
   product: IFullProduct;
-  onClick?: () => void;
   isLoading?: boolean;
+  attributes?: IProductAttribute[];
 };
 
-export default function AddToCartButton({ product, onClick, isLoading }: Props) {
+export default function AddToCartButton({ product, attributes }: Props) {
   const { cartItems, setCartItems } = useUserStore();
   const [count, setCount] = useState(product.carts);
   const inCart = cartItems.find((item) => item.product === product._id);
 
-  const { handleAddToCart, isPending } = useHandleAddToCart({
+  const { handleAddToCart, isPending } = useAddToCart({
     product,
     onSuccess: (state) => {
       setCount(count + (state ? 1 : -1));
@@ -26,12 +26,12 @@ export default function AddToCartButton({ product, onClick, isLoading }: Props) 
     }
   });
 
-  const addToCart = () => (onClick ? onClick() : handleAddToCart(!inCart, { attributes: [], quantity: 1 }));
+  const addToCart = () => handleAddToCart(!inCart, attributes);
 
   return (
     <button aria-label="Product add to cart" className="fill-black text-center" onClick={addToCart}>
       <div className="rounded-full bg-gray-200 p-2">
-        {isPending || isLoading ? (
+        {isPending ? (
           <BiLoaderCircle className="animate-spin" size="25" />
         ) : (
           <BsCartFill className={`p-0.5 transition-all ${inCart ? "fill-primary" : ""} hover:fill-primary`} size="25" />

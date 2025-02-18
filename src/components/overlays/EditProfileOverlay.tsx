@@ -3,16 +3,16 @@ import { CircleStencil, Cropper, CropperRef } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
 import FormTextInput from "../FormTextInput";
 import { BsPencil } from "react-icons/bs";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import Image from "next/image";
 import OverlayLayout from "./OverlayLayout";
 import { useTranslation } from "@/context/Translation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import RadioGroup from "../RadioGroup";
-import DateDropdownNumbers from "../DateDropdownNumbers";
+import DateDropdownNumbers from "../ui/DateDropdownNumbers";
 import { toast } from "react-toastify";
-import Button from "../Button";
+import Button from "../ui/Button";
 import { queryClient } from "../layout/MainLayout";
 import { FieldError, UserProfile } from "@/types";
 import { useUserStore } from "@/stores/userStore";
@@ -33,7 +33,7 @@ interface ProfileErrors {
 const today = new Date();
 
 export default function EditProfileOverlay() {
-  const { setIsEditProfileOpen } = useGeneralStore();
+  const { setIsEditProfileOpen } = useAppStore();
   const { user } = useUserStore();
   const { t } = useTranslation();
   const cropperRef = useRef<CropperRef>(null);

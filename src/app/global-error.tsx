@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import "@/globals.css";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
 
 export default function GlobalError() {

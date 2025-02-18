@@ -9,7 +9,7 @@ import "react-advanced-cropper/dist/style.css";
 import FormTextInput from "../../../components/FormTextInput";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Cropper, CropperRef } from "react-advanced-cropper";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import { toast } from "react-toastify";
 import { useTranslation } from "@/context/Translation";
 import Image from "next/image";

@@ -5,10 +5,10 @@ import Image from "next/image";
 import { IVendor, Pagination } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import { useUserStore } from "@/stores/userStore";
 import Loading from "@/components/LoadingUi/LoadingSpinner";
-import useHandleFollow from "@/hooks/useHandleFollow";
+import useFollow from "@/hooks/useFollow";
 import { useTranslation } from "@/context/Translation";
 
 export default function VendorsView() {
@@ -53,7 +53,7 @@ export default function VendorsView() {
 function ListItem({ vendor }: { vendor: IVendor }) {
   const { t } = useTranslation();
   const { following } = useUserStore();
-  const { handleFollow, isPending } = useHandleFollow({ vendor });
+  const { handleFollow } = useFollow({ vendor });
 
   return (
     <li className="flex items-center justify-between px-4 py-2">
@@ -77,11 +77,7 @@ function ListItem({ vendor }: { vendor: IVendor }) {
         {following.includes(vendor._id) ? (
           <div className="text-secondary">{t("profile.following")}</div>
         ) : (
-          <Button
-            className="bg-primary px-4 font-bold text-white"
-            isLoading={isPending}
-            onClick={() => handleFollow(true)}
-          >
+          <Button className="bg-primary px-4 font-bold text-white" onClick={() => handleFollow(true)}>
             +
           </Button>
         )}

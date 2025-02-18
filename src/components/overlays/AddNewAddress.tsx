@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import OverlayLayout from "./OverlayLayout";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import { FieldError } from "@/types";
-import Button from "../Button";
+import Button from "../ui/Button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import { toast } from "react-toastify";
@@ -21,11 +21,11 @@ const initialForm = { _id: "", address: "", city: "", country: "" };
 
 export default function AddNewAddress() {
   const queryClient = useQueryClient();
-  const { setIsAddAddressOpen } = useGeneralStore();
+  const { setIsAddAddressOpen } = useAppStore();
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState<FormErrors>(initialErrors);
   const { t } = useTranslation();
-  const { countries } = useGeneralStore();
+  const { countries } = useAppStore();
 
   const newAddressMutation = useMutation({
     mutationKey: ["addAddress"],

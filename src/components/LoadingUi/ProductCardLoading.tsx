@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../Button";
+import Button from "../ui/Button";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 export default function ProductCardLoading() {

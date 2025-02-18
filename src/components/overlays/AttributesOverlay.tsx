@@ -2,17 +2,17 @@
 
 import React, { useEffect, useState } from "react";
 import OverlayLayout from "./OverlayLayout";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import { IProductAttribute } from "@/types";
 import { selectDefaultAttributes } from "@/lib/misc";
-import ProductAttributes from "../ProductAttributes";
+import ProductAttributes from "../product/Attributes";
 import axios from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
-import Button from "../Button";
+import Button from "../ui/Button";
 import AttributesOverlayLoading from "../LoadingUi/AttributesOverlayLoading";
 
 export default function AttributesOverlay() {
-  const { setIsProductAttributesOpen, overlayProductId, action } = useGeneralStore();
+  const { setIsProductAttributesOpen, overlayProductId, action } = useAppStore();
   const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>([]);
 
   const productQuery = useQuery({
@@ -65,7 +65,7 @@ export default function AttributesOverlay() {
               setIsProductAttributesOpen(false);
             }}
           >
-            {action.name}
+            {action.name || "Submit"}
           </Button>
         </>
       ) : null}

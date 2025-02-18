@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import OverlayLayout from "./OverlayLayout";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import { FieldError } from "@/types";
-import RatingStars from "../RatingStars";
-import Button from "../Button";
+import RatingStars from "../ui/RatingStars";
+import Button from "../ui/Button";
 import { useMutation } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import { toast } from "react-toastify";
@@ -15,7 +15,7 @@ type FormError = {
 };
 
 export default function AddReviewOverlay() {
-  const { setIsAddReviewOpen, overlayProductId } = useGeneralStore();
+  const { setIsAddReviewOpen, overlayProductId } = useAppStore();
   const { setReviews } = useUserStore();
   const [form, setForm] = useState({ reviewText: "", rating: 0 });
   const [error, setError] = useState<FormError>({ reviewText: false, rating: false });

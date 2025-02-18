@@ -1,17 +1,17 @@
 "use client";
 
-import Button from "@/components/Button";
-import { queryClient } from "@/components/layout/MainLayout";
+import Button from "@/components/ui/Button";
 import { useTranslation } from "@/context/Translation";
 import { IVendor } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import React from "react";
-import useHandleFollow from "@/hooks/useHandleFollow";
+import useFollow from "@/hooks/useFollow";
 import { followings } from "@/actions";
 import { usePathname } from "next/navigation";
 import Loading from "@/components/LoadingUi/LoadingSpinner";
+import { useUserStore } from "@/stores/userStore";
 
 export default function FollowingPage() {
   const pathname = usePathname();
@@ -28,11 +28,14 @@ export default function FollowingPage() {
 
 function ListItem({ vendor }: { vendor: IVendor }) {
   const { t } = useTranslation();
+  const { following, setFollowedVendors } = useUserStore();
 
-  const { handleFollow, isPending } = useHandleFollow({
+  const { handleFollow } = useFollow({
     vendor,
-    onSuccess: () => {
-      queryClient.fetchQuery({ queryKey: ["following"] });
+    onClick: (follow) => {
+      const temp = [...following];
+      follow ? temp.splice(temp.indexOf(vendor._id), 1) : temp.push(vendor._id);
+      setFollowedVendors([...temp]);
     }
   });
 
@@ -57,7 +60,6 @@ function ListItem({ vendor }: { vendor: IVendor }) {
       <div>
         <Button
           className="flex items-center justify-center rounded-md bg-primary font-bold text-white"
-          isLoading={isPending}
           onClick={() => handleFollow(false)}
         >
           {t("unfollow")}

@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import Checkbox from "./Checkbox";
+import Checkbox from "./ui/Checkbox";
 
 type Props = {
   className?: string;

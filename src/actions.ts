@@ -77,24 +77,6 @@ export async function changeLanguage(lang: Language, pathname: string) {
   return redirect(`/${lang}${pathOnly}`);
 }
 
-export async function follow(vendorId: string, pathanme: string) {
-  try {
-    await axios.post(`/api/user/followVendor/${vendorId}`, {}, axiosConfig());
-    return { success: true };
-  } catch {
-    redirect(pathanme + "?error=faildToSubmitYourAction");
-  }
-}
-
-export async function unfollow(vendorId: string, pathanme: string) {
-  try {
-    await axios.post(`/api/user/unfollowVendor/${vendorId}`, {}, axiosConfig());
-    return { success: true };
-  } catch {
-    return redirect(pathanme + "?error=faildToSubmitYourAction");
-  }
-}
-
 export async function followings(pathanme: string) {
   try {
     const res = await axios.get<IVendor[]>("/api/user/followingVendors", axiosConfig());

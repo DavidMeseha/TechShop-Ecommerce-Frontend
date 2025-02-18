@@ -13,16 +13,16 @@ import Header from "./includes/Header";
 import SideNav from "./includes/SideNav";
 import NetworkErrors from "@/context/NetworkErrors";
 import { Language, Translation } from "@/types";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import UserSetupWrapper from "./includes/UserSetupWrapper";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5,
-      retry: 1,
-    },
-  },
+      retry: 1
+    }
+  }
 });
 
 interface MainLayoutProps {
@@ -32,13 +32,8 @@ interface MainLayoutProps {
   token?: string;
 }
 
-export default function MainLayout({
-  children,
-  dictionary,
-  lang,
-  token
-}: MainLayoutProps) {
-  const { setCountries } = useGeneralStore();
+export default function MainLayout({ children, dictionary, lang, token }: MainLayoutProps) {
+  const { setCountries } = useAppStore();
   const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {

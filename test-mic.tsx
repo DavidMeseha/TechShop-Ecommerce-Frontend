@@ -63,6 +63,5 @@ const dictionaries = {
   fr: fr
 };
 
-
 export const languages: Language[] = ["en", "ar"];
 export const getDictionary = (lang: Language) => dictionaries[lang as keyof typeof dictionaries];

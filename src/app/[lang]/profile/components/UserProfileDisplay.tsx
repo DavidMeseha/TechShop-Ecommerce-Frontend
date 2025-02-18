@@ -1,6 +1,6 @@
 import { useTranslation } from "@/context/Translation";
 import axios from "@/lib/axios";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import { useUserStore } from "@/stores/userStore";
 import { IFullProduct, IProductAttribute, UserProfile } from "@/types";
 import { useQuery } from "@tanstack/react-query";
@@ -11,12 +11,12 @@ import { FiSettings } from "react-icons/fi";
 import { BsBookmark, BsCart } from "react-icons/bs";
 import { BiLoaderCircle, BiPencil } from "react-icons/bi";
 import { LocalLink } from "@/components/LocalizedNavigation";
-import ProductCard from "@/components/ProductCard";
+import ProductCard from "@/components/product/Card";
 
 export default function UserProfileDisplay() {
   const { t } = useTranslation();
   const { following } = useUserStore();
-  const { isEditProfileOpen, setIsEditProfileOpen, setIsProfileMenuOpen } = useGeneralStore();
+  const { isEditProfileOpen, setIsEditProfileOpen, setIsProfileMenuOpen } = useAppStore();
   const { cartItems } = useUserStore();
   const [isCart, setIsCart] = useState<boolean>(true);
 

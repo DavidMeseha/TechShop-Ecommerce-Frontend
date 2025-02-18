@@ -4,7 +4,7 @@ import { BsCartFill } from "react-icons/bs";
 import { useUserStore } from "@/stores/userStore";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { useRouter } from "next-nprogress-bar";
-import BackArrow from "@/components/BackArrow";
+import BackArrow from "@/components/ui/BackArrow";
 import { useTranslation } from "@/context/Translation";
 import UserProfileDisplay from "./UserProfileDisplay";
 

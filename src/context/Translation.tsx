@@ -3,7 +3,7 @@
 import { TranslationKey, Translation } from "@/types";
 import React, { useContext, useEffect } from "react";
 import { createContext } from "react";
-import { TFunction } from "../dictionary";
+import { TFunction } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { Language } from "@/types";
@@ -26,7 +26,8 @@ export function TranslationProvider({ translation, children, lang }: Props) {
   const message = searchParams.get("message");
   const error = searchParams.get("error");
 
-  const t = (key: TranslationKey) => (translation ? (key in translation ? translation[key as TranslationKey] : key) : key);
+  const t = (key: TranslationKey) =>
+    translation ? (key in translation ? translation[key as TranslationKey] : key) : key;
 
   useEffect(() => {
     if (message) toast.success(t(message as TranslationKey));

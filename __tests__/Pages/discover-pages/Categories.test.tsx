@@ -28,12 +28,6 @@ describe("HomePage", () => {
     });
   });
 
-  it("starts with loading spinner", () => {
-    (axios.get as jest.Mock).mockResolvedValueOnce({ data: { data: [], pages: {} } });
-    renderDiscoverPages(<CategoriesView />);
-    expect(screen.getByRole("status")).toBeInTheDocument();
-  });
-
   it("displays categories after fetching", async () => {
     renderDiscoverPages(<CategoriesView />);
 

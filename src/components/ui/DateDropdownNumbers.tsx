@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import Dropdown from "./DropDown";
+import Dropdown from "../DropDown";
 
 const today = new Date();
 
@@ -41,33 +41,36 @@ export default function DateDropdownNumbers({
     <>
       <div className="text-lg">{title}h</div>
       <div className={cn("flex w-full gap-4", className)}>
-        <Dropdown
-          className="w-1/4"
-          dir="ltr"
-          label="day"
-          name="day"
-          options={days}
-          value={day}
-          onChange={(e) => changeDay && changeDay(parseInt(e.target.value))}
-        />
-        <Dropdown
-          className="w-1/4"
-          dir="ltr"
-          label="month"
-          name="month"
-          options={months}
-          value={month}
-          onChange={(e) => changeMonth && changeMonth(parseInt(e.target.value))}
-        />
-        <Dropdown
-          className="w-2/4"
-          dir="ltr"
-          label="year"
-          name="year"
-          options={years}
-          value={year}
-          onChange={(e) => changeYear && changeYear(parseInt(e.target.value))}
-        />
+        <div className="w-1/4">
+          <Dropdown
+            dir="ltr"
+            label="day"
+            name="day"
+            options={days}
+            value={day}
+            onChange={(e) => changeDay && changeDay(parseInt(e.target.value))}
+          />
+        </div>
+        <div className="w-1/4">
+          <Dropdown
+            dir="ltr"
+            label="month"
+            name="month"
+            options={months}
+            value={month}
+            onChange={(e) => changeMonth && changeMonth(parseInt(e.target.value))}
+          />
+        </div>
+        <div className="w-2/4">
+          <Dropdown
+            dir="ltr"
+            label="year"
+            name="year"
+            options={years}
+            value={year}
+            onChange={(e) => changeYear && changeYear(parseInt(e.target.value))}
+          />
+        </div>
       </div>
     </>
   );

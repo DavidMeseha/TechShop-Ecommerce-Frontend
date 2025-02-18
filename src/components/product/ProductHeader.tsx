@@ -1,12 +1,12 @@
 "use client";
 
 import { LocalLink } from "@/components/LocalizedNavigation";
-import LikeProductButton from "../LikeProductButton";
-import AddToCartButton from "../AddToCartButton";
-import SaveProductButton from "../SaveProductButton";
+import LikeProductButton from "./LikeButton";
+import AddToCartButton from "./AddToCartButton";
+import SaveProductButton from "./SaveButton";
 import Image from "next/image";
 import { IFullProduct } from "@/types";
-import RateProductButton from "../RateProductButton";
+import RateProductButton from "./RateButton";
 
 export interface CommentsHeaderCompTypes {
   product: IFullProduct;

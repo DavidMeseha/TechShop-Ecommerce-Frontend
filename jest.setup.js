@@ -1,4 +1,4 @@
-import getCountries from "@/hooks/getCountries";
+import getCountries from "@/services/getCountries.service";
 import "@testing-library/jest-dom";
 import { act } from "@testing-library/react";
 import {

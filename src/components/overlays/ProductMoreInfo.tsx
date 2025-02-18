@@ -1,30 +1,51 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import OverlayLayout from "./OverlayLayout";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import { selectDefaultAttributes } from "@/lib/misc";
 import { useUserStore } from "@/stores/userStore";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import CarouselIndecator from "../CarouselIndecator";
+import CarouselIndecator from "../ui/CarouselIndecator";
 import { LocalLink } from "@/components/LocalizedNavigation";
-import ProductAttributes from "../ProductAttributes";
+import ProductAttributes from "../product/Attributes";
 import Image from "next/image";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import { IFullProduct, IProductAttribute } from "../../types";
-import Button from "../Button";
+import Button from "../ui/Button";
 import { useTranslation } from "@/context/Translation";
+import useAddToCart from "@/hooks/useAddToCart";
+import LoadingSpinner from "../LoadingUi/LoadingSpinner";
 
 export default function ProductMoreInfoOverlay() {
+  const { setIsProductMoreInfoOpen, overlayProductId } = useAppStore();
+
+  const productQuery = useQuery({
+    queryKey: ["product", overlayProductId],
+    queryFn: () => axios.get<IFullProduct>(`/api/catalog/product/${overlayProductId}`).then((res) => res.data)
+  });
+
+  const product = productQuery.data;
+
+  return (
+    <OverlayLayout className="relative" close={() => setIsProductMoreInfoOpen(false)}>
+      {product ? <MainLogic product={product} /> : <LoadingSpinner />}
+    </OverlayLayout>
+  );
+}
+
+function MainLogic({ product }: { product: IFullProduct }) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [imageIndex, setImageIndex] = useState(0);
-  const { setCartItems } = useUserStore();
+  const { setCartItems, cartItems } = useUserStore();
   const { t } = useTranslation();
-  const { user } = useUserStore();
   const [activeTap, setActiveTap] = useState<"description" | "reviews">("description");
-  const { setIsProductMoreInfoOpen, overlayProductId } = useGeneralStore();
-  const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>([]);
+  const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>(
+    selectDefaultAttributes(product.productAttributes)
+  );
+
+  const inCart = useMemo(() => cartItems.find((item) => item.product === product._id), [cartItems]);
 
   useEffect(() => {
     if (!carouselApi) return;
@@ -32,27 +53,19 @@ export default function ProductMoreInfoOverlay() {
     return () => carouselApi.destroy();
   }, [carouselApi]);
 
-  const addToCartMutation = useMutation({
-    mutationKey: ["addToCart"],
-    mutationFn: (props: { productId: string; attributes: IProductAttribute[]; quantity: number }) =>
-      axios.post(`/api/common/cart/add/${props.productId}`),
+  const { handleAddToCart, isPending } = useAddToCart({
+    product,
     onSuccess: () => {
-      setIsProductMoreInfoOpen(false);
-      setCartItems();
+      const temp = [...cartItems];
+      inCart
+        ? temp.splice(
+            temp.findIndex((item) => item.product === inCart.product),
+            1
+          )
+        : temp.push({ product: product._id, quantity: 1 });
+      setCartItems([...temp]);
     }
   });
-
-  const productQuery = useQuery({
-    queryKey: ["product", overlayProductId],
-    queryFn: () =>
-      axios.get<IFullProduct>(`/api/catalog/product/${overlayProductId}`).then((res) => {
-        setCustomAttributes(selectDefaultAttributes(res.data.productAttributes));
-        return res.data;
-      })
-  });
-
-  const product = productQuery.data;
-  const reviews = product?.productReviews ?? [];
 
   const handleAttributesChange = (attributeId: string, value: string[]) => {
     if (!product) return;
@@ -67,17 +80,11 @@ export default function ProductMoreInfoOverlay() {
     setCustomAttributes(tempAttributes);
   };
 
-  const addToCartClickHandle = () => {
-    user &&
-      addToCartMutation.mutate({
-        productId: overlayProductId ?? "",
-        attributes: customAttributes,
-        quantity: 1
-      });
-  };
+  const addToCartClickHandle = () => handleAddToCart(!inCart, customAttributes);
+  const reviews = product.productReviews ?? [];
 
   return (
-    <OverlayLayout className="relative" close={() => setIsProductMoreInfoOpen(false)}>
+    <>
       {product && product?.pictures.length > 1 ? (
         <>
           <Carousel dir="ltr" setApi={setCarouselApi}>
@@ -132,11 +139,7 @@ export default function ProductMoreInfoOverlay() {
           />
         </div>
       ) : null}
-      <Button
-        className="w-full bg-primary text-white"
-        isLoading={addToCartMutation.isPending}
-        onClick={addToCartClickHandle}
-      >
+      <Button className="w-full bg-primary text-white" isLoading={isPending} onClick={addToCartClickHandle}>
         {t("addToCart")}
       </Button>
       <ul className="sticky -top-4 z-20 flex w-full items-center border-b bg-white">
@@ -160,26 +163,31 @@ export default function ProductMoreInfoOverlay() {
 
         {activeTap === "reviews" ? (
           reviews.length ? (
-            reviews.map((review) => (
-              <div className="mb-4 flex items-start gap-3" key={review._id}>
-                <Image
-                  alt={review.customer.firstName + " " + review.customer.lastName}
-                  className="h-10 w-10 rounded-full bg-lightGray"
-                  height={50}
-                  src={review.customer.imageUrl}
-                  width={50}
-                />
-                <div className="w-11/12 rounded-md bg-lightGray p-2">
-                  <div className="text-sm font-bold">{review.customer.firstName + " " + review.customer.lastName}</div>
-                  <p className="text-sm">{review.reviewText}</p>
+            reviews.map((review) => {
+              const customer = review.customer;
+              return (
+                <div className="mb-4 flex items-start gap-3" key={review._id}>
+                  <Image
+                    alt={customer?.firstName || "" + " " + customer?.lastName || ""}
+                    className="h-10 w-10 rounded-full bg-lightGray"
+                    height={50}
+                    src={customer?.imageUrl ?? "/images/placeholder-user.jpg"}
+                    width={50}
+                  />
+                  <div className="w-11/12 rounded-md bg-lightGray p-2">
+                    <div className="text-sm font-bold">
+                      {customer ? customer.firstName + " " + customer.lastName : "Deleted User"}
+                    </div>
+                    <p className="text-sm">{review.reviewText}</p>
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <div className="py-4 text-center text-secondary">No Reviews Avilable</div>
           )
         ) : null}
       </div>
-    </OverlayLayout>
+    </>
   );
 }

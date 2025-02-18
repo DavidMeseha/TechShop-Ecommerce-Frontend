@@ -7,7 +7,7 @@ import { useTranslation } from "@/context/Translation";
 import { useMutation } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import { toast } from "react-toastify";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import { useUserStore } from "@/stores/userStore";
 
 interface FormErrors {

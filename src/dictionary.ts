@@ -1,7 +1,5 @@
 import "server-only";
-import { Language, TranslationKey } from "./types";
-
-export type TFunction = (key: TranslationKey) => string;
+import { Language } from "./types";
 
 const dictionaries = {
   en: import("@/dictionaries/en.json").then((module) => module.default),

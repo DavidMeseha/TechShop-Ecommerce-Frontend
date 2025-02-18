@@ -1,4 +1,4 @@
-import BackArrow from "@/components/BackArrow";
+import BackArrow from "@/components/ui/BackArrow";
 import { useRouter } from "next-nprogress-bar";
 import React from "react";
 

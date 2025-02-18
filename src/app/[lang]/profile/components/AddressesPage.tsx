@@ -8,8 +8,8 @@ import { useTranslation } from "@/context/Translation";
 import AddressItem from "./AddressItem";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
-import Button from "@/components/Button";
-import { useGeneralStore } from "@/stores/generalStore";
+import Button from "@/components/ui/Button";
+import { useAppStore } from "@/stores/appStore";
 import { toast } from "react-toastify";
 
 interface FormErrors {
@@ -26,7 +26,7 @@ export default function AddressesPage() {
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState<FormErrors>(initialErrors);
   const { t } = useTranslation();
-  const { countries } = useGeneralStore();
+  const { countries } = useAppStore();
 
   useEffect(() => {
     if (!countries.length) return;

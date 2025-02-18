@@ -2,13 +2,13 @@
 
 import { BsSearch } from "react-icons/bs";
 import { BiMenu } from "react-icons/bi";
-import { useGeneralStore } from "@/stores/generalStore";
+import { useAppStore } from "@/stores/appStore";
 import HomeMenu from "@/components/overlays/HomeMenu";
 import { useState } from "react";
 import { useTranslation } from "@/context/Translation";
 import { IFullProduct, Pagination } from "@/types";
-import Button from "@/components/Button";
-import ProductCard from "@/components/ProductCard";
+import Button from "@/components/ui/Button";
+import ProductCard from "@/components/product/Card";
 
 type Props = {
   products: IFullProduct[];
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function HomePage({ products, loadMore }: Props) {
-  const { setIsHomeMenuOpen, setIsSearchOpen } = useGeneralStore();
+  const { setIsHomeMenuOpen, setIsSearchOpen } = useAppStore();
   const { t } = useTranslation();
   const [productsList, setProducts] = useState<IFullProduct[]>([...products]);
   const [hasMore, setHasMore] = useState(true);

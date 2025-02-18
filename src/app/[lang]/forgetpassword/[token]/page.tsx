@@ -1,15 +1,11 @@
 "use client";
 
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import FormTextInput from "@/components/FormTextInput";
 import { useTranslation } from "@/context/Translation";
 import { passwordValidation } from "@/lib/formatValidation";
 import { FieldError } from "@/types";
 import React, { ChangeEvent, useState } from "react";
-
-// type Props = {
-//   params: { token: string };
-// };
 
 export default function Page() {
   const { t } = useTranslation();

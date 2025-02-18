@@ -6,7 +6,7 @@ import { BsHash } from "react-icons/bs";
 import { ITag, Pagination } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
-import Button from "@/components/Button";
+import Button from "@/components/ui/Button";
 import Loading from "@/components/LoadingUi/LoadingSpinner";
 
 export default function TagsView() {

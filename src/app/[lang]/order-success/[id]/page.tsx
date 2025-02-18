@@ -1,4 +1,4 @@
-import { Success } from "@/components/Icons";
+import { Success } from "@/components/ui/Icons";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { getDictionary } from "@/dictionary";
 import { Language } from "@/types";

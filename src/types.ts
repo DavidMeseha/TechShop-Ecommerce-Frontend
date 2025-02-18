@@ -2,9 +2,9 @@ import en from "@/dictionaries/en.json";
 export type FieldError = string | false;
 
 export type Language = "en" | "ar" | "fr";
-
 export type Translation = typeof en;
 export type TranslationKey = keyof typeof en;
+export type TFunction = (key: TranslationKey) => string;
 
 export interface Pagination {
   current: number;

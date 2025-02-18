@@ -1,4 +1,4 @@
-import getCountries from "@/hooks/getCountries";
+import getCountries from "@/services/getCountries.service";
 import { IFullProduct, IProductAttribute } from "@/types";
 import { create } from "zustand";
 import { persist, devtools, createJSONStorage } from "zustand/middleware";
@@ -14,13 +14,11 @@ export interface GeneralStore {
   isAdvancedSearchOpen: boolean;
   isAddReviewOpen: boolean;
   isAddAddressOpen: boolean;
-  shareUrl: string;
   overlayProduct: IFullProduct | null;
   overlayProductId: string | null;
   search: string;
   countries: { name: string; _id: string; code: string }[];
   action: { name: string | null; fn: ((attr: IProductAttribute[]) => void) | null };
-  shareAction: () => void;
 
   //Overlays setState
   setIsProductMoreInfoOpen: (val: boolean, productId?: string) => void;
@@ -38,13 +36,12 @@ export interface GeneralStore {
   setIsSearchOpen: (val: boolean) => void;
 
   //data setState
-  setShare: (val: boolean, action?: () => void, url?: string) => void;
   setSearch: (val: string) => void;
   setIsAddReviewOpen: (val: boolean, productId?: string) => void;
   setCountries: () => void;
 }
 
-export const useGeneralStore = create<GeneralStore>()(
+export const useAppStore = create<GeneralStore>()(
   devtools(
     persist(
       (set) => ({
@@ -61,15 +58,13 @@ export const useGeneralStore = create<GeneralStore>()(
         isAddAddressOpen: false,
 
         //overlay data
-        shareUrl: "",
         search: "",
         overlayProduct: null,
         overlayProductId: null,
         action: { name: null, fn: null },
         countries: [],
-        shareAction: () => {},
 
-        //overlay toggles
+        //overlay toggles & data set
         setIsHomeMenuOpen: (val: boolean) => set({ isHomeMenuOpen: val }),
         setIsAddAddressOpen: (val: boolean) => set({ isAddAddressOpen: val }),
         setIsEditProfileOpen: (val: boolean) => set({ isEditProfileOpen: val }),
@@ -79,8 +74,6 @@ export const useGeneralStore = create<GeneralStore>()(
         setSearch: (val: string) => set({ search: val }),
         setIsProductMoreInfoOpen: (val: boolean, productId?: string) =>
           set((prev) => ({ isProductMoreInfoOpen: val, overlayProductId: productId ?? prev.overlayProductId })),
-        setShare: (val: boolean, shareAction: () => void = () => {}, url: string = "") =>
-          set({ isShareOpen: val, shareUrl: window.location.origin + url, shareAction }),
         setIsAddReviewOpen: (val: boolean, productId?: string) =>
           set((prev) => ({ isAddReviewOpen: val, overlayProductId: productId ?? prev.overlayProductId })),
         setCountries: async () => set({ countries: await getCountries() }),

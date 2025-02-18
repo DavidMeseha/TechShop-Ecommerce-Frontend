@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { SelectHTMLAttributes } from "react";
 
 type DropdownProps = SelectHTMLAttributes<HTMLSelectElement> & {
@@ -7,10 +8,13 @@ type DropdownProps = SelectHTMLAttributes<HTMLSelectElement> & {
 
 export default function Dropdown({ label, options, className, ...props }: DropdownProps) {
   return (
-    <div className={className}>
+    <>
       <label className="mb-1">{label}</label>
       <select
-        className="block w-full rounded-sm border border-secondary px-4 py-2 focus:border-primary focus:ring-primary"
+        className={cn(
+          "block w-full rounded-sm border border-secondary px-4 py-2 focus:border-primary focus:ring-primary",
+          className
+        )}
         {...props}
       >
         {options.map((option, index) => (
@@ -19,6 +23,6 @@ export default function Dropdown({ label, options, className, ...props }: Dropdo
           </option>
         ))}
       </select>
-    </div>
+    </>
   );
 }
