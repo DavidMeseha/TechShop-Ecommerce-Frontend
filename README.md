@@ -60,7 +60,6 @@ Modern e-commerce platform built with Next.js and TailwindCSS.
 - Authentication & profile management
 - Order history
 - Address management
-- Payment methods management
 - Preferences settings
 
 ### Product Discovery
@@ -69,7 +68,6 @@ Modern e-commerce platform built with Next.js and TailwindCSS.
 - Tags browsing
 - Vendor shops
 - Search functionality
-- Product recommendations
 
 ### Technical Features
 
@@ -99,18 +97,15 @@ Supported languages:
 
 1. Clone the repository:
 
-bash
 git clone https://github.com/DavidMeseha/allInOne-myShop-Front.git
 cd allInOne-myShop-Front
 
 2. Install dependencies:
 
-bash
 npm install
 
 3. Configure environment variables:
 
-bash
 cp .env.locale .env
 
 env
@@ -119,14 +114,11 @@ NEXT_PUBLIC_STRIPE_KEY=your_stripe_public_key
 
 4. Start development server:
 
-bash
 npm run dev
 
 ## 🧪 Development
 
 ### Scripts
-
-bash
 
 - npm run dev # Start development server
 - npm run build # Build for production
