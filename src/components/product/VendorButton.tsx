@@ -7,9 +7,9 @@ import Image from "next/image";
 import { useUserStore } from "@/stores/userStore";
 import { IVendor } from "@/types";
 import { useMutation } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import { BiDownArrow } from "react-icons/bi";
 import { toast } from "react-toastify";
+import { followVendor } from "@/services/userActions.service";
 
 type Props = {
   vendor: IVendor;
@@ -19,7 +19,7 @@ export default function ProductVendorButton({ vendor }: Props) {
   const { following, setFollowedVendors } = useUserStore();
   const followMutation = useMutation({
     mutationKey: ["followVendor", vendor._id],
-    mutationFn: () => axios.post(`/api/user/followVendor/${vendor._id}`),
+    mutationFn: () => followVendor(vendor._id),
     onSuccess: () => {
       setFollowedVendors();
       toast.success("Vendor followed successfully");

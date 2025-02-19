@@ -9,8 +9,8 @@ import { useTranslation } from "@/context/Translation";
 import Image from "next/image";
 import { IFullProduct, IProductAttribute } from "@/types";
 import { useMutation } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import { queryClient } from "./layout/MainLayout";
+import { removeFromCart } from "@/services/userActions.service";
 
 type Props = {
   product: IFullProduct;
@@ -26,7 +26,7 @@ export default function CartItem({ product, attributes, quantity, canEdit = fals
   const { t } = useTranslation();
   const removeFromCartMutation = useMutation({
     mutationKey: ["removeFromCart", product._id],
-    mutationFn: () => axios.delete(`/api/common/cart/remove/${product._id}`),
+    mutationFn: () => removeFromCart(product._id),
     onSuccess: () => {
       setCartItems();
       queryClient.fetchQuery({ queryKey: ["cartItems"] });

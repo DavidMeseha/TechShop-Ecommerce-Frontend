@@ -85,7 +85,7 @@ export default function EditProfileOverlay() {
     mutationKey: ["upload"],
     mutationFn: (formData: FormData) => upload(formData),
     onSuccess: (data) => {
-      setForm({ ...form, imageUrl: data.data.imageUrl });
+      setForm({ ...form, imageUrl: data.imageUrl });
       setCropping(null);
     }
   });

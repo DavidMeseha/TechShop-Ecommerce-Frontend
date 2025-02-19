@@ -5,9 +5,9 @@ import { FieldError } from "@/types";
 import RatingStars from "../ui/RatingStars";
 import Button from "../ui/Button";
 import { useMutation } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import { toast } from "react-toastify";
 import { useUserStore } from "@/stores/userStore";
+import { addReview } from "@/services/products.service";
 
 type FormError = {
   reviewText: FieldError;
@@ -22,8 +22,7 @@ export default function AddReviewOverlay() {
 
   const addReviewMutation = useMutation({
     mutationKey: ["AddReview", overlayProductId],
-    mutationFn: (productId: string) => axios.post(`/api/user/addReview/${productId}`, { ...form }),
-
+    mutationFn: (productId: string) => addReview(productId, form),
     onSuccess: () => {
       toast.success("Review Added Successfully");
       setForm({ rating: 0, reviewText: "" });
@@ -34,7 +33,7 @@ export default function AddReviewOverlay() {
     onError: () => toast.error("Failed to add review")
   });
 
-  const addReview = () => {
+  const addReviewSubmit = () => {
     if (form.rating <= 0 || form.reviewText.length === 0 || !overlayProductId) return;
     addReviewMutation.mutate(overlayProductId);
   };
@@ -68,7 +67,7 @@ export default function AddReviewOverlay() {
       <div className="min-h-[21px] text-[14px] font-semibold text-red-500">{error.reviewText}</div>
 
       <div className="flex justify-end">
-        <Button className="bg-primary text-white" isLoading={addReviewMutation.isPending} onClick={addReview}>
+        <Button className="bg-primary text-white" isLoading={addReviewMutation.isPending} onClick={addReviewSubmit}>
           Add
         </Button>
       </div>

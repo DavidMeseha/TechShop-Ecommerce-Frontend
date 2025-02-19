@@ -1,11 +1,13 @@
 import axios from "@/lib/axios";
 
-function upload(formData: FormData) {
-  return axios.post<{ imageUrl: string }>("/api/common/upload", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data"
-    }
-  });
+function uploadImage(formData: FormData) {
+  return axios
+    .post<{ imageUrl: string }>("/api/common/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    })
+    .then((res) => res.data);
 }
 
-export default upload;
+export default uploadImage;

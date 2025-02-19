@@ -4,6 +4,7 @@ import RadioGroup from "../RadioGroup";
 import CheckboxGroup from "../CheckboxGroup";
 import FormDropdownInput from "../FormDropdownInput";
 import { IProductAttribute } from "../../types";
+import ColorsGroup from "../ColorsGroup";
 
 type Props = {
   productAttributes: IProductAttribute[];
@@ -51,18 +52,18 @@ export default function ProductAttributes({ productAttributes, customAttributes,
         />
       )}
 
-      {/* {attr.attributeControlType === "ColorSquares" && (
+      {attr.attributeControlType === "Color" && (
         <ColorsGroup
           title={attr.name}
           values={customAttributes[index]?.values[0]._id ?? ""}
           options={attr.values.map((item) => ({
             name: item.name,
             value: item._id,
-            color: item.colorSquaresRgb ?? "#fff"
+            color: item.colorRgb ?? "#fff"
           }))}
           onChange={(value) => handleChange(attr._id, value)}
         />
-      )} */}
+      )}
     </React.Fragment>
   ));
 }

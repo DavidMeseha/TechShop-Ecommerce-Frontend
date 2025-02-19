@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { BiMinus, BiSolidCloudUpload } from "react-icons/bi";
 import { useRouter } from "next-nprogress-bar";
 import { FieldError } from "../../../types";
@@ -14,8 +14,8 @@ import { toast } from "react-toastify";
 import { useTranslation } from "@/context/Translation";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import { useUserStore } from "@/stores/userStore";
+import uploadImage from "@/services/upload.service";
 
 type NewProduct = {
   name: string;
@@ -87,15 +87,7 @@ export default function Upload() {
   const [cropping, setCropping] = useState<string | null>(null);
 
   const uploadImageMutation = useMutation({
-    mutationFn: (formData: FormData) =>
-      axios
-        .post<{ imageUrl: string }>("/api/common/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then((res) => res.data),
-
+    mutationFn: (formData: FormData) => uploadImage(formData),
     onSuccess: (data) => {
       const tempImages = [...images];
       tempImages.push(data.imageUrl);
@@ -158,10 +150,6 @@ export default function Upload() {
     setProduct({ ...product, pictures: [...tempProductImages] });
     setImages(tempViewImages);
   };
-
-  useEffect(() => {
-    if (!user) router.push("/");
-  }, [user]);
 
   const inputChangeHandle = (value: any, name: string) => {
     setError({ ...error, [name]: false });

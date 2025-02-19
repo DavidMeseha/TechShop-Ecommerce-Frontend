@@ -6,7 +6,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FaRedo } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useTranslation } from "./Translation";
+import { useTranslation } from "@/context/Translation";
 import { useQuery } from "@tanstack/react-query";
 
 export default function NetworkErrors({ children }: { children: React.ReactNode }) {

@@ -5,10 +5,10 @@ import { FieldError } from "@/types";
 import React, { useState } from "react";
 import { useTranslation } from "@/context/Translation";
 import { useMutation } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import { toast } from "react-toastify";
 import Button from "@/components/ui/Button";
 import { useUserStore } from "@/stores/userStore";
+import { changeUserPassword } from "@/services/auth.service";
 
 interface FormErrors {
   original: FieldError;
@@ -25,11 +25,8 @@ export default function ChangePasswordPage() {
   const [error, setError] = useState<FormErrors>(initialErrors);
 
   const changePasswordMutation = useMutation({
-    mutationFn: () =>
-      axios.post("/api/user/ChangePassword", {
-        password: form.original,
-        newPassword: form.new
-      }),
+    mutationKey: ["changePassword"],
+    mutationFn: () => changeUserPassword(form),
     onSuccess: () => toast.success("password changed Successfuly"),
     onError: () => toast.error("Failed To change password")
   });

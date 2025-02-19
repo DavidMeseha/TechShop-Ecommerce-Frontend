@@ -11,7 +11,7 @@ import { TranslationProvider } from "@/context/Translation";
 import axios from "@/lib/axios";
 import Header from "./includes/Header";
 import SideNav from "./includes/SideNav";
-import NetworkErrors from "@/context/NetworkErrors";
+import NetworkErrors from "@/components/layout/includes/NetworkErrors";
 import { Language, Translation } from "@/types";
 import { useAppStore } from "@/stores/appStore";
 import UserSetup from "./includes/UserSetup";

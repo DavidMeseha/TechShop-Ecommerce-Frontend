@@ -22,3 +22,7 @@ export async function getProductAttributes(id: string) {
     }>(`/api/product/attributes/${id}`)
     .then((res) => res.data);
 }
+
+export async function addReview(productId: string, form: { reviewText: string; rating: number }) {
+  return axios.post(`/api/user/addReview/${productId}`, { ...form });
+}

@@ -446,6 +446,7 @@ export interface IProductAttribute {
 export interface IProductAttributeValue {
   name: string;
   priceAdjustmentValue?: number;
+  colorRgb?: string;
   _id: string;
 }
 
