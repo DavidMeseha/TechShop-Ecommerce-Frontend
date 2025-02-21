@@ -106,8 +106,6 @@ npm install
 
 3. Configure environment variables:
 
-cp .env.locale .env
-
 env
 NEXT_PUBLIC_API_URL=http://localhost:3000
 NEXT_PUBLIC_STRIPE_KEY=your_stripe_public_key
