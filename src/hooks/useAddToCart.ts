@@ -42,10 +42,13 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
 
   // Helper function to handle product attributes
   const handleProductAttributes = useCallback(
-    (quantity: number) => {
-      setIsProductAttributesOpen(true, product._id, "Add To Cart", (attributes) =>
-        addToCartMutation.mutate({ attributes, quantity })
-      );
+    (quantity: number, attributes?: IProductAttribute[]) => {
+      if (!attributes)
+        return setIsProductAttributesOpen(true, product._id, "Add To Cart", (attributes) =>
+          addToCartMutation.mutate({ attributes, quantity })
+        );
+
+      addToCartMutation.mutate({ attributes, quantity });
     },
     [product._id, addToCartMutation, setIsProductAttributesOpen]
   );
@@ -56,10 +59,8 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
     if (addToCartMutation.isPending || removeFromCartMutation.isPending) return;
 
     if (addToCart) {
-      if (!attributes) {
-        return handleProductAttributes(quantity);
-      }
-      return addToCartMutation.mutate({ attributes, quantity });
+      if (product.hasAttributes) return handleProductAttributes(quantity, attributes);
+      return addToCartMutation.mutate({ attributes: [], quantity });
     }
 
     removeFromCartMutation.mutate();
