@@ -97,8 +97,8 @@ Supported languages:
 
 1. Clone the repository:
 
-git clone https://github.com/DavidMeseha/allInOne-myShop-Front.git
-cd allInOne-myShop-Front
+git clone https://github.com/DavidMeseha/TechShop-Ecommerce-Frontend.git
+cd TechShop-Ecommerce-Frontend
 
 2. Install dependencies:
 
