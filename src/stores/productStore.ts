@@ -28,21 +28,35 @@ export const useProductStore = create<Store>((set) => ({
   action: undefined,
   productIdToOverlay: undefined,
 
-  setIsProductMoreInfoOpen: (isOpen: boolean, productId?: string) =>
-    set({ isProductMoreInfoOpen: isOpen, productIdToOverlay: productId }),
-  setIsAddReviewOpen: (isOpen: boolean, productId?: string) =>
-    set(() => ({
-      isAddReviewOpen: isOpen,
-      productIdToOverlay: productId
-    })),
-  setIsProductAttributesOpen: (isOpen: boolean, productId?: string, action?: (attr: IProductAttribute[]) => void) => {
-    set({
-      isProductAttributesOpen: isOpen,
-      productIdToOverlay: productId
-    });
+  setIsProductMoreInfoOpen: (isOpen: boolean, productId?: string) => {
+    set({ isProductMoreInfoOpen: isOpen });
 
-    setTimeout(() => {
-      set({ action: action });
-    }, 150);
+    if (isOpen) set({ productIdToOverlay: productId });
+    else {
+      setTimeout(() => {
+        set({ productIdToOverlay: productId });
+      }, 150);
+    }
+  },
+  setIsAddReviewOpen: (isOpen: boolean, productId?: string) => {
+    set(() => ({
+      isAddReviewOpen: isOpen
+    }));
+
+    if (isOpen) set({ productIdToOverlay: productId });
+    else {
+      setTimeout(() => {
+        set({ productIdToOverlay: productId });
+      }, 150);
+    }
+  },
+  setIsProductAttributesOpen: (isOpen: boolean, productId?: string, action?: (attr: IProductAttribute[]) => void) => {
+    set({ isProductAttributesOpen: isOpen });
+    if (isOpen) set({ productIdToOverlay: productId });
+    else {
+      setTimeout(() => {
+        set({ action: action, productIdToOverlay: productId });
+      }, 150);
+    }
   }
 }));
