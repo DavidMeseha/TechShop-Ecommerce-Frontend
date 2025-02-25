@@ -15,7 +15,7 @@ export async function preperCardPayment() {
   return axios.get<{ paymentSecret: string }>("/api/user/preperPayment");
 }
 
-export function placeOrder(form: { billingMethod: string; billingStatus: string; shippingAddressId: string }) {
+export function placeOrder(form: { billingMethod: string; shippingAddressId: string }) {
   return axios.post<IOrder>(`/api/user/order/submit`, {
     ...form
   });

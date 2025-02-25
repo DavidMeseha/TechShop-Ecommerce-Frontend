@@ -10,18 +10,20 @@ import { LocalLink } from "../../../components/LocalizedNavigation";
 import { BiLoaderCircle } from "react-icons/bi";
 import { useUserStore } from "@/stores/userStore";
 import { checkoutData } from "@/services/checkout.service";
+import { isInCart } from "../../../lib/utils";
 
 export default function Page() {
   const { t } = useTranslation();
-  const { user } = useUserStore();
+  const user = useUserStore((state) => state.user);
+  const cartItems = useUserStore((state) => state.cartItems);
   const router = useRouter();
 
   const checkoutQuery = useQuery({
-    queryKey: ["cartItems"],
+    queryKey: ["checkoutItems"],
     queryFn: () => checkoutData()
   });
 
-  const cartItems = checkoutQuery.data?.cartItems ?? [];
+  const products = checkoutQuery.data?.cartItems ?? [];
   const total = checkoutQuery.data?.total ?? 0;
 
   return (
@@ -51,10 +53,11 @@ export default function Page() {
             </Button>
           </div>
 
-          {cartItems.map((item) => (
+          {products.map((item) => (
             <CartItem
               attributes={item.attributes}
               canEdit
+              isInCart={isInCart(item.product._id, cartItems)}
               key={item.product.seName}
               product={item.product}
               quantity={item.quantity}

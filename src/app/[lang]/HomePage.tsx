@@ -2,13 +2,13 @@
 
 import { BsSearch } from "react-icons/bs";
 import { BiMenu } from "react-icons/bi";
-import { useAppStore } from "@/stores/appStore";
 import HomeMenu from "@/components/overlays/HomeMenu";
 import { useState } from "react";
 import { useTranslation } from "@/context/Translation";
 import { IFullProduct, Pagination } from "@/types";
 import Button from "@/components/ui/Button";
-import ProductCard from "@/components/product/Card";
+import ProductsGridView from "@/components/product/ProductsGridView";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 type Props = {
   products: IFullProduct[];
@@ -16,7 +16,8 @@ type Props = {
 };
 
 export default function HomePage({ products, loadMore }: Props) {
-  const { setIsHomeMenuOpen, setIsSearchOpen } = useAppStore();
+  const setIsHomeMenuOpen = useOverlayStore((state) => state.setIsHomeMenuOpen);
+  const setIsSearchOpen = useOverlayStore((state) => state.setIsSearchOpen);
   const { t } = useTranslation();
   const [productsList, setProducts] = useState<IFullProduct[]>([...products]);
   const [hasMore, setHasMore] = useState(true);
@@ -37,11 +38,7 @@ export default function HomePage({ products, loadMore }: Props) {
   return (
     <>
       <div className="relative">
-        <div className="relative mt-4 grid grid-cols-2 gap-3 px-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-          {productsList.map((product, index) => (
-            <ProductCard key={index} product={product} />
-          ))}
-        </div>
+        <ProductsGridView products={productsList} />
         <div className="flex justify-center py-7 text-center">
           {hasMore ? (
             <Button className="bg-primary text-white" isLoading={isLoading} onClick={loadMoreClick}>

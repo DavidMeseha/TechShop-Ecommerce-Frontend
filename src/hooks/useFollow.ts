@@ -12,25 +12,30 @@ interface FollowHookProps {
 }
 
 export default function useFollow({ vendor, onClick }: FollowHookProps) {
-  const { setFollowedVendors, user } = useUserStore();
+  const getFollowedVendors = useUserStore((state) => state.getFollowedVendors);
+  const removeFromFollowedVendors = useUserStore((state) => state.removeFromFollowedVendors);
+  const addToFollowedVendors = useUserStore((state) => state.addToFollowedVendors);
+  const user = useUserStore((state) => state.user);
   const { t } = useTranslation();
 
   const followMutation = useMutation({
     mutationKey: ["follow", vendor._id],
     mutationFn: () => followVendor(vendor._id),
     onSuccess: async () => {
-      setFollowedVendors();
+      getFollowedVendors();
       queryClient.invalidateQueries({ queryKey: ["following"] });
-    }
+    },
+    onError: () => removeFromFollowedVendors(vendor._id)
   });
 
   const unfollowMutation = useMutation({
     mutationKey: ["unfollow", vendor._id],
     mutationFn: () => unfollowVendor(vendor._id),
     onSuccess: async () => {
-      setFollowedVendors();
+      getFollowedVendors();
       queryClient.invalidateQueries({ queryKey: ["following"] });
-    }
+    },
+    onError: () => addToFollowedVendors(vendor._id)
   });
 
   const handleFollow = async (shouldFollow: boolean) => {
@@ -40,6 +45,7 @@ export default function useFollow({ vendor, onClick }: FollowHookProps) {
       return toast.warn(t("loginToPerformAction"));
     }
 
+    shouldFollow ? addToFollowedVendors(vendor._id) : removeFromFollowedVendors(vendor._id);
     onClick?.(shouldFollow);
 
     if (shouldFollow) {
@@ -49,5 +55,5 @@ export default function useFollow({ vendor, onClick }: FollowHookProps) {
     }
   };
 
-  return { handleFollow };
+  return handleFollow;
 }

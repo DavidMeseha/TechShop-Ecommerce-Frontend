@@ -28,10 +28,12 @@ export default function UserSetup() {
         .then((data) => {
           setUser(data);
           setUserActions();
+          return null;
         })
         .catch(() => {
           if (user?.isRegistered) toast.error(t("auth.forcedLogout"));
           guestTokenMutation.mutate();
+          return null;
         })
   });
 

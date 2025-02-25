@@ -8,32 +8,41 @@ import { likeProduct, unLikeProduct } from "@/services/userActions.service";
 
 interface LikeHookProps {
   product: IFullProduct;
-  onError?: (liked: boolean) => void;
-  onClick?: (liked: boolean) => void;
+  onError?: (shouldLike: boolean) => void;
+  onClick?: (shouldLike: boolean) => void;
 }
 
 export default function useLike({ product, onError, onClick }: LikeHookProps) {
-  const { setLikes, user } = useUserStore();
+  const user = useUserStore((state) => state.user);
+  const removeFromLikes = useUserStore((state) => state.removeFromLikes);
+  const addToLikes = useUserStore((state) => state.addToLikes);
+  const getLikes = useUserStore((state) => state.getLikes);
   const { t } = useTranslation();
 
   const likeMutation = useMutation({
     mutationKey: ["like", product.seName],
     mutationFn: () => likeProduct(product._id),
     onSuccess: async () => {
-      setLikes();
+      getLikes();
       queryClient.invalidateQueries({ queryKey: ["likedProducts"] });
     },
-    onError: () => onError?.(true)
+    onError: () => {
+      removeFromLikes(product._id);
+      onError?.(true);
+    }
   });
 
   const unlikeMutation = useMutation({
     mutationKey: ["unlike", product.seName],
     mutationFn: () => unLikeProduct(product._id),
     onSuccess: async () => {
-      setLikes();
+      getLikes();
       queryClient.invalidateQueries({ queryKey: ["likedProducts"] });
     },
-    onError: () => onError?.(false)
+    onError: () => {
+      addToLikes(product._id);
+      onError?.(false);
+    }
   });
 
   const handleLike = (shouldLike: boolean) => {
@@ -44,6 +53,7 @@ export default function useLike({ product, onError, onClick }: LikeHookProps) {
       return toast.warn(t("loginToPerformAction"), { toastId: "likeError" });
     }
 
+    shouldLike ? addToLikes(product._id) : removeFromLikes(product._id);
     onClick?.(shouldLike);
 
     if (shouldLike) {
@@ -53,5 +63,5 @@ export default function useLike({ product, onError, onClick }: LikeHookProps) {
     }
   };
 
-  return { handleLike };
+  return handleLike;
 }

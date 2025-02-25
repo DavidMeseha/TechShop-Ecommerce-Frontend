@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useAppStore } from "../../stores/appStore";
 import EditProfileOverlay from "./EditProfileOverlay";
 import { usePathname } from "next/navigation";
 import AttributesOverlay from "./AttributesOverlay";
@@ -11,27 +10,32 @@ import AddNewAddress from "./AddNewAddress";
 import SearchOverlay from "./SearchOverlay";
 import { AnimatePresence } from "framer-motion";
 import ProfileMenuOverlay from "./ProfileMenu";
+import { useOverlayStore } from "@/stores/overlayStore";
+import { useProductStore } from "@/stores/productStore";
 
 export default function AllOverlays() {
   const {
     isEditProfileOpen,
     isShareOpen,
     isProfileMenuOpen,
-    isAddToCartOpen,
-    isProductMoreInfoOpen,
     isSearchOpen,
     isAdvancedSearchOpen,
-    isAddReviewOpen,
     isAddAddressOpen,
-    setIsProductAttributesOpen,
     setIsEditProfileOpen,
     setIsSearchOpen,
     setIsProfileMenuOpen,
-    setIsProductMoreInfoOpen,
     setIsHomeMenuOpen,
     setIsAdvancedSearchOpen,
     setIsAddAddressOpen
-  } = useAppStore();
+  } = useOverlayStore();
+  const {
+    isProductAttributesOpen,
+    isAddReviewOpen,
+    isProductMoreInfoOpen,
+    setIsProductAttributesOpen,
+    setIsAddReviewOpen,
+    setIsProductMoreInfoOpen
+  } = useProductStore();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -44,13 +48,14 @@ export default function AllOverlays() {
     setIsAdvancedSearchOpen(false);
     setIsAddAddressOpen(false);
     setIsSearchOpen(false);
+    setIsAddReviewOpen(false);
   }, [pathname]);
 
   useEffect(() => {
     if (
       isEditProfileOpen ||
       isShareOpen ||
-      isAddToCartOpen ||
+      isProductAttributesOpen ||
       isProfileMenuOpen ||
       isProductMoreInfoOpen ||
       isAdvancedSearchOpen ||
@@ -63,7 +68,7 @@ export default function AllOverlays() {
   }, [
     isEditProfileOpen,
     isShareOpen,
-    isAddToCartOpen,
+    isProductAttributesOpen,
     isProfileMenuOpen,
     isProductMoreInfoOpen,
     isAdvancedSearchOpen,
@@ -76,7 +81,7 @@ export default function AllOverlays() {
     <AnimatePresence>
       {isEditProfileOpen ? <EditProfileOverlay /> : null}
       {isProfileMenuOpen ? <ProfileMenuOverlay /> : null}
-      {isAddToCartOpen ? <AttributesOverlay /> : null}
+      {isProductAttributesOpen ? <AttributesOverlay /> : null}
       {isProductMoreInfoOpen ? <ProductMoreInfoOverlay /> : null}
       {isSearchOpen ? <SearchOverlay /> : null}
       {isAddReviewOpen ? <AddReviewOverlay /> : null}

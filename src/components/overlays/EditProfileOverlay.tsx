@@ -3,7 +3,6 @@ import { CircleStencil, Cropper, CropperRef } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
 import FormTextInput from "../FormTextInput";
 import { BsPencil } from "react-icons/bs";
-import { useAppStore } from "@/stores/appStore";
 import Image from "next/image";
 import OverlayLayout from "./OverlayLayout";
 import { useTranslation } from "@/context/Translation";
@@ -17,6 +16,7 @@ import { FieldError, UserInfoForm } from "@/types";
 import { useUserStore } from "@/stores/userStore";
 import { getUserInfo, updateUserInfo } from "@/services/user.service";
 import upload from "@/services/upload.service";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 interface ProfileErrors {
   email: FieldError;
@@ -33,8 +33,8 @@ interface ProfileErrors {
 
 export default function EditProfileOverlay() {
   const todyRef = useRef(new Date());
-  const { setIsEditProfileOpen } = useAppStore();
-  const { user } = useUserStore();
+  const setIsEditProfileOpen = useOverlayStore((state) => state.setIsEditProfileOpen);
+  const user = useUserStore((state) => state.user);
   const { t } = useTranslation();
   const cropperRef = useRef<CropperRef>(null);
   const [cropping, setCropping] = useState<string | null>(null);
@@ -195,7 +195,7 @@ export default function EditProfileOverlay() {
                 placeholder="First Name"
                 type="text"
                 value={form.firstName}
-                onChange={(e) => fieldChangeHandle(e.target.value, e.target.name)}
+                onChange={(e) => fieldChangeHandle(e.currentTarget.value, e.currentTarget.name)}
               />
               <FormTextInput
                 error={error.lastName}
@@ -204,7 +204,7 @@ export default function EditProfileOverlay() {
                 placeholder="Last Name"
                 type="text"
                 value={form.lastName}
-                onChange={(e) => fieldChangeHandle(e.target.value, e.target.name)}
+                onChange={(e) => fieldChangeHandle(e.currentTarget.value, e.currentTarget.name)}
               />
               <RadioGroup
                 title="Gender"
@@ -213,17 +213,23 @@ export default function EditProfileOverlay() {
                   { name: "Male", value: "male" },
                   { name: "Female", value: "female" }
                 ]}
-                onChange={(value) => setForm({ ...form, gender: value })}
+                onChange={(e) => setForm({ ...form, gender: e.currentTarget.value })}
               />
               <DateDropdownNumbers
-                changeDay={(value) => setForm({ ...form, dateOfBirthDay: value })}
-                changeMonth={(value) => setForm({ ...form, dateOfBirthMonth: value })}
-                changeYear={(value) => setForm({ ...form, dateOfBirthYear: value })}
                 className="mb-4"
-                day={form.dateOfBirthDay ?? todyRef.current.getDay()}
-                month={form.dateOfBirthMonth ?? todyRef.current.getMonth()}
                 title="Date Of Birth"
-                year={form.dateOfBirthYear ?? todyRef.current.getFullYear()}
+                dayInputAttributes={{
+                  onChange: (e) => setForm({ ...form, dateOfBirthDay: parseInt(e.currentTarget.value) }),
+                  value: form.dateOfBirthDay ?? todyRef.current.getDay()
+                }}
+                monthInputAttributes={{
+                  onChange: (e) => setForm({ ...form, dateOfBirthMonth: parseInt(e.currentTarget.value) }),
+                  value: form.dateOfBirthMonth ?? todyRef.current.getMonth()
+                }}
+                yearInputAttributes={{
+                  onChange: (e) => setForm({ ...form, dateOfBirthYear: parseInt(e.currentTarget.value) }),
+                  value: form.dateOfBirthYear ?? todyRef.current.getFullYear()
+                }}
               />
               <FormTextInput
                 error={error.phone}
@@ -232,7 +238,7 @@ export default function EditProfileOverlay() {
                 placeholder="Phone Number"
                 type="text"
                 value={form.phone}
-                onChange={(e) => fieldChangeHandle(e.target.value, e.target.name)}
+                onChange={(e) => fieldChangeHandle(e.currentTarget.value, e.currentTarget.name)}
               />
             </div>
           </>

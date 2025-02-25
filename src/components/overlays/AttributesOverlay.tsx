@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import OverlayLayout from "./OverlayLayout";
-import { useAppStore } from "@/stores/appStore";
 import { IProductAttribute } from "@/types";
 import { selectDefaultAttributes } from "@/lib/misc";
 import ProductAttributes from "../product/Attributes";
@@ -10,15 +9,16 @@ import { useQuery } from "@tanstack/react-query";
 import Button from "../ui/Button";
 import AttributesOverlayLoading from "../LoadingUi/AttributesOverlayLoading";
 import { getProductAttributes } from "@/services/products.service";
+import { useProductStore } from "@/stores/productStore";
 
 export default function AttributesOverlay() {
-  const { setIsProductAttributesOpen, overlayProductId, action } = useAppStore();
+  const { setIsProductAttributesOpen, productIdToOverlay, action } = useProductStore();
   const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>([]);
 
   const productQuery = useQuery({
-    queryKey: ["productAttributes", overlayProductId],
-    queryFn: () => getProductAttributes(overlayProductId ?? "0"),
-    enabled: !!overlayProductId
+    queryKey: ["productAttributes", productIdToOverlay],
+    queryFn: () => getProductAttributes(productIdToOverlay ?? "0"),
+    enabled: !!productIdToOverlay
   });
   const product = productQuery.data;
 
@@ -53,11 +53,11 @@ export default function AttributesOverlay() {
           <Button
             className="mt-4 w-full bg-primary text-center text-white"
             onClick={() => {
-              action.fn && action.fn(customAttributes);
+              action && action(customAttributes);
               setIsProductAttributesOpen(false);
             }}
           >
-            {action.name || "Submit"}
+            {"Add To Cart"}
           </Button>
         </>
       ) : null}

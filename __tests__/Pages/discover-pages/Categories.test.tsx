@@ -1,9 +1,9 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { usePathname } from "next/navigation";
 import { renderDiscoverPages } from "../../../test-mic";
-import CategoriesView from "@/app/[lang]/discover/components/CategoriesView";
 import axios from "@/lib/axios";
 import en from "@/dictionaries/en.json";
+import Page from "@/app/[lang]/discover/categories/page";
 
 const mockCategoriesResponse = (page: number) => ({
   data: [
@@ -29,7 +29,7 @@ describe("HomePage", () => {
   });
 
   it("displays categories after fetching", async () => {
-    renderDiscoverPages(<CategoriesView />);
+    renderDiscoverPages(<Page />);
 
     await waitFor(() => {
       expect(screen.getByText("Category 1-1")).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe("HomePage", () => {
   });
 
   it("loads more categories on click", async () => {
-    renderDiscoverPages(<CategoriesView />);
+    renderDiscoverPages(<Page />);
 
     await waitFor(() => {
       expect(screen.getByText(en["loadMore"])).toBeInTheDocument();

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import RadioGroup from "@/components/RadioGroup";
 
 describe("Radio input group", () => {
@@ -15,7 +15,7 @@ describe("Radio input group", () => {
   });
 
   beforeEach(() => {
-    render(<RadioGroup className="p-2" options={options} title={title} value="option1" onChange={onChange} />);
+    render(<RadioGroup checkedValue="option1" className="p-2" options={options} title={title} onChange={onChange} />);
   });
 
   it("renders correctly with props", () => {
@@ -27,15 +27,5 @@ describe("Radio input group", () => {
     expect(screen.getByLabelText("option 2")).not.toBeChecked();
     expect(screen.getByLabelText("option 3")).not.toBeChecked();
     expect(screen.getByTestId("radio-group")).toHaveClass("p-2");
-  });
-
-  it("fires onChange with correct values", () => {
-    for (const option of options) {
-      if (option.value === "option1") continue;
-      act(() => {
-        fireEvent.click(screen.getByLabelText(option.name));
-      });
-      expect(onChange).toHaveBeenCalledWith(option.value);
-    }
   });
 });

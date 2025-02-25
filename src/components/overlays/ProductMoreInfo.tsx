@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import OverlayLayout from "./OverlayLayout";
-import { useAppStore } from "@/stores/appStore";
 import { selectDefaultAttributes } from "@/lib/misc";
 import { useUserStore } from "@/stores/userStore";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
@@ -17,14 +16,16 @@ import { useTranslation } from "@/context/Translation";
 import useAddToCart from "@/hooks/useAddToCart";
 import LoadingSpinner from "../LoadingUi/LoadingSpinner";
 import { getProductDetails } from "@/services/products.service";
+import { useProductStore } from "@/stores/productStore";
 
 export default function ProductMoreInfoOverlay() {
-  const { setIsProductMoreInfoOpen, overlayProductId } = useAppStore();
+  const setIsProductMoreInfoOpen = useProductStore((state) => state.setIsProductMoreInfoOpen);
+  const productId = useProductStore((state) => state.productIdToOverlay);
 
   const productQuery = useQuery({
-    queryKey: ["product", overlayProductId],
-    queryFn: () => getProductDetails(overlayProductId ?? ""),
-    enabled: !!overlayProductId
+    queryKey: ["product", productId],
+    queryFn: () => getProductDetails(productId ?? ""),
+    enabled: !!productId
   });
   const product = productQuery.data;
 
@@ -38,7 +39,7 @@ export default function ProductMoreInfoOverlay() {
 function MainLogic({ product }: { product: IFullProduct }) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [imageIndex, setImageIndex] = useState(0);
-  const { setCartItems, cartItems } = useUserStore();
+  const cartItems = useUserStore((state) => state.cartItems);
   const { t } = useTranslation();
   const [activeTap, setActiveTap] = useState<"description" | "reviews">("description");
   const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>(
@@ -53,19 +54,7 @@ function MainLogic({ product }: { product: IFullProduct }) {
     return () => carouselApi.destroy();
   }, [carouselApi]);
 
-  const { handleAddToCart, isPending } = useAddToCart({
-    product,
-    onSuccess: () => {
-      const temp = [...cartItems];
-      inCart
-        ? temp.splice(
-            temp.findIndex((item) => item.product === inCart.product),
-            1
-          )
-        : temp.push({ product: product._id, quantity: 1 });
-      setCartItems([...temp]);
-    }
-  });
+  const { handleAddToCart, isPending } = useAddToCart({ product });
 
   const handleAttributesChange = (attributeId: string, value: string[]) => {
     if (!product) return;
@@ -140,7 +129,7 @@ function MainLogic({ product }: { product: IFullProduct }) {
         </div>
       ) : null}
       <Button className="w-full bg-primary text-white" isLoading={isPending} onClick={addToCartClickHandle}>
-        {t("addToCart")}
+        {inCart ? t("removeFromCart") : t("addToCart")}
       </Button>
       <ul className="sticky -top-4 z-20 flex w-full items-center border-b bg-white">
         <li

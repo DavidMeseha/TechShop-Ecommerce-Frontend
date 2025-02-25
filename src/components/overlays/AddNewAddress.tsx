@@ -9,6 +9,7 @@ import { useTranslation } from "@/context/Translation";
 import FormTextInput from "../FormTextInput";
 import FormDropdownInput from "../FormDropdownInput";
 import { citiesInCountry, newAddress } from "@/services/user.service";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 interface FormErrors {
   address: FieldError;
@@ -17,11 +18,11 @@ interface FormErrors {
 }
 
 const initialErrors: FormErrors = { address: false, city: false, country: false };
-const initialForm = { _id: "", address: "", city: "", country: "" };
+const initialForm = { address: "", city: "", country: "" };
 
 export default function AddNewAddress() {
   const queryClient = useQueryClient();
-  const { setIsAddAddressOpen } = useAppStore();
+  const setIsAddAddressOpen = useOverlayStore((state) => state.setIsAddAddressOpen);
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState<FormErrors>(initialErrors);
   const { t } = useTranslation();
@@ -33,6 +34,7 @@ export default function AddNewAddress() {
     onSuccess: () => {
       toast.success("Address Added Successfully");
       queryClient.invalidateQueries({ queryKey: ["checkoutData"] });
+      setIsAddAddressOpen(false);
     }
   });
 
@@ -85,7 +87,7 @@ export default function AddNewAddress() {
         placeholder={t("address")}
         type="text"
         value={form.address}
-        onChange={(e) => handleFieldOnChange(e.target.value, e.target.name)}
+        onChange={(e) => handleFieldOnChange(e.currentTarget.value, e.currentTarget.name)}
       />
 
       <FormDropdownInput

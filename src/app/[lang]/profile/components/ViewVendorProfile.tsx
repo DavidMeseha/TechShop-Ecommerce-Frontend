@@ -1,67 +1,60 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "@/context/Translation";
 import { UserActivity } from "./UserActivity";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
-import { IFullProduct, IVendor, Pagination } from "@/types";
+import { IVendor } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import { useInView } from "react-intersection-observer";
 import { BiLoaderCircle } from "react-icons/bi";
 import { useUserStore } from "@/stores/userStore";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import ProductCard from "@/components/product/Card";
 import useFollow from "@/hooks/useFollow";
+import ProductsGridView from "@/components/product/ProductsGridView";
+import { getProductsByVendor } from "@/services/products.service";
 
 type Props = {
   vendor: IVendor;
 };
 
 export default function ViewVendorProfile({ vendor }: Props) {
+  const followedVendors = useUserStore((state) => state.followedVendors);
+
+  const [followersCount, setFollowersCount] = useState(vendor.followersCount);
   const { t } = useTranslation();
   const [ref, isInView] = useInView();
-  const { following, setFollowedVendors } = useUserStore();
-  const [followersCount, setFollowersCount] = useState(vendor.followersCount);
 
-  const activities = [
-    {
-      name: t("profile.followers"),
-      value: followersCount,
-      to: null
-    },
-    {
-      name: t("profile.products"),
-      value: vendor.productCount,
-      to: null
-    }
-  ];
+  const activities = useMemo(
+    () => [
+      {
+        name: t("profile.followers"),
+        value: followersCount,
+        to: null
+      },
+      {
+        name: t("profile.products"),
+        value: vendor.productCount,
+        to: null
+      }
+    ],
+    [followersCount, vendor.productCount]
+  );
 
-  const { handleFollow } = useFollow({
+  const handleFollow = useFollow({
     vendor,
-    onClick: (follow) => {
-      setFollowersCount(followersCount + (follow ? 1 : -1));
-      const temp = [...following];
-      following.includes(vendor._id) ? temp.splice(temp.indexOf(vendor._id), 1) : temp.push(vendor._id);
-      setFollowedVendors([...temp]);
-    }
+    onClick: (shouldFollow) => setFollowersCount(followersCount + (shouldFollow ? 1 : -1))
   });
 
   const productsQuery = useInfiniteQuery({
     queryKey: ["vendorProducts", vendor._id],
-    queryFn: ({ pageParam }) =>
-      axios
-        .get<{ data: IFullProduct[]; pages: Pagination }>(`/api/catalog/VendorProducts/${vendor._id}`, {
-          params: {
-            page: pageParam
-          }
-        })
-        .then((res) => res.data),
+    queryFn: ({ pageParam }) => getProductsByVendor(vendor._id, { page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (_lastPage, _allPages, lastPageParam) => lastPageParam + 1
   });
   const lastPage = productsQuery.data?.pages.findLast((page) => page);
+  const products = productsQuery.data?.pages.map((page) => page.data).flat() ?? [];
 
   useEffect(() => {
     if (!productsQuery.isFetching && !productsQuery.isFetchingNextPage && isInView && lastPage?.pages.hasNext)
@@ -88,9 +81,9 @@ export default function ViewVendorProfile({ vendor }: Props) {
           </div>
           <Button
             className="item-center mt-3 block bg-primary px-8 py-1.5 text-[15px] font-semibold text-white"
-            onClick={() => handleFollow(!following.includes(vendor._id))}
+            onClick={() => handleFollow(!followedVendors.includes(vendor._id))}
           >
-            {following.includes(vendor._id) ? t("unfollow") : t("follow")}
+            {followedVendors.includes(vendor._id) ? t("unfollow") : t("follow")}
           </Button>
         </div>
       </div>
@@ -99,19 +92,13 @@ export default function ViewVendorProfile({ vendor }: Props) {
 
       <div className="mt-2 border-t" />
 
-      {productsQuery.isFetchedAfterMount ? (
-        productsQuery.data && productsQuery.data.pages[0].data.length > 0 ? (
-          <div className="relative mt-4 grid grid-cols-2 gap-3 px-4 pb-20 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-            {productsQuery.data.pages.map((page) =>
-              page.data.map((product, index) => <ProductCard key={index} product={product} />)
-            )}
-          </div>
-        ) : (
-          <div className="py-14 text-center text-secondary">{t("profile.noProducts")}</div>
-        )
-      ) : null}
+      {products.length > 0 || productsQuery.isFetched ? (
+        <ProductsGridView products={products} />
+      ) : (
+        <div className="py-14 text-center text-secondary">{t("profile.noProducts")}</div>
+      )}
 
-      {lastPage?.pages.hasNext || !productsQuery.isFetchedAfterMount ? (
+      {lastPage?.pages.hasNext || !productsQuery.isFetched ? (
         <div className="flex w-full flex-col items-center justify-center py-2" ref={ref}>
           <BiLoaderCircle className="animate-spin fill-primary" size={35} />
         </div>

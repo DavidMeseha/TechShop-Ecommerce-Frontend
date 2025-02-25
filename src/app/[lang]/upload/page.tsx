@@ -292,7 +292,7 @@ export default function Upload() {
               placeholder={t("upload.productName")}
               type="text"
               value={product.name}
-              onChange={(e) => inputChangeHandle(e.target.value, e.target.name)}
+              onChange={(e) => inputChangeHandle(e.currentTarget.value, e.currentTarget.name)}
             />
             <FormTextInput
               error={error.old_price}
@@ -301,7 +301,7 @@ export default function Upload() {
               placeholder={t("upload.oldPrice")}
               type="number"
               value={product.old_price?.toString() ?? "0"}
-              onChange={(e) => inputChangeHandle(e.target.value, e.target.name)}
+              onChange={(e) => inputChangeHandle(e.currentTarget.value, e.currentTarget.name)}
             />
             <FormTextInput
               error={error.price}
@@ -310,7 +310,7 @@ export default function Upload() {
               placeholder={t("upload.price")}
               type="number"
               value={product.price.toString()}
-              onChange={(e) => inputChangeHandle(e.target.value, e.target.name)}
+              onChange={(e) => inputChangeHandle(e.currentTarget.value, e.currentTarget.name)}
             />
             <FormTextInput
               error={error.stock_quantity}
@@ -319,7 +319,7 @@ export default function Upload() {
               placeholder={t("upload.stockQuantity")}
               type="number"
               value={product.stock_quantity.toString()}
-              onChange={(e) => inputChangeHandle(e.target.value, e.target.name)}
+              onChange={(e) => inputChangeHandle(e.currentTarget.value, e.currentTarget.name)}
             />
 
             <div className="mt-5">

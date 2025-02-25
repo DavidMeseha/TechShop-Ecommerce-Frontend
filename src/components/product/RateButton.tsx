@@ -2,31 +2,31 @@
 
 import React from "react";
 import { IFullProduct } from "@/types";
-import { useAppStore } from "@/stores/appStore";
 import { BsStarFill } from "react-icons/bs";
 import { useUserStore } from "@/stores/userStore";
 import { toast } from "react-toastify";
+import { useProductStore } from "@/stores/productStore";
 
 type Props = {
   product: IFullProduct;
+  isRated: boolean;
 };
 
-export default function RateProductButton({ product }: Props) {
-  const { reviews, user } = useUserStore();
-  const { setIsAddReviewOpen } = useAppStore();
-  const isReviewed = reviews.includes(product._id);
+export default function RateProductButton({ product, isRated }: Props) {
+  const user = useUserStore((state) => state.user);
+  const setIsAddReviewOpen = useProductStore((state) => state.setIsAddReviewOpen);
 
   const handleAddreviewClick = () => {
     if (!user) return;
     if (!user.isRegistered) return toast.warn("You need to login to berform action");
-    if (!isReviewed) setIsAddReviewOpen(true, product._id);
+    if (!isRated) setIsAddReviewOpen(true, product._id);
   };
 
   return (
     <button aria-label="Open Review Form" className="fill-black text-center" onClick={handleAddreviewClick}>
       <div className="rounded-full bg-gray-200 p-2">
         <BsStarFill
-          className={`transition-all ${isReviewed ? "fill-primary" : "fill-black"} text-black hover:fill-primary`}
+          className={`transition-all ${isRated ? "fill-primary" : "fill-black"} text-black hover:fill-primary`}
           size="25"
         />
       </div>

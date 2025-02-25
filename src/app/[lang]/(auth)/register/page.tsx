@@ -1,117 +1,135 @@
-import DateDropdownNumbers from "@/components/ui/DateDropdownNumbers";
+"use client";
+
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { RegisterFormInputs, registerSchema } from "@/schemas/valdation";
+import { useTranslation } from "@/context/Translation";
+import { LocalLink } from "@/components/LocalizedNavigation";
 import FormTextInput from "@/components/FormTextInput";
 import RadioGroup from "@/components/RadioGroup";
-import { SubmitButton } from "@/components/ui/SubmitButton";
-import { getDictionary } from "@/dictionary";
-import { AxiosError } from "axios";
-import { redirect } from "next/navigation";
-import axios from "@/lib/axios";
-import React from "react";
-import { cookies } from "next/headers";
-import Link from "next/link";
-import { Language } from "@/types";
+import DateDropdownNumbers from "@/components/ui/DateDropdownNumbers";
+import Button from "@/components/ui/Button";
+import { useMutation } from "@tanstack/react-query";
+import { registerUser } from "@/services/auth.service";
+import { FieldError } from "@/types";
+import { useRouter } from "next-nprogress-bar";
 
-interface Props {
-  params: Promise<{ lang: Language }>;
-  searchParams: Promise<{ error: string }>;
-}
-
-export default async function page(props: Props) {
-  const searchParams = await props.searchParams;
-  const params = await props.params;
-  const dictionary = await getDictionary(params.lang);
-
-  const register = async (form: FormData) => {
-    "use server";
-    const data = {
-      firstName: form.get("firstName"),
-      lastName: form.get("lastName"),
-      email: form.get("email"),
-      password: form.get("password"),
-      confirmPassword: form.get("confirmPassword"),
-      dayOfBirth: form.get("day"),
-      monthOfBirth: form.get("month"),
-      yearOfBirth: form.get("year"),
-      gender: form.get("gender")
-    };
-
-    try {
-      await axios.post<{ message: string }>(
-        "/api/auth/register",
-        { ...data },
-        { headers: { Authorization: `Bearer ${cookies().get("session")?.value}` } }
-      );
-    } catch (err) {
-      const error = err as AxiosError<{ message: string }>;
-      return redirect(`/${params.lang}/register?error=${encodeURIComponent(error.response?.data.message ?? "")}`);
+export default function Page() {
+  const { t } = useTranslation();
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+    ...rest
+  } = useForm<RegisterFormInputs>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      gender: "male"
     }
+  });
 
-    return redirect(`/${params.lang}/login?message=${encodeURIComponent(dictionary["auth.successfullRegister"])}`);
-  };
+  const [formError, setFormError] = useState<FieldError>(false);
+
+  const registerMutation = useMutation({
+    mutationKey: ["register"],
+    mutationFn: (form: RegisterFormInputs) => registerUser(form),
+    onSuccess: () => {
+      router.push("/");
+    },
+    onError: (error) => setFormError(error.message ?? "Unknow error, try again later")
+  });
+
+  const submitHandle = (form: RegisterFormInputs) => registerMutation.mutate(form);
 
   return (
-    <form className="p-4">
+    <form className="p-4" onSubmit={handleSubmit(submitHandle)}>
       <div className="flex justify-between">
-        <h1 className="mb-4 text-2xl font-bold">{dictionary["auth.register"]}</h1>
-        <Link className="text-primary hover:underline" href={`/${params.lang}/login`}>
-          {dictionary["auth.alreadyHveAnAccount"]}
-        </Link>
+        <h1 className="mb-4 text-2xl font-bold">{t("auth.register")}</h1>
+        <LocalLink className="text-primary hover:underline" href={`/login`}>
+          {t("auth.alreadyHveAnAccount")}
+        </LocalLink>
       </div>
       <FormTextInput
-        label={dictionary["firstName"]}
+        {...register("firstName", {
+          onChange: () => clearErrors("firstName")
+        })}
+        error={errors.firstName?.message}
+        label={t("firstName")}
         name="firstName"
-        placeholder={dictionary["firstName"]}
+        placeholder={t("firstName")}
+      />
+
+      <FormTextInput
+        {...register("lastName", {
+          onChange: () => clearErrors("lastName")
+        })}
+        error={errors.lastName?.message ?? ""}
+        label={t("lastName")}
+        placeholder={t("lastName")}
         required
         type="text"
       />
 
       <FormTextInput
-        label={dictionary["lastName"]}
-        name="lastName"
-        placeholder={dictionary["lastName"]}
-        required
-        type="text"
-      />
-
-      <FormTextInput
-        label={dictionary["auth.email"]}
-        name="email"
-        placeholder={dictionary["auth.email"]}
+        {...register("email", {
+          onChange: () => clearErrors("email")
+        })}
+        error={errors.email?.message}
+        label={t("auth.email")}
+        placeholder={t("auth.email")}
         required
         type="email"
       />
 
       <FormTextInput
-        label={dictionary["auth.password"]}
-        name="password"
-        placeholder={dictionary["auth.password"]}
+        {...register("password", {
+          onChange: () => clearErrors("password")
+        })}
+        error={errors.password?.message}
+        label={t("auth.password")}
+        placeholder={t("auth.password")}
         required
         type="password"
       />
 
       <FormTextInput
-        label={dictionary["auth.confirmPassword"]}
-        name="confirmPassword"
-        placeholder={dictionary["auth.confirmPassword"]}
+        {...register("confirmPassword", {
+          onChange: () => clearErrors("confirmPassword")
+        })}
+        error={errors.confirmPassword?.message}
+        label={t("auth.confirmPassword")}
+        placeholder={t("auth.confirmPassword")}
         required
         type="password"
       />
 
       <RadioGroup
-        name="gender"
         title="Gender"
+        value={rest.getValues("gender")}
         options={[
-          { name: dictionary["male"], value: "male" },
-          { name: dictionary["female"], value: "female" }
+          { name: t("male"), value: "male" },
+          { name: t("female"), value: "female" }
         ]}
+        zodRegister={register("gender", {
+          onChange: () => clearErrors("gender")
+        })}
+      />
+      {errors.gender?.message}
+
+      <DateDropdownNumbers
+        dayInputAttributes={{ ...register("dayOfBirth") }}
+        monthInputAttributes={{ ...register("monthOfBirth") }}
+        title="Date Of Birth"
+        yearInputAttributes={{ ...register("yearOfBirth") }}
       />
 
-      <DateDropdownNumbers title="Date Of Birth" />
-
-      <div className="text-red-600">{searchParams.error}</div>
-      <SubmitButton className="my-6 w-full bg-primary font-semibold text-white" formAction={register}>
-        {dictionary["auth.register"]}
-      </SubmitButton>
+      <div className="text-red-600">{formError ?? null}</div>
+      <Button className="my-6 w-full bg-primary font-semibold text-white" isLoading={registerMutation.isPending}>
+        {t("auth.register")}
+      </Button>
     </form>
   );
 }

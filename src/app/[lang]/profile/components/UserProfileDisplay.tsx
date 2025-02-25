@@ -1,5 +1,4 @@
 import { useTranslation } from "@/context/Translation";
-import { useAppStore } from "@/stores/appStore";
 import { useUserStore } from "@/stores/userStore";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
@@ -9,14 +8,18 @@ import { FiSettings } from "react-icons/fi";
 import { BsBookmark, BsCart } from "react-icons/bs";
 import { BiLoaderCircle, BiPencil } from "react-icons/bi";
 import { LocalLink } from "@/components/LocalizedNavigation";
-import ProductCard from "@/components/product/Card";
 import { getCartProducts, getSavedProducts, getUserInfo } from "@/services/user.service";
+import ProductsGridView from "@/components/product/ProductsGridView";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 export default function UserProfileDisplay() {
+  const followedVendors = useUserStore((state) => state.followedVendors);
+  const isEditProfileOpen = useOverlayStore((state) => state.isEditProfileOpen);
+  const setIsEditProfileOpen = useOverlayStore((state) => state.setIsEditProfileOpen);
+  const setIsProfileMenuOpen = useOverlayStore((state) => state.setIsProfileMenuOpen);
+  const cartItems = useUserStore((state) => state.cartItems);
+
   const { t } = useTranslation();
-  const { following } = useUserStore();
-  const { isEditProfileOpen, setIsEditProfileOpen, setIsProfileMenuOpen } = useAppStore();
-  const { cartItems } = useUserStore();
   const [isCart, setIsCart] = useState<boolean>(true);
 
   const cartItemsQuery = useQuery({
@@ -44,7 +47,7 @@ export default function UserProfileDisplay() {
   const activities = [
     {
       name: t("profile.following"),
-      value: following.length,
+      value: followedVendors.length,
       to: `/profile/following`
     },
     {
@@ -110,20 +113,12 @@ export default function UserProfileDisplay() {
 
         {isCart ? (
           cartProducts.length > 0 ? (
-            <div className="mt-4 grid grid-cols-2 gap-3 px-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-              {cartProducts.map((item, index) => (
-                <ProductCard key={index} product={item.product} />
-              ))}
-            </div>
+            <ProductsGridView products={cartProducts.map((item) => item.product)} />
           ) : (
             !isFeatching && <div className="py-14 text-center text-secondary">{t("profile.emptyCart")}</div>
           )
         ) : savedProducts.length > 0 ? (
-          <div className="mt-4 grid grid-cols-2 gap-3 px-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-            {savedProducts.map((item, index) => (
-              <ProductCard key={index} product={item} />
-            ))}
-          </div>
+          <ProductsGridView products={savedProducts} />
         ) : (
           !isFeatching && <div className="py-14 text-center text-secondary">{t("profile.noSaves")}</div>
         )}

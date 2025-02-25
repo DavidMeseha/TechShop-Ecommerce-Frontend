@@ -13,15 +13,16 @@ import { followVendor } from "@/services/userActions.service";
 
 type Props = {
   vendor: IVendor;
+  isFollowed: boolean;
 };
 
-export default function ProductVendorButton({ vendor }: Props) {
-  const { following, setFollowedVendors } = useUserStore();
+export default function ProductVendorButton({ vendor, isFollowed }: Props) {
+  const getFollowedVendors = useUserStore((state) => state.getFollowedVendors);
   const followMutation = useMutation({
     mutationKey: ["followVendor", vendor._id],
     mutationFn: () => followVendor(vendor._id),
     onSuccess: () => {
-      setFollowedVendors();
+      getFollowedVendors();
       toast.success("Vendor followed successfully");
     }
   });
@@ -37,7 +38,7 @@ export default function ProductVendorButton({ vendor }: Props) {
           width={50}
         />
       </LocalLink>
-      {!following.includes(vendor._id) ? (
+      {!isFollowed ? (
         <button className="absolute -bottom-2 flex w-full justify-center" onClick={() => followMutation.mutate()}>
           <div className="rounded-full bg-primary p-1">
             <PiPlus className="fill-white" size={10} />

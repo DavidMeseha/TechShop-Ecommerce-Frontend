@@ -3,7 +3,6 @@
 import Button from "@/components/ui/Button";
 import FormTextInput from "@/components/FormTextInput";
 import { useTranslation } from "@/context/Translation";
-import { passwordValidation } from "@/lib/formatValidation";
 import { FieldError } from "@/types";
 import React, { ChangeEvent, useState } from "react";
 
@@ -22,7 +21,7 @@ export default function Page() {
 
   const passwordOnBlurValidation = (e: ChangeEvent<HTMLInputElement>) => {
     let errors = { ...error };
-    if (e.target.value && !passwordValidation(e.target.value))
+    if (e.target.value)
       errors = {
         ...errors,
         password:
@@ -68,7 +67,7 @@ export default function Page() {
         type="password"
         value={form.password}
         onBlur={passwordOnBlurValidation}
-        onChange={(e) => fieldChangeHandle(e.target.value, e.target.name)}
+        onChange={(e) => fieldChangeHandle(e.currentTarget.value, e.currentTarget.name)}
       />
       <FormTextInput
         error={error.confirm}
@@ -78,7 +77,7 @@ export default function Page() {
         required
         type="password"
         value={form.confirm}
-        onChange={(e) => fieldChangeHandle(e.target.value, e.target.name)}
+        onChange={(e) => fieldChangeHandle(e.currentTarget.value, e.currentTarget.name)}
         onBlur={(e) => {
           if (e.target.value !== form.password) setError({ ...error, confirm: t("auth.passwordsNotMatch") });
         }}

@@ -36,6 +36,15 @@ export async function getReviewIds() {
   }
 }
 
+export async function getCartIds() {
+  try {
+    const res = await axios.get<{ product: string; quantity: number }[]>("/api/common/cart/ids");
+    return res.data;
+  } catch {
+    return [];
+  }
+}
+
 export async function getUserActions() {
   try {
     const res = await axios.get<{

@@ -2,22 +2,17 @@
 
 import Button from "@/components/ui/Button";
 import RatingStars from "@/components/ui/RatingStars";
-import axios from "@/lib/axios";
-import { IProductReview, Pagination } from "@/types";
+import { IProductReview } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import React from "react";
 import { BiLoaderCircle } from "react-icons/bi";
+import { getUserReviews } from "@/services/user.service";
 
 export default function ReviewsPage() {
   const myReviewsQuery = useInfiniteQuery({
     queryKey: ["myReviews"],
-    queryFn: ({ pageParam }) =>
-      axios
-        .get<{ data: IProductReview[]; pages: Pagination }>("/api/user/reviews", {
-          params: { page: pageParam }
-        })
-        .then((res) => res.data),
+    queryFn: ({ pageParam }) => getUserReviews({ page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
       return lastPageParam + 1;

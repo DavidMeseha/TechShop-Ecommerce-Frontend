@@ -5,7 +5,6 @@ import { BiSearch, BiShoppingBag, BiUser } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
 import { useState } from "react";
-import { useAppStore } from "@/stores/appStore";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "../../../context/Translation";
 import Image from "next/image";
@@ -17,14 +16,15 @@ import { useUserStore } from "@/stores/userStore";
 import { Language } from "@/types";
 import { languages } from "@/lib/misc";
 import Skeleton from "react-loading-skeleton";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 export default function Header() {
-  const { user } = useUserStore();
+  const user = useUserStore((state) => state.user);
   const router = useRouter();
   const pathname = usePathname();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const { t, lang } = useTranslation();
-  const { setIsSearchOpen } = useAppStore();
+  const setIsSearchOpen = useOverlayStore((state) => state.setIsSearchOpen);
 
   const goTo = () => {
     if (!user || !user.isRegistered) return router.push(`/${lang}/login`);

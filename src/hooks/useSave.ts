@@ -7,12 +7,15 @@ import { saveProduct, unsaveProduct } from "@/services/userActions.service";
 
 interface SaveHookProps {
   product: IFullProduct;
-  onError?: (saved: boolean) => void;
-  onClick?: (saved: boolean) => void;
+  onError?: (shouldSave: boolean) => void;
+  onClick?: (shouldSave: boolean) => void;
 }
 
 export default function useSave({ product, onError, onClick }: SaveHookProps) {
-  const { setSaves, user } = useUserStore();
+  const user = useUserStore((state) => state.user);
+  const addToSaves = useUserStore((state) => state.addToSaves);
+  const removeFromSaves = useUserStore((state) => state.removeFromSaves);
+  const getSaves = useUserStore((state) => state.getSaves);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
@@ -20,20 +23,26 @@ export default function useSave({ product, onError, onClick }: SaveHookProps) {
     mutationKey: ["save", product.seName],
     mutationFn: () => saveProduct(product._id),
     onSuccess: async () => {
-      setSaves();
+      getSaves();
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
     },
-    onError: () => onError?.(true)
+    onError: () => {
+      removeFromSaves(product._id);
+      onError?.(true);
+    }
   });
 
   const unsaveMutation = useMutation({
     mutationKey: ["unsave", product.seName],
     mutationFn: () => unsaveProduct(product._id),
     onSuccess: async () => {
-      setSaves();
+      getSaves();
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
     },
-    onError: () => onError?.(false)
+    onError: () => {
+      addToSaves(product._id);
+      onError?.(false);
+    }
   });
 
   const handleSave = async (shouldSave: boolean) => {
@@ -43,6 +52,7 @@ export default function useSave({ product, onError, onClick }: SaveHookProps) {
     }
     if (saveMutation.isPending || unsaveMutation.isPending) return;
 
+    shouldSave ? addToSaves(product._id) : removeFromSaves(product._id);
     onClick?.(shouldSave);
 
     if (shouldSave) {
@@ -52,5 +62,5 @@ export default function useSave({ product, onError, onClick }: SaveHookProps) {
     }
   };
 
-  return { handleSave };
+  return handleSave;
 }

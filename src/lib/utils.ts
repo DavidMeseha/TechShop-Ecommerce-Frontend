@@ -14,3 +14,7 @@ import { twMerge } from "tailwind-merge";
 export function cn(...classNames: ClassValue[]) {
   return twMerge(clsx(classNames));
 }
+
+export function isInCart(productId: string, cartItems: { product: string; quantity: number }[]) {
+  return !!cartItems.find((item) => item.product === productId);
+}

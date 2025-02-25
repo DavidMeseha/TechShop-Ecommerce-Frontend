@@ -195,7 +195,7 @@ export default function AddressesPage() {
               placeholder={t("address")}
               type="text"
               value={form.address}
-              onChange={(e) => handleFieldOnChange(e.target.value, e.target.name)}
+              onChange={(e) => handleFieldOnChange(e.currentTarget.value, e.currentTarget.name)}
             />
 
             <FormDropdownInput

@@ -1,5 +1,15 @@
 import axios from "@/lib/axios";
-import { IAddress, IFullProduct, IOrder, IProductAttribute, IVendor, UserInfoForm, UserProfile } from "@/types";
+import {
+  IAddress,
+  IFullProduct,
+  IOrder,
+  IProductAttribute,
+  IProductReview,
+  IVendor,
+  Pagination,
+  UserInfoForm,
+  UserProfile
+} from "@/types";
 
 export async function userAdresses() {
   return axios.get<IAddress[]>("/api/user/addresses").then((res) => res.data);
@@ -55,4 +65,10 @@ export async function getOrder(id: string) {
 
 export async function getOrders() {
   return axios.get<IOrder[]>("/api/user/orders").then((res) => res.data);
+}
+
+export async function getUserReviews(params: { page: number }) {
+  return axios
+    .get<{ data: IProductReview[]; pages: Pagination }>("/api/user/reviews", { params })
+    .then((res) => res.data);
 }

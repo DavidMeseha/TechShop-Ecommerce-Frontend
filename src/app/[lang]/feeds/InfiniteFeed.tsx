@@ -3,14 +3,15 @@
 import { BsSearch } from "react-icons/bs";
 import { BiLoaderCircle, BiMenu } from "react-icons/bi";
 import ProductSectionMobile from "@/components/product/ProductSectionMobile";
-import { useAppStore } from "@/stores/appStore";
 import HomeMenu from "@/components/overlays/HomeMenu";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useTranslation } from "@/context/Translation";
 import { IFullProduct, Pagination } from "../../../types";
 import Button from "@/components/ui/Button";
 import ProductSection from "@/components/product/ProductSection";
+import { useOverlayStore } from "@/stores/overlayStore";
+import { useUserStore } from "@/stores/userStore";
 
 type Props = {
   products: IFullProduct[];
@@ -18,8 +19,17 @@ type Props = {
 };
 
 export default function InfiniteFeed({ products, loadMore }: Props) {
-  const { setIsHomeMenuOpen, setIsSearchOpen } = useAppStore();
   const { t } = useTranslation();
+  const setIsHomeMenuOpen = useOverlayStore((state) => state.setIsHomeMenuOpen);
+  const setIsSearchOpen = useOverlayStore((state) => state.setIsSearchOpen);
+
+  const cartItems = useUserStore((state) => state.cartItems);
+  const saves = useUserStore((state) => state.saves);
+  const likes = useUserStore((state) => state.likes);
+  const reviews = useUserStore((state) => state.reviews);
+  const followedVendors = useUserStore((state) => state.followedVendors);
+
+  const isInCart = useCallback((id: string) => !!cartItems.find((item) => item.product === id), [cartItems]);
 
   const [productsList, setProducts] = useState<IFullProduct[]>([...products]);
   const [hasMore, setHasMore] = useState(true);
@@ -42,7 +52,15 @@ export default function InfiniteFeed({ products, loadMore }: Props) {
       <div className="hidden md:block">
         <div className="relative mx-auto mt-12 max-w-[680px] md:mt-0">
           {productsList.map((product, index) => (
-            <ProductSection key={index} product={product} />
+            <ProductSection
+              isFollowed={followedVendors.includes(product.vendor._id)}
+              isInCart={isInCart(product._id)}
+              isLiked={likes.includes(product._id)}
+              isRated={reviews.includes(product._id)}
+              isSaved={saves.includes(product._id)}
+              key={index}
+              product={product}
+            />
           ))}
           <div className="flex justify-center py-7 text-center">
             {hasMore ? <BiLoaderCircle className="animate-spin fill-primary" data-testid="loading" size={35} /> : null}
@@ -63,7 +81,17 @@ export default function InfiniteFeed({ products, loadMore }: Props) {
         </div>
         <div className="relative">
           {productsList.length > 0
-            ? productsList.map((product, index) => <ProductSectionMobile key={index} product={product} />)
+            ? productsList.map((product, index) => (
+                <ProductSectionMobile
+                  isFollowed={followedVendors.includes(product.vendor._id)}
+                  isInCart={isInCart(product._id)}
+                  isLiked={likes.includes(product._id)}
+                  isRated={reviews.includes(product._id)}
+                  isSaved={saves.includes(product._id)}
+                  key={index}
+                  product={product}
+                />
+              ))
             : null}
         </div>
         <div className="flex justify-center py-7 text-center">

@@ -1,9 +1,10 @@
-import { GeneralStore } from "@/stores/appStore";
+import { AppStore } from "@/stores/appStore";
+import { OverlayStore } from "@/stores/overlayStore";
 import { UserStore } from "@/stores/userStore";
 import { IFullProduct } from "@/types";
 import { create } from "zustand";
 
-export const mockGeneralStore = create<GeneralStore>()((set) => ({
+export const mockGeneralStore = create<OverlayStore>()(() => ({
   isEditProfileOpen: false,
   isShareOpen: false,
   isAddToCartOpen: false,
@@ -35,47 +36,51 @@ export const mockGeneralStore = create<GeneralStore>()((set) => ({
   setIsProductMoreInfoOpen: jest.fn(),
   setShare: jest.fn(),
   setIsAddReviewOpen: jest.fn(),
-  setCountries: () =>
-    set({
-      countries: [
-        { name: "Country 1", _id: "1", code: "c1" },
-        { name: "Country 1", _id: "1", code: "c1" }
-      ]
-    }),
   setIsProductAttributesOpen: jest.fn()
 }));
 
-export const mockUserStore = create<UserStore>()((set) => ({
+export const mockUserStore = create<Partial<UserStore>>()((set) => ({
   user: null,
   reviews: [],
   cartItems: [],
   saves: [],
   likes: [],
-  following: [],
+  followedVendors: [],
 
   setReviews: async () => {
     set({ reviews: ["1", "2"] });
   },
-  setLikes: async () => {
+  getLikes: async () => {
     set({ likes: ["1", "2"] });
   },
-  setCartItems: async () => {
+  getFollowedVendors: async () => {
+    const result = ["1", "2"];
+    set({ followedVendors: result });
+  },
+  getCartItems: async () => {
     const result = [
       { product: "1", quantity: 1 },
       { product: "2", quantity: 2 }
     ];
     set({ cartItems: result });
   },
-  setSaves: async () => {
+  getSaves: async () => {
     const result = ["1", "2"];
     set({ saves: result });
   },
-  setFollowedVendors: async () => {
-    const result = ["1", "2"];
-    set({ following: result });
-  },
   setUser: (user) => set({ user }),
   setUserActions: jest.fn()
+}));
+
+export const mockAppStore = create<Partial<AppStore>>()((set) => ({
+  countries: [],
+  setCountries: () =>
+    set({
+      countries: [
+        { name: "Country 1", _id: "1", code: "c1" },
+        { name: "Country 1", _id: "1", code: "c1" }
+      ]
+    })
 }));
 
 export const mockHomeProduct: IFullProduct = {

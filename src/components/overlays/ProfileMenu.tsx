@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import OverlayLayout from "./OverlayLayout";
-import { useAppStore } from "@/stores/appStore";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { FiLogOut } from "react-icons/fi";
 import { useTranslation } from "@/context/Translation";
@@ -11,12 +10,13 @@ import { BsStar } from "react-icons/bs";
 import { PiPassword } from "react-icons/pi";
 import { logout } from "@/actions";
 import { usePathname } from "next/navigation";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 export default function ProfileMenuOverlay() {
-  const pathname = usePathname();
-  const { setIsProfileMenuOpen } = useAppStore();
-  const [activeTap, setActiveTap] = useState("main");
+  const setIsProfileMenuOpen = useOverlayStore((state) => state.setIsProfileMenuOpen);
   const { t } = useTranslation();
+  const pathname = usePathname();
+  const [activeTap, setActiveTap] = useState("main");
 
   const userMenuNav = [
     {

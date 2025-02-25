@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import OverlayLayout from "./OverlayLayout";
-import { useAppStore } from "@/stores/appStore";
+// import { useAppStore } from "@/stores/appStore";
 import { FieldError } from "@/types";
 import RatingStars from "../ui/RatingStars";
 import Button from "../ui/Button";
@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useUserStore } from "@/stores/userStore";
 import { addReview } from "@/services/products.service";
+import { useProductStore } from "@/stores/productStore";
 
 type FormError = {
   reviewText: FieldError;
@@ -15,18 +16,19 @@ type FormError = {
 };
 
 export default function AddReviewOverlay() {
-  const { setIsAddReviewOpen, overlayProductId } = useAppStore();
-  const { setReviews } = useUserStore();
+  const productId = useProductStore((state) => state.productIdToOverlay);
+  const setIsAddReviewOpen = useProductStore((state) => state.setIsAddReviewOpen);
+  const getReviews = useUserStore((state) => state.getReviews);
   const [form, setForm] = useState({ reviewText: "", rating: 0 });
   const [error, setError] = useState<FormError>({ reviewText: false, rating: false });
 
   const addReviewMutation = useMutation({
-    mutationKey: ["AddReview", overlayProductId],
+    mutationKey: ["AddReview", productId],
     mutationFn: (productId: string) => addReview(productId, form),
     onSuccess: () => {
       toast.success("Review Added Successfully");
       setForm({ rating: 0, reviewText: "" });
-      setReviews();
+      getReviews();
       setIsAddReviewOpen(false);
     },
 
@@ -34,8 +36,8 @@ export default function AddReviewOverlay() {
   });
 
   const addReviewSubmit = () => {
-    if (form.rating <= 0 || form.reviewText.length === 0 || !overlayProductId) return;
-    addReviewMutation.mutate(overlayProductId);
+    if (form.rating <= 0 || form.reviewText.length === 0 || !productId) return;
+    addReviewMutation.mutate(productId);
   };
 
   const fieldChangeHandle = (value: string, name: string) => {

@@ -9,20 +9,18 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import Button from "@/components/ui/Button";
 import { toast } from "react-toastify";
 import FormDropdownInput from "@/components/FormDropdownInput";
-import { useAppStore } from "@/stores/appStore";
 import RadioGroup from "@/components/RadioGroup";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { checkoutData, placeOrder, preperCardPayment } from "@/services/checkout.service";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 interface ICheckoutForm {
   shippingAddressId: string;
   billingMethod: string;
-  billingStatus: string;
 }
 
 const initialCheckoutForm: ICheckoutForm = {
   billingMethod: "cod",
-  billingStatus: "cod",
   shippingAddressId: ""
 };
 
@@ -32,7 +30,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [activeTap, setActiveTap] = useState<"shipping" | "billing" | "summary">("shipping");
   const [form, setForm] = useState(initialCheckoutForm);
-  const { setIsAddAddressOpen } = useAppStore();
+  const setIsAddAddressOpen = useOverlayStore((state) => state.setIsAddAddressOpen);
   const { t } = useTranslation();
   const [orderProcessing, setIsProcessing] = useState(false);
 
@@ -41,6 +39,10 @@ export default function CheckoutPage() {
     mutationFn: () => placeOrder(form),
     onSuccess: (res) => {
       router.push(`/order-success/${res.data._id}`);
+    },
+    onError: () => {
+      toast.error("Could not place order");
+      setIsProcessing(false);
     }
   });
 
@@ -53,7 +55,7 @@ export default function CheckoutPage() {
     queryKey: ["checkoutData"],
     queryFn: () =>
       checkoutData().then((data) => {
-        setForm({ ...form, shippingAddressId: data.addresses[0]._id });
+        if (data.addresses.length > 0) setForm({ ...form, shippingAddressId: data.addresses[0]._id });
         return data;
       })
   });
@@ -98,6 +100,7 @@ export default function CheckoutPage() {
 
       if (stripeError) {
         setIsProcessing(false);
+        toast.error(stripeError.message);
         return toast.error(t("checkout.failedToVerifyPayment"));
       } else placeOrderMutation.mutate();
     };
@@ -177,18 +180,28 @@ export default function CheckoutPage() {
                 {t("addresses.newAddress")}
               </Button>
             </div>
+
             <RadioGroup
+              checkedValue={form.billingMethod}
               className="text-sm"
               title={t("checkout.billingMethod")}
-              value={form.billingMethod}
               options={[
                 { name: "COD", value: "cod" },
                 { name: "Cridet Card", value: "card" }
               ]}
-              onChange={(value) => setForm({ ...form, billingMethod: value })}
+              onChange={(e) => setForm({ ...form, billingMethod: e.currentTarget.value })}
             />
+
             {form.billingMethod === "card" ? (
-              <CardElement className="mx-auto mt-9 w-auto max-w-[500] rounded-md border p-4" />
+              <>
+                <CardElement className="mx-auto mt-9 w-auto max-w-[500] rounded-md border p-4" />
+                <div className="text-center text-sm text-gray-400">
+                  <div>Test Cridet card N: 4242 4242 4242 4242</div>
+                  <div>expiry: any futural month/year</div>
+                  <div>passcode: any 3 numbers</div>
+                  <div>ZIP: any 5 numbers</div>
+                </div>
+              </>
             ) : null}
           </>
         )}

@@ -2,11 +2,11 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import { useAppStore } from "@/stores/appStore";
 import { BiMenu } from "react-icons/bi";
 import { useTranslation } from "@/context/Translation";
 import BackArrow from "@/components/ui/BackArrow";
 import { useUserStore } from "@/stores/userStore";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 type Props = {
   children: React.ReactNode;
@@ -18,9 +18,9 @@ export default function ProfileLayout(props: Props) {
 
   const { children } = props;
 
-  const { setIsProfileMenuOpen } = useAppStore();
+  const setIsProfileMenuOpen = useOverlayStore((state) => state.setIsProfileMenuOpen);
+  const user = useUserStore((state) => state.user);
   const { t, lang } = useTranslation();
-  const { user } = useUserStore();
   const router = useRouter();
   const pathname = usePathname();
 

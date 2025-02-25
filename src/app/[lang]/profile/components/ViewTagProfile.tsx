@@ -1,13 +1,13 @@
 "use client";
 
 import { useTranslation } from "@/context/Translation";
-import { IFullProduct, ITag, Pagination } from "@/types";
+import { ITag } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { BiLoaderCircle } from "react-icons/bi";
-import ProductCard from "@/components/product/Card";
+import ProductsGridView from "@/components/product/ProductsGridView";
+import { getProductsByTag } from "@/services/products.service";
 
 type Props = {
   tag: ITag;
@@ -19,14 +19,7 @@ export default function ViewtagProfile({ tag }: Props) {
 
   const productsQuery = useInfiniteQuery({
     queryKey: ["tagProducts", tag._id],
-    queryFn: ({ pageParam }) =>
-      axios
-        .get<{ data: IFullProduct[]; pages: Pagination }>(`/api/Catalog/TagProducts/${tag._id}`, {
-          params: {
-            page: pageParam
-          }
-        })
-        .then((res) => res.data),
+    queryFn: ({ pageParam }) => getProductsByTag(tag._id, { page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
       return lastPageParam + 1;
@@ -34,6 +27,7 @@ export default function ViewtagProfile({ tag }: Props) {
   });
 
   const lastPage = productsQuery.data?.pages.findLast((page) => page);
+  const products = productsQuery.data?.pages.map((page) => page.data).flat() ?? [];
 
   useEffect(() => {
     if (!productsQuery.isFetching && !productsQuery.isFetchingNextPage && isInView && lastPage?.pages.hasNext)
@@ -53,20 +47,14 @@ export default function ViewtagProfile({ tag }: Props) {
 
       <div className="mt-6 border-t" />
 
-      {productsQuery.isFetchedAfterMount ? (
-        productsQuery.data && productsQuery.data.pages[0].data.length > 0 ? (
-          <div className="relative mt-4 grid grid-cols-2 gap-3 px-4 pb-20 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-            {productsQuery.data.pages.map((page) =>
-              page.data.map((product, index) => <ProductCard key={index} product={product} />)
-            )}
-          </div>
-        ) : (
-          <div className="py-14 text-center text-secondary">{t("profile.noProducts")}</div>
-        )
-      ) : null}
+      {products.length > 0 || productsQuery.isFetched ? (
+        <ProductsGridView products={products} />
+      ) : (
+        <div className="py-14 text-center text-secondary">{t("profile.noProducts")}</div>
+      )}
 
-      {lastPage?.pages.hasNext || !productsQuery.isFetchedAfterMount ? (
-        <div className="w-sfull flex flex-col items-center justify-center py-2" ref={ref}>
+      {lastPage?.pages.hasNext || !productsQuery.isFetched ? (
+        <div className="flex w-full flex-col items-center justify-center py-2" ref={ref}>
           <BiLoaderCircle className="animate-spin fill-primary" size={35} />
         </div>
       ) : null}

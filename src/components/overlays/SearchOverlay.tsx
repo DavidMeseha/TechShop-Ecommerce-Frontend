@@ -7,10 +7,10 @@ import { ICategory, IFullProduct, ITag, IVendor } from "@/types";
 import Image from "next/image";
 import { RiCloseLine } from "react-icons/ri";
 import Button from "../ui/Button";
-import { useAppStore } from "@/stores/appStore";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { BiLoaderCircle } from "react-icons/bi";
 import { Variants, motion } from "framer-motion";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 type SearchResponseItem = {
   item: IFullProduct | IVendor | ITag | ICategory;
@@ -30,7 +30,8 @@ const popupVariants: Variants = {
 };
 
 export default function SearchOverlay() {
-  const { setIsSearchOpen, isSearchOpen } = useAppStore();
+  const setIsSearchOpen = useOverlayStore((state) => state.setIsSearchOpen);
+  const isSearchOpen = useOverlayStore((state) => state.isSearchOpen);
   const [searchText, setSearchText] = useState("");
   const [options, setOptions] = useState({
     categories: false,
@@ -76,7 +77,7 @@ export default function SearchOverlay() {
               className="rounded-full border-none bg-white p-4 pe-12 drop-shadow-md"
               placeholder="Find: vendor, product, category, tag"
               type="text"
-              onChange={(e) => handleChange(e.target.value)}
+              onChange={(e) => handleChange(e.currentTarget.value)}
             />
             <Button className="absolute end-0 top-0 py-4 text-secondary" onClick={() => setIsSearchOpen(false)}>
               <RiCloseLine size="30" />

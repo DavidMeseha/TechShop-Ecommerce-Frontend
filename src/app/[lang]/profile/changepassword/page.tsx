@@ -79,7 +79,7 @@ export default function ChangePasswordPage() {
           placeholder={t("changePassword.current")}
           type="password"
           value={form.original}
-          onChange={(e) => handleFieldOnChange(e.target.value, e.target.name)}
+          onChange={(e) => handleFieldOnChange(e.currentTarget.value, e.currentTarget.name)}
         />
 
         <FormTextInput
@@ -89,7 +89,7 @@ export default function ChangePasswordPage() {
           placeholder={t("changePassword.new")}
           type="password"
           value={form.new}
-          onChange={(e) => handleFieldOnChange(e.target.value, e.target.name)}
+          onChange={(e) => handleFieldOnChange(e.currentTarget.value, e.currentTarget.name)}
         />
 
         <FormTextInput
@@ -99,7 +99,7 @@ export default function ChangePasswordPage() {
           placeholder={t("changePassword.confirm")}
           type="password"
           value={form.confirm}
-          onChange={(e) => handleFieldOnChange(e.target.value, e.target.name)}
+          onChange={(e) => handleFieldOnChange(e.currentTarget.value, e.currentTarget.name)}
         />
 
         <Button

@@ -20,7 +20,7 @@ export default function ProductAttributes({ productAttributes, customAttributes,
           label={attr.name}
           type="text"
           value={customAttributes[index].values[0]._id}
-          onChange={(e) => handleChange(attr._id, e.target.value)}
+          onChange={(e) => handleChange(attr._id, e.currentTarget.value)}
         />
       )}
 
@@ -45,10 +45,10 @@ export default function ProductAttributes({ productAttributes, customAttributes,
 
       {attr.attributeControlType === "RadioList" && (
         <RadioGroup
+          checkedValue={customAttributes[index]?.values[0]._id ?? ""}
           options={attr.values.map((item) => ({ name: item.name, value: item._id }))}
           title={attr.name}
-          value={customAttributes[index]?.values[0]._id ?? ""}
-          onChange={(value) => handleChange(attr._id, value)}
+          onChange={(e) => handleChange(attr._id, e.currentTarget.value)}
         />
       )}
 

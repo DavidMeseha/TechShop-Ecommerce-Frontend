@@ -1,25 +1,25 @@
 "use client";
 
-import { ICategory, Pagination } from "@/types";
+import { ICategory } from "@/types";
 import { useTranslation } from "@/context/Translation";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import React from "react";
 import Button from "@/components/ui/Button";
-import axios from "@/lib/axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Loading from "@/components/LoadingUi/LoadingSpinner";
+import { getCategories } from "@/services/products.service";
+
+type ListItemProps = {
+  category: ICategory;
+  to: string;
+};
 
 export default function Page() {
   const { t } = useTranslation();
 
   const categoriesQuery = useInfiniteQuery({
     queryKey: ["categoriesDiscover"],
-    queryFn: ({ pageParam }) =>
-      axios
-        .get<{ data: ICategory[]; pages: Pagination }>("/api/catalog/discover/categories", {
-          params: { page: pageParam }
-        })
-        .then((res) => res.data),
+    queryFn: ({ pageParam }) => getCategories({ page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
       return lastPageParam + 1;
@@ -55,11 +55,6 @@ export default function Page() {
     </ul>
   );
 }
-
-type ListItemProps = {
-  category: ICategory;
-  to: string;
-};
 
 function ListItem({ to, category }: ListItemProps) {
   const { t } = useTranslation();

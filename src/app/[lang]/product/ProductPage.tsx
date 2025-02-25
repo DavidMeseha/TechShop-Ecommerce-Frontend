@@ -3,7 +3,6 @@ import AddToCartButton from "@/components/product/AddToCartButton";
 import LikeProductButton from "@/components/product/LikeButton";
 import ProductsSectionLoading from "@/components/LoadingUi/ProductsSetLoading";
 import ProductAttributes from "@/components/product/Attributes";
-import ProductCard from "@/components/product/Card";
 import RateProductButton from "@/components/product/RateButton";
 import RatingStars from "@/components/ui/RatingStars";
 import SaveProductButton from "@/components/product/SaveButton";
@@ -13,19 +12,27 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { homeFeed } from "@/services/products.service";
+import { homeFeedProducts } from "@/services/products.service";
+import ProductsGridView from "@/components/product/ProductsGridView";
+import { useUserStore } from "@/stores/userStore";
+import { isInCart } from "@/lib/utils";
 
 type Props = {
   product: IFullProduct;
 };
 
 export default function ProductPage({ product }: Props) {
+  const likes = useUserStore((state) => state.likes);
+  const saves = useUserStore((state) => state.saves);
+  const reviews = useUserStore((state) => state.reviews);
+  const cartItems = useUserStore((state) => state.cartItems);
+
   const [customAttributes, setCustomAttributes] = useState(selectDefaultAttributes(product.productAttributes));
   const [ref, inView] = useInView();
 
   const productsQuery = useQuery({
     queryKey: ["similarProducts", product.seName],
-    queryFn: () => homeFeed({ page: 1, limit: 4 }),
+    queryFn: () => homeFeedProducts({ page: 1, limit: 4 }),
     enabled: inView
   });
   const products = productsQuery.data ?? [];
@@ -87,10 +94,14 @@ export default function ProductPage({ product }: Props) {
               </div>
 
               <div className="mt-6 flex items-center gap-4 sm:mt-8">
-                <LikeProductButton product={product} />
-                <SaveProductButton product={product} />
-                <AddToCartButton attributes={customAttributes} product={product} />
-                <RateProductButton product={product} />
+                <LikeProductButton isLiked={likes.includes(product._id)} product={product} />
+                <SaveProductButton isSaved={saves.includes(product._id)} product={product} />
+                <AddToCartButton
+                  attributes={customAttributes}
+                  isInCart={isInCart(product._id, cartItems)}
+                  product={product}
+                />
+                <RateProductButton isRated={reviews.includes(product._id)} product={product} />
               </div>
 
               <hr className="my-6 border-gray-200 md:my-8" />
@@ -102,16 +113,16 @@ export default function ProductPage({ product }: Props) {
       </section>
 
       <h1 className="px-4 text-2xl font-bold">Similar Products</h1>
-      <section
-        className="relative mt-4 grid grid-cols-2 gap-3 px-4 pb-10 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
-        ref={ref}
-      >
-        {productsQuery.isPending ? (
+      {productsQuery.isPending ? (
+        <section
+          className="relative mt-4 grid grid-cols-2 gap-3 px-4 pb-10 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+          ref={ref}
+        >
           <ProductsSectionLoading count={4} />
-        ) : (
-          products.map((product) => <ProductCard key={product._id} product={product} />)
-        )}
-      </section>
+        </section>
+      ) : (
+        <ProductsGridView products={products} />
+      )}
     </>
   );
 }

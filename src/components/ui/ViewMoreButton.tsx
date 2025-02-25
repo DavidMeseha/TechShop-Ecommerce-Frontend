@@ -1,10 +1,10 @@
-import { useAppStore } from "@/stores/appStore";
+import { useProductStore } from "@/stores/productStore";
 import { IFullProduct } from "@/types";
 import React from "react";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 
 export default function ViewMoreButton({ product }: { product: IFullProduct }) {
-  const { setIsProductMoreInfoOpen } = useAppStore();
+  const setIsProductMoreInfoOpen = useProductStore((state) => state.setIsProductMoreInfoOpen);
   return (
     <button
       aria-label="Open product more info"

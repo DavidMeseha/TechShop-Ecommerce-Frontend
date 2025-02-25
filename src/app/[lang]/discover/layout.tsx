@@ -2,17 +2,17 @@
 
 import BackArrow from "@/components/ui/BackArrow";
 import { useTranslation } from "@/context/Translation";
-import { useAppStore } from "@/stores/appStore";
 import { useRouter } from "next-nprogress-bar";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { usePathname } from "next/navigation";
 import React, { ReactNode } from "react";
 import { BsSearch } from "react-icons/bs";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { setIsSearchOpen } = useAppStore();
+  const setIsSearchOpen = useOverlayStore((state) => state.setIsSearchOpen);
   const { t } = useTranslation();
 
   return (

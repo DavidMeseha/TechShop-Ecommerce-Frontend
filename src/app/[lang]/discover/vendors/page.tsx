@@ -1,25 +1,23 @@
 "use client";
 
+import React from "react";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import Image from "next/image";
-import { IVendor, Pagination } from "@/types";
+import { IVendor } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import Button from "@/components/ui/Button";
 import { useUserStore } from "@/stores/userStore";
 import Loading from "@/components/LoadingUi/LoadingSpinner";
 import useFollow from "@/hooks/useFollow";
 import { useTranslation } from "@/context/Translation";
+import { getVendors } from "@/services/products.service";
 
 export default function Page() {
+  const followedVendors = useUserStore((state) => state.followedVendors);
+
   const vendorsQuery = useInfiniteQuery({
     queryKey: ["vendorsDiscover"],
-    queryFn: ({ pageParam }) =>
-      axios
-        .get<{ data: IVendor[]; pages: Pagination }>("/api/catalog/discover/vendors", {
-          params: { page: pageParam }
-        })
-        .then((res) => res.data),
+    queryFn: ({ pageParam }) => getVendors({ page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
       return lastPageParam + 1;
@@ -31,7 +29,11 @@ export default function Page() {
 
   return (
     <ul className="mt-14 md:mt-4">
-      {vendorsPages.map((page) => page.data.map((vendor) => <ListItem key={vendor._id} vendor={vendor} />))}
+      {vendorsPages.map((page) =>
+        page.data.map((vendor) => (
+          <MemoizedListItem isFollowed={followedVendors.includes(vendor._id)} key={vendor._id} vendor={vendor} />
+        ))
+      )}
 
       {vendorsQuery.isFetching ? (
         <Loading />
@@ -50,38 +52,42 @@ export default function Page() {
   );
 }
 
-function ListItem({ vendor }: { vendor: IVendor }) {
-  const { t } = useTranslation();
-  const { following } = useUserStore();
-  const { handleFollow } = useFollow({ vendor });
+const MemoizedListItem = React.memo(
+  function ListItem({ vendor, isFollowed }: { vendor: IVendor; isFollowed: boolean }) {
+    const { t } = useTranslation();
+    const handleFollow = useFollow({ vendor });
 
-  return (
-    <li className="flex items-center justify-between px-4 py-2">
-      <div className="flex w-full items-center gap-3">
-        <Image
-          alt={vendor.name}
-          className="h-14 w-14 rounded-full bg-lightGray object-cover"
-          height={56}
-          src={vendor.imageUrl}
-          width={56}
-        />
+    return (
+      <li className="flex items-center justify-between px-4 py-2">
+        <div className="flex w-full items-center gap-3">
+          <Image
+            alt={vendor.name}
+            className="h-14 w-14 rounded-full bg-lightGray object-cover"
+            height={56}
+            src={vendor.imageUrl}
+            width={56}
+          />
 
-        <div>
-          <LocalLink className="font-bold hover:underline" href={`/profile/vendor/${vendor.seName}`}>
-            {vendor.name}
-          </LocalLink>
-          <p className="text-secondary">Products: {vendor.productCount}</p>
+          <div>
+            <LocalLink className="font-bold hover:underline" href={`/profile/vendor/${vendor.seName}`}>
+              {vendor.name}
+            </LocalLink>
+            <p className="text-secondary">Products: {vendor.productCount}</p>
+          </div>
         </div>
-      </div>
-      <div>
-        {following.includes(vendor._id) ? (
-          <div className="text-secondary">{t("profile.following")}</div>
-        ) : (
-          <Button className="bg-primary px-4 font-bold text-white" onClick={() => handleFollow(true)}>
-            +
-          </Button>
-        )}
-      </div>
-    </li>
-  );
-}
+        <div>
+          {isFollowed ? (
+            <div className="text-secondary">{t("profile.following")}</div>
+          ) : (
+            <Button className="bg-primary px-4 font-bold text-white" onClick={() => handleFollow(true)}>
+              +
+            </Button>
+          )}
+        </div>
+      </li>
+    );
+  },
+  (prev, next) => {
+    return prev.isFollowed === next.isFollowed && prev.vendor._id === next.vendor._id;
+  }
+);

@@ -1,36 +1,44 @@
-import axios from "@/lib/axios";
 import { Metadata, ResolvingMetadata } from "next";
-import { IFullProduct } from "@/types";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 import { AxiosError } from "axios";
-import { notFound } from "next/navigation";
+import { IFullProduct } from "@/types";
+import axios from "@/lib/axios";
 import ProductPage from "../ProductPage";
+import { homeFeedProducts } from "@/services/products.service";
 
-type Props = {
+interface Props {
   params: { seName: string };
-};
+}
 
-const getProduct = cache(async (seName: string) => {
-  return await axios.get<IFullProduct>(`/api/product/details/${seName}`).then((res) => res.data);
+const getProduct = cache(async (seName: string): Promise<IFullProduct> => {
+  try {
+    const response = await axios.get<IFullProduct>(`/api/product/details/${seName}`);
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    if (axiosError.response?.status && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+      notFound();
+    }
+    throw error;
+  }
 });
 
 export const revalidate = 120;
 export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  const products = await axios.get<{ data: IFullProduct[] }>(`/api/catalog/homefeed`).then((res) => res.data.data);
+  const products = await homeFeedProducts({ page: 1, limit: 5 });
   return products.map((product) => ({
     seName: product.seName
   }));
 }
 
-export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const params = props.params;
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   try {
-    const res = await getProduct(params.seName);
-    const product = res;
-    const parentMeta = await parent;
+    const [product, parentMeta] = await Promise.all([getProduct(params.seName), parent]);
 
-    return {
+    const metadata: Metadata = {
       title: `${parentMeta.title?.absolute} | ${product.name}`,
       description: product.fullDescription,
       openGraph: {
@@ -40,18 +48,18 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
         description: product.fullDescription
       }
     };
+
+    return metadata;
   } catch {
-    return { title: "Error" };
+    return { title: "Product Not Found" };
   }
 }
 
-export default async function Page(props: Props) {
-  const params = props.params;
+export default async function Page({ params }: Props) {
   try {
     const product = await getProduct(params.seName);
     return <ProductPage product={product} />;
-  } catch (err: any) {
-    const error = err as AxiosError;
-    if (error.response && error.response.status >= 400 && error.response.status < 500) notFound();
+  } catch {
+    notFound();
   }
 }

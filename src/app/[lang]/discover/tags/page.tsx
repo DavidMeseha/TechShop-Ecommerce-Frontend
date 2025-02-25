@@ -3,21 +3,21 @@
 import { LocalLink } from "@/components/LocalizedNavigation";
 import React from "react";
 import { BsHash } from "react-icons/bs";
-import { ITag, Pagination } from "@/types";
+import { ITag } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/LoadingUi/LoadingSpinner";
+import { getTags } from "@/services/products.service";
+
+type ListItemProps = {
+  tag: ITag;
+  to: string;
+};
 
 export default function Page() {
   const tagsQuery = useInfiniteQuery({
     queryKey: ["tagsDiscover"],
-    queryFn: ({ pageParam }) =>
-      axios
-        .get<{ data: ITag[]; pages: Pagination }>("/api/catalog/discover/tags", {
-          params: { page: pageParam }
-        })
-        .then((res) => res.data),
+    queryFn: ({ pageParam }) => getTags({ page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
       return lastPageParam + 1;
@@ -52,11 +52,6 @@ export default function Page() {
     </div>
   );
 }
-
-type ListItemProps = {
-  tag: ITag;
-  to: string;
-};
 
 function ListItem({ tag, to }: ListItemProps) {
   return (

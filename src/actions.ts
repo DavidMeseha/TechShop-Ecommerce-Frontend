@@ -3,8 +3,9 @@
 import { cookies } from "next/headers";
 import axios from "./lib/axios";
 import { redirect } from "next/navigation";
-import { Language, User } from "./types";
+import { Language } from "./types";
 import { getPathnameLang, replacePathnameLang } from "./lib/misc";
+import { getGuestToken } from "./services/auth.service";
 
 const axiosConfig = () => {
   return {
@@ -34,7 +35,7 @@ export async function getLanguage() {
 export async function logout(pathname: string) {
   try {
     await axios.post("/api/auth/logout", {}, axiosConfig());
-    const guest = await axios.get<{ user: User; token: string }>("/api/auth/guest");
+    const guest = await getGuestToken();
     await setToken(guest.data.token);
     cookies().set("lang", "en");
   } catch {
@@ -46,21 +47,12 @@ export async function logout(pathname: string) {
 
 export async function registerGuest(pathname: string) {
   try {
-    const guest = await axios.get<{ user: User; token: string }>("/api/auth/guest");
+    const guest = await getGuestToken();
     await setToken(guest.data.token);
   } catch {
     return redirect(pathname);
   }
   return redirect(pathname);
-}
-
-export async function getCartIds() {
-  try {
-    const res = await axios.get<{ product: string; quantity: number }[]>("/api/common/cart/ids", axiosConfig());
-    return res.data;
-  } catch {
-    return [];
-  }
 }
 
 export async function changeLanguage(lang: Language, pathname: string) {
