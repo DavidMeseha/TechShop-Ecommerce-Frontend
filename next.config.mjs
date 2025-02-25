@@ -18,7 +18,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "all-in-one-my-shop-back.vercel.app",
+        hostname: "techshop-ecommerce-backend-production.up.railway.app",
         port: "",
         pathname: "/images/**"
       },
