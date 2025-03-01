@@ -1,7 +1,7 @@
 "use client";
 
 import AllOverlays from "@/components/overlays/AllOverlays";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BottomNav from "./includes/BottomNav";
 import Header from "./includes/Header";
 import SideNav from "./includes/SideNav";
@@ -14,13 +14,17 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ children, token }: MainLayoutProps) {
+  const [isInitializing, setIsInitializing] = useState(true);
   useEffect(() => {
     axios.interceptors.request.clear();
     axios.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${token}`;
       return config;
     });
+    setIsInitializing(false);
   }, []);
+
+  if (isInitializing) return null;
 
   return (
     <>
