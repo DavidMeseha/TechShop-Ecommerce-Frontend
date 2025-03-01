@@ -4,6 +4,8 @@ import { IVendor } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { followVendor, unfollowVendor } from "@/services/userActions.service";
+import { isAxiosError } from "axios";
+import { useRef } from "react";
 
 interface FollowHookProps {
   vendor: IVendor;
@@ -17,6 +19,7 @@ export default function useFollow({ vendor, onClick }: FollowHookProps) {
   const user = useUserStore((state) => state.user);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const timeoutRef = useRef<number>();
 
   const followMutation = useMutation({
     mutationKey: ["follow", vendor._id],
@@ -25,7 +28,11 @@ export default function useFollow({ vendor, onClick }: FollowHookProps) {
       getFollowedVendors();
       queryClient.invalidateQueries({ queryKey: ["following"] });
     },
-    onError: () => removeFromFollowedVendors(vendor._id)
+    onError: (err) => {
+      if (isAxiosError(err) && err.response?.status !== 400) {
+        removeFromFollowedVendors(vendor._id);
+      }
+    }
   });
 
   const unfollowMutation = useMutation({
@@ -35,24 +42,26 @@ export default function useFollow({ vendor, onClick }: FollowHookProps) {
       getFollowedVendors();
       queryClient.invalidateQueries({ queryKey: ["following"] });
     },
-    onError: () => addToFollowedVendors(vendor._id)
+    onError: (err) => {
+      if (isAxiosError(err) && err.response?.status !== 400) {
+        addToFollowedVendors(vendor._id);
+      }
+    }
   });
 
   const handleFollow = async (shouldFollow: boolean) => {
-    if (followMutation.isPending || unfollowMutation.isPending) return;
     if (!user) return;
-    if (!user.isRegistered) {
-      return toast.warn(t("loginToPerformAction"));
-    }
+    if (!user.isRegistered) return toast.warn(t("loginToPerformAction"));
 
+    // Immediately update UI
     shouldFollow ? addToFollowedVendors(vendor._id) : removeFromFollowedVendors(vendor._id);
     onClick?.(shouldFollow);
 
-    if (shouldFollow) {
-      await followMutation.mutateAsync();
-    } else {
-      await unfollowMutation.mutateAsync();
-    }
+    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => {
+      if (shouldFollow) followMutation.mutate();
+      else unfollowMutation.mutate();
+    }, 600);
   };
 
   return handleFollow;

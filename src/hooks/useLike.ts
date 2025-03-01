@@ -4,6 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "@/context/Translation";
 import { toast } from "react-toastify";
 import { likeProduct, unLikeProduct } from "@/services/userActions.service";
+import { useRef } from "react";
+import { isAxiosError } from "axios";
 
 interface LikeHookProps {
   product: IFullProduct;
@@ -18,6 +20,7 @@ export default function useLike({ product, onError, onClick }: LikeHookProps) {
   const getLikes = useUserStore((state) => state.getLikes);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const timeoutRef = useRef<number>();
 
   const likeMutation = useMutation({
     mutationKey: ["like", product.seName],
@@ -26,9 +29,11 @@ export default function useLike({ product, onError, onClick }: LikeHookProps) {
       getLikes();
       queryClient.invalidateQueries({ queryKey: ["likedProducts"] });
     },
-    onError: () => {
-      removeFromLikes(product._id);
-      onError?.(true);
+    onError: (err) => {
+      if (isAxiosError(err) && err.response?.status !== 400) {
+        removeFromLikes(product._id);
+        onError?.(true);
+      }
     }
   });
 
@@ -39,28 +44,27 @@ export default function useLike({ product, onError, onClick }: LikeHookProps) {
       getLikes();
       queryClient.invalidateQueries({ queryKey: ["likedProducts"] });
     },
-    onError: () => {
-      addToLikes(product._id);
-      onError?.(false);
+    onError: (err) => {
+      if (isAxiosError(err) && err.response?.status !== 400) {
+        addToLikes(product._id);
+        onError?.(false);
+      }
     }
   });
 
   const handleLike = (shouldLike: boolean) => {
-    if (likeMutation.isPending || unlikeMutation.isPending) return;
     if (!user) return;
+    if (!user.isRegistered) return toast.warn(t("loginToPerformAction"), { toastId: "likeError" });
 
-    if (!user.isRegistered) {
-      return toast.warn(t("loginToPerformAction"), { toastId: "likeError" });
-    }
-
+    // Immediately update UI
     shouldLike ? addToLikes(product._id) : removeFromLikes(product._id);
     onClick?.(shouldLike);
 
-    if (shouldLike) {
-      likeMutation.mutate();
-    } else {
-      unlikeMutation.mutate();
-    }
+    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => {
+      if (shouldLike) likeMutation.mutate();
+      else unlikeMutation.mutate();
+    }, 600);
   };
 
   return handleLike;

@@ -67,7 +67,7 @@ export const useUserStore = create<UserStore>()(
           likesTimeout = window.setTimeout(async () => {
             const result = await getLikeIds();
             set({ likes: result });
-          }, 10_000);
+          }, 15_000);
         },
         removeFromLikes: function (id: string) {
           set(({ likes }) => {
@@ -114,7 +114,7 @@ export const useUserStore = create<UserStore>()(
           savesTimeout = window.setTimeout(async () => {
             const result = await getSaveIds();
             set({ saves: result });
-          }, 10_000);
+          }, 15_000);
         },
         removeFromSaves: (id: string) => {
           set(({ saves }) => {
@@ -134,7 +134,7 @@ export const useUserStore = create<UserStore>()(
           followingTimeout = window.setTimeout(async () => {
             const result = await getFollowIds();
             set({ followedVendors: result });
-          }, 10_000);
+          }, 15_000);
         },
         removeFromFollowedVendors: (vendorId: string) => {
           set(({ followedVendors }) => {
