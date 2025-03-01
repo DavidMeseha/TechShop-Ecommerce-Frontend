@@ -2,12 +2,15 @@ import React, { useCallback } from "react";
 import ProductCard from "@/components/product/Card";
 import { IFullProduct } from "@/types";
 import { useUserStore } from "@/stores/userStore";
+import ProductsSetLoading from "../LoadingUi/ProductsSetLoading";
 
 type Props = {
   products: IFullProduct[];
+  isLoading?: boolean;
+  limit?: number;
 };
 
-export default function ProductsGridView({ products }: Props) {
+export default function ProductsGridView({ products, isLoading, limit = 4 }: Props) {
   const cartItems = useUserStore((state) => state.cartItems);
   const saves = useUserStore((state) => state.saves);
   const likes = useUserStore((state) => state.likes);
@@ -25,6 +28,7 @@ export default function ProductsGridView({ products }: Props) {
           product={product}
         />
       ))}
+      {isLoading ? <ProductsSetLoading count={limit} /> : null}
     </div>
   );
 }

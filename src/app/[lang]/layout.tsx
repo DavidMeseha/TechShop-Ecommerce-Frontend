@@ -1,35 +1,29 @@
-import { ToastContainer } from "react-toastify";
-import MainLayout from "../../components/layout/MainLayout";
-import { getDictionary } from "../../dictionary";
-import React, { ReactElement } from "react";
-import { cookies } from "next/headers";
-import { Language } from "@/types";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import AppProviders from "@/components/layout/AppProviders";
+import { getDictionary } from "@/dictionary";
 import { languages } from "@/lib/misc";
-import Transition from "@/context/Transition";
+import { Language } from "@/types";
+import { ReactNode } from "react";
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return languages.map((lang) => ({ lang }));
 }
 
-export default async function Layout({ children, params }: { children: ReactElement; params: { lang: Language } }) {
+export default async function Layout({ params, children }: { children: ReactNode; params: { lang: Language } }) {
   const dictionary = await getDictionary(params.lang);
-  const token = cookies().get("session")?.value;
 
   return (
     <html className="snap-both snap-mandatory" dir={params.lang === "ar" ? "rtl" : "ltr"} lang={params.lang}>
+      <head>
+        <script async crossOrigin="anonymous" src="//unpkg.com/react-scan/dist/auto.global.js" />
+      </head>
       <body
         className={`w-auto overflow-x-hidden md:w-screen ${params.lang === "ar" ? "md:ms-4" : ""} md:pr-4`}
         dir="ltr"
       >
         <div dir={params.lang === "ar" ? "rtl" : "ltr"}>
-          <MainLayout dictionary={dictionary} lang={params.lang} token={token}>
-            <Transition>{children}</Transition>
-            <ToastContainer />
-          </MainLayout>
-          <Analytics />
-          <SpeedInsights />
+          <AppProviders dictionary={dictionary} lang={params.lang}>
+            {children}
+          </AppProviders>
         </div>
       </body>
     </html>

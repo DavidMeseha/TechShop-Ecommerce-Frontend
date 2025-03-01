@@ -10,7 +10,7 @@ type Props = {
   isInCart: boolean;
 };
 
-export default function AddToCartButton({ product, attributes, isInCart }: Props) {
+export default React.memo(function AddToCartButton({ product, attributes, isInCart }: Props) {
   const [count, setCount] = useState(product.carts);
 
   const { handleAddToCart, isPending } = useAddToCart({
@@ -37,4 +37,4 @@ export default function AddToCartButton({ product, attributes, isInCart }: Props
       <span className="text-blend text-xs font-semibold">{count}</span>
     </button>
   );
-}
+});

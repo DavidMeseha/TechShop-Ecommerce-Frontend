@@ -17,7 +17,7 @@ export default function FormDropdownInput({ value, label, error, onUpdate, optio
     <div className="relative pb-1">
       <label>{label}</label>
       <select
-        className="block w-full rounded-sm border border-secondary px-4 py-2 focus:border-primary focus:ring-primary"
+        className="block w-full rounded-sm border px-4 py-2 focus:border-primary focus:ring-primary"
         dir="ltr"
         name={name}
         value={value}

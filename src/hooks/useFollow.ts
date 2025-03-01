@@ -1,10 +1,9 @@
 import { useTranslation } from "@/context/Translation";
 import { useUserStore } from "@/stores/userStore";
 import { IVendor } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { followVendor, unfollowVendor } from "@/services/userActions.service";
-import { queryClient } from "@/components/layout/MainLayout";
 
 interface FollowHookProps {
   vendor: IVendor;
@@ -16,6 +15,7 @@ export default function useFollow({ vendor, onClick }: FollowHookProps) {
   const removeFromFollowedVendors = useUserStore((state) => state.removeFromFollowedVendors);
   const addToFollowedVendors = useUserStore((state) => state.addToFollowedVendors);
   const user = useUserStore((state) => state.user);
+  const queryClient = useQueryClient();
   const { t } = useTranslation();
 
   const followMutation = useMutation({

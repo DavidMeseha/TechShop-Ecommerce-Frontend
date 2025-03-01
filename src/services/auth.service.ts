@@ -1,5 +1,5 @@
 import axios from "@/lib/axios";
-import { RegisterFormInputs } from "@/schemas/valdation";
+import { LoginForm, RegisterForm } from "@/schemas/valdation";
 import { User } from "@/types";
 
 export async function checkTokenValidity() {
@@ -21,6 +21,10 @@ export async function changeUserPassword(form: { original: string; new: string }
   });
 }
 
-export async function registerUser(payload: RegisterFormInputs) {
+export async function registerUser(payload: RegisterForm) {
   return axios.post<{ message: string }>("/api/auth/register", { ...payload });
+}
+
+export async function login(payload: LoginForm) {
+  return axios.post<{ user: User; token: string }>("/api/auth/login", { ...payload }).then((res) => res.data);
 }

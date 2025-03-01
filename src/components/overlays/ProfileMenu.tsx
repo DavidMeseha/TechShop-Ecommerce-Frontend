@@ -8,14 +8,13 @@ import { useTranslation } from "@/context/Translation";
 import { FaRegAddressBook } from "react-icons/fa";
 import { BsStar } from "react-icons/bs";
 import { PiPassword } from "react-icons/pi";
-import { logout } from "@/actions";
-import { usePathname } from "next/navigation";
 import { useOverlayStore } from "@/stores/overlayStore";
+import { useUserSetup } from "@/context/UserProvider";
 
 export default function ProfileMenuOverlay() {
   const setIsProfileMenuOpen = useOverlayStore((state) => state.setIsProfileMenuOpen);
+  const { logout } = useUserSetup();
   const { t } = useTranslation();
-  const pathname = usePathname();
   const [activeTap, setActiveTap] = useState("main");
 
   const userMenuNav = [
@@ -60,7 +59,7 @@ export default function ProfileMenuOverlay() {
               </li>
             ))}
             <li>
-              <button className="flex items-center gap-4 py-2 font-semibold" onClick={() => logout(pathname)}>
+              <button className="flex items-center gap-4 py-2 font-semibold" onClick={logout}>
                 <FiLogOut size={20} />
                 {t("logout")}
               </button>

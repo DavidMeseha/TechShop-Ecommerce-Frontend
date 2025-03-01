@@ -58,7 +58,7 @@ export default React.memo(
             />
             <div>
               <p className="font-bold">{product.name}</p>
-              <p className="text-sm text-secondary">
+              <p className="text-sm text-gray-400">
                 {product.price.price}$ . quantity: {quantity}
               </p>
             </div>
@@ -78,7 +78,7 @@ export default React.memo(
             ))}
 
             <div className="mb-4 flex justify-end">
-              <button className="rounded-md bg-lightGray px-4 py-2" onClick={() => handleRemoveFromCartClick()}>
+              <button className="bg-lightGray rounded-md px-4 py-2" onClick={() => handleRemoveFromCartClick()}>
                 {removeFromCartMutation.isPending ? (
                   <BiLoaderCircle className="animate-spin" color="#000" size={25} />
                 ) : (

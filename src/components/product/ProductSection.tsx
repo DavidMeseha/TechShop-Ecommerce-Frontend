@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { LocalLink } from "@/components/LocalizedNavigation";
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import CarouselIndecator from "../ui/CarouselIndecator";
 import LikeProductButton from "./LikeButton";
 import RateProductButton from "./RateButton";
 import SaveProductButton from "./SaveButton";
@@ -15,6 +13,7 @@ import { IFullProduct } from "@/types";
 import Button from "../ui/Button";
 import ViewMoreButton from "../ui/ViewMoreButton";
 import useFollow from "@/hooks/useFollow";
+import ProductCarosel from "./ProductCarosel";
 
 type Props = {
   product: IFullProduct;
@@ -27,20 +26,12 @@ type Props = {
 
 export default React.memo(
   function ProductSection({ product, isLiked, isSaved, isInCart, isRated, isFollowed }: Props) {
-    const [carouselApi, setCarouselApi] = useState<CarouselApi>();
-    const [caroselImageIndex, setCaroselImageIndex] = useState(0);
-    const [readMore, setReadMore] = useState(false);
     const { t } = useTranslation();
+    const [readMore, setReadMore] = useState(false);
     const descriptionRef = useRef(manipulateDescription(product.fullDescription));
-    const [main, extend] = descriptionRef.current;
+    const [main, extend] = useMemo(() => descriptionRef.current, [descriptionRef.current]);
 
     const handleFollow = useFollow({ vendor: product.vendor });
-
-    useEffect(() => {
-      if (!carouselApi) return;
-      carouselApi.on("scroll", (emblaApi) => setCaroselImageIndex(emblaApi.selectedScrollSnap()));
-      return () => carouselApi.destroy();
-    }, [carouselApi]);
 
     return (
       <div className="flex items-start border-b py-6">
@@ -68,7 +59,7 @@ export default React.memo(
               >
                 {product.vendor.name}
               </LocalLink>
-              <p className="text-sm text-secondary">
+              <p className="text-sm text-gray-400">
                 <LocalLink className="inline-block h-6 hover:text-primary" href={`/product/${product.seName}`}>
                   {product.name}
                 </LocalLink>
@@ -99,7 +90,7 @@ export default React.memo(
               </>
             ) : null}
           </p>
-          <div className="text-sm text-secondary">
+          <div className="text-sm text-gray-400">
             {product.productTags.map((tag) => (
               <LocalLink
                 aria-label="Navigate to a tag products"
@@ -115,43 +106,7 @@ export default React.memo(
 
           <div className="mt-2.5 flex items-end">
             <div className="relative flex h-[480px] w-[260px] cursor-grab items-center overflow-hidden rounded-xl bg-black">
-              {product.pictures.length > 1 ? (
-                <>
-                  <Carousel className="w-full" dir="ltr" setApi={setCarouselApi}>
-                    <CarouselContent>
-                      {product.pictures.map((img) => (
-                        <CarouselItem className="relative flex h-[480px] items-center" key={img._id}>
-                          <Image
-                            alt={product.name}
-                            className="object-cover md:w-full"
-                            height={480}
-                            loading="eager"
-                            priority
-                            src={img.imageUrl}
-                            width={260}
-                          />
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                  </Carousel>
-                  <CarouselIndecator
-                    array={product.pictures}
-                    className="absolute bottom-0 p-4"
-                    selectedIndex={caroselImageIndex}
-                    setSelectedIndex={(index) => carouselApi?.scrollTo(index, false)}
-                  />
-                </>
-              ) : (
-                <Image
-                  alt={product.name}
-                  className="object-contain md:w-full"
-                  height={480}
-                  loading="eager"
-                  priority
-                  src={product.pictures[0]?.imageUrl ?? "/images/placeholder.png"}
-                  width={260}
-                />
-              )}
+              <ProductCarosel images={product.pictures} productName={product.name} />
             </div>
             <div className="relative flex flex-col items-center gap-2 p-2">
               <ViewMoreButton product={product} />

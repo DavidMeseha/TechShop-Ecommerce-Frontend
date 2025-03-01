@@ -104,13 +104,13 @@ function MainLogic({ product }: { product: IFullProduct }) {
       )}
       <h1 className="text-2xl font-bold">{product?.name}</h1>
       <LocalLink
-        className="text-base text-secondary hover:text-primary hover:underline"
+        className="text-base text-gray-400 hover:text-primary hover:underline"
         href={`/vendor/${product?.vendor.seName}`}
       >
         {t("soldBy")}: {product?.vendor.name}
       </LocalLink>
       <div className="mb-2 text-lg font-bold">{product?.price.price}$</div>
-      <div className="mb-4 text-center text-sm text-secondary">
+      <div className="mb-4 text-center text-sm text-gray-400">
         {product?.productTags
           ? product?.productTags.map((tag) => (
               <LocalLink className="me-4 hover:underline" dir="ltr" href={`/profile/tag/${tag.seName}`} key={tag._id}>
@@ -132,14 +132,12 @@ function MainLogic({ product }: { product: IFullProduct }) {
         {inCart ? t("removeFromCart") : t("addToCart")}
       </Button>
       <ul className="sticky -top-4 z-20 flex w-full items-center border-b bg-white">
-        <li
-          className={`w-full ${activeTap === "description" ? "-mb-0.5 border-b-2 border-b-black" : "text-secondary"}`}
-        >
+        <li className={`w-full ${activeTap === "description" ? "-mb-0.5 border-b-2 border-b-black" : "text-gray-400"}`}>
           <a className="flex justify-center py-2" role="button" onClick={() => setActiveTap("description")}>
             {t("description")}
           </a>
         </li>
-        <li className={`w-full ${activeTap === "reviews" ? "-mb-0.5 border-b-2 border-b-black" : "text-secondary"}`}>
+        <li className={`w-full ${activeTap === "reviews" ? "-mb-0.5 border-b-2 border-b-black" : "text-gray-400"}`}>
           <a className="flex justify-center py-2" role="button" onClick={() => setActiveTap("reviews")}>
             {t("reviews")}
           </a>
@@ -158,12 +156,12 @@ function MainLogic({ product }: { product: IFullProduct }) {
                 <div className="mb-4 flex items-start gap-3" key={review._id}>
                   <Image
                     alt={customer?.firstName || "" + " " + customer?.lastName || ""}
-                    className="h-10 w-10 rounded-full bg-lightGray"
+                    className="bg-lightGray h-10 w-10 rounded-full"
                     height={50}
                     src={customer?.imageUrl ?? "/images/placeholder-user.jpg"}
                     width={50}
                   />
-                  <div className="w-11/12 rounded-md bg-lightGray p-2">
+                  <div className="bg-lightGray w-11/12 rounded-md p-2">
                     <div className="text-sm font-bold">
                       {customer ? customer.firstName + " " + customer.lastName : "Deleted User"}
                     </div>
@@ -173,7 +171,7 @@ function MainLogic({ product }: { product: IFullProduct }) {
               );
             })
           ) : (
-            <div className="py-4 text-center text-secondary">No Reviews Avilable</div>
+            <div className="py-4 text-center text-gray-400">No Reviews Avilable</div>
           )
         ) : null}
       </div>

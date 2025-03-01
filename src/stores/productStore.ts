@@ -52,10 +52,10 @@ export const useProductStore = create<Store>((set) => ({
   },
   setIsProductAttributesOpen: (isOpen: boolean, productId?: string, action?: (attr: IProductAttribute[]) => void) => {
     set({ isProductAttributesOpen: isOpen });
-    if (isOpen) set({ productIdToOverlay: productId });
+    if (isOpen) set({ productIdToOverlay: productId, action: action });
     else {
       setTimeout(() => {
-        set({ action: action, productIdToOverlay: productId });
+        set({ action: undefined, productIdToOverlay: productId });
       }, 150);
     }
   }

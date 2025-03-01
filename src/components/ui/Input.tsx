@@ -13,7 +13,7 @@ export default forwardRef<HTMLInputElement, Props>(function Input({ label, class
       <input
         ref={ref}
         {...props}
-        className={cn("w-full rounded-md border-secondary focus:border-primary focus:ring-primary", className)}
+        className={cn("w-full rounded-md focus:border-primary focus:ring-primary", className)}
       />
     </>
   );

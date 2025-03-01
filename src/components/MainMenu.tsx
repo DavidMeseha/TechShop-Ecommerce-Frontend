@@ -1,7 +1,7 @@
 "use client";
 
 import { LocalLink, useLocalPathname } from "@/components/LocalizedNavigation";
-import React from "react";
+import React, { useMemo } from "react";
 import SubMenuItem from "./SubMenuItem";
 import { RiProfileFill, RiProfileLine } from "react-icons/ri";
 import { BsCompass, BsCompassFill, BsHouse, BsHouseFill } from "react-icons/bs";
@@ -14,65 +14,73 @@ import { startProgress, stopProgress } from "next-nprogress-bar";
 import { languages } from "@/lib/misc";
 import { Language } from "@/types";
 
-export default function MainMenu() {
+export default React.memo(function MainMenu() {
   const { t, lang } = useTranslation();
-  const { cartItems } = useUserStore();
   const { pathname } = useLocalPathname();
+  const cartItems = useUserStore((state) => state.cartItems);
 
-  const menu = [
-    {
-      name: t("home"),
-      to: "/",
-      Icon: <BsHouse size={20} />,
-      IconActive: <BsHouseFill size={20} />
-    },
-    {
-      name: t("feeds"),
-      to: "/feeds",
-      Icon: <PiInfinity size={20} />,
-      IconActive: <PiInfinity size={20} />
-    },
-    {
-      name: t("profile"),
-      to: `/profile/me`,
-      Icon: <RiProfileLine size={20} />,
-      IconActive: <RiProfileFill size={20} />
-    },
-    {
-      name: t("discover"),
-      sup: [
-        {
-          name: t("categories"),
-          to: `/discover/categories`
-        },
-        {
-          name: t("vendors"),
-          to: `/discover/vendors`
-        },
-        {
-          name: t("tags"),
-          to: `/discover/tags`
-        }
-      ],
-      Icon: <BsCompass size={20} />,
-      IconActive: <BsCompassFill size={20} />
-    },
-    {
-      name: t("cart") + ` (${cartItems.length})`,
-      to: `/cart`,
-      Icon: <PiShoppingCart size={20} />,
-      IconActive: <PiShoppingCartFill size={20} />
-    }
-  ];
+  const menu = useMemo(
+    () => [
+      {
+        id: 1,
+        name: t("home"),
+        to: "/",
+        Icon: <BsHouse size={20} />,
+        IconActive: <BsHouseFill size={20} />
+      },
+      {
+        id: 2,
+        name: t("feeds"),
+        to: "/feeds",
+        Icon: <PiInfinity size={20} />,
+        IconActive: <PiInfinity size={20} />
+      },
+      {
+        id: 3,
+        name: t("profile"),
+        to: `/profile/me`,
+        Icon: <RiProfileLine size={20} />,
+        IconActive: <RiProfileFill size={20} />
+      },
+      {
+        id: 4,
+        name: t("discover"),
+        sup: [
+          {
+            name: t("categories"),
+            to: `/discover/categories`
+          },
+          {
+            name: t("vendors"),
+            to: `/discover/vendors`
+          },
+          {
+            name: t("tags"),
+            to: `/discover/tags`
+          }
+        ],
+        Icon: <BsCompass size={20} />,
+        IconActive: <BsCompassFill size={20} />
+      },
+      {
+        id: 5,
+        name: t("cart") + ` (${cartItems.length})`,
+        to: `/cart`,
+        Icon: <PiShoppingCart size={20} />,
+        IconActive: <PiShoppingCartFill size={20} />
+      }
+    ],
+    [lang, cartItems.length]
+  );
 
   return (
     <ul>
-      {menu.map((item, index) => (
-        <li key={index}>
+      {menu.map((item) => (
+        <li key={item.id}>
           {item.to ? (
             <LocalLink
               href={item.to}
-              className={`mb-2 flex w-full items-center gap-2 rounded-md p-2 text-lg font-semibold hover:bg-lightGray ${
+              className={`hover:bg-lightGray mb-2 flex w-full items-center gap-2 rounded-md p-2 text-lg font-semibold ${
                 pathname === item.to ? "text-primary" : ""
               }`}
             >
@@ -101,4 +109,4 @@ export default function MainMenu() {
       </li>
     </ul>
   );
-}
+});

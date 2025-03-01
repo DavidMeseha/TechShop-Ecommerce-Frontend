@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import CheckboxGroup from "@/components/CheckboxGroup";
 
 describe("Checkbox group", () => {
@@ -15,7 +15,7 @@ describe("Checkbox group", () => {
   });
 
   beforeEach(() => {
-    render(<CheckboxGroup options={options} onChange={onChange} title={title} values={["option1"]} className="p-2" />);
+    render(<CheckboxGroup className="p-2" options={options} title={title} values={["option1"]} onChange={onChange} />);
   });
 
   it("renders correctly with props", () => {

@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 import { renderDiscoverPages } from "../../../test-mic";
 import axios from "@/lib/axios";
 import en from "@/dictionaries/en.json";
-import Page from "@/app/[lang]/discover/categories/page";
+import Page from "@/app/[lang]/(web)/discover/categories/page";
 
 const mockCategoriesResponse = (page: number) => ({
   data: [

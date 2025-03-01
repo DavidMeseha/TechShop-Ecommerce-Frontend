@@ -3,10 +3,10 @@ import { ICategory, IFullProduct, IProductAttribute, ITag, IVendor, Pagination }
 
 export async function homeFeedProducts({ page, limit }: { page: number; limit: number }) {
   return axios
-    .get<{ data: IFullProduct[] }>("/api/catalog/homefeed", {
+    .get<{ data: IFullProduct[]; pages: Pagination }>("/api/catalog/homefeed", {
       params: { page, limit }
     })
-    .then((res) => res.data.data);
+    .then((res) => res.data);
 }
 
 export async function getProductDetails(id: string) {

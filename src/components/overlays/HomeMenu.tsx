@@ -22,7 +22,7 @@ export default function HomeMenu() {
       <div className="relative">
         <div className="mb-6 text-2xl font-bold md:hidden">{t("mainMenu")}</div>
         <div
-          className="absolute end-2 top-2 cursor-pointer rounded-full bg-lightGray p-1"
+          className="bg-lightGray absolute end-2 top-2 cursor-pointer rounded-full p-1"
           data-testid="close-main-menu"
           onClick={() => setIsHomeMenuOpen(false)}
         >

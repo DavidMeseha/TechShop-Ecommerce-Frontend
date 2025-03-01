@@ -58,7 +58,6 @@ export default function SearchOverlay() {
       }),
     enabled: searchText.length > 0 && isSearchOpen
   });
-
   const items = searchQuery.data?.data ?? [];
 
   const setupItemLocalLink = (item: SearchResponseItem) => {
@@ -68,7 +67,7 @@ export default function SearchOverlay() {
   return (
     <motion.div animate="visible" data-testid="search-overlay" exit="exit" initial="hidden">
       <motion.div
-        className="fixed z-40 h-screen w-screen bg-lightGray bg-opacity-90 backdrop-blur-lg"
+        className="fixed z-40 h-screen w-screen bg-white bg-opacity-90 backdrop-blur-3xl"
         variants={bgVariants}
       >
         <motion.div className="mx-auto mt-4 max-w-[1200px] px-4 md:mt-14 md:px-28" variants={popupVariants}>
@@ -79,7 +78,7 @@ export default function SearchOverlay() {
               type="text"
               onChange={(e) => handleChange(e.currentTarget.value)}
             />
-            <Button className="absolute end-0 top-0 py-4 text-secondary" onClick={() => setIsSearchOpen(false)}>
+            <Button className="absolute end-0 top-0 py-4 text-gray-400" onClick={() => setIsSearchOpen(false)}>
               <RiCloseLine size="30" />
             </Button>
           </div>
@@ -125,7 +124,7 @@ export default function SearchOverlay() {
                   ) : null}
                   <div>
                     <h3 className="font-semibold">{item.item.name}</h3>
-                    <p className="text-sm text-secondary">{item.type}</p>
+                    <p className="text-sm text-gray-400">{item.type}</p>
                   </div>
                 </LocalLink>
               ))

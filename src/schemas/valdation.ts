@@ -1,27 +1,41 @@
+import { TFunction } from "@/types";
 import z from "zod";
 
 const passwordValidationRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
 
-export const registerSchema = z
-  .object({
-    email: z.string().email(),
-    firstName: z.string().min(1, { message: "Field is required" }),
-    lastName: z.string().min(1, { message: "Field is required" }),
-    dayOfBirth: z.string(),
-    monthOfBirth: z.string(),
-    yearOfBirth: z.string(),
-    gender: z.enum(["male", "female"]),
-    password: z
-      .string()
-      .regex(passwordValidationRegex, {
-        message: "Password should contain at least an Uppercase, a Special character and a number"
-      })
-      .min(8, { message: "Password should be 8 character length or more" }),
-    confirmPassword: z.string()
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"]
-  });
+export function registerSchema(t: TFunction) {
+  return z
+    .object({
+      email: z
+        .string()
+        .email(t("auth.emailNotValid"))
+        .min(1, { message: t("auth.emailRequired") }),
+      firstName: z.string().min(1, { message: t("auth.nameRequired") }),
+      lastName: z.string().min(1, { message: t("auth.nameRequired") }),
+      dayOfBirth: z.string(),
+      monthOfBirth: z.string(),
+      yearOfBirth: z.string(),
+      gender: z.enum(["male", "female"]),
+      password: z
+        .string()
+        .regex(passwordValidationRegex, {
+          message: t("auth.passwordFormatError")
+        })
+        .min(8, { message: t("auth.passwordMinimumLength") }),
+      confirmPassword: z.string()
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("changePassword.confirmPasswordDoseNotMatchNewPassword"),
+      path: ["confirmPassword"]
+    });
+}
 
-export type RegisterFormInputs = z.infer<typeof registerSchema>;
+export function loginSchema(t: TFunction) {
+  return z.object({
+    email: z.string().email(t("auth.emailRequired")),
+    password: z.string().min(1, { message: t("auth.passwordRequired") })
+  });
+}
+
+export type RegisterForm = z.infer<ReturnType<typeof registerSchema>>;
+export type LoginForm = z.infer<ReturnType<typeof loginSchema>>;

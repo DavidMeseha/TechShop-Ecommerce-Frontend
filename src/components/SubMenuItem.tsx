@@ -20,7 +20,7 @@ export default function SubMenuItem({ item }: Props) {
   return (
     <>
       <button
-        className="mb-2 flex w-full justify-between rounded-md p-2 text-lg font-semibold hover:bg-lightGray"
+        className="hover:bg-lightGray mb-2 flex w-full justify-between rounded-md p-2 text-lg font-semibold"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex items-center gap-2">
@@ -37,7 +37,7 @@ export default function SubMenuItem({ item }: Props) {
           <li className="my-2 w-10/12 md:w-full" key={index}>
             <LocalLink
               href={supItem.to}
-              className={`flex w-full items-center gap-1 rounded-md p-2 ps-6 text-lg font-semibold hover:bg-lightGray ${
+              className={`hover:bg-lightGray flex w-full items-center gap-1 rounded-md p-2 ps-6 text-lg font-semibold ${
                 pathname === supItem.to ? "text-primary" : ""
               }`}
             >

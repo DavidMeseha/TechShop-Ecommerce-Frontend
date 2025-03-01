@@ -6,12 +6,11 @@ import { BsPencil } from "react-icons/bs";
 import Image from "next/image";
 import OverlayLayout from "./OverlayLayout";
 import { useTranslation } from "@/context/Translation";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import RadioGroup from "../RadioGroup";
 import DateDropdownNumbers from "../ui/DateDropdownNumbers";
 import { toast } from "react-toastify";
 import Button from "../ui/Button";
-import { queryClient } from "../layout/MainLayout";
 import { FieldError, UserInfoForm } from "@/types";
 import { useUserStore } from "@/stores/userStore";
 import { getUserInfo, updateUserInfo } from "@/services/user.service";
@@ -36,6 +35,7 @@ export default function EditProfileOverlay() {
   const setIsEditProfileOpen = useOverlayStore((state) => state.setIsEditProfileOpen);
   const user = useUserStore((state) => state.user);
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const cropperRef = useRef<CropperRef>(null);
   const [cropping, setCropping] = useState<string | null>(null);
   const [form, setForm] = useState<UserInfoForm>({

@@ -44,7 +44,7 @@ export default function DropdownButton({
           <ul className="text-start text-sm capitalize text-black">
             {options.map((option, index) => (
               <li
-                className="cursor-pointer px-4 py-2 hover:bg-lightGray"
+                className="hover:bg-lightGray cursor-pointer px-4 py-2"
                 key={index}
                 onClick={() => onSelectItem(option)}
               >

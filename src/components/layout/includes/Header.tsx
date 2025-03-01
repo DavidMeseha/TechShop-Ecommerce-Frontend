@@ -4,32 +4,34 @@ import { LocalLink } from "@/components/LocalizedNavigation";
 import { BiSearch, BiShoppingBag, BiUser } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "../../../context/Translation";
 import Image from "next/image";
 import { useRouter, startProgress, stopProgress } from "next-nprogress-bar";
 import DropdownButton from "@/components/DropdownButton";
-import { changeLanguage, logout } from "@/actions";
+import { changeLanguage } from "@/actions";
 import { usePathname } from "next/navigation";
 import { useUserStore } from "@/stores/userStore";
 import { Language } from "@/types";
 import { languages } from "@/lib/misc";
 import Skeleton from "react-loading-skeleton";
 import { useOverlayStore } from "@/stores/overlayStore";
+import { useUserSetup } from "@/context/UserProvider";
 
 export default function Header() {
   const user = useUserStore((state) => state.user);
+  const { logout } = useUserSetup();
   const router = useRouter();
   const pathname = usePathname();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const { t, lang } = useTranslation();
   const setIsSearchOpen = useOverlayStore((state) => state.setIsSearchOpen);
 
-  const goTo = () => {
+  const goTo = useCallback(() => {
     if (!user || !user.isRegistered) return router.push(`/${lang}/login`);
     router.push(`/${lang}/upload`);
-  };
+  }, [user]);
 
   return (
     <header className="fixed z-30 hidden h-[60px] w-screen items-center border-b bg-white md:flex" id="TopNav">
@@ -115,7 +117,7 @@ export default function Header() {
                       <button
                         className="flex w-full gap-1 border-t px-2 py-3 hover:bg-gray-100"
                         onClick={() => {
-                          logout(pathname);
+                          logout();
                           setShowMenu(false);
                         }}
                       >

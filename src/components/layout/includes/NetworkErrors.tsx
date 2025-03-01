@@ -3,7 +3,7 @@ import Button from "@/components/ui/Button";
 import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FaRedo } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useTranslation } from "@/context/Translation";
@@ -13,49 +13,61 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
   const [error, setError] = useState<"NoNetwork" | "ServerDown" | false>(false);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    const setOnlineState = (err: "NoNetwork" | "ServerDown" | false) => {
-      setError(err);
-    };
+  const setOnlineState = useCallback((err: "NoNetwork" | "ServerDown" | false) => {
+    setError(err);
+  }, []);
 
-    axios.interceptors.response.use(
+  useEffect(() => {
+    // Create interceptor
+    const interceptor = axios.interceptors.response.use(
       (res) => res,
       (error: AxiosError) => {
         if (!navigator.onLine) return Promise.reject(error);
         if (error.response) {
-          if (error.status === 500) toast.error(t("serverFail"));
+          if (error.response.status === 500) toast.error(t("serverFail"));
         } else if (error.request) {
           setOnlineState("ServerDown");
         }
-
         return Promise.reject(error);
       }
     );
 
-    window.addEventListener("offline", () => setOnlineState("NoNetwork"));
-    window.addEventListener("online", () => setOnlineState(false));
+    const handleOffline = () => setOnlineState("NoNetwork");
+    const handleOnline = () => setOnlineState(false);
 
+    window.addEventListener("offline", handleOffline);
+    window.addEventListener("online", handleOnline);
+
+    // Cleanup function
     return () => {
-      window.removeEventListener("offline", () => setOnlineState("NoNetwork"));
-      window.removeEventListener("online", () => setOnlineState(false));
+      axios.interceptors.response.eject(interceptor);
+      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener("online", handleOnline);
     };
-  }, []);
+  }, [setOnlineState, t]);
 
+  // Status check query
   useQuery({
-    queryKey: ["statuse"],
-    queryFn: () =>
-      axios.get("/api/status").then(() => {
+    queryKey: ["status"],
+    queryFn: async () => {
+      try {
+        await axios.get("/api/status");
         setError(false);
-      }),
-    enabled: !!error && error === "ServerDown",
-    refetchInterval: 1000
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    enabled: error === "ServerDown",
+    refetchInterval: (data) => (data ? false : 1000),
+    retry: 3
   });
 
-  const checkError = () => {
+  const checkError = useCallback(() => {
     if ((error === "NoNetwork" && navigator.onLine) || error === "ServerDown") {
       setError(false);
     }
-  };
+  }, [error]);
 
   if (error) {
     return (
@@ -64,10 +76,11 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
           alt="Error"
           className="object-contain contrast-0 filter"
           height={400}
+          priority
           src="/images/product-not-found.png"
           width={400}
         />
-        <h1 className="text-4xl font-bold text-secondary">{t(error)}</h1>
+        <h1 className="text-4xl font-bold text-gray-400">{t(error)}</h1>
         <Button className="mt-4 bg-primary text-white hover:underline" onClick={checkError}>
           <div className="flex items-center gap-2">
             Retry <FaRedo size={13} />

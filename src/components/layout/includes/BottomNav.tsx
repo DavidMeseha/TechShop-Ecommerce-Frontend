@@ -1,41 +1,45 @@
 import { useUserStore } from "@/stores/userStore";
 import { useTranslation } from "@/context/Translation";
 import { LocalLink, useLocalPathname } from "@/components/LocalizedNavigation";
-import React from "react";
+import React, { useMemo } from "react";
 import { BsCompass, BsCompassFill, BsHouse, BsHouseFill } from "react-icons/bs";
 import { RiProfileFill, RiProfileLine, RiShoppingCartFill, RiShoppingCartLine } from "react-icons/ri";
 
-export default function BottomNav() {
+export default React.memo(function BottomNav() {
   const { pathname } = useLocalPathname();
-  const { cartItems, user } = useUserStore();
+  const cartItems = useUserStore((state) => state.cartItems);
+  const user = useUserStore((state) => state.user);
   const { t } = useTranslation();
 
-  const bottomNav = [
-    {
-      name: t("home"),
-      to: "/",
-      icon: <BsHouse className="mx-auto" size={25} />,
-      iconActive: <BsHouseFill className="mx-auto" size={25} />
-    },
-    {
-      name: t("discover"),
-      to: "/discover/vendors",
-      icon: <BsCompass className="mx-auto" size={25} />,
-      iconActive: <BsCompassFill className="mx-auto" size={25} />
-    },
-    {
-      name: t("cart"),
-      to: "/cart",
-      icon: <RiShoppingCartLine className="mx-auto" size={25} />,
-      iconActive: <RiShoppingCartFill className="mx-auto" size={25} />
-    },
-    {
-      name: t("profile"),
-      to: "/profile/me",
-      icon: <RiProfileLine className="mx-auto" size={25} />,
-      iconActive: <RiProfileFill className="mx-auto" size={25} />
-    }
-  ];
+  const bottomNav = useMemo(
+    () => [
+      {
+        name: t("home"),
+        to: "/",
+        icon: <BsHouse className="mx-auto" size={25} />,
+        iconActive: <BsHouseFill className="mx-auto" size={25} />
+      },
+      {
+        name: t("discover"),
+        to: "/discover/vendors",
+        icon: <BsCompass className="mx-auto" size={25} />,
+        iconActive: <BsCompassFill className="mx-auto" size={25} />
+      },
+      {
+        name: t("cart"),
+        to: "/cart",
+        icon: <RiShoppingCartLine className="mx-auto" size={25} />,
+        iconActive: <RiShoppingCartFill className="mx-auto" size={25} />
+      },
+      {
+        name: t("profile"),
+        to: "/profile/me",
+        icon: <RiProfileLine className="mx-auto" size={25} />,
+        iconActive: <RiProfileFill className="mx-auto" size={25} />
+      }
+    ],
+    []
+  );
 
   if (!user) return;
 
@@ -60,4 +64,4 @@ export default function BottomNav() {
       </div>
     </nav>
   );
-}
+});

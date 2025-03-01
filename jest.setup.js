@@ -1,17 +1,4 @@
-import getCountries from "@/services/getCountries.service";
 import "@testing-library/jest-dom";
-import { act } from "@testing-library/react";
-import {
-  followings,
-  getCartIds,
-  getAllUserActions,
-  getFollowIds,
-  getLikeIds,
-  getReviewIds,
-  getSaveIds,
-  registerGuest,
-  logout
-} from "@/actions";
 
 class IntersectionObserver {
   constructor(callback) {
@@ -60,10 +47,7 @@ jest.mock("react-intersection-observer", () => ({
 }));
 
 jest.mock("next/navigation", () => ({
-  usePathname: jest.fn(),
-  useSearchParams: jest.fn(() => ({
-    get: (key) => "some message"
-  }))
+  usePathname: jest.fn()
 }));
 
 jest.mock("next-nprogress-bar", () => {
@@ -74,31 +58,4 @@ jest.mock("next-nprogress-bar", () => {
 });
 
 jest.mock("./src/lib/axios.ts");
-
-// jest.mock("./src/actions", {
-//   addToCart: jest.fn(),
-//   changeLanguage: jest.fn(),
-//   follow: jest.fn(),
-//   followings: jest.fn(),
-//   getCartIds: jest.fn(),
-//   getAllUserActions: jest.fn(),
-//   getFollowIds: jest.fn(),
-//   getLikeIds: jest.fn(),
-//   getReviewIds: jest.fn(),
-//   getSaveIds: jest.fn(),
-//   registerGuest: jest.fn(),
-//   logout: jest.fn()
-// });
-
-// act(() => {
-//   followings.mockResolvedValue([]);
-//   getCartIds.mockResolvedValue([]);
-//   getAllUserActions.mockResolvedValue([]);
-//   getFollowIds.mockResolvedValue([]);
-//   getLikeIds.mockResolvedValue([]);
-//   getReviewIds.mockResolvedValue([]);
-//   getSaveIds.mockResolvedValue([]);
-//   registerGuest.mockResolvedValue([]);
-//   logout.mockResolvedValue([]);
-//   getCountries.mockResolvedValue([]);
-// });
+jest.mock("react-scan", () => ({ scan: jest.fn }));

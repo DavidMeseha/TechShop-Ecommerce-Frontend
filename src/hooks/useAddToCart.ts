@@ -1,9 +1,8 @@
-import { queryClient } from "@/components/layout/MainLayout";
 import { addToCart, removeFromCart } from "@/services/userActions.service";
 import { useProductStore } from "@/stores/productStore";
 import { useUserStore } from "@/stores/userStore";
 import { IFullProduct, IProductAttribute } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface CartHookProps {
   product: IFullProduct;
@@ -21,6 +20,7 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
   const removeProductFromCart = useUserStore((state) => state.removeFromCart);
   const getCartItems = useUserStore((state) => state.getCartItems);
   const setIsProductAttributesOpen = useProductStore((state) => state.setIsProductAttributesOpen);
+  const queryClient = useQueryClient();
 
   const addToCartMutation = useMutation({
     mutationKey: ["addToCart", product.seName],

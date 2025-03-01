@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TranslationProvider } from "@/context/Translation";
 import React from "react";
 import { Language, User } from "@/types";
+import AppProviders from "@/components/layout/AppProviders";
 
 const queryClient = new QueryClient();
 
@@ -26,9 +27,9 @@ export const user: User = {
 export const renderWithProviders = async (ui: React.ReactNode, lang: Language = "en", dictionary: Translation = en) => {
   return await act(async () =>
     render(
-      <MainLayout dictionary={dictionary} lang={lang} token="xxxxx-xxxx-xxxx">
-        {ui}
-      </MainLayout>
+      <AppProviders dictionary={dictionary} lang={lang}>
+        <MainLayout token="xxxxx-xxxx-xxxx">{ui}</MainLayout>
+      </AppProviders>
     )
   );
 };

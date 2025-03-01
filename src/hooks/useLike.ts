@@ -1,7 +1,6 @@
-import { queryClient } from "@/components/layout/MainLayout";
 import { useUserStore } from "@/stores/userStore";
 import { IFullProduct } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "@/context/Translation";
 import { toast } from "react-toastify";
 import { likeProduct, unLikeProduct } from "@/services/userActions.service";
@@ -17,6 +16,7 @@ export default function useLike({ product, onError, onClick }: LikeHookProps) {
   const removeFromLikes = useUserStore((state) => state.removeFromLikes);
   const addToLikes = useUserStore((state) => state.addToLikes);
   const getLikes = useUserStore((state) => state.getLikes);
+  const queryClient = useQueryClient();
   const { t } = useTranslation();
 
   const likeMutation = useMutation({

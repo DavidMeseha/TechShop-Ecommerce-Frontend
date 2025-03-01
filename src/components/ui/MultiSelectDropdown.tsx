@@ -23,7 +23,7 @@ export default function MultiselectDropdown({ className, onSelectChange, labelle
     <div className={`mb-4 ${className}`}>
       <label className="mb-1">{labelledBy}</label>
       <MultiSelect
-        className="w-full rounded-md border-secondary peer-first:focus-within:border-primary peer-first:focus-within:ring-primary"
+        className="w-full rounded-md peer-first:focus-within:border-primary peer-first:focus-within:ring-primary"
         labelledBy={labelledBy}
         options={options}
         value={selected}

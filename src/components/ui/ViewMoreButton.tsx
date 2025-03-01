@@ -3,7 +3,7 @@ import { IFullProduct } from "@/types";
 import React from "react";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 
-export default function ViewMoreButton({ product }: { product: IFullProduct }) {
+export default React.memo(function ViewMoreButton({ product }: { product: IFullProduct }) {
   const setIsProductMoreInfoOpen = useProductStore((state) => state.setIsProductMoreInfoOpen);
   return (
     <button
@@ -14,4 +14,4 @@ export default function ViewMoreButton({ product }: { product: IFullProduct }) {
       <PiDotsThreeOutlineVerticalFill className={`text-black transition-colors hover:fill-primary`} size="25" />
     </button>
   );
-}
+});

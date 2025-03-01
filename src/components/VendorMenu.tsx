@@ -59,7 +59,7 @@ export default function VendorMenu() {
           <li key={index}>
             {item.to ? (
               <LocalLink
-                className="block w-full rounded-md p-2 text-lg font-semibold hover:bg-lightGray"
+                className="hover:bg-lightGray block w-full rounded-md p-2 text-lg font-semibold"
                 href={item.to}
               >
                 {item.name}

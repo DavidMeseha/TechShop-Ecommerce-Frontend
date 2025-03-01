@@ -1,16 +1,16 @@
 "use client";
 
+import React, { useState } from "react";
 import { BsBookmarkFill } from "react-icons/bs";
 import { IFullProduct } from "@/types";
 import useSave from "@/hooks/useSave";
-import { useState } from "react";
 
 type Props = {
   product: IFullProduct;
   isSaved: boolean;
 };
 
-export default function SaveProductButton({ product, isSaved }: Props) {
+export default React.memo(function SaveProductButton({ product, isSaved }: Props) {
   const [count, setCount] = useState(product.likes);
   const handleSave = useSave({
     product,
@@ -34,4 +34,4 @@ export default function SaveProductButton({ product, isSaved }: Props) {
       <span className="text-blend text-sm font-semibold">{count}</span>
     </button>
   );
-}
+});

@@ -10,7 +10,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLiked: boolean;
 }
 
-export default function LikeProductButton({ product, isLiked }: Props) {
+export default React.memo(function LikeProductButton({ product, isLiked }: Props) {
   const [count, setCount] = useState(product.likes);
 
   const handleLike = useLike({
@@ -33,4 +33,4 @@ export default function LikeProductButton({ product, isLiked }: Props) {
       <span className="text-blend text-sm font-semibold">{count}</span>
     </button>
   );
-}
+});

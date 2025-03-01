@@ -12,7 +12,7 @@ type Props = {
   isRated: boolean;
 };
 
-export default function RateProductButton({ product, isRated }: Props) {
+export default React.memo(function RateProductButton({ product, isRated }: Props) {
   const user = useUserStore((state) => state.user);
   const setIsAddReviewOpen = useProductStore((state) => state.setIsAddReviewOpen);
 
@@ -37,4 +37,4 @@ export default function RateProductButton({ product, isRated }: Props) {
       </span>
     </button>
   );
-}
+});
