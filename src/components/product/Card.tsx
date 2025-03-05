@@ -57,7 +57,7 @@ function ProductCard({ product, isLiked, isInCart, isSaved }: Props) {
           {product.vendor.name ? (
             <p className="-mt-1 text-sm text-gray-400">
               sold by:{" "}
-              <LocalLink className="hover:text-primary" href={`/profile/vendor/${product.vendor.seName}`}>
+              <LocalLink className="hover:text-primary" href={`/vendor/${product.vendor.seName}`}>
                 {product.vendor.name}
               </LocalLink>
             </p>

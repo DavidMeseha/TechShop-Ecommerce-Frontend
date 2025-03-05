@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import EditProfileOverlay from "./EditProfileOverlay";
 import { usePathname } from "next/navigation";
 import AttributesOverlay from "./AttributesOverlay";
@@ -12,6 +12,9 @@ import { AnimatePresence } from "framer-motion";
 import ProfileMenuOverlay from "./ProfileMenu";
 import { useOverlayStore } from "@/stores/overlayStore";
 import { useProductStore } from "@/stores/productStore";
+import Login from "./auth/Login";
+import Register from "./auth/Register";
+import HomeMenu from "./HomeMenu";
 
 export default function AllOverlays() {
   const {
@@ -21,13 +24,18 @@ export default function AllOverlays() {
     isSearchOpen,
     isAdvancedSearchOpen,
     isAddAddressOpen,
+    isRegisterOpen,
+    isLoginOpen,
     setIsEditProfileOpen,
     setIsSearchOpen,
     setIsProfileMenuOpen,
     setIsHomeMenuOpen,
     setIsAdvancedSearchOpen,
-    setIsAddAddressOpen
+    setIsAddAddressOpen,
+    setIsLoginOpen,
+    setIsRegisterOpen
   } = useOverlayStore();
+
   const {
     isProductAttributesOpen,
     isAddReviewOpen,
@@ -38,21 +46,27 @@ export default function AllOverlays() {
   } = useProductStore();
   const pathname = usePathname();
 
+  // Reset all overlays when pathname changes
   useEffect(() => {
-    setIsEditProfileOpen(false);
-    setIsProfileMenuOpen(false);
-    setIsProductAttributesOpen(false);
-    setIsProductMoreInfoOpen(false);
-    setIsHomeMenuOpen(false);
-    setIsSearchOpen(false);
-    setIsAdvancedSearchOpen(false);
-    setIsAddAddressOpen(false);
-    setIsSearchOpen(false);
-    setIsAddReviewOpen(false);
+    const resetOverlays = () => {
+      setIsEditProfileOpen(false);
+      setIsProfileMenuOpen(false);
+      setIsProductAttributesOpen(false);
+      setIsProductMoreInfoOpen(false);
+      setIsHomeMenuOpen(false);
+      setIsSearchOpen(false);
+      setIsAdvancedSearchOpen(false);
+      setIsAddAddressOpen(false);
+      setIsAddReviewOpen(false);
+      setIsRegisterOpen(false);
+      setIsLoginOpen(false);
+    };
+    resetOverlays();
   }, [pathname]);
 
-  useEffect(() => {
-    if (
+  // Memoize the overlay active state
+  const isAnyOverlayOpen = useMemo(
+    () =>
       isEditProfileOpen ||
       isShareOpen ||
       isProductAttributesOpen ||
@@ -61,31 +75,43 @@ export default function AllOverlays() {
       isAdvancedSearchOpen ||
       isAddReviewOpen ||
       isAddAddressOpen ||
+      isSearchOpen ||
+      isRegisterOpen ||
+      isLoginOpen,
+    [
+      isLoginOpen,
+      isRegisterOpen,
+      isEditProfileOpen,
+      isShareOpen,
+      isProductAttributesOpen,
+      isProfileMenuOpen,
+      isProductMoreInfoOpen,
+      isAdvancedSearchOpen,
+      isAddReviewOpen,
+      isAddAddressOpen,
       isSearchOpen
-    )
-      document.body.style.overflowY = "hidden";
-    else document.body.style.overflowY = "auto";
-  }, [
-    isEditProfileOpen,
-    isShareOpen,
-    isProductAttributesOpen,
-    isProfileMenuOpen,
-    isProductMoreInfoOpen,
-    isAdvancedSearchOpen,
-    isAddReviewOpen,
-    isAddAddressOpen,
-    isSearchOpen
-  ]);
+    ]
+  );
+
+  // Add or remove overflow-y hidden from body when any overlay is open
+  useEffect(() => {
+    document.body.style.overflowY = isAnyOverlayOpen ? "hidden" : "auto";
+  }, [isAnyOverlayOpen]);
 
   return (
-    <AnimatePresence>
-      {isEditProfileOpen ? <EditProfileOverlay /> : null}
-      {isProfileMenuOpen ? <ProfileMenuOverlay /> : null}
-      {isProductAttributesOpen ? <AttributesOverlay /> : null}
-      {isProductMoreInfoOpen ? <ProductMoreInfoOverlay /> : null}
-      {isSearchOpen ? <SearchOverlay /> : null}
-      {isAddReviewOpen ? <AddReviewOverlay /> : null}
-      {isAddAddressOpen ? <AddNewAddress /> : null}
-    </AnimatePresence>
+    <>
+      <AnimatePresence>
+        {isEditProfileOpen && <EditProfileOverlay />}
+        {isProfileMenuOpen && <ProfileMenuOverlay />}
+        {isProductAttributesOpen && <AttributesOverlay />}
+        {isProductMoreInfoOpen && <ProductMoreInfoOverlay />}
+        {isSearchOpen && <SearchOverlay />}
+        {isAddReviewOpen && <AddReviewOverlay />}
+        {isAddAddressOpen && <AddNewAddress />}
+        {isLoginOpen && <Login />}
+        {isRegisterOpen && <Register />}
+      </AnimatePresence>
+      <HomeMenu />
+    </>
   );
 }

@@ -15,41 +15,38 @@ type ListItemProps = {
 };
 
 export default function Page() {
-  const tagsQuery = useInfiniteQuery({
+  const { hasNextPage, fetchNextPage, isFetching, data, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["tagsDiscover"],
     queryFn: ({ pageParam }) => getTags({ page: pageParam }),
-    initialPageParam: 1,
-    getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
-      return lastPageParam + 1;
-    }
+    getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
+    initialPageParam: 1
   });
 
-  const tagsPages = tagsQuery.data?.pages ?? [];
-  const lastPage = tagsPages?.findLast((page) => page);
+  const tags = data?.pages.flatMap((page) => page.data) ?? [];
 
   return (
-    <div className="mt-10 p-4 md:mt-0">
+    <>
       <ul>
         <li className="hidden text-3xl font-bold md:inline-block">Tags</li>
-        {tagsPages.map((page) =>
-          page.data.map((tag) => <ListItem key={tag._id} tag={tag} to={`/profile/tag/${tag.seName}`} />)
-        )}
-
-        {tagsQuery.isFetching ? (
-          <Loading />
-        ) : lastPage && lastPage.pages.hasNext ? (
-          <div className="px-w py-4 text-center">
-            <Button
-              className="w-full bg-primary text-white"
-              isLoading={tagsQuery.isFetchingNextPage}
-              onClick={() => tagsQuery.fetchNextPage()}
-            >
-              Load More
-            </Button>
-          </div>
-        ) : null}
+        {tags.map((tag) => (
+          <ListItem key={tag._id} tag={tag} to={`/tag/${tag.seName}`} />
+        ))}
       </ul>
-    </div>
+
+      {isFetching ? (
+        <Loading />
+      ) : hasNextPage ? (
+        <div className="px-w py-4 text-center">
+          <Button
+            className="w-full bg-primary text-white"
+            isLoading={isFetchingNextPage}
+            onClick={() => fetchNextPage()}
+          >
+            Load More
+          </Button>
+        </div>
+      ) : null}
+    </>
   );
 }
 

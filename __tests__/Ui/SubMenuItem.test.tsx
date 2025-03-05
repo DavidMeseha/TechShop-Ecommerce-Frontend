@@ -22,8 +22,8 @@ describe("Sub Menu Item", () => {
         to: `/discover/tags`
       }
     ],
-    Icon: <BsCompass data-testid="discover-item-icon" size={20} />,
-    IconActive: <BsCompassFill size={20} />
+    icon: <BsCompass data-testid="discover-item-icon" size={20} />,
+    iconActive: <BsCompassFill size={20} />
   };
 
   afterEach(() => {

@@ -8,8 +8,8 @@ type Props = {
 export default function ProgressBarProvider({ children }: Props) {
   return (
     <>
-      {children}
       <AppProgressBar color="#2929cc" height="4px" options={{ showSpinner: false }} shallowRouting />
+      {children}
     </>
   );
 }

@@ -113,7 +113,7 @@ function MainLogic({ product }: { product: IFullProduct }) {
       <div className="mb-4 text-center text-sm text-gray-400">
         {product?.productTags
           ? product?.productTags.map((tag) => (
-              <LocalLink className="me-4 hover:underline" dir="ltr" href={`/profile/tag/${tag.seName}`} key={tag._id}>
+              <LocalLink className="me-4 hover:underline" dir="ltr" href={`/tag/${tag.seName}`} key={tag._id}>
                 #{tag.name}
               </LocalLink>
             ))

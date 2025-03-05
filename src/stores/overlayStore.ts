@@ -8,13 +8,18 @@ export type OverlayStore = {
   isSearchOpen: boolean;
   isAdvancedSearchOpen: boolean;
   isAddAddressOpen: boolean;
+  isLoginOpen: boolean;
+  isRegisterOpen: boolean;
 
-  setIsEditProfileOpen: (val: boolean) => void;
-  setIsProfileMenuOpen: (val: boolean) => void;
-  setIsHomeMenuOpen: (val: boolean) => void;
-  setIsAdvancedSearchOpen: (val: boolean) => void;
-  setIsAddAddressOpen: (val: boolean) => void;
-  setIsSearchOpen: (val: boolean) => void;
+  switchSignupOverlay: (isLoginOpen: boolean) => void;
+  setIsRegisterOpen: (isOpen: boolean) => void;
+  setIsLoginOpen: (isOpen: boolean) => void;
+  setIsEditProfileOpen: (isOpen: boolean) => void;
+  setIsProfileMenuOpen: (isOpen: boolean) => void;
+  setIsHomeMenuOpen: (isOpen: boolean) => void;
+  setIsAdvancedSearchOpen: (isOpen: boolean) => void;
+  setIsAddAddressOpen: (isOpen: boolean) => void;
+  setIsSearchOpen: (isOpen: boolean) => void;
 };
 
 export const useOverlayStore = create<OverlayStore>((set) => ({
@@ -25,11 +30,24 @@ export const useOverlayStore = create<OverlayStore>((set) => ({
   isSearchOpen: false,
   isAdvancedSearchOpen: false,
   isAddAddressOpen: false,
+  isLoginOpen: false,
+  isRegisterOpen: false,
 
-  setIsHomeMenuOpen: (val: boolean) => set({ isHomeMenuOpen: val }),
-  setIsAddAddressOpen: (val: boolean) => set({ isAddAddressOpen: val }),
-  setIsEditProfileOpen: (val: boolean) => set({ isEditProfileOpen: val }),
-  setIsProfileMenuOpen: (val: boolean) => set({ isProfileMenuOpen: val }),
-  setIsAdvancedSearchOpen: (val: boolean) => set({ isAdvancedSearchOpen: val }),
-  setIsSearchOpen: (val: boolean) => set({ isSearchOpen: val })
+  switchSignupOverlay: (isLoginOpen: boolean) => {
+    if (isLoginOpen) set({ isRegisterOpen: !isLoginOpen });
+    else set({ isLoginOpen: isLoginOpen });
+
+    setTimeout(() => {
+      if (isLoginOpen) set({ isLoginOpen: isLoginOpen });
+      else set({ isRegisterOpen: !isLoginOpen });
+    }, 500);
+  },
+  setIsRegisterOpen: (isOpen: boolean) => set({ isRegisterOpen: isOpen }),
+  setIsLoginOpen: (isOpen: boolean) => set({ isLoginOpen: isOpen }),
+  setIsHomeMenuOpen: (isOpen: boolean) => set({ isHomeMenuOpen: isOpen }),
+  setIsAddAddressOpen: (isOpen: boolean) => set({ isAddAddressOpen: isOpen }),
+  setIsEditProfileOpen: (isOpen: boolean) => set({ isEditProfileOpen: isOpen }),
+  setIsProfileMenuOpen: (isOpen: boolean) => set({ isProfileMenuOpen: isOpen }),
+  setIsAdvancedSearchOpen: (isOpen: boolean) => set({ isAdvancedSearchOpen: isOpen }),
+  setIsSearchOpen: (isOpen: boolean) => set({ isSearchOpen: isOpen })
 }));

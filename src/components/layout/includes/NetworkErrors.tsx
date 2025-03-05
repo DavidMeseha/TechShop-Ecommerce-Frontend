@@ -8,9 +8,11 @@ import { FaRedo } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useTranslation } from "@/context/Translation";
 import { useQuery } from "@tanstack/react-query";
+import { useOverlayStore } from "@/stores/overlayStore";
 
 export default function NetworkErrors({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<"NoNetwork" | "ServerDown" | false>(false);
+  const setIsLoginOpen = useOverlayStore((state) => state.setIsLoginOpen);
   const { t } = useTranslation();
 
   const setOnlineState = useCallback((err: "NoNetwork" | "ServerDown" | false) => {
@@ -24,11 +26,12 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
       (error: AxiosError) => {
         if (!navigator.onLine) return Promise.reject(error);
         if (error.response) {
+          if (error.response.status === 401) setIsLoginOpen(true);
           if (error.response.status === 500) toast.error(t("serverFail"));
         } else if (error.request) {
           setOnlineState("ServerDown");
+          return Promise.reject(error);
         }
-        return Promise.reject(error);
       }
     );
 

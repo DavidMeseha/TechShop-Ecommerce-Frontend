@@ -17,47 +17,42 @@ type ListItemProps = {
 export default function Page() {
   const { t } = useTranslation();
 
-  const categoriesQuery = useInfiniteQuery({
+  const { hasNextPage, fetchNextPage, isFetching, data, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["categoriesDiscover"],
     queryFn: ({ pageParam }) => getCategories({ page: pageParam }),
-    initialPageParam: 1,
-    getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
-      return lastPageParam + 1;
-    }
+    getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
+    initialPageParam: 1
   });
 
-  const categoriesPages = categoriesQuery.data?.pages ?? [];
-  const lastPage = categoriesPages?.findLast((page) => page);
+  const categories = data?.pages.flatMap((page) => page.data) ?? [];
 
   return (
-    <ul className="mt-14 md:mt-4">
-      {categoriesPages.map((page, index) => (
-        <React.Fragment key={index}>
-          {page.data.map((category) => (
-            <ListItem category={category} key={category._id} to={`/profile/category/${category.seName}`} />
-          ))}
-        </React.Fragment>
-      ))}
-
-      {categoriesQuery.isFetching ? (
+    <>
+      <ul>
+        {categories.map((category) => (
+          <ListItem category={category} key={category._id} to={`/category/${category.seName}`} />
+        ))}
+      </ul>
+      {isFetching ? (
         <Loading />
-      ) : lastPage && lastPage.pages.hasNext ? (
+      ) : hasNextPage ? (
         <div className="px-w py-4 text-center">
           <Button
             className="w-full bg-primary text-white"
-            isLoading={categoriesQuery.isFetchingNextPage}
-            onClick={() => categoriesQuery.fetchNextPage()}
+            isLoading={isFetchingNextPage}
+            onClick={() => fetchNextPage()}
           >
             {t("loadMore")}
           </Button>
         </div>
       ) : null}
-    </ul>
+    </>
   );
 }
 
 function ListItem({ to, category }: ListItemProps) {
   const { t } = useTranslation();
+
   return (
     <li className="flex items-center justify-between px-4 py-2">
       <div className="flex items-center gap-3">

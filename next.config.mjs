@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config, { isServer }) => {
+    config.resolve.symlinks = false;
     // Add a rule to handle the canvas.node binary module
     config.module.rules.push({ test: /\.node$/, use: "raw-loader" });
 

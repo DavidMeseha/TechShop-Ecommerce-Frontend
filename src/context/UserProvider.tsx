@@ -29,6 +29,8 @@ export default function UserProvider({ children }: { token?: string; children: R
       return config;
     });
     queryClient.invalidateQueries({ queryKey: ["checkToken"] });
+    queryClient.invalidateQueries({ queryKey: ["userInfo"] });
+    queryClient.invalidateQueries({ queryKey: ["userAddresses"] });
   }, []);
 
   const setupUser = (data: { user: User; token: string }) => {

@@ -40,7 +40,6 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  isLogin: boolean;
   isVendor: boolean;
   isRegistered: boolean;
   imageUrl: string;

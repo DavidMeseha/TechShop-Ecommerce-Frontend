@@ -58,6 +58,7 @@
   "faildToSubmitYourAction": "Échec de l'enregistrement du produit",
   "loginToPerformAction": "Vous devez vous connecter pour effectuer cette action",
   "couldNotChangeLanguage": "Impossible de changer de langue",
+  "SomethingWentWrong": "Une erreur s'est produite",
 
   "auth.password": "Mot de passe",
   "auth.login": "Connexion",
@@ -154,6 +155,7 @@
   "profile.noProducts": "Aucun produit disponible",
   "profile.emptyCart": "Panier vide",
   "profile.noSaves": "Aucun produit sauvegardé",
+  "profile.noReviews": "Vous n'avez pas encore créé d'avis",
 
   "addresses.manageAddresses": "Gérer les adresses",
   "addresses.editAddress": "Modifier l'adresse",
@@ -166,6 +168,11 @@
   "addresses.addressIsRequired": "L'adresse est requise",
   "addresses.cityIsRequired": "La ville est requise",
   "addresses.countryIsRequired": "Le pays est requis",
+  "addresses.selectAaddressToUpdate": "Sélectionnez une adresse à mettre à jour",
+  "addresses.noAvilableAdresses": "Aucune adresse disponible!",
+  "addresses.addOne": "Ajouter une adresse ?",
+  "addresses.edit": "Edit",
+  "addresses.delete": "Delete",
 
   "cart.noAvilableDetails": "Aucun détail disponible",
   "cart.shopNow": "Achetez maintenant",

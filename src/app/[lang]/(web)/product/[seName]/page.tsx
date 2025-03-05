@@ -4,7 +4,7 @@ import { cache } from "react";
 import { AxiosError } from "axios";
 import { IFullProduct } from "@/types";
 import axios from "@/lib/axios";
-import ProductPage from "../ProductPage";
+import ProductPage from "@/components/pages/ProductPage";
 import { homeFeedProducts } from "@/services/products.service";
 
 interface Props {

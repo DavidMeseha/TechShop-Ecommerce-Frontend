@@ -1,5 +1,5 @@
 import { IFullProduct, Pagination } from "@/types";
-import HomePage from "./HomePage";
+import HomePage from "@/components/pages/HomePage";
 import axios from "@/lib/axios";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 

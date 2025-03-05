@@ -30,7 +30,7 @@ export default function ProductAttributes({ productAttributes, customAttributes,
           name={attr.name}
           options={attr.values.map((item) => ({ name: item.name, value: item._id }))}
           value={customAttributes[index]?.values[0]._id ?? ""}
-          onUpdate={(value) => handleChange(attr._id, value)}
+          onChange={(e) => handleChange(attr._id, e.currentTarget.value)}
         />
       )}
 

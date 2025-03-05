@@ -4,11 +4,11 @@ import { LocalLink, useLocalPathname } from "@/components/LocalizedNavigation";
 import React, { useMemo } from "react";
 import { BsCompass, BsCompassFill, BsHouse, BsHouseFill } from "react-icons/bs";
 import { RiProfileFill, RiProfileLine, RiShoppingCartFill, RiShoppingCartLine } from "react-icons/ri";
+import { PiInfinity } from "react-icons/pi";
 
 export default React.memo(function BottomNav() {
   const { pathname } = useLocalPathname();
   const cartItems = useUserStore((state) => state.cartItems);
-  const user = useUserStore((state) => state.user);
   const { t } = useTranslation();
 
   const bottomNav = useMemo(
@@ -33,15 +33,19 @@ export default React.memo(function BottomNav() {
       },
       {
         name: t("profile"),
-        to: "/profile/me",
+        to: "/user/me",
         icon: <RiProfileLine className="mx-auto" size={25} />,
         iconActive: <RiProfileFill className="mx-auto" size={25} />
+      },
+      {
+        name: t("feeds"),
+        to: "/feeds",
+        icon: <PiInfinity className="mx-auto" size={20} />,
+        iconActive: <PiInfinity className="mx-auto" size={20} />
       }
     ],
     []
   );
-
-  if (!user) return;
 
   return (
     <nav className="fixed bottom-0 end-0 start-0 z-20 block w-full border border-gray-300 bg-white md:hidden">

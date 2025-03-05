@@ -15,8 +15,8 @@ type Props = {
 
 const bgVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.15 } },
-  exit: { opacity: 0, transition: { duration: 0.2 } }
+  visible: { opacity: 1, transition: { duration: 0.4 } },
+  exit: { opacity: 0, transition: { duration: 0.4 } }
 };
 
 const popupVariants: Variants = {
@@ -34,7 +34,7 @@ export default function OverlayLayout({ children, close, className, title, isLoa
         onMouseDown={close}
         onTouchStart={close}
       >
-        <motion.div className="pb- h-full w-full overflow-auto transition-transform" variants={popupVariants}>
+        <motion.div className="h-full w-full overflow-auto transition-transform" variants={popupVariants}>
           <div className="flex min-h-screen items-end justify-center pt-40 md:items-center md:py-8">
             <div
               className={twMerge(

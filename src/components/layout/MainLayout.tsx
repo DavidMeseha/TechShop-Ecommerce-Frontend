@@ -4,9 +4,10 @@ import AllOverlays from "@/components/overlays/AllOverlays";
 import React, { useMemo } from "react";
 import BottomNav from "./includes/BottomNav";
 import Header from "./includes/Header";
-import SideNav from "./includes/SideNav";
-import UserSetup from "@/context/UserProvider";
+import UserHandler from "@/context/UserProvider";
 import axios from "@/lib/axios";
+import TopMobileNav from "./includes/TopMobileNav";
+import { usePathname } from "next/navigation";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -14,6 +15,8 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ children, token }: MainLayoutProps) {
+  const pathname = usePathname();
+
   useMemo(() => {
     axios.interceptors.request.clear();
     axios.interceptors.request.use((config) => {
@@ -23,18 +26,12 @@ export default function MainLayout({ children, token }: MainLayoutProps) {
   }, []);
 
   return (
-    <>
-      <UserSetup token={token}>
-        <AllOverlays />
-        <Header />
-        <main className="mx-auto flex w-full justify-between px-0">
-          <SideNav />
-          <div className="relative mx-auto my-11 w-full md:mx-0 md:ms-[230px] md:mt-[60px]">
-            <div className="m-auto max-w-[1200px] md:px-4">{children}</div>
-          </div>
-        </main>
-        <BottomNav />
-      </UserSetup>
-    </>
+    <UserHandler token={token}>
+      <AllOverlays />
+      <Header />
+      {pathname.includes("/feeds") ? null : <TopMobileNav />}
+      <main className="relative mx-0 mb-14 w-full max-w-screen-xl pb-6 md:mx-auto md:px-4">{children}</main>
+      <BottomNav />
+    </UserHandler>
   );
 }

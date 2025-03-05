@@ -1,18 +1,19 @@
 "use client";
 
-import React from "react";
-import VendorMenu from "../VendorMenu";
+import React, { useEffect } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import MainMenu from "../MainMenu";
 import { useTranslation } from "@/context/Translation";
-import { useUserStore } from "@/stores/userStore";
 import { useOverlayStore } from "@/stores/overlayStore";
 
 export default function HomeMenu() {
   const setIsHomeMenuOpen = useOverlayStore((state) => state.setIsHomeMenuOpen);
   const isHomeMenuOpen = useOverlayStore((state) => state.isHomeMenuOpen);
-  const user = useUserStore((state) => state.user);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    document.body.style.overflowY = isHomeMenuOpen ? "hidden" : "auto";
+  }, [isHomeMenuOpen]);
 
   return (
     <div
@@ -29,7 +30,6 @@ export default function HomeMenu() {
           <RiCloseLine size={25} />
         </div>
         <MainMenu />
-        {user?.isVendor ? <VendorMenu /> : null}
       </div>
     </div>
   );

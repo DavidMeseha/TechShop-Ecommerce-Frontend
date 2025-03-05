@@ -18,7 +18,6 @@ export const user: User = {
   firstName: "xxxx",
   lastName: "xxxx",
   imageUrl: "/images/placeholder.png",
-  isLogin: true,
   isRegistered: true,
   isVendor: false,
   language: "en"

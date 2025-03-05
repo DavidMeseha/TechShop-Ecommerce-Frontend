@@ -7,8 +7,8 @@ type Props = {
   item: {
     name: string;
     sup?: { name: string; to: string }[];
-    Icon: React.ReactNode;
-    IconActive: React.ReactNode;
+    icon: React.ReactNode;
+    iconActive: React.ReactNode;
     to?: string;
   };
 };
@@ -24,7 +24,7 @@ export default function SubMenuItem({ item }: Props) {
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex items-center gap-2">
-          {item.Icon}
+          {item.icon}
           {item.name}
         </div>
         <RiArrowDropDownLine size={25} />

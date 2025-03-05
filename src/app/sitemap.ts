@@ -65,9 +65,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Generate dynamic routes for all languages
   const dynamicSitemapEntries = languages.flatMap((lang) => [
     ...products.map((product) => createEntry(`/product/${product.seName}`, lang, 0.9, "daily")),
-    ...categories.map((category) => createEntry(`/profile/category/${category.seName}`, lang, 0.8)),
-    ...tags.map((tag) => createEntry(`/profile/tag/${tag.seName}`, lang, 0.7)),
-    ...vendors.map((vendor) => createEntry(`/profile/vendor/${vendor.seName}`, lang, 0.8, "daily"))
+    ...categories.map((category) => createEntry(`/user/category/${category.seName}`, lang, 0.8)),
+    ...tags.map((tag) => createEntry(`/user/tag/${tag.seName}`, lang, 0.7)),
+    ...vendors.map((vendor) => createEntry(`/user/vendor/${vendor.seName}`, lang, 0.8, "daily"))
   ]);
 
   return [...staticSitemapEntries, ...dynamicSitemapEntries];

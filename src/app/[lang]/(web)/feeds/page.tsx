@@ -1,5 +1,5 @@
 import { IFullProduct, Pagination } from "@/types";
-import InfiniteFeed from "./InfiniteFeed";
+import InfiniteFeed from "@/components/pages/FeedsPage";
 import { cookies } from "next/headers";
 import axios from "@/lib/axios";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";

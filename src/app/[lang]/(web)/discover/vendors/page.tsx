@@ -14,41 +14,39 @@ import { getVendors } from "@/services/products.service";
 
 export default function Page() {
   const followedVendors = useUserStore((state) => state.followedVendors);
+  const { t } = useTranslation();
 
-  const vendorsQuery = useInfiniteQuery({
+  const { hasNextPage, fetchNextPage, isFetching, data, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["vendorsDiscover"],
     queryFn: ({ pageParam }) => getVendors({ page: pageParam }),
     initialPageParam: 1,
-    getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
-      return lastPageParam + 1;
-    }
+    getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined)
   });
 
-  const vendorsPages = vendorsQuery.data?.pages ?? [];
-  const lastPage = vendorsPages?.findLast((page) => page);
+  const vendors = data?.pages.flatMap((page) => page.data) ?? [];
 
   return (
-    <ul className="mt-14 md:mt-4">
-      {vendorsPages.map((page) =>
-        page.data.map((vendor) => (
+    <>
+      <ul>
+        {vendors.map((vendor) => (
           <MemoizedListItem isFollowed={followedVendors.includes(vendor._id)} key={vendor._id} vendor={vendor} />
-        ))
-      )}
+        ))}
+      </ul>
 
-      {vendorsQuery.isFetching ? (
+      {isFetching ? (
         <Loading />
-      ) : lastPage && lastPage.pages.hasNext ? (
+      ) : hasNextPage ? (
         <div className="px-w py-4 text-center">
           <Button
             className="w-full bg-primary text-white"
-            isLoading={vendorsQuery.isFetchingNextPage}
-            onClick={() => vendorsQuery.fetchNextPage()}
+            isLoading={isFetchingNextPage}
+            onClick={() => fetchNextPage()}
           >
-            Load More
+            {t("loadMore")}
           </Button>
         </div>
       ) : null}
-    </ul>
+    </>
   );
 }
 
@@ -69,7 +67,7 @@ const MemoizedListItem = React.memo(
           />
 
           <div>
-            <LocalLink className="font-bold hover:underline" href={`/profile/vendor/${vendor.seName}`}>
+            <LocalLink className="font-bold hover:underline" href={`/vendor/${vendor.seName}`}>
               {vendor.name}
             </LocalLink>
             <p className="text-gray-400">Products: {vendor.productCount}</p>

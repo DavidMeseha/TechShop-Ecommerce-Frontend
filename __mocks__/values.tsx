@@ -1,43 +1,7 @@
 import { AppStore } from "@/stores/appStore";
-import { OverlayStore } from "@/stores/overlayStore";
 import { UserStore } from "@/stores/userStore";
 import { IFullProduct } from "@/types";
 import { create } from "zustand";
-
-export const mockGeneralStore = create<OverlayStore>()(() => ({
-  isEditProfileOpen: false,
-  isShareOpen: false,
-  isAddToCartOpen: false,
-  isProfileMenuOpen: false,
-  isProductMoreInfoOpen: false,
-  isHomeMenuOpen: false,
-  isSearchOpen: false,
-  isAdvancedSearchOpen: false,
-  isAddReviewOpen: false,
-  isAddAddressOpen: false,
-
-  //overlay data
-  shareUrl: "",
-  search: "",
-  overlayProduct: null,
-  overlayProductId: null,
-  action: { name: null, fn: null },
-  countries: [],
-  shareAction: () => {},
-
-  //overlay toggles
-  setIsHomeMenuOpen: jest.fn(),
-  setIsAddAddressOpen: jest.fn(),
-  setIsEditProfileOpen: jest.fn(),
-  setIsProfileMenuOpen: jest.fn(),
-  setIsAdvancedSearchOpen: jest.fn(),
-  setIsSearchOpen: jest.fn(),
-  setSearch: jest.fn(),
-  setIsProductMoreInfoOpen: jest.fn(),
-  setShare: jest.fn(),
-  setIsAddReviewOpen: jest.fn(),
-  setIsProductAttributesOpen: jest.fn()
-}));
 
 export const mockUserStore = create<Partial<UserStore>>()((set) => ({
   user: null,

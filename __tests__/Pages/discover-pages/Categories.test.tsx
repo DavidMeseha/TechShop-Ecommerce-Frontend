@@ -10,7 +10,7 @@ const mockCategoriesResponse = (page: number) => ({
     { _id: `category-${page}-1`, name: `Category ${page}-1` },
     { _id: `category-${page}-2`, name: `Category ${page}-2` }
   ],
-  pages: { hasNext: true }
+  pages: { hasNext: true, current: page, next: page + 1 }
 });
 
 describe("HomePage", () => {

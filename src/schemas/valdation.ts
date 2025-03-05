@@ -37,5 +37,18 @@ export function loginSchema(t: TFunction) {
   });
 }
 
+export function AddressSchema(t: TFunction) {
+  return z.object({
+    address: z.string().min(1, { message: t("addresses.addressIsRequired") }),
+    country: z.string().min(1, { message: t("addresses.countryIsRequired") }),
+    city: z.string().min(1, { message: t("addresses.cityIsRequired") })
+  });
+}
+
 export type RegisterForm = z.infer<ReturnType<typeof registerSchema>>;
 export type LoginForm = z.infer<ReturnType<typeof loginSchema>>;
+export type AddressForm = z.infer<ReturnType<typeof AddressSchema>>;
+export type CheckoutForm = {
+  shippingAddressId: string;
+  billingMethod: string;
+};

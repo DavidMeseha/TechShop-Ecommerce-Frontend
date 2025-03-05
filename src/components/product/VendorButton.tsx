@@ -29,7 +29,7 @@ export default function ProductVendorButton({ vendor, isFollowed }: Props) {
 
   return (
     <div className="relative mx-2 mb-7">
-      <LocalLink aria-label="Navigate to vendor profile" href={`/profile/vendor/${vendor.seName}`}>
+      <LocalLink aria-label="Navigate to vendor profile" href={`/vendor/${vendor.seName}`}>
         <Image
           alt={vendor.name}
           className="h-10 w-10 rounded-full object-cover"

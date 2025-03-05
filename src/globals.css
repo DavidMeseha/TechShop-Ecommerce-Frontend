@@ -30,6 +30,10 @@
   --radius: 0.5rem;
 }
 
+a {
+  cursor: pointer;
+}
+
 .text-blend {
   color: hsl(var(--primary));
   mix-blend-mode: difference;

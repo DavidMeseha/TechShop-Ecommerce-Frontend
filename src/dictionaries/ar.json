@@ -58,6 +58,7 @@
   "faildToSubmitYourAction": "فشل التنفيز",
   "loginToPerformAction": "يجب تسجيل الدخول لتتمكن من تنفيز الطلب",
   "couldNotChangeLanguage": "فشل تغيير اللغة",
+  "SomethingWentWrong": "حدث خطاء ما, حاول مجدادا لاحقا",
 
   "auth.password": "كلمة المرور",
   "auth.login": "تسجيل الدخول",
@@ -154,6 +155,7 @@
   "profile.noProducts": "لا يوجد منتجات متاحه",
   "profile.emptyCart": "عربة التسوق فارغة",
   "profile.noSaves": "لا يوجد منتجات محفوظه",
+  "profile.noReviews": "لم تقم بإنشاء أي تقييمات حتى الآن",
 
   "addresses.manageAddresses": "إدارة العناوين",
   "addresses.editAddress": "تعديل العنوان",
@@ -166,6 +168,11 @@
   "addresses.addressIsRequired": "العنوان مطلوب",
   "addresses.cityIsRequired": "المدينة مطلوبة",
   "addresses.countryIsRequired": "البلد مطلوب",
+  "addresses.selectAaddressToUpdate": "اختر عنوان لتحديثه",
+  "addresses.noAvilableAdresses": "لا يوجد عناوين متاحة!",
+  "addresses.addOne": "أضف عنوان ؟",
+  "addresses.edit": "تعديل",
+  "addresses.delete": "حزف",
 
   "cart.noAvilableDetails": "لا توجد تفاصيل متاحة",
   "cart.shopNow": "تسوق الان",

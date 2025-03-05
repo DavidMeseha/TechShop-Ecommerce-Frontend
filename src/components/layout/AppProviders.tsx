@@ -5,6 +5,7 @@ import { TranslationProvider } from "@/context/Translation";
 import { Language, Translation } from "@/types";
 import { ReactNode, useEffect } from "react";
 import NetworkErrors from "./includes/NetworkErrors";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAppStore } from "@/stores/appStore";
 import QueryProvider from "./includes/QueryProvider";
 
@@ -23,11 +24,12 @@ export default function AppProvidrs({ children, dictionary, lang }: Props) {
 
   return (
     <ProgressBarProvider>
-      <TranslationProvider lang={lang} translation={dictionary}>
-        <QueryProvider>
+      <QueryProvider>
+        <TranslationProvider lang={lang} translation={dictionary}>
           <NetworkErrors>{children}</NetworkErrors>
-        </QueryProvider>
-      </TranslationProvider>
+        </TranslationProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryProvider>
     </ProgressBarProvider>
   );
 }

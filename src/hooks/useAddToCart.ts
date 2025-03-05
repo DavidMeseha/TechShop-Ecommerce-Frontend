@@ -28,7 +28,6 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
     onSuccess: () => {
       addProductToCart(product._id);
       getCartItems();
-      queryClient.invalidateQueries({ queryKey: ["checkoutItems"] });
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
       onSuccess?.(true);
     }
@@ -40,7 +39,6 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
     onSuccess: () => {
       removeProductFromCart(product._id);
       getCartItems();
-      queryClient.invalidateQueries({ queryKey: ["checkoutItems"] });
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
       onSuccess?.(false);
     },

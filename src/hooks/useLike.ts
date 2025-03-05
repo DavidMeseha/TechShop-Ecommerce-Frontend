@@ -1,6 +1,6 @@
 import { useUserStore } from "@/stores/userStore";
 import { IFullProduct } from "@/types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "@/context/Translation";
 import { toast } from "react-toastify";
 import { likeProduct, unLikeProduct } from "@/services/userActions.service";
@@ -18,7 +18,6 @@ export default function useLike({ product, onError, onClick }: LikeHookProps) {
   const removeFromLikes = useUserStore((state) => state.removeFromLikes);
   const addToLikes = useUserStore((state) => state.addToLikes);
   const getLikes = useUserStore((state) => state.getLikes);
-  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const timeoutRef = useRef<number>();
 
@@ -27,7 +26,6 @@ export default function useLike({ product, onError, onClick }: LikeHookProps) {
     mutationFn: () => likeProduct(product._id),
     onSuccess: async () => {
       getLikes();
-      queryClient.invalidateQueries({ queryKey: ["likedProducts"] });
     },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status !== 400) {
@@ -42,7 +40,6 @@ export default function useLike({ product, onError, onClick }: LikeHookProps) {
     mutationFn: () => unLikeProduct(product._id),
     onSuccess: async () => {
       getLikes();
-      queryClient.invalidateQueries({ queryKey: ["likedProducts"] });
     },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status !== 400) {
