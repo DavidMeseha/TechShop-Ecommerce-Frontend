@@ -12,6 +12,7 @@ import Button from "@/components/ui/Button";
 import { useUserSetup } from "@/context/UserProvider";
 import OverlayLayout from "../OverlayLayout";
 import { useOverlayStore } from "@/stores/overlayStore";
+import { isAxiosError } from "axios";
 
 export default function Login() {
   const { setupUser } = useUserSetup();
@@ -32,12 +33,16 @@ export default function Login() {
   const loginMutation = useMutation({
     mutationKey: ["login"],
     mutationFn: (form: LoginForm) => login(form),
-    onSuccess: async (data) => {
+    onSuccess: (data) => {
+      if (!data) return;
       setIsLoginOpen(false);
       setupUser(data);
     },
-    onError: (error) => {
-      setFormError(error.message ?? "Unknow error, try again later");
+    onError: (err) => {
+      if (isAxiosError(err)) {
+        if (err.response?.status === 401) setFormError(t("auth.wrongCredentials"));
+        else setFormError(err.response?.data ?? "Unknow error, try again later");
+      }
     }
   });
 

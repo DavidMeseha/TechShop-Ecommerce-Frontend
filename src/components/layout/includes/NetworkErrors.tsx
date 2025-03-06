@@ -24,14 +24,16 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
     const interceptor = axios.interceptors.response.use(
       (res) => res,
       (error: AxiosError) => {
-        if (!navigator.onLine) return Promise.reject(error);
-        if (error.response) {
-          if (error.response.status === 401) setIsLoginOpen(true);
-          if (error.response.status === 500) toast.error(t("serverFail"));
-        } else if (error.request) {
-          setOnlineState("ServerDown");
-          return Promise.reject(error);
+        if (navigator.onLine) {
+          if (error.response) {
+            if (error.response.status === 401) setIsLoginOpen(true);
+            if (error.response.status === 500) toast.error(t("serverFail"));
+          } else {
+            setOnlineState("ServerDown");
+          }
         }
+
+        return Promise.reject(error);
       }
     );
 

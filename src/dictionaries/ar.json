@@ -85,7 +85,8 @@
   "auth.forgetPassword": "نسيت كلمة المرور ؟",
   "auth.confirm": "تاكيد",
   "auth.EnterEmailtoResetPassword": "ادخل البريد الالكتروني الخاص بك لتغير كلمة المرور",
-  "auth.passwordFormatError": "Password length must be 8 and contains atleast a number, an english character, a special character (!,*,?,&,%)",
+  "auth.passwordFormatError": "يجب أن يكون طول كلمة المرور 8 أحرف وتحتوي على الأقل على رقم وحرف إنجليزي وحرف خاص (!,*,?,&,%)",
+  "auth.wrongCredentials": "بيانات الدخول غير صحيحة",
 
   "changePassword.confirmChange": "تأكيد تغيير كلمة المرور",
   "changePassword.current": "كلمة المرور الحالية",

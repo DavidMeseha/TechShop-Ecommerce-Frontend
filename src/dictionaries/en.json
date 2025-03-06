@@ -86,6 +86,7 @@
   "auth.confirm": "Confirm",
   "auth.EnterEmailtoResetPassword": "Enter Your Account Email to reset password",
   "auth.passwordFormatError": "Password length must be 8 and contains atleast a number, an english character, a special character (!,*,?,&,%)",
+  "auth.wrongCredentials": "Wrong Credentials",
 
   "changePassword.confirmChange": "Change Password",
   "changePassword.current": "Current Password",

@@ -86,6 +86,7 @@
   "auth.confirm": "Confirmer",
   "auth.EnterEmailtoResetPassword": "Entrez votre e-mail pour réinitialiser le mot de passe",
   "auth.passwordFormatError": "La longueur du mot de passe doit être de 8 caractères et contenir au moins un chiffre, un caractère anglais et un caractère spécial (!, *, ?, &, %)",
+  "auth.wrongCredentials": "Identifiants incorrects",
 
   "changePassword.confirmChange": "Changer le mot de passe",
   "changePassword.current": "Mot de passe actuel",
