@@ -25,7 +25,7 @@ export default React.memo(
       <>
         <div className="relative h-screen w-full snap-start bg-black" id={product._id}>
           <div className="relative flex h-[calc(100dvh-58px)] items-center">
-            <ProductCarosel className="max-h-[550px]" images={product.pictures} productName={product.name} />
+            <ProductCarosel images={product.pictures} productName={product.name} />
 
             <div className="absolute bottom-1 end-0">
               <div className="relative bottom-0 end-0 flex flex-col items-center gap-2 p-4">

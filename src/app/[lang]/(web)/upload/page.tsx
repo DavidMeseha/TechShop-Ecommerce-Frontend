@@ -2,7 +2,7 @@
 
 import React, { ChangeEvent, useRef, useState } from "react";
 import { BiMinus, BiSolidCloudUpload } from "react-icons/bi";
-import { useRouter } from "next-nprogress-bar";
+import { useRouter } from "@bprogress/next";
 import { FieldError } from "@/types";
 import { TagsInput } from "react-tag-input-component";
 import "react-advanced-cropper/dist/style.css";

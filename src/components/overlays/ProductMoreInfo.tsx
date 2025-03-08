@@ -65,7 +65,7 @@ function MainLogic({ product }: { product: IFullProduct }) {
 
   return (
     <>
-      <ProductCarosel images={product.pictures} productName={product.name} />
+      <ProductCarosel height={400} images={product.pictures} productName={product.name} />
       <h1 className="text-2xl font-bold">{product?.name}</h1>
       <LocalLink
         className="text-base text-gray-400 hover:text-primary hover:underline"

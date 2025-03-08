@@ -2,9 +2,9 @@ import { useUserStore } from "@/stores/userStore";
 import React, { useMemo } from "react";
 import { LocalLink, useLocalPathname } from "./LocalizedNavigation";
 import { useTranslation } from "@/context/Translation";
-import mainNavItems from "@/schemas/mainNavItems";
+import mainNavItems from "@/schemas/mainNav";
 import DropdownButton from "./DropdownButton";
-import { useRouter } from "next-nprogress-bar";
+import { useRouter } from "@bprogress/next";
 
 export default function HeaderNav() {
   const { t, lang } = useTranslation();
@@ -28,11 +28,12 @@ export default function HeaderNav() {
               {item.name}
             </LocalLink>
           ) : (
-            item.sup && (
+            item.sub && (
               <DropdownButton
                 className="text-md p-2 font-semibold"
-                options={item.sup?.map((sub) => sub.name)}
-                onSelectItem={(target) => router.push(item.sup.find((sub) => sub.name === target)?.to ?? "")}
+                isHoverable
+                options={item.sub.map((sub) => ({ name: sub.name, value: sub.to }))}
+                onSelectItem={(value) => router.push(value)}
               >
                 {item.name}
               </DropdownButton>

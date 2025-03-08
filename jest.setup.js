@@ -34,13 +34,6 @@ jest.mock("next/navigation", () => ({
   usePathname: jest.fn()
 }));
 
-jest.mock("next-nprogress-bar", () => {
-  return {
-    AppProgressBar: jest.fn(() => null),
-    useRouter: jest.fn()
-  };
-});
-
 // Mock Zustand stores globally
 jest.mock("./src/stores/overlayStore", () => ({
   useOverlayStore: jest.fn(() => ({

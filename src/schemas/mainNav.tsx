@@ -28,7 +28,7 @@ const mainNavItems = (t: TFunction, cartItemsCount: number) => [
   {
     id: 4,
     name: t("discover"),
-    sup: [
+    sub: [
       {
         name: t("categories"),
         to: `/discover/categories`

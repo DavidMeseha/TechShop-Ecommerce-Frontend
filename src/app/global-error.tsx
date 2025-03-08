@@ -3,7 +3,7 @@
 import Image from "next/image";
 import "@/globals.css";
 import Button from "@/components/ui/Button";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next";
 
 export default function GlobalError() {
   const router = useRouter();

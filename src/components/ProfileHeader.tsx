@@ -1,5 +1,5 @@
 import BackArrow from "@/components/ui/BackArrow";
-import { useRouter } from "next-nprogress-bar";
+import { useRouter } from "@bprogress/next";
 import React from "react";
 
 type Props = {

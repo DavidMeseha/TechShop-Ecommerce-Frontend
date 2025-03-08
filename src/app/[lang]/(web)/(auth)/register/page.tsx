@@ -13,7 +13,7 @@ import Button from "@/components/ui/Button";
 import { useMutation } from "@tanstack/react-query";
 import { registerUser } from "@/services/auth.service";
 import { FieldError } from "@/types";
-import { useRouter } from "next-nprogress-bar";
+import { useRouter } from "@bprogress/next";
 
 export default function Page() {
   const { t } = useTranslation();

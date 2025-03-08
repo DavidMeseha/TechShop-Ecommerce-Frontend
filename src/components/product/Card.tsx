@@ -48,7 +48,7 @@ function ProductCard({ product, isLiked, isInCart, isSaved }: Props) {
   return (
     <div className="flex w-full flex-col justify-between overflow-hidden rounded-sm border bg-white">
       <div>
-        <ProductCarosel className="h-44 w-full" images={product.pictures} productName={product.name} />
+        <ProductCarosel height={200} images={product.pictures} productName={product.name} />
 
         <div className="mt-2 flex flex-col gap-1 px-2 sm:px-4">
           <LocalLink className="font-semibold text-gray-800 hover:underline" href={`/product/${product.seName}`}>

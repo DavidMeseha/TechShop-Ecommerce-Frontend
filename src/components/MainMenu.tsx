@@ -2,53 +2,50 @@
 
 import { LocalLink, useLocalPathname } from "@/components/LocalizedNavigation";
 import React, { useMemo } from "react";
-import SubMenuItem from "./SubMenuItem";
 import { useTranslation } from "@/context/Translation";
 import { useUserStore } from "@/stores/userStore";
 import DropdownButton from "./DropdownButton";
 import { changeLanguage } from "@/actions";
-import { startProgress, stopProgress } from "next-nprogress-bar";
 import { languages } from "@/lib/misc";
 import { Language } from "@/types";
-import mainNavItems from "@/schemas/mainNavItems";
+import { mobileMenu } from "@/schemas/menus";
+import { useProgress } from "@bprogress/next";
 
 export default React.memo(function MainMenu() {
-  const { t, lang } = useTranslation();
-  const { pathname } = useLocalPathname();
   const cartItems = useUserStore((state) => state.cartItems);
+  const { pathname } = useLocalPathname();
+  const { t, lang } = useTranslation();
+  const { start, stop } = useProgress();
 
-  const menu = useMemo(() => mainNavItems(t, cartItems.length), [lang, cartItems.length]);
+  const menu = useMemo(() => mobileMenu(t), [lang, cartItems.length]);
+  const handleLanguageChange = async (value: string) => {
+    if (value === lang) return;
+    start();
+    await changeLanguage(value as Language, pathname);
+    stop();
+  };
 
   return (
     <ul>
-      {menu.map((item) => (
-        <li key={item.id}>
-          {item.to ? (
-            <LocalLink
-              href={item.to}
-              className={`hover:bg-lightGray mb-2 flex w-full items-center gap-2 rounded-md p-2 text-lg font-semibold ${
-                pathname === item.to ? "text-primary" : ""
-              }`}
-            >
-              {pathname === item.to ? item.iconActive : item.icon}
-              {item.name}
-            </LocalLink>
-          ) : (
-            item.sup && <SubMenuItem item={item} />
-          )}
+      {menu.map((item, index) => (
+        <li key={index}>
+          <LocalLink
+            href={item.to}
+            className={`hover:bg-lightGray mb-2 flex w-full items-center gap-2 rounded-md p-2 text-lg font-semibold ${
+              pathname === item.to ? "text-primary" : ""
+            }`}
+          >
+            {item.icon}
+            {item.name}
+          </LocalLink>
         </li>
       ))}
       <li className="p-2 md:hidden">
         <DropdownButton
           className="bg-transparent px-0"
-          options={languages}
+          options={languages.map((lang) => ({ name: lang, value: lang }))}
           value={lang}
-          onSelectItem={async (value) => {
-            if (value === lang) return;
-            startProgress();
-            await changeLanguage(value as Language, pathname);
-            stopProgress();
-          }}
+          onSelectItem={handleLanguageChange}
         >
           {lang.toUpperCase()}
         </DropdownButton>

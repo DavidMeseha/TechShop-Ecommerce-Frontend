@@ -3,18 +3,17 @@ import { IPicture } from "@/types";
 import Image from "next/image";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import CarouselIndecator from "../ui/CarouselIndecator";
-import { cn } from "@/lib/utils";
 
 type Props = {
   images: IPicture[];
   productName: string;
-  className?: string;
+  height?: number;
 };
 
 const BLUR_DATA_URL =
   "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx0fHRsdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR3/2wBDAR0XFyAeIRshIR0dIiIdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR3/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=";
 
-export default function ProductCarosel({ images, productName, className = "" }: Props) {
+export default function ProductCarosel({ images, productName, height }: Props) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
   const [caroselImageIndex, setCaroselImageIndex] = useState(0);
 
@@ -26,11 +25,11 @@ export default function ProductCarosel({ images, productName, className = "" }: 
 
   if (images.length > 1)
     return (
-      <div className="relative">
-        <Carousel className="w-full" dir="ltr" setApi={setCarouselApi}>
-          <CarouselContent className={className}>
+      <div className="relative h-full" style={{ height: `${height}px` }}>
+        <Carousel className="h-full w-full [&>div]:h-full" dir="ltr" setApi={setCarouselApi}>
+          <CarouselContent className="h-full">
             {images.map((img) => (
-              <CarouselItem className="relative flex items-center" key={img.imageUrl + img._id}>
+              <CarouselItem className="relative flex h-full items-center" key={img.imageUrl + img._id}>
                 <Image
                   alt={productName}
                   blurDataURL={BLUR_DATA_URL}
@@ -57,7 +56,7 @@ export default function ProductCarosel({ images, productName, className = "" }: 
     );
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className="h-full w-full" style={{ height: height + "px" }}>
       <Image
         alt={productName}
         blurDataURL={BLUR_DATA_URL}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import FormTextInput from "@/components/FormTextInput";
 import { FieldError } from "@/types";
-import { useRouter } from "next-nprogress-bar";
+import { useRouter } from "@bprogress/next";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { useTranslation } from "@/context/Translation";
 import { LoginForm, loginSchema } from "@/schemas/valdation";

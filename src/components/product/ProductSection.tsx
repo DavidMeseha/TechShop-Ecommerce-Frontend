@@ -33,7 +33,7 @@ function ProductSection({ product, isLiked, isSaved, isInCart, isRated, isFollow
   const handleFollow = useFollow({ vendor: product.vendor });
 
   return (
-    <div className="flex items-start border-b py-6">
+    <div className="mx-auto flex max-w-[950px] items-start border-b py-6">
       <div className="min-w-14">
         <LocalLink aria-label="Navigate to specific vendor profile" href={`/vendor/${product.vendor.seName}`}>
           <Image

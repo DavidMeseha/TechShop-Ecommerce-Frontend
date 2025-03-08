@@ -5,7 +5,8 @@ import { CheckoutForm } from "@/schemas/valdation";
 import { placeOrder, preperCardPayment } from "@/services/checkout.service";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next-nprogress-bar";
+// import { useRouter } from "@bprogress/next";
+import { useRouter } from "@bprogress/next";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
