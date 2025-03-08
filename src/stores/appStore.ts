@@ -13,7 +13,13 @@ export const useAppStore = create<AppStore>()(
       (set) => ({
         countries: [],
 
-        setCountries: async () => set({ countries: await getCountries() })
+        setCountries: async () => {
+          const { countries } = useAppStore.getState();
+          if (countries.length < 0) {
+            const fetchedCountries = await getCountries();
+            set({ countries: fetchedCountries });
+          }
+        }
       }),
       {
         name: "store",
