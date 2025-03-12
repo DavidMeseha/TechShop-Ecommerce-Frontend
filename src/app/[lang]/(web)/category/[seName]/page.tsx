@@ -6,7 +6,7 @@ import { cache } from "react";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 
-type Props = { params: { seName: string } };
+type Props = { params: Promise<{ seName: string }> };
 
 const getCategoryInfo = cache(async (seName: string) => {
   return await axios.get<ICategory>(`/api/Catalog/Category/${seName}`).then((res) => res.data);
@@ -14,6 +14,7 @@ const getCategoryInfo = cache(async (seName: string) => {
 
 export const revalidate = 600;
 export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const categories = await axios.get<{ seName: string }[]>(`/api/catalog/allCategories`).then((res) => res.data);
   return categories.map((category) => ({
@@ -22,8 +23,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  const seName = (await params).seName;
   try {
-    const category = await getCategoryInfo(params.seName);
+    const category = await getCategoryInfo(seName);
     const parentMeta = await parent;
 
     return {
@@ -41,17 +43,11 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 }
 
 export default async function Page({ params }: Props) {
+  const seName = (await params).seName;
   try {
-    const category = await getCategoryInfo(params.seName);
+    const category = await getCategoryInfo(seName);
     return <CategoryProfilePage category={category} />;
   } catch (err: any) {
-    // console.error(`Error fetching category ${params.seName}:`, {
-    //   error: err,
-    //   params,
-    //   timestamp: new Date().toISOString(),
-    //   url: `/api/Catalog/Category/${params.seName}`
-    // });
-
     const error = err as AxiosError;
     if (error.response) {
       if (error.response.status === 404) {

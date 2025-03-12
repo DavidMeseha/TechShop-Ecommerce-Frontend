@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo } from "react";
 import EditProfileOverlay from "./EditProfileOverlay";
-import { usePathname } from "next/navigation";
 import AttributesOverlay from "./AttributesOverlay";
 import ProductMoreInfoOverlay from "./ProductMoreInfo";
 import AddReviewOverlay from "./AddReviewOverlay";
@@ -15,8 +14,13 @@ import { useProductStore } from "@/stores/productStore";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import HomeMenu from "./HomeMenu";
+import { useUserStore } from "@/stores/userStore";
+import { useLocalPathname } from "../LocalizedNavigation";
 
 export default function AllOverlays() {
+  const setLastPageBeforSignUp = useUserStore((state) => state.setLastPageBeforSignUp);
+  const { pathname, lang } = useLocalPathname();
+
   const {
     isEditProfileOpen,
     isShareOpen,
@@ -44,7 +48,6 @@ export default function AllOverlays() {
     setIsAddReviewOpen,
     setIsProductMoreInfoOpen
   } = useProductStore();
-  const pathname = usePathname();
 
   // Reset all overlays when pathname changes
   useEffect(() => {
@@ -62,7 +65,10 @@ export default function AllOverlays() {
       setIsLoginOpen(false);
     };
     resetOverlays();
-  }, [pathname]);
+
+    if (pathname.includes("/login") || pathname.includes("/register")) return;
+    setLastPageBeforSignUp(pathname);
+  }, [pathname, lang]);
 
   // Memoize the overlay active state
   const isAnyOverlayOpen = useMemo(

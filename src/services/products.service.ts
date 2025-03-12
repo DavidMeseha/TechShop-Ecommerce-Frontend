@@ -4,7 +4,13 @@ import { ICategory, IFullProduct, IProductAttribute, ITag, IVendor, Pagination }
 export async function homeFeedProducts({ page, limit }: { page: number; limit: number }) {
   return axios
     .get<{ data: IFullProduct[]; pages: Pagination }>("/api/catalog/homefeed", {
-      params: { page, limit }
+      params: { page, limit },
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+        cache: false
+      }
     })
     .then((res) => res.data);
 }

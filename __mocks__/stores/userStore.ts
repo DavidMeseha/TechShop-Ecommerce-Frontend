@@ -23,7 +23,11 @@ export const mockUserStore: UserStore = {
   saves: ["product1", "product2"],
   followedVendors: ["vendor1", "vendor2"],
   likes: ["product2", "product1"],
+  lastPageBeforSignUp: "/",
 
+  setLastPageBeforSignUp(page: string) {
+    mockUserStore.lastPageBeforSignUp = page;
+  },
   getFollowedVendors: jest.fn(async () => {}),
   addToFollowedVendors: jest.fn((vendorId: string) => {
     mockUserStore.followedVendors.push(vendorId);

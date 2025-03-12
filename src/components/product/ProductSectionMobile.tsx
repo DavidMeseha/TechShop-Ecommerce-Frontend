@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default React.memo(
-  function ProductSectionMobile({ product, isLiked, isSaved, isInCart, isRated, isFollowed }: Props) {
+  function ProductSectionMobile({ product, isFollowed }: Props) {
     return (
       <>
         <div className="relative h-screen w-full snap-start bg-black" id={product._id}>
@@ -31,10 +31,10 @@ export default React.memo(
               <div className="relative bottom-0 end-0 flex flex-col items-center gap-2 p-4">
                 <ViewMoreButton product={product} />
                 <ProductVendorButton isFollowed={isFollowed} vendor={product.vendor} />
-                <LikeProductButton isLiked={isLiked} product={product} />
-                <RateProductButton isRated={isRated} product={product} />
-                <SaveProductButton isSaved={isSaved} product={product} />
-                <AddToCartButton isInCart={isInCart} product={product} />
+                <LikeProductButton isLiked={product.isLiked} likesCount={product.likes} productId={product._id} />
+                <RateProductButton isRated={product.isReviewed} product={product} />
+                <SaveProductButton isSaved={product.isSaved} productId={product._id} savesCount={product.saves} />
+                <AddToCartButton product={product} />
               </div>
             </div>
           </div>

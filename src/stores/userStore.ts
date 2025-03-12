@@ -16,7 +16,9 @@ export interface UserStore {
   saves: string[];
   followedVendors: string[];
   likes: string[];
+  lastPageBeforSignUp: string;
 
+  setLastPageBeforSignUp: (page: string) => void;
   getFollowedVendors: () => Promise<void>;
   addToFollowedVendors: (vendorId: string) => void;
   removeFromFollowedVendors: (vendorId: string) => void;
@@ -50,6 +52,9 @@ export const useUserStore = create<UserStore>()((set) => ({
   saves: [],
   likes: [],
   followedVendors: [],
+  lastPageBeforSignUp: "/", //used to redirect user to the last page before sign up
+
+  setLastPageBeforSignUp: (page: string) => set({ lastPageBeforSignUp: page }),
 
   getReviews: async () => {
     const result = await getReviewIds();

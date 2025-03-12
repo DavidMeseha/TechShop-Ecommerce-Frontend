@@ -52,10 +52,10 @@ export default function Page() {
   };
 
   return (
-    <form className="p-4" onSubmit={handleSubmit(submitForm)}>
-      <div className="flex justify-between">
-        <h1 className="mb-4 text-2xl font-bold">{t("auth.register")}</h1>
-        <LocalLink className="text-primary hover:underline" href={`/login`}>
+    <form onSubmit={handleSubmit(submitForm)}>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-bold">{t("auth.register")}</h1>
+        <LocalLink className="text-sm text-primary hover:underline" href="/login">
           {t("auth.alreadyHveAnAccount")}
         </LocalLink>
       </div>

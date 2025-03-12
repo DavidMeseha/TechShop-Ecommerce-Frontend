@@ -1,4 +1,4 @@
-import { setLanguage, setToken, removeToken } from "@/actions";
+import { setLanguage, setToken } from "@/actions";
 import { useTranslation } from "@/context/Translation";
 import axios from "@/lib/axios";
 import { checkTokenValidity, getGuestToken, refreshToken } from "@/services/auth.service";
@@ -7,19 +7,21 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createContext, ReactNode, useCallback, useContext, useMemo } from "react";
 import { toast } from "react-toastify";
 import { User } from "@/types";
+import { useRouter } from "@bprogress/next";
 
 type ContextData = {
   setupUser: (user: { user: User; token: string }) => void;
   logout: () => void;
 };
 
-const UserContext = createContext<ContextData>({ setupUser: () => {}, logout: () => {} });
+const UserContext = createContext<ContextData | undefined>(undefined);
 
 export default function UserProvider({ children }: { token?: string; children: ReactNode }) {
   const setUserActions = useUserStore((state) => state.setUserActions);
   const setUser = useUserStore((state) => state.setUser);
   const user = useUserStore((state) => state.user);
   const queryClient = useQueryClient();
+  const router = useRouter();
   const { t } = useTranslation();
 
   const resetAxiosIterceptor = useCallback((token: string) => {
@@ -33,18 +35,20 @@ export default function UserProvider({ children }: { token?: string; children: R
     queryClient.invalidateQueries({ queryKey: ["userAddresses"] });
   }, []);
 
-  const setupUser = (data: { user: User; token: string }) => {
+  const setupUser = async (data: { user: User; token: string }) => {
     setUser(data.user);
-    setToken(data.token);
-    setLanguage(data.user.language);
+    await setToken(data.token);
+    await setLanguage(data.user.language);
     resetAxiosIterceptor(data.token);
+    queryClient.clear();
   };
 
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
-    removeToken();
     setLanguage("en");
-    guestTokenMutation.mutate();
+    await guestTokenMutation.mutateAsync();
+    router.push("/login");
+    queryClient.clear();
   };
 
   //check token validity
@@ -66,10 +70,13 @@ export default function UserProvider({ children }: { token?: string; children: R
 
   //new guest token
   const guestTokenMutation = useMutation({
-    mutationFn: () => getGuestToken(),
+    mutationFn: () =>
+      getGuestToken().then(async (res) => {
+        await setToken(res.data.token);
+        return res;
+      }),
     onSuccess: async (res) => {
       setUser(res.data.user);
-      await setToken(res.data.token);
       setUserActions();
       resetAxiosIterceptor(res.data.token);
     }
@@ -99,4 +106,9 @@ export default function UserProvider({ children }: { token?: string; children: R
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 
-export const useUserSetup = () => useContext(UserContext);
+export const useUserSetup = () => {
+  const context = useContext(UserContext);
+
+  if (!context) throw new Error("useUserSetup must be used within a UserProvider");
+  return context;
+};

@@ -1,5 +1,4 @@
 import { useUserStore } from "@/stores/userStore";
-import { IFullProduct } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "@/context/Translation";
 import { toast } from "react-toastify";
@@ -8,47 +7,41 @@ import { useRef } from "react";
 import { isAxiosError } from "axios";
 
 interface SaveHookProps {
-  product: IFullProduct;
+  productId: string;
   onError?: (shouldSave: boolean) => void;
+  onSuccess?: (shouldLike: boolean) => void;
   onClick?: (shouldSave: boolean) => void;
 }
 
-export default function useSave({ product, onError, onClick }: SaveHookProps) {
+export default function useSave({ productId, onError, onClick, onSuccess }: SaveHookProps) {
   const user = useUserStore((state) => state.user);
-  const addToSaves = useUserStore((state) => state.addToSaves);
-  const removeFromSaves = useUserStore((state) => state.removeFromSaves);
-  const getSaves = useUserStore((state) => state.getSaves);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const timeoutRef = useRef<number>();
 
   const saveMutation = useMutation({
-    mutationKey: ["save", product.seName],
-    mutationFn: () => saveProduct(product._id),
-    onSuccess: async () => {
-      getSaves();
+    mutationKey: ["save", productId],
+    mutationFn: () => saveProduct(productId),
+    onSuccess: () => {
+      onSuccess?.(true);
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
     },
     onError: (err) => {
-      if (isAxiosError(err) && err.response?.status !== 400) {
-        removeFromSaves(product._id);
-        onError?.(true);
-      }
+      if (isAxiosError(err) && err.response?.status === 409) return;
+      onError?.(true);
     }
   });
 
   const unsaveMutation = useMutation({
-    mutationKey: ["unsave", product.seName],
-    mutationFn: () => unsaveProduct(product._id),
-    onSuccess: async () => {
-      getSaves();
+    mutationKey: ["unsave", productId],
+    mutationFn: () => unsaveProduct(productId),
+    onSuccess: () => {
+      onSuccess?.(false);
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
     },
     onError: (err) => {
-      if (isAxiosError(err) && err.response?.status !== 400) {
-        addToSaves(product._id);
-        onError?.(false);
-      }
+      if (isAxiosError(err) && err.response?.status === 409) return;
+      onError?.(false);
     }
   });
 
@@ -56,7 +49,6 @@ export default function useSave({ product, onError, onClick }: SaveHookProps) {
     if (!user) return;
     if (!user.isRegistered) return toast.warn(t("loginToPerformAction"), { toastId: "saveError" });
 
-    shouldSave ? addToSaves(product._id) : removeFromSaves(product._id);
     onClick?.(shouldSave);
 
     if (timeoutRef.current) window.clearTimeout(timeoutRef.current);

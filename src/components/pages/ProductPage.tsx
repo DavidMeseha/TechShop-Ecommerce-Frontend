@@ -12,8 +12,6 @@ import React, { useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { homeFeedProducts } from "@/services/products.service";
 import ProductsGridView from "@/components/product/ProductsGridView";
-import { useUserStore } from "@/stores/userStore";
-import { isInCart } from "@/lib/utils";
 import ProductCarosel from "@/components/product/ProductCarosel";
 
 type Props = {
@@ -21,10 +19,6 @@ type Props = {
 };
 
 export default function ProductPage({ product }: Props) {
-  const likes = useUserStore((state) => state.likes);
-  const saves = useUserStore((state) => state.saves);
-  const reviews = useUserStore((state) => state.reviews);
-  const cartItems = useUserStore((state) => state.cartItems);
   const [customAttributes, setCustomAttributes] = useState(selectDefaultAttributes(product.productAttributes));
   const [ref, inView] = useInView();
   const rating = (product.productReviewOverview.ratingSum / (product.productReviewOverview.totalReviews || 1)).toFixed(
@@ -83,14 +77,10 @@ export default function ProductPage({ product }: Props) {
               </div>
 
               <div className="mt-6 flex items-center gap-4 sm:mt-8">
-                <LikeProductButton isLiked={likes.includes(product._id)} product={product} />
-                <SaveProductButton isSaved={saves.includes(product._id)} product={product} />
-                <AddToCartButton
-                  attributes={customAttributes}
-                  isInCart={isInCart(product._id, cartItems)}
-                  product={product}
-                />
-                <RateProductButton isRated={reviews.includes(product._id)} product={product} />
+                <LikeProductButton isLiked={product.isLiked} likesCount={product.likes} productId={product._id} />
+                <SaveProductButton isSaved={product.isSaved} productId={product._id} savesCount={product.saves} />
+                <AddToCartButton attributes={customAttributes} product={product} />
+                <RateProductButton isRated={product.isReviewed} product={product} />
               </div>
 
               <hr className="my-6 border-gray-200 md:my-8" />

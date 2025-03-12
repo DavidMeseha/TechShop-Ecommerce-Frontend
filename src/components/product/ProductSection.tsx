@@ -24,7 +24,7 @@ type Props = {
   isFollowed: boolean;
 };
 
-function ProductSection({ product, isLiked, isSaved, isInCart, isRated, isFollowed }: Props) {
+function ProductSection({ product, isFollowed }: Props) {
   const { t } = useTranslation();
   const [readMore, setReadMore] = useState(false);
   const descriptionRef = useRef(manipulateDescription(product.fullDescription));
@@ -109,10 +109,10 @@ function ProductSection({ product, isLiked, isSaved, isInCart, isRated, isFollow
           </div>
           <div className="relative flex flex-col items-center gap-2 p-2">
             <ViewMoreButton product={product} />
-            <LikeProductButton isLiked={isLiked} product={product} />
-            <RateProductButton isRated={isRated} product={product} />
-            <SaveProductButton isSaved={isSaved} product={product} />
-            <AddToCartButton isInCart={isInCart} product={product} />
+            <LikeProductButton isLiked={product.isLiked} likesCount={product.likes} productId={product._id} />
+            <RateProductButton isRated={product.isReviewed} product={product} />
+            <SaveProductButton isSaved={product.isSaved} productId={product._id} savesCount={product.saves} />
+            <AddToCartButton product={product} />
           </div>
         </div>
       </div>

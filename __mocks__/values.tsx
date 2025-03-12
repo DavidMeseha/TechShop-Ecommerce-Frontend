@@ -48,6 +48,10 @@ export const mockAppStore = create<Partial<AppStore>>()((set) => ({
 }));
 
 export const mockHomeProduct: IFullProduct = {
+  isInCart: true,
+  isLiked: true,
+  isReviewed: true,
+  isSaved: true,
   price: { old: 0, price: 1200 },
   productReviewOverview: { ratingSum: 7, totalReviews: 2 },
   gender: ["male"],

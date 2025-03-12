@@ -16,9 +16,6 @@ interface CartMutationProps {
 
 export default function useAddToCart({ product, onSuccess }: CartHookProps) {
   const user = useUserStore((state) => state.user);
-  const addProductToCart = useUserStore((state) => state.addToCart);
-  const removeProductFromCart = useUserStore((state) => state.removeFromCart);
-  const getCartItems = useUserStore((state) => state.getCartItems);
   const setIsProductAttributesOpen = useProductStore((state) => state.setIsProductAttributesOpen);
   const queryClient = useQueryClient();
 
@@ -26,8 +23,6 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
     mutationKey: ["addToCart", product.seName],
     mutationFn: ({ attributes, quantity }: CartMutationProps) => addToCart(product._id, attributes, quantity),
     onSuccess: () => {
-      addProductToCart(product._id);
-      getCartItems();
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
       onSuccess?.(true);
     }
@@ -37,12 +32,9 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
     mutationKey: ["removeFromCart", product.seName],
     mutationFn: () => removeFromCart(product._id),
     onSuccess: () => {
-      removeProductFromCart(product._id);
-      getCartItems();
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
       onSuccess?.(false);
-    },
-    onError: () => getCartItems()
+    }
   });
 
   // Helper function to handle product attributes

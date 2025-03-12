@@ -18,7 +18,7 @@ export default forwardRef<HTMLInputElement, TextInputProps>(function FormTextInp
         {label}
         {required ? <span className="text-primary">*</span> : null}
       </label>
-      <Input {...props} className="block w-full rounded-sm border px-4" ref={ref} />
+      <Input {...props} className={`${error ? "border-red-500" : ""}`} ref={ref} />
       <div className="min-h-[21px] text-[14px] font-semibold text-red-500">{error ? error : null}</div>
     </>
   );

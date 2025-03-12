@@ -6,7 +6,7 @@ import { Metadata, ResolvingMetadata } from "next";
 import { AxiosError } from "axios";
 import { notFound } from "next/navigation";
 
-type Props = { params: { seName: string } };
+type Props = { params: Promise<{ seName: string }> };
 
 const getTagInfo = cache(async (seName: string) => {
   return await axios.get<ITag>(`/api/Catalog/tag/${seName}`).then((res) => res.data);
@@ -22,9 +22,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const params = props.params;
+  const seName = (await props.params).seName;
   try {
-    const tag = await getTagInfo(params.seName);
+    const tag = await getTagInfo(seName);
     const parentMeta = await parent;
 
     return {
@@ -42,9 +42,9 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
 }
 
 export default async function Page(props: Props) {
-  const params = props.params;
+  const seName = (await props.params).seName;
   try {
-    const tag = await getTagInfo(params.seName);
+    const tag = await getTagInfo(seName);
     return <TagProfilePage tag={tag} />;
   } catch (err: any) {
     const error = err as AxiosError;

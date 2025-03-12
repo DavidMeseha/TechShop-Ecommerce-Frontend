@@ -7,20 +7,17 @@ import useAddToCart from "@/hooks/useAddToCart";
 type Props = {
   product: IFullProduct;
   attributes?: IProductAttribute[];
-  isInCart: boolean;
 };
 
-export default React.memo(function AddToCartButton({ product, attributes, isInCart }: Props) {
-  const [count, setCount] = useState(product.carts);
+export default React.memo(function AddToCartButton({ product, attributes }: Props) {
+  const [cart, setCart] = useState(() => ({ state: product.isInCart, count: product.carts }));
 
   const { handleAddToCart, isPending } = useAddToCart({
     product,
-    onSuccess: (state) => {
-      setCount(count + (state ? 1 : -1));
-    }
+    onSuccess: (shouldAdd) => setCart({ state: shouldAdd, count: cart.count + (shouldAdd ? 1 : -1) })
   });
 
-  const addToCart = () => handleAddToCart(!isInCart, attributes);
+  const addToCart = () => handleAddToCart(!cart.state, attributes);
 
   return (
     <button aria-label="Product add to cart" className="fill-black text-center" onClick={addToCart}>
@@ -29,12 +26,12 @@ export default React.memo(function AddToCartButton({ product, attributes, isInCa
           <BiLoaderCircle className="animate-spin" size="25" />
         ) : (
           <BsCartFill
-            className={`p-0.5 transition-all ${isInCart ? "fill-primary" : ""} hover:fill-primary`}
+            className={`p-0.5 transition-all ${cart.state ? "fill-primary" : ""} hover:fill-primary`}
             size="25"
           />
         )}
       </div>
-      <span className="text-blend text-xs font-semibold">{count}</span>
+      <span className="text-blend text-xs font-semibold">{cart.count}</span>
     </button>
   );
 });

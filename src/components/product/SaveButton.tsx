@@ -2,36 +2,33 @@
 
 import React, { useState } from "react";
 import { BsBookmarkFill } from "react-icons/bs";
-import { IFullProduct } from "@/types";
 import useSave from "@/hooks/useSave";
 
 type Props = {
-  product: IFullProduct;
+  productId: string;
   isSaved: boolean;
+  savesCount: number;
 };
 
-export default React.memo(function SaveProductButton({ product, isSaved }: Props) {
-  const [count, setCount] = useState(product.likes);
+export default React.memo(function SaveProductButton({ productId, isSaved, savesCount }: Props) {
+  const [save, setSave] = useState(() => ({ state: isSaved, count: savesCount }));
+
   const handleSave = useSave({
-    product,
-    onClick: (shouldSave) => {
-      setCount(count + (shouldSave ? 1 : -1));
-    },
-    onError: (shouldSave) => {
-      setCount(count + (shouldSave ? -1 : 1));
-    }
+    productId,
+    onClick: (shouldSave) => setSave({ state: shouldSave, count: save.count + (shouldSave ? 1 : -1) }),
+    onError: (shouldSave) => setSave({ state: !shouldSave, count: save.count + (!shouldSave ? 1 : -1) })
   });
 
-  const handleSaveAction = () => handleSave(!isSaved);
+  const handleSaveAction = () => handleSave(!save.state);
   return (
-    <button aria-label="Like Product" className="fill-black text-center" onClick={handleSaveAction}>
-      <div className="rounded-full bg-gray-200 p-2">
+    <div aria-label="Like Product" className="fill-black text-center">
+      <button className="block rounded-full bg-gray-200 p-2" onClick={handleSaveAction}>
         <BsBookmarkFill
-          className={`transition-all ${isSaved ? "fill-primary" : "fill-black"} text-black hover:fill-primary`}
+          className={`transition-all ${save.state ? "fill-primary" : "fill-black"} text-black hover:fill-primary`}
           size="25"
         />
-      </div>
-      <span className="text-blend text-sm font-semibold">{count}</span>
-    </button>
+      </button>
+      <span className="text-blend text-sm font-semibold">{save.count}</span>
+    </div>
   );
 });

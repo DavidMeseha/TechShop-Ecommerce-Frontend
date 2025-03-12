@@ -6,29 +6,20 @@ import { redirect } from "next/navigation";
 import { Language } from "./types";
 import { getPathnameLang } from "./lib/misc";
 
-const axiosConfig = () => {
-  return {
-    headers: {
-      Authorization: `Bearer ${cookies().get("session")?.value}`,
-      "Accept-Language": cookies().get("lang")?.value
-    }
-  };
-};
-
 export async function setToken(token: string) {
-  cookies().set("session", token, { httpOnly: true, sameSite: "strict", secure: true });
+  (await cookies()).set("session", token, { httpOnly: true, sameSite: "strict", secure: true });
 }
 
 export async function removeToken() {
-  cookies().delete("session");
+  (await cookies()).delete("session");
 }
 
 export async function setLanguage(lang: Language) {
-  cookies().set("lang", lang);
+  (await cookies()).set("lang", lang);
 }
 
 export async function getLanguage() {
-  return (cookies().get("lang")?.value ?? "en") as Language;
+  return ((await cookies()).get("lang")?.value ?? "en") as Language;
 }
 
 export async function changeLanguage(lang: Language, pathname: string) {
@@ -37,7 +28,16 @@ export async function changeLanguage(lang: Language, pathname: string) {
   const pathOnly = tempPath.replace("/" + pathnameLang, "");
 
   try {
-    await axios.post(`/api/common/changeLanguage/${lang}`, {}, axiosConfig());
+    await axios.post(
+      `/api/common/changeLanguage/${lang}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${(await cookies()).get("session")?.value}`,
+          "Accept-Language": (await cookies()).get("lang")?.value
+        }
+      }
+    );
     await setLanguage(lang);
   } catch {
     return redirect(pathname + "?error=couldNotChangeLanguage");

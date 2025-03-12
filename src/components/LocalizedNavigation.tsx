@@ -23,7 +23,7 @@ export function useLocalPathname() {
 export function LocalLink({ href, children, ...props }: Props) {
   const { lang } = useTranslation();
   return (
-    <Link href={`/${lang}${href}`} {...props}>
+    <Link href={`/${lang}${href}`} scroll={false} {...props}>
       {children}
     </Link>
   );

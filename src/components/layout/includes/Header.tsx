@@ -15,9 +15,9 @@ import { useOverlayStore } from "@/stores/overlayStore";
 import HeaderUserAvatar from "../../HeaderUserAvatar";
 import HeaderNav from "@/components/HeaderNav";
 import { useProgress } from "@bprogress/next";
+import { useMemo } from "react";
 
 export default function Header() {
-  const setIsLoginOpen = useOverlayStore((state) => state.setIsLoginOpen);
   const setIsSearchOpen = useOverlayStore((state) => state.setIsSearchOpen);
   const user = useUserStore((state) => state.user);
   const pathname = usePathname();
@@ -30,6 +30,8 @@ export default function Header() {
     await changeLanguage(value as Language, pathname);
     stop();
   };
+
+  const languagesList = useMemo(() => languages.map((lang) => ({ name: lang, value: lang })), []);
 
   return (
     <header className="sticky top-0 z-40 hidden h-[60px] w-screen items-center border-b bg-white md:flex" id="TopNav">
@@ -52,7 +54,7 @@ export default function Header() {
 
           <DropdownButton
             className="w-fit bg-transparent px-0"
-            options={languages.map((lang) => ({ name: lang, value: lang }))}
+            options={languagesList}
             onSelectItem={handleLanguageChange}
           >
             {lang.toUpperCase()}
@@ -60,9 +62,9 @@ export default function Header() {
 
           {user ? (
             !user || !user.isRegistered ? (
-              <Button className="rounded-sm bg-primary px-4 py-2 text-white" onClick={() => setIsLoginOpen(true)}>
+              <LocalLink className="rounded-sm bg-primary px-4 py-2 text-white" href="/login">
                 <span className="mx-4 whitespace-nowrap text-[15px] font-medium">{t("login")}</span>
-              </Button>
+              </LocalLink>
             ) : (
               <HeaderUserAvatar user={user} />
             )

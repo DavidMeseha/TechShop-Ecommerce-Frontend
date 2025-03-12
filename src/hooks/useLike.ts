@@ -1,5 +1,4 @@
 import { useUserStore } from "@/stores/userStore";
-import { IFullProduct } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "@/context/Translation";
 import { toast } from "react-toastify";
@@ -8,44 +7,34 @@ import { useRef } from "react";
 import { isAxiosError } from "axios";
 
 interface LikeHookProps {
-  product: IFullProduct;
+  productId: string;
   onError?: (shouldLike: boolean) => void;
+  onSuccess?: (shouldLike: boolean) => void;
   onClick?: (shouldLike: boolean) => void;
 }
 
-export default function useLike({ product, onError, onClick }: LikeHookProps) {
+export default function useLike({ productId, onError, onSuccess, onClick }: LikeHookProps) {
   const user = useUserStore((state) => state.user);
-  const removeFromLikes = useUserStore((state) => state.removeFromLikes);
-  const addToLikes = useUserStore((state) => state.addToLikes);
-  const getLikes = useUserStore((state) => state.getLikes);
   const { t } = useTranslation();
   const timeoutRef = useRef<number>();
 
   const likeMutation = useMutation({
-    mutationKey: ["like", product.seName],
-    mutationFn: () => likeProduct(product._id),
-    onSuccess: async () => {
-      getLikes();
-    },
+    mutationKey: ["like", productId],
+    mutationFn: () => likeProduct(productId),
+    onSuccess: () => onSuccess?.(true),
     onError: (err) => {
-      if (isAxiosError(err) && err.response?.status !== 400) {
-        removeFromLikes(product._id);
-        onError?.(true);
-      }
+      if (isAxiosError(err) && err.response?.status === 409) return;
+      onError?.(true);
     }
   });
 
   const unlikeMutation = useMutation({
-    mutationKey: ["unlike", product.seName],
-    mutationFn: () => unLikeProduct(product._id),
-    onSuccess: async () => {
-      getLikes();
-    },
+    mutationKey: ["unlike", productId],
+    mutationFn: () => unLikeProduct(productId),
+    onSuccess: () => onSuccess?.(false),
     onError: (err) => {
-      if (isAxiosError(err) && err.response?.status !== 400) {
-        addToLikes(product._id);
-        onError?.(false);
-      }
+      if (isAxiosError(err) && err.response?.status === 409) return;
+      onError?.(false);
     }
   });
 
@@ -53,8 +42,6 @@ export default function useLike({ product, onError, onClick }: LikeHookProps) {
     if (!user) return;
     if (!user.isRegistered) return toast.warn(t("loginToPerformAction"), { toastId: "likeError" });
 
-    // Immediately update UI
-    shouldLike ? addToLikes(product._id) : removeFromLikes(product._id);
     onClick?.(shouldLike);
 
     if (timeoutRef.current) window.clearTimeout(timeoutRef.current);

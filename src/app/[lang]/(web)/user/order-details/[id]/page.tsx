@@ -6,13 +6,15 @@ import { IFullProduct, IProductAttribute } from "@/types";
 import Image from "next/image";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { getOrder } from "@/services/user.service";
+import { use } from "react";
 
-export default function OrderDetailsPage({ params }: { params: { id: string } }) {
+export default function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useTranslation();
+  const id = use(params).id;
 
   const orderQuery = useQuery({
-    queryKey: ["order", params.id],
-    queryFn: () => getOrder(params.id)
+    queryKey: ["order", id],
+    queryFn: () => getOrder(id)
   });
   const order = orderQuery.data;
 

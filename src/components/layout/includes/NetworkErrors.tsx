@@ -3,16 +3,16 @@ import Button from "@/components/ui/Button";
 import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import Image from "next/image";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaRedo } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useTranslation } from "@/context/Translation";
 import { useQuery } from "@tanstack/react-query";
-import { useOverlayStore } from "@/stores/overlayStore";
+import { useRouter } from "@bprogress/next";
 
 export default function NetworkErrors({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<"NoNetwork" | "ServerDown" | false>(false);
-  const setIsLoginOpen = useOverlayStore((state) => state.setIsLoginOpen);
+  const router = useRouter();
   const { t } = useTranslation();
 
   const setOnlineState = useCallback((err: "NoNetwork" | "ServerDown" | false) => {
@@ -20,13 +20,12 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
   }, []);
 
   useEffect(() => {
-    // Create interceptor
     const interceptor = axios.interceptors.response.use(
       (res) => res,
       (error: AxiosError) => {
         if (navigator.onLine) {
           if (error.response) {
-            if (error.response.status === 401) setIsLoginOpen(true);
+            if (error.response.status === 401) router.push("/login");
             if (error.response.status === 500) toast.error(t("serverFail"));
           } else {
             setOnlineState("ServerDown");
@@ -52,27 +51,26 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
   }, [setOnlineState, t]);
 
   // Status check query
-  useQuery({
+  const _status = useQuery({
     queryKey: ["status"],
-    queryFn: async () => {
-      try {
-        await axios.get("/api/status");
-        setError(false);
-        return true;
-      } catch {
-        return false;
-      }
-    },
+    queryFn: async () =>
+      axios
+        .get("/api/status")
+        .then(() => {
+          setError(false);
+          return true;
+        })
+        .catch(() => {
+          return false;
+        }),
     enabled: error === "ServerDown",
     refetchInterval: (data) => (data ? false : 1000),
     retry: 3
   });
 
-  const checkError = useCallback(() => {
-    if ((error === "NoNetwork" && navigator.onLine) || error === "ServerDown") {
-      setError(false);
-    }
-  }, [error]);
+  const check = () => {
+    if ((error === "NoNetwork" && navigator.onLine) || error === "ServerDown") setError(false);
+  };
 
   if (error) {
     return (
@@ -86,7 +84,7 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
           width={400}
         />
         <h1 className="text-4xl font-bold text-gray-400">{t(error)}</h1>
-        <Button className="mt-4 bg-primary text-white hover:underline" onClick={checkError}>
+        <Button className="mt-4 bg-primary text-white hover:underline" onClick={check}>
           <div className="flex items-center gap-2">
             Retry <FaRedo size={13} />
           </div>

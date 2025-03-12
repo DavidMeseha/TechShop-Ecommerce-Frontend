@@ -504,6 +504,10 @@ export interface IFullProduct {
   inStock: boolean;
   _id: string;
   updatedAt: string;
+  isLiked: boolean;
+  isSaved: boolean;
+  isReviewed: boolean;
+  isInCart: boolean;
 }
 
 export interface UserInfoForm {

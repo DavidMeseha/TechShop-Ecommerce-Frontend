@@ -23,18 +23,18 @@ export default React.memo(function RateProductButton({ product, isRated }: Props
   };
 
   return (
-    <button aria-label="Open Review Form" className="fill-black text-center" onClick={handleAddreviewClick}>
-      <div className="rounded-full bg-gray-200 p-2">
+    <div aria-label="Open Review Form" className="fill-black text-center">
+      <button className="block rounded-full bg-gray-200 p-2" onClick={handleAddreviewClick}>
         <BsStarFill
           className={`transition-all ${isRated ? "fill-primary" : "fill-black"} text-black hover:fill-primary`}
           size="25"
         />
-      </div>
+      </button>
       <span className="text-blend text-sm font-semibold">
         {product.productReviewOverview.totalReviews
           ? (product.productReviewOverview.ratingSum / product.productReviewOverview.totalReviews).toFixed(1)
           : 0 || 0}
       </span>
-    </button>
+    </div>
   );
 });

@@ -18,32 +18,33 @@ type Props = {
   isSaved: boolean;
 };
 
-function ProductCard({ product, isLiked, isInCart, isSaved }: Props) {
-  const setIsAddReviewOpen = useProductStore((state) => state.setIsAddReviewOpen);
+function ProductCard({ product }: Props) {
   const user = useUserStore((state) => state.user);
-  const [counters, setCounters] = useState(() => ({
-    carts: product.carts,
-    likes: product.likes,
-    saves: product.saves,
-    reviews: product.productReviewOverview.ratingSum / product.productReviewOverview.totalReviews
-  }));
+  const setIsAddReviewOpen = useProductStore((state) => state.setIsAddReviewOpen);
+  const [like, setLike] = useState(() => ({ state: product.isLiked, count: product.likes }));
+  const [save, setSave] = useState(() => ({ state: product.isSaved, count: product.saves }));
+  const [cart, setCart] = useState(() => ({ state: product.isInCart, count: product.carts }));
 
   const likeHandler = useLike({
-    product,
-    onClick: (shouldLike) => setCounters({ ...counters, likes: counters.likes + (shouldLike ? 1 : -1) }),
-    onError: (shouldLike) => setCounters({ ...counters, likes: counters.likes + (shouldLike ? -1 : 1) })
+    productId: product._id,
+    onClick: (shouldLike) => setLike({ state: shouldLike, count: like.count + (shouldLike ? 1 : -1) }),
+    onError: (shouldLike) => setLike({ state: !shouldLike, count: like.count + (shouldLike ? -1 : 1) })
   });
 
   const saveHandler = useSave({
-    product,
-    onClick: (shouldSave) => setCounters({ ...counters, saves: counters.saves + (shouldSave ? 1 : -1) }),
-    onError: (shouldSave) => setCounters({ ...counters, saves: counters.saves + (shouldSave ? -1 : 1) })
+    productId: product._id,
+    onClick: (shouldSave) => setSave({ state: shouldSave, count: save.count + (shouldSave ? 1 : -1) }),
+    onError: (shouldSave) => setSave({ state: !shouldSave, count: save.count + (shouldSave ? -1 : 1) })
   });
 
   const addToCartHandler = useAddToCart({
     product,
-    onSuccess: (shouldAdd) => setCounters({ ...counters, carts: counters.carts + (shouldAdd ? 1 : -1) })
+    onSuccess: (shouldAdd) => {
+      setCart({ state: shouldAdd, count: cart.count + (shouldAdd ? 1 : -1) });
+    }
   });
+
+  const rate = product.productReviewOverview.ratingSum / product.productReviewOverview.totalReviews;
 
   return (
     <div className="flex w-full flex-col justify-between overflow-hidden rounded-sm border bg-white">
@@ -64,10 +65,7 @@ function ProductCard({ product, isLiked, isInCart, isSaved }: Props) {
           ) : null}
           <span className="font-semibold text-gray-800">{product.price.price}$</span>
           <div className="flex items-center">
-            <RatingStars
-              rate={product.productReviewOverview.ratingSum / product.productReviewOverview.totalReviews}
-              size={15}
-            />
+            <RatingStars rate={rate} size={15} />
             {user?.isRegistered ? (
               <button
                 aria-label="Add review"
@@ -84,36 +82,36 @@ function ProductCard({ product, isLiked, isInCart, isSaved }: Props) {
       <div className="mt-4 flex border-t border-gray-200">
         <Button
           aria-label="Add to cart"
-          className={`basis-1/3 rounded-none border-e fill-black p-1 ${isInCart ? "bg-green-200" : "bg-white"}`}
+          className={`basis-1/3 rounded-none border-e fill-black p-1 ${cart.state ? "bg-green-200" : "bg-white"}`}
           isLoading={addToCartHandler.isPending}
           spinnerSize="20"
-          onClick={() => addToCartHandler.handleAddToCart(!isInCart)}
+          onClick={() => addToCartHandler.handleAddToCart(!cart.state)}
         >
           <div className="flex items-center justify-center gap-1">
             <RiShoppingCartLine size={20} />
-            <span className="hidden text-sm sm:inline">{counters.carts}</span>
+            <span className="hidden text-sm sm:inline">{cart.count}</span>
           </div>
         </Button>
         <Button
           aria-label="like product"
-          className={`basis-1/3 rounded-none border-e fill-black p-1 ${isLiked ? "bg-red-200" : "bg-white"}`}
+          className={`basis-1/3 rounded-none border-e fill-black p-1 ${like.state ? "bg-red-200" : "bg-white"}`}
           spinnerSize="20"
-          onClick={() => likeHandler(!isLiked)}
+          onClick={() => likeHandler(!like.state)}
         >
           <div className="flex items-center justify-center gap-1">
             <RiHeart2Line size={20} />
-            <span className="hidden text-sm sm:inline">{counters.likes}</span>
+            <span className="hidden text-sm sm:inline">{like.count}</span>
           </div>
         </Button>
         <Button
           aria-label="save product"
-          className={`basis-1/3 rounded-none fill-black p-1 ${isSaved ? "bg-yellow-200" : "bg-white"}`}
+          className={`basis-1/3 rounded-none fill-black p-1 ${save.state ? "bg-yellow-200" : "bg-white"}`}
           spinnerSize="20"
-          onClick={() => saveHandler(!isSaved)}
+          onClick={() => saveHandler(!save.state)}
         >
           <div className="flex items-center justify-center gap-1">
             <RiBookmark2Line size={20} />
-            <span className="hidden text-sm sm:inline">{counters.saves}</span>
+            <span className="hidden text-sm sm:inline">{save.count}</span>
           </div>
         </Button>
       </div>
