@@ -2,7 +2,6 @@ import { IFullProduct } from "@/types";
 import React, { useState } from "react";
 import { LocalLink } from "../LocalizedNavigation";
 import { RiBookmark2Line, RiHeart2Line, RiShoppingCartLine } from "react-icons/ri";
-import { useUserStore } from "@/stores/userStore";
 import Button from "../ui/Button";
 import useLike from "@/hooks/useLike";
 import RatingStars from "../ui/RatingStars";
@@ -10,20 +9,27 @@ import useSave from "@/hooks/useSave";
 import useAddToCart from "@/hooks/useAddToCart";
 import { useProductStore } from "@/stores/productStore";
 import ProductCarosel from "./ProductCarosel";
+import { getActualProductCart, getActualProductLike, getActualProductSave } from "@/stores/tempActionsCache";
 
 type Props = {
   product: IFullProduct;
-  isLiked: boolean;
-  isInCart: boolean;
-  isSaved: boolean;
+  canAddReview: boolean;
 };
 
-function ProductCard({ product }: Props) {
-  const user = useUserStore((state) => state.user);
+function ProductCard({ product, canAddReview }: Props) {
   const setIsAddReviewOpen = useProductStore((state) => state.setIsAddReviewOpen);
-  const [like, setLike] = useState(() => ({ state: product.isLiked, count: product.likes }));
-  const [save, setSave] = useState(() => ({ state: product.isSaved, count: product.saves }));
-  const [cart, setCart] = useState(() => ({ state: product.isInCart, count: product.carts }));
+  const [like, setLike] = useState(() => ({
+    state: getActualProductLike(product._id, product.isLiked),
+    count: product.likes
+  }));
+  const [save, setSave] = useState(() => ({
+    state: getActualProductSave(product._id, product.isSaved),
+    count: product.saves
+  }));
+  const [cart, setCart] = useState(() => ({
+    state: getActualProductCart(product._id, product.isInCart),
+    count: product.carts
+  }));
 
   const likeHandler = useLike({
     productId: product._id,
@@ -39,9 +45,7 @@ function ProductCard({ product }: Props) {
 
   const addToCartHandler = useAddToCart({
     product,
-    onSuccess: (shouldAdd) => {
-      setCart({ state: shouldAdd, count: cart.count + (shouldAdd ? 1 : -1) });
-    }
+    onSuccess: (shouldAdd) => setCart({ state: shouldAdd, count: cart.count + (shouldAdd ? 1 : -1) })
   });
 
   const rate = product.productReviewOverview.ratingSum / product.productReviewOverview.totalReviews;
@@ -51,6 +55,7 @@ function ProductCard({ product }: Props) {
       <div>
         <ProductCarosel height={200} images={product.pictures} productName={product.name} />
 
+        {/* Product Info */}
         <div className="mt-2 flex flex-col gap-1 px-2 sm:px-4">
           <LocalLink className="font-semibold text-gray-800 hover:underline" href={`/product/${product.seName}`}>
             <span title={product.name}>{product.name}</span>
@@ -66,7 +71,7 @@ function ProductCard({ product }: Props) {
           <span className="font-semibold text-gray-800">{product.price.price}$</span>
           <div className="flex items-center">
             <RatingStars rate={rate} size={15} />
-            {user?.isRegistered ? (
+            {canAddReview ? (
               <button
                 aria-label="Add review"
                 className="px-2 text-lg text-primary"
@@ -79,6 +84,7 @@ function ProductCard({ product }: Props) {
         </div>
       </div>
 
+      {/* Product Actions */}
       <div className="mt-4 flex border-t border-gray-200">
         <Button
           aria-label="Add to cart"
@@ -121,9 +127,9 @@ function ProductCard({ product }: Props) {
 
 export default React.memo(ProductCard, (prevProps, nextProps) => {
   return (
-    prevProps.isSaved === nextProps.isSaved &&
-    prevProps.isInCart === nextProps.isInCart &&
-    prevProps.isLiked === nextProps.isLiked &&
-    prevProps.product._id === nextProps.product._id
+    prevProps.product._id === nextProps.product._id &&
+    nextProps.product.isInCart === prevProps.product.isInCart &&
+    nextProps.product.isLiked === prevProps.product.isLiked &&
+    nextProps.product.isSaved === prevProps.product.isSaved
   );
 });

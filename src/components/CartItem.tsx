@@ -16,16 +16,14 @@ type Props = {
   canEdit?: boolean;
   attributes: IProductAttribute[];
   quantity: number;
-  isInCart?: boolean;
 };
 
 export default React.memo(
-  function CartItem({ product, attributes, quantity, canEdit = false, isInCart }: Props) {
+  function CartItem({ product, attributes, quantity, canEdit = false }: Props) {
     const getCartItems = useUserStore((state) => state.getCartItems);
-    const removeFromCartItems = useUserStore((state) => state.removeFromCart);
-
     const queryClient = useQueryClient();
     const [showDetails, setShowDetails] = useState(false);
+    const [isInCart, setIsInCart] = useState(product.isInCart);
     const containerRef = useRef(null);
     const { t } = useTranslation();
 
@@ -33,6 +31,7 @@ export default React.memo(
       mutationKey: ["removeFromCart", product._id],
       mutationFn: () => removeFromCart(product._id),
       onSuccess: () => {
+        setIsInCart(false);
         getCartItems();
         queryClient.invalidateQueries({ queryKey: ["cartItems"] });
       }
@@ -41,7 +40,6 @@ export default React.memo(
     useClickRecognition({ onOutsideClick: () => setShowDetails(false), containerRef });
 
     const handleRemoveFromCartClick = () => {
-      removeFromCartItems(product._id);
       removeFromCartMutation.mutate();
     };
 
@@ -67,6 +65,7 @@ export default React.memo(
             {canEdit ? <RiArrowDropDownLine size={35} /> : <div>{quantity * product.price.price}$</div>}
           </button>
         </div>
+
         {canEdit ? (
           <div
             className={`px-1 transition-all ${showDetails ? "max-h-[300vh] overflow-auto" : "max-h-0 overflow-hidden"}`}
@@ -91,5 +90,5 @@ export default React.memo(
       </li>
     );
   },
-  (prev, next) => prev.isInCart === next.isInCart
+  (prev, next) => prev.product.isInCart === next.product.isInCart && prev.product._id === next.product._id
 );

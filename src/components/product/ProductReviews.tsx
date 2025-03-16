@@ -4,7 +4,7 @@ import Image from "next/image";
 import RatingStars from "../ui/RatingStars";
 import { BiLoaderCircle } from "react-icons/bi";
 
-export default function Reviews({ reviews, isLoading }: { reviews?: IProductReview[]; isLoading: boolean }) {
+export default function ProductReviews({ reviews, isLoading }: { reviews?: IProductReview[]; isLoading: boolean }) {
   return (
     <>
       <div className="w-full bg-[#F8F8F8] p-4 pb-28">

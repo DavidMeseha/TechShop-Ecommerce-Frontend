@@ -45,9 +45,23 @@ export function AddressSchema(t: TFunction) {
   });
 }
 
+export function editProfileSchema(t: TFunction) {
+  return z.object({
+    email: z.string().email(t("auth.emailNotValid")),
+    imageUrl: z.string().url(),
+    gender: z.enum(["male", "female"]).optional(),
+    firstName: z.string().min(1, t("auth.nameRequired")),
+    lastName: z.string().min(1, t("auth.nameRequired")),
+    dateOfBirthDay: z.number().optional(),
+    dateOfBirthMonth: z.number().optional(),
+    dateOfBirthYear: z.number().optional(),
+    phone: z.string().optional()
+  });
+}
 export type RegisterForm = z.infer<ReturnType<typeof registerSchema>>;
 export type LoginForm = z.infer<ReturnType<typeof loginSchema>>;
 export type AddressForm = z.infer<ReturnType<typeof AddressSchema>>;
+
 export type CheckoutForm = {
   shippingAddressId: string;
   billingMethod: string;

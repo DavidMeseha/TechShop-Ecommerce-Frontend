@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import OverlayLayout from "./OverlayLayout";
+import OverlayLayout from "../layouts/OverlayLayout";
 import { IProductAttribute } from "@/types";
 import { selectDefaultAttributes } from "@/lib/misc";
 import ProductAttributes from "../product/Attributes";

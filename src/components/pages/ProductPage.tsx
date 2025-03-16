@@ -13,12 +13,16 @@ import { useInView } from "react-intersection-observer";
 import { homeFeedProducts } from "@/services/products.service";
 import ProductsGridView from "@/components/product/ProductsGridView";
 import ProductCarosel from "@/components/product/ProductCarosel";
+import ProductReviews from "../Reviews";
+import AddReviewForm from "../forms/AddReviewForm";
+import { getActualProductReview } from "@/stores/tempActionsCache";
 
 type Props = {
   product: IFullProduct;
 };
 
 export default function ProductPage({ product }: Props) {
+  const [isReviewed, setIsReviewed] = useState(getActualProductReview(product._id, product.isReviewed));
   const [customAttributes, setCustomAttributes] = useState(selectDefaultAttributes(product.productAttributes));
   const [ref, inView] = useInView();
   const rating = (product.productReviewOverview.ratingSum / (product.productReviewOverview.totalReviews || 1)).toFixed(
@@ -60,10 +64,7 @@ export default function ProductPage({ product }: Props) {
                 <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl">{product.price.price}$</p>
 
                 <div className="mt-2 flex items-center gap-2 sm:mt-0">
-                  <RatingStars
-                    rate={product.productReviewOverview.ratingSum / (product.productReviewOverview.totalReviews || 1)}
-                    size={15}
-                  />
+                  <RatingStars rate={parseInt(rating)} size={15} />
                   <p className="text-sm font-medium leading-none text-gray-500 dark:text-gray-400">({rating})</p>
                 </div>
               </div>
@@ -91,10 +92,27 @@ export default function ProductPage({ product }: Props) {
         </div>
       </section>
 
-      <h1 className="px-4 text-2xl font-bold" ref={ref}>
-        Similar Products
-      </h1>
-      <ProductsGridView isLoading={productsQuery.isPending || !productsQuery.data} products={products} />
+      {/* Reviews Section */}
+      <section className="my-4 border-t p-4">
+        <h2 className="p-4 text-2xl font-bold" ref={ref}>
+          Reviews
+        </h2>
+        <ProductReviews reviews={product.productReviews} />
+        {isReviewed ? null : (
+          <>
+            <h4 className="py-2 text-2xl font-bold">Add Review</h4>
+            <AddReviewForm productId={product._id} onSuccess={() => setIsReviewed(true)} />
+          </>
+        )}
+      </section>
+
+      {/* Similar Products Section */}
+      <section className="my-4 border-t p-4">
+        <h3 className="p-4 text-2xl font-bold" ref={ref}>
+          Similar Products
+        </h3>
+        <ProductsGridView isLoading={productsQuery.isPending || !productsQuery.data} products={products} />
+      </section>
     </>
   );
 }

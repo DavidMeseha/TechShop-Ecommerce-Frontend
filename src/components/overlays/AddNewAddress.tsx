@@ -1,5 +1,5 @@
 import React from "react";
-import OverlayLayout from "./OverlayLayout";
+import OverlayLayout from "../layouts/OverlayLayout";
 import { useOverlayStore } from "@/stores/overlayStore";
 import NewAddressPage from "../pages/NewAddressPage";
 

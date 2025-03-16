@@ -16,7 +16,6 @@ import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
 import { UserActivity } from "@/components/UserActivity";
 
 export default function Page() {
-  const followedVendors = useUserStore((state) => state.followedVendors);
   const isEditProfileOpen = useOverlayStore((state) => state.isEditProfileOpen);
   const setIsEditProfileOpen = useOverlayStore((state) => state.setIsEditProfileOpen);
   const setIsProfileMenuOpen = useOverlayStore((state) => state.setIsProfileMenuOpen);
@@ -47,20 +46,20 @@ export default function Page() {
   const userInfo = userInfoQuery.data;
   const isFeatching = savesQuery.isFetching || cartItemsQuery.isFetching;
 
+  if (!userInfo) return <LoadingSpinner />;
+
   const activities = [
     {
       name: t("profile.following"),
-      value: followedVendors.length,
+      value: 0, //TODO: Need to get this from the server
       to: `/user/following`
     },
     {
       name: t("profile.orders"),
-      value: userInfoQuery.data?.ordersCount ?? 0,
+      value: userInfo.ordersCount,
       to: `/user/orders`
     }
   ];
-
-  if (!userInfo) return <LoadingSpinner />;
 
   return (
     <div className="relative pt-4">
@@ -118,12 +117,12 @@ export default function Page() {
 
         {isCart ? (
           cartProducts.length > 0 ? (
-            <ProductsGridView products={cartProducts.map((item) => item.product)} />
+            <ProductsGridView className="p-4" products={cartProducts} />
           ) : (
             !isFeatching && <div className="py-14 text-center text-gray-400">{t("profile.emptyCart")}</div>
           )
         ) : savedProducts.length > 0 ? (
-          <ProductsGridView products={savedProducts} />
+          <ProductsGridView className="p-4" products={savedProducts} />
         ) : (
           !isFeatching && <div className="py-14 text-center text-gray-400">{t("profile.noSaves")}</div>
         )}

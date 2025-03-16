@@ -1,12 +1,11 @@
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { AxiosError } from "axios";
 import { IFullProduct } from "@/types";
-import axios from "@/lib/axios";
 import ProductPage from "@/components/pages/ProductPage";
 import { homeFeedProducts } from "@/services/products.service";
 import { cookies } from "next/headers";
+import { BASE_URL } from "@/lib/axios";
 
 interface Props {
   params: Promise<{ seName: string }>;
@@ -14,18 +13,15 @@ interface Props {
 
 const getProduct = cache(async (seName: string): Promise<IFullProduct> => {
   try {
-    const response = await axios.get<IFullProduct>(`/api/product/details/${seName}`, {
+    const product: IFullProduct = await fetch(`${BASE_URL}/api/product/details/${seName}`, {
+      cache: "no-store",
       headers: {
         Authorization: `Bearer ${(await cookies()).get("session")?.value}`
       }
-    });
-    return response.data;
-  } catch (error) {
-    const axiosError = error as AxiosError;
-    if (axiosError.response?.status && axiosError.response.status >= 400 && axiosError.response.status < 500) {
-      notFound();
-    }
-    throw error;
+    }).then((res) => res.json());
+    return product;
+  } catch {
+    notFound();
   }
 });
 

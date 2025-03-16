@@ -469,6 +469,7 @@ export interface IVendor {
   imageUrl: string;
   productCount: number;
   followersCount: number;
+  isFollowed: boolean;
   _id: string;
 }
 
@@ -512,12 +513,12 @@ export interface IFullProduct {
 
 export interface UserInfoForm {
   email: string;
-  gender: string;
+  gender?: "male" | "female";
   firstName: string;
   lastName: string;
-  dateOfBirthDay: number;
-  dateOfBirthMonth: number;
-  dateOfBirthYear: number;
-  phone: string;
+  dateOfBirthDay?: number;
+  dateOfBirthMonth?: number;
+  dateOfBirthYear?: number;
+  phone?: string;
   imageUrl: string;
 }

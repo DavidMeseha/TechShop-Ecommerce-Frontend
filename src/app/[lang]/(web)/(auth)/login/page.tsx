@@ -3,7 +3,6 @@
 import { useState } from "react";
 import FormTextInput from "@/components/FormTextInput";
 import { FieldError } from "@/types";
-import { useRouter } from "@bprogress/next";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { useTranslation } from "@/context/Translation";
 import { LoginForm, loginSchema } from "@/schemas/valdation";
@@ -13,14 +12,12 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/auth.service";
 import Button from "@/components/ui/Button";
 import { useUserSetup } from "@/context/UserProvider";
-import { useUserStore } from "@/stores/userStore";
 import { isAxiosError } from "axios";
 
 export default function Page() {
+  const [isLoading, setIsLoading] = useState(false);
   const { setupUser } = useUserSetup();
-  const lastPageBeforSignUp = useUserStore((state) => state.lastPageBeforSignUp);
   const { t } = useTranslation();
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -36,13 +33,14 @@ export default function Page() {
     mutationKey: ["login"],
     mutationFn: (form: LoginForm) => login(form),
     onSuccess: async (data) => {
+      setIsLoading(true);
       setupUser(data);
-      router.push(lastPageBeforSignUp);
     },
     onError: (err) => {
+      setIsLoading(false);
       if (isAxiosError(err)) {
-        if (err.response?.status === 401) setFormError(t("auth.wrongCredentials"));
-        else setFormError(err.response?.data ?? "Unknow error, try again later");
+        if (err.response?.status === 403) setFormError(t("auth.wrongCredentials"));
+        else setFormError(JSON.stringify(err.response?.data ?? "Unknow error, try again later"));
       }
     }
   });
@@ -81,7 +79,11 @@ export default function Page() {
       </div>
       <div className="mb-2 min-h-[21px] text-[14px] font-semibold text-red-500">{formError}</div>
       <div>
-        <Button className="w-full bg-primary text-primary-foreground" isLoading={loginMutation.isPending} type="submit">
+        <Button
+          className="w-full bg-primary text-primary-foreground"
+          isLoading={loginMutation.isPending || isLoading}
+          type="submit"
+        >
           {t("auth.login")}
         </Button>
       </div>

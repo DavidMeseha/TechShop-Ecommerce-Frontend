@@ -3,7 +3,6 @@ import {
   IAddress,
   IFullProduct,
   IOrder,
-  IProductAttribute,
   IProductReview,
   IVendor,
   Pagination,
@@ -42,9 +41,7 @@ export async function getSavedProducts() {
 }
 
 export async function getCartProducts() {
-  return axios
-    .get<{ product: IFullProduct; quantity: number; attributes: IProductAttribute[] }[]>("/api/common/cart")
-    .then((res) => res.data);
+  return axios.get<IFullProduct[]>("/api/common/cart").then((res) => res.data);
 }
 
 export async function getUserInfo() {

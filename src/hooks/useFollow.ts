@@ -6,16 +6,15 @@ import { toast } from "react-toastify";
 import { followVendor, unfollowVendor } from "@/services/userActions.service";
 import { isAxiosError } from "axios";
 import { useRef } from "react";
+import tempActions from "@/stores/tempActionsCache";
 
 interface FollowHookProps {
   vendor: IVendor;
-  onClick?: (followed: boolean) => void;
+  onClick?: (shouldFollow: boolean) => void;
+  onError?: (shouldFollow: boolean) => void;
 }
 
-export default function useFollow({ vendor, onClick }: FollowHookProps) {
-  const getFollowedVendors = useUserStore((state) => state.getFollowedVendors);
-  const removeFromFollowedVendors = useUserStore((state) => state.removeFromFollowedVendors);
-  const addToFollowedVendors = useUserStore((state) => state.addToFollowedVendors);
+export default function useFollow({ vendor, onClick, onError }: FollowHookProps) {
   const user = useUserStore((state) => state.user);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -25,13 +24,12 @@ export default function useFollow({ vendor, onClick }: FollowHookProps) {
     mutationKey: ["follow", vendor._id],
     mutationFn: () => followVendor(vendor._id),
     onSuccess: async () => {
-      getFollowedVendors();
+      tempActions.set("follows", vendor._id, true);
       queryClient.invalidateQueries({ queryKey: ["following"] });
     },
     onError: (err) => {
-      if (isAxiosError(err) && err.response?.status !== 400) {
-        removeFromFollowedVendors(vendor._id);
-      }
+      if (isAxiosError(err) && err.response?.status === 409) return;
+      onError?.(true);
     }
   });
 
@@ -39,13 +37,12 @@ export default function useFollow({ vendor, onClick }: FollowHookProps) {
     mutationKey: ["unfollow", vendor._id],
     mutationFn: () => unfollowVendor(vendor._id),
     onSuccess: async () => {
-      getFollowedVendors();
+      tempActions.set("follows", vendor._id, false);
       queryClient.invalidateQueries({ queryKey: ["following"] });
     },
     onError: (err) => {
-      if (isAxiosError(err) && err.response?.status !== 400) {
-        addToFollowedVendors(vendor._id);
-      }
+      if (isAxiosError(err) && err.response?.status === 409) return;
+      onError?.(false);
     }
   });
 
@@ -54,7 +51,6 @@ export default function useFollow({ vendor, onClick }: FollowHookProps) {
     if (!user.isRegistered) return toast.warn(t("loginToPerformAction"));
 
     // Immediately update UI
-    shouldFollow ? addToFollowedVendors(vendor._id) : removeFromFollowedVendors(vendor._id);
     onClick?.(shouldFollow);
 
     if (timeoutRef.current) window.clearTimeout(timeoutRef.current);

@@ -1,26 +1,24 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import Image from "next/image";
 import { IVendor } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Button from "@/components/ui/Button";
-import { useUserStore } from "@/stores/userStore";
 import Loading from "@/components/LoadingUi/LoadingSpinner";
 import useFollow from "@/hooks/useFollow";
 import { useTranslation } from "@/context/Translation";
 import { getVendors } from "@/services/products.service";
 
 export default function Page() {
-  const followedVendors = useUserStore((state) => state.followedVendors);
   const { t } = useTranslation();
 
   const { hasNextPage, fetchNextPage, isFetching, data, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["vendorsDiscover"],
-    queryFn: ({ pageParam }) => getVendors({ page: pageParam }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined)
+    queryFn: ({ pageParam }) => getVendors({ page: pageParam, limit: 10 }),
+    getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
+    initialPageParam: 1
   });
 
   const vendors = data?.pages.flatMap((page) => page.data) ?? [];
@@ -29,7 +27,7 @@ export default function Page() {
     <>
       <ul>
         {vendors.map((vendor) => (
-          <MemoizedListItem isFollowed={followedVendors.includes(vendor._id)} key={vendor._id} vendor={vendor} />
+          <MemoizedListItem key={vendor._id} vendor={vendor} />
         ))}
       </ul>
 
@@ -51,9 +49,14 @@ export default function Page() {
 }
 
 const MemoizedListItem = React.memo(
-  function ListItem({ vendor, isFollowed }: { vendor: IVendor; isFollowed: boolean }) {
+  function ListItem({ vendor }: { vendor: IVendor }) {
+    const [isFollowed, setIsFollowed] = useState(vendor.isFollowed);
     const { t } = useTranslation();
-    const handleFollow = useFollow({ vendor });
+    const handleFollow = useFollow({
+      vendor,
+      onClick: (shouldFollow) => setIsFollowed(shouldFollow),
+      onError: (shouldFollow) => setIsFollowed(!shouldFollow)
+    });
 
     return (
       <li className="flex items-center justify-between px-4 py-2">
@@ -86,6 +89,6 @@ const MemoizedListItem = React.memo(
     );
   },
   (prev, next) => {
-    return prev.isFollowed === next.isFollowed && prev.vendor._id === next.vendor._id;
+    return prev.vendor._id === next.vendor._id && prev.vendor.isFollowed === next.vendor.isFollowed;
   }
 );

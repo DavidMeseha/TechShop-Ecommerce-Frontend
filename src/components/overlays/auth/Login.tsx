@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/auth.service";
 import Button from "@/components/ui/Button";
 import { useUserSetup } from "@/context/UserProvider";
-import OverlayLayout from "../OverlayLayout";
+import OverlayLayout from "../../layouts/OverlayLayout";
 import { useOverlayStore } from "@/stores/overlayStore";
 import { isAxiosError } from "axios";
 

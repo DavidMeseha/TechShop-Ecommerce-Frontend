@@ -33,7 +33,7 @@ export async function addReview(productId: string, form: { reviewText: string; r
   return axios.post(`/api/user/addReview/${productId}`, { ...form });
 }
 
-export async function getVendors(params: { page: number }) {
+export async function getVendors(params: { page: number; limit: number }) {
   return axios
     .get<{ data: IVendor[]; pages: Pagination }>("/api/catalog/discover/vendors", { params })
     .then((res) => res.data);
@@ -63,7 +63,7 @@ export async function getProductsByTag(tagId: string, params: { page: number }) 
     .then((res) => res.data);
 }
 
-export async function getProductsByVendor(vendorId: string, params: { page: number }) {
+export async function getProductsByVendor(vendorId: string, params: { page: number; limit: number }) {
   return axios
     .get<{ data: IFullProduct[]; pages: Pagination }>(`/api/catalog/VendorProducts/${vendorId}`, { params })
     .then((res) => res.data);

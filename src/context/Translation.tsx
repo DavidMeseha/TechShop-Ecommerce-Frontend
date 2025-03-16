@@ -10,22 +10,20 @@ type Props = { translation: Translation; children: React.ReactNode; lang: Langua
 type TContext = {
   t: TFunction;
   lang: Language;
-  languages: ["en", "ar"];
 };
 
-const TranslationConetext = createContext<TContext>({
-  t: () => "",
-  lang: "en",
-  languages: ["en", "ar"]
-});
+const TranslationConetext = createContext<TContext | undefined>(undefined);
 
 export function TranslationProvider({ translation, children, lang }: Props) {
   const t = (key: TranslationKey) =>
     translation ? (key in translation ? translation[key as TranslationKey] : key) : key;
 
-  return (
-    <TranslationConetext.Provider value={{ t, lang, languages: ["en", "ar"] }}>{children}</TranslationConetext.Provider>
-  );
+  return <TranslationConetext.Provider value={{ t, lang }}>{children}</TranslationConetext.Provider>;
 }
 
-export const useTranslation = () => useContext(TranslationConetext);
+export const useTranslation = () => {
+  const context = useContext(TranslationConetext);
+
+  if (!context) throw new Error("useTranslation must be used within a TranslationProvider");
+  return context;
+};

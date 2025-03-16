@@ -8,7 +8,6 @@ import Image from "next/image";
 import { IVendor } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
-import { useUserStore } from "@/stores/userStore";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import useFollow from "@/hooks/useFollow";
 import ProductsGridView from "@/components/product/ProductsGridView";
@@ -19,9 +18,7 @@ type Props = {
 };
 
 export default function VendorProfilePage({ vendor }: Props) {
-  const followedVendors = useUserStore((state) => state.followedVendors);
-
-  const [followersCount, setFollowersCount] = useState(vendor.followersCount);
+  const [follow, setFollow] = useState({ state: vendor.isFollowed, count: vendor.followersCount });
   const { t } = useTranslation();
   const [ref] = useInView({
     onChange: (inView) => {
@@ -33,7 +30,7 @@ export default function VendorProfilePage({ vendor }: Props) {
     () => [
       {
         name: t("profile.followers"),
-        value: followersCount,
+        value: follow.count,
         to: null
       },
       {
@@ -42,17 +39,18 @@ export default function VendorProfilePage({ vendor }: Props) {
         to: null
       }
     ],
-    [followersCount, vendor.productCount]
+    [follow.count, vendor.productCount]
   );
 
   const handleFollow = useFollow({
     vendor,
-    onClick: (shouldFollow) => setFollowersCount(followersCount + (shouldFollow ? 1 : -1))
+    onClick: (shouldFollow) => setFollow({ state: shouldFollow, count: follow.count + (shouldFollow ? 1 : -1) }),
+    onError: (shouldFollow) => setFollow({ state: !shouldFollow, count: follow.count + (!shouldFollow ? 1 : -1) })
   });
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching, isFetchedAfterMount } = useInfiniteQuery({
     queryKey: ["vendorProducts", vendor._id],
-    queryFn: ({ pageParam }) => getProductsByVendor(vendor._id, { page: pageParam }),
+    queryFn: ({ pageParam }) => getProductsByVendor(vendor._id, { page: pageParam, limit: 10 }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1
   });
@@ -78,9 +76,9 @@ export default function VendorProfilePage({ vendor }: Props) {
           </div>
           <Button
             className="item-center mt-3 block bg-primary px-8 py-1.5 text-[15px] font-semibold text-white"
-            onClick={() => handleFollow(!followedVendors.includes(vendor._id))}
+            onClick={() => handleFollow(!follow.state)}
           >
-            {followedVendors.includes(vendor._id) ? t("unfollow") : t("follow")}
+            {follow.state ? t("unfollow") : t("follow")}
           </Button>
         </div>
       </div>

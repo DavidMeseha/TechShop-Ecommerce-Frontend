@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
-import OverlayLayout from "./OverlayLayout";
+import React, { useState } from "react";
+import OverlayLayout from "../layouts/OverlayLayout";
 import { selectDefaultAttributes } from "@/lib/misc";
-import { useUserStore } from "@/stores/userStore";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import ProductAttributes from "../product/Attributes";
 import { useQuery } from "@tanstack/react-query";
@@ -14,7 +13,7 @@ import useAddToCart from "@/hooks/useAddToCart";
 import LoadingSpinner from "../LoadingUi/LoadingSpinner";
 import { getProductDetails } from "@/services/products.service";
 import { useProductStore } from "@/stores/productStore";
-import Reviews from "../Reviews";
+import ProductReviews from "../Reviews";
 import ProductCarosel from "../product/ProductCarosel";
 
 export default function ProductMoreInfoOverlay() {
@@ -36,16 +35,22 @@ export default function ProductMoreInfoOverlay() {
 }
 
 function MainLogic({ product }: { product: IFullProduct }) {
-  const cartItems = useUserStore((state) => state.cartItems);
   const { t } = useTranslation();
   const [activeTap, setActiveTap] = useState<"description" | "reviews">("description");
   const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>(() =>
     selectDefaultAttributes(product.productAttributes)
   );
+  const [cart, setCart] = useState(() => ({
+    state: product.isInCart,
+    count: product.carts
+  }));
 
-  const inCart = useMemo(() => cartItems.find((item) => item.product === product._id), [cartItems]);
-
-  const { handleAddToCart, isPending } = useAddToCart({ product });
+  const { handleAddToCart, isPending } = useAddToCart({
+    product,
+    onSuccess: (shouldAdd) => {
+      setCart({ count: cart.count + (shouldAdd ? 1 : -1), state: shouldAdd });
+    }
+  });
 
   const handleAttributesChange = (attributeId: string, value: string[]) => {
     if (!product) return;
@@ -60,7 +65,7 @@ function MainLogic({ product }: { product: IFullProduct }) {
     setCustomAttributes(tempAttributes);
   };
 
-  const addToCartClickHandle = () => handleAddToCart(!inCart, customAttributes);
+  const addToCartClickHandle = () => handleAddToCart(!cart.state, customAttributes);
   const reviews = product.productReviews ?? [];
 
   return (
@@ -93,7 +98,7 @@ function MainLogic({ product }: { product: IFullProduct }) {
         </div>
       ) : null}
       <Button className="w-full bg-primary text-white" isLoading={isPending} onClick={addToCartClickHandle}>
-        {inCart ? t("removeFromCart") : t("addToCart")}
+        {cart.state ? t("removeFromCart") : t("addToCart")}
       </Button>
       <ul className="sticky -top-4 z-20 flex w-full items-center border-b bg-white">
         <li className={`w-full ${activeTap === "description" ? "-mb-0.5 border-b-2 border-b-black" : "text-gray-400"}`}>
@@ -112,7 +117,7 @@ function MainLogic({ product }: { product: IFullProduct }) {
 
         {activeTap === "reviews" ? (
           reviews.length ? (
-            <Reviews reviews={reviews} />
+            <ProductReviews reviews={reviews} />
           ) : (
             <div className="py-4 text-center text-gray-400">No Reviews Avilable</div>
           )

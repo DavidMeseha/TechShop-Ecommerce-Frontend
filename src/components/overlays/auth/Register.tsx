@@ -10,7 +10,7 @@ import Button from "@/components/ui/Button";
 import { useMutation } from "@tanstack/react-query";
 import { registerUser } from "@/services/auth.service";
 import { FieldError } from "@/types";
-import OverlayLayout from "../OverlayLayout";
+import OverlayLayout from "../../layouts/OverlayLayout";
 import { useOverlayStore } from "@/stores/overlayStore";
 import { isAxiosError } from "axios";
 

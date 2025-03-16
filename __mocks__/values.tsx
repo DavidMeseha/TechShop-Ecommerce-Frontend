@@ -5,35 +5,13 @@ import { create } from "zustand";
 
 export const mockUserStore = create<Partial<UserStore>>()((set) => ({
   user: null,
-  reviews: [],
   cartItems: [],
-  saves: [],
-  likes: [],
-  followedVendors: [],
 
-  setReviews: async () => {
-    set({ reviews: ["1", "2"] });
-  },
-  getLikes: async () => {
-    set({ likes: ["1", "2"] });
-  },
-  getFollowedVendors: async () => {
-    const result = ["1", "2"];
-    set({ followedVendors: result });
-  },
   getCartItems: async () => {
-    const result = [
-      { product: "1", quantity: 1 },
-      { product: "2", quantity: 2 }
-    ];
+    const result = ["1", "2"];
     set({ cartItems: result });
   },
-  getSaves: async () => {
-    const result = ["1", "2"];
-    set({ saves: result });
-  },
-  setUser: (user) => set({ user }),
-  setUserActions: jest.fn()
+  setUser: (user) => set({ user })
 }));
 
 export const mockAppStore = create<Partial<AppStore>>()((set) => ({
@@ -85,7 +63,8 @@ export const mockHomeProduct: IFullProduct = {
     seName: "Admin",
     imageUrl: "http://localhost:3000/images/profile_placeholder.jpg",
     productCount: 4,
-    followersCount: 5
+    followersCount: 5,
+    isFollowed: true
   },
   productTags: [
     { _id: "6710d2b01db8444519ac2f50", name: "laptop", seName: "laptop", productCount: 2 },

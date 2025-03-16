@@ -6,14 +6,12 @@ import { IVendor } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { LocalLink } from "@/components/LocalizedNavigation";
-import React from "react";
+import React, { useState } from "react";
 import useFollow from "@/hooks/useFollow";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
 import { getFollowingVendors } from "@/services/user.service";
-import { useUserStore } from "@/stores/userStore";
 
 export default function FollowingPage() {
-  const followedVendors = useUserStore((state) => state.followedVendors);
   const follwingVendorsQuery = useQuery({
     queryKey: ["following"],
     queryFn: () => getFollowingVendors()
@@ -27,16 +25,21 @@ export default function FollowingPage() {
   return (
     <ul>
       {vendors.map((vendor) => (
-        <ListItem isFollowed={followedVendors.includes(vendor._id)} key={vendor._id} vendor={vendor} />
+        <ListItem key={vendor._id} vendor={vendor} />
       ))}
     </ul>
   );
 }
 
 const ListItem = React.memo(
-  function ListItem({ vendor, isFollowed }: { vendor: IVendor; isFollowed: boolean }) {
+  function ListItem({ vendor }: { vendor: IVendor }) {
+    const [isFollowed, setIsFollowed] = useState(vendor.isFollowed);
     const { t } = useTranslation();
-    const handleFollow = useFollow({ vendor });
+    const handleFollow = useFollow({
+      vendor,
+      onClick: (shouldFollow) => setIsFollowed(shouldFollow),
+      onError: (shouldFollow) => setIsFollowed(!shouldFollow)
+    });
 
     return (
       <li className={`${isFollowed ? "opacity-100" : "opacity-60"} flex items-center justify-between px-4 py-2`}>
@@ -67,5 +70,5 @@ const ListItem = React.memo(
       </li>
     );
   },
-  (prev, next) => prev.vendor._id === next.vendor._id && prev.isFollowed === next.isFollowed
+  (prev, next) => prev.vendor._id === next.vendor._id && prev.vendor.isFollowed === next.vendor.isFollowed
 );

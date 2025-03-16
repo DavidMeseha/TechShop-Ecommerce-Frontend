@@ -2,11 +2,11 @@
 
 import AllOverlays from "@/components/overlays/AllOverlays";
 import React, { useMemo } from "react";
-import BottomNav from "./includes/BottomNav";
-import Header from "./includes/Header";
+import BottomNav from "./BottomNav";
+import Header from "./Header";
 import UserHandler from "@/context/UserProvider";
 import axios from "@/lib/axios";
-import TopMobileNav from "./includes/TopMobileNav";
+import TopMobileNav from "./TopMobileNav";
 import { usePathname } from "next/navigation";
 
 interface MainLayoutProps {
@@ -26,7 +26,7 @@ export default function MainLayout({ children, token }: MainLayoutProps) {
   }, []);
 
   return (
-    <UserHandler token={token}>
+    <UserHandler>
       <AllOverlays />
       <Header />
       {pathname.includes("/feeds") ? null : <TopMobileNav />}

@@ -4,7 +4,6 @@ import { LocalLink } from "@/components/LocalizedNavigation";
 import React from "react";
 import { PiPlus } from "react-icons/pi";
 import Image from "next/image";
-import { useUserStore } from "@/stores/userStore";
 import { IVendor } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { BiDownArrow } from "react-icons/bi";
@@ -17,14 +16,10 @@ type Props = {
 };
 
 export default function ProductVendorButton({ vendor, isFollowed }: Props) {
-  const getFollowedVendors = useUserStore((state) => state.getFollowedVendors);
   const followMutation = useMutation({
     mutationKey: ["followVendor", vendor._id],
     mutationFn: () => followVendor(vendor._id),
-    onSuccess: () => {
-      getFollowedVendors();
-      toast.success("Vendor followed successfully");
-    }
+    onSuccess: () => toast.success("Vendor followed successfully")
   });
 
   return (

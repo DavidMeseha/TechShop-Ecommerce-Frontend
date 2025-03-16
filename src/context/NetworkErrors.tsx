@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/ui/Button";
 import axios from "@/lib/axios";
-import { AxiosError } from "axios";
+import { isAxiosError } from "axios";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import { FaRedo } from "react-icons/fa";
@@ -22,13 +22,13 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
   useEffect(() => {
     const interceptor = axios.interceptors.response.use(
       (res) => res,
-      (error: AxiosError) => {
+      (error) => {
         if (navigator.onLine) {
-          if (error.response) {
+          if (isAxiosError(error) && error.response) {
             if (error.response.status === 401) router.push("/login");
             if (error.response.status === 500) toast.error(t("serverFail"));
           } else {
-            setOnlineState("ServerDown");
+            // setOnlineState("ServerDown");
           }
         }
 
@@ -42,7 +42,6 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
     window.addEventListener("offline", handleOffline);
     window.addEventListener("online", handleOnline);
 
-    // Cleanup function
     return () => {
       axios.interceptors.response.eject(interceptor);
       window.removeEventListener("offline", handleOffline);

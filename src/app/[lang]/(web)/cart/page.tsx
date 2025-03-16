@@ -9,7 +9,6 @@ import { LocalLink } from "@/components/LocalizedNavigation";
 import { BiLoaderCircle } from "react-icons/bi";
 import { useUserStore } from "@/stores/userStore";
 import { checkoutData } from "@/services/checkout.service";
-import { isInCart } from "@/lib/utils";
 
 export default function Page() {
   const { t } = useTranslation();
@@ -18,7 +17,7 @@ export default function Page() {
   const router = useRouter();
 
   const checkoutQuery = useQuery({
-    queryKey: ["cartItems"],
+    queryKey: ["checkoutCartItems"],
     queryFn: () => checkoutData()
   });
 
@@ -48,7 +47,6 @@ export default function Page() {
           <CartItem
             attributes={item.attributes}
             canEdit
-            isInCart={isInCart(item.product._id, cartItems)}
             key={item.product.seName}
             product={item.product}
             quantity={item.quantity}

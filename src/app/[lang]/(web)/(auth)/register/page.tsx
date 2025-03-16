@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { registerUser } from "@/services/auth.service";
 import { FieldError } from "@/types";
 import { useRouter } from "@bprogress/next";
+import { isAxiosError } from "axios";
 
 export default function Page() {
   const { t } = useTranslation();
@@ -42,7 +43,12 @@ export default function Page() {
     },
     onError: (error) => {
       setIsLoading(false);
-      setFormError(error.message ?? "Unknow error, try again later");
+      if (isAxiosError(error)) {
+        if (error.response?.data?.code === "EMAIL_IN_USE") {
+          return setFormError(t("auth.emailNotValid"));
+        }
+        setFormError(error.response?.data?.message ?? t("SomethingWentWrong"));
+      }
     }
   });
 

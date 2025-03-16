@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { saveProduct, unsaveProduct } from "@/services/userActions.service";
 import { useRef } from "react";
 import { isAxiosError } from "axios";
+import tempActions from "@/stores/tempActionsCache";
 
 interface SaveHookProps {
   productId: string;
@@ -24,6 +25,7 @@ export default function useSave({ productId, onError, onClick, onSuccess }: Save
     mutationFn: () => saveProduct(productId),
     onSuccess: () => {
       onSuccess?.(true);
+      tempActions.set("saves", productId, true);
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
     },
     onError: (err) => {
@@ -37,6 +39,7 @@ export default function useSave({ productId, onError, onClick, onSuccess }: Save
     mutationFn: () => unsaveProduct(productId),
     onSuccess: () => {
       onSuccess?.(false);
+      tempActions.set("saves", productId, false);
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
     },
     onError: (err) => {

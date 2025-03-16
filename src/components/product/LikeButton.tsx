@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import useLike from "@/hooks/useLike";
+import { getActualProductLike } from "@/stores/tempActionsCache";
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   productId: string;
@@ -12,7 +13,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default React.memo(function LikeProductButton({ productId, isLiked, likesCount }: Props) {
   const [like, setLike] = useState(() => ({
-    state: isLiked,
+    state: getActualProductLike(productId, isLiked),
     count: likesCount
   }));
 

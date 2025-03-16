@@ -14,23 +14,24 @@ import Button from "../ui/Button";
 import ViewMoreButton from "../ui/ViewMoreButton";
 import useFollow from "@/hooks/useFollow";
 import ProductCarosel from "./ProductCarosel";
+import { getActualProductReview } from "@/stores/tempActionsCache";
 
 type Props = {
   product: IFullProduct;
-  isLiked: boolean;
-  isSaved: boolean;
-  isInCart: boolean;
-  isRated: boolean;
-  isFollowed: boolean;
 };
 
-function ProductSection({ product, isFollowed }: Props) {
+function ProductSection({ product }: Props) {
   const { t } = useTranslation();
   const [readMore, setReadMore] = useState(false);
   const descriptionRef = useRef(manipulateDescription(product.fullDescription));
   const [main, extend] = useMemo(() => descriptionRef.current, [descriptionRef.current]);
+  const [isFollowed, setIsFollowed] = useState(product.vendor.isFollowed);
 
-  const handleFollow = useFollow({ vendor: product.vendor });
+  const handleFollow = useFollow({
+    vendor: product.vendor,
+    onClick: (shouldFollow) => setIsFollowed(shouldFollow),
+    onError: (shouldFollow) => setIsFollowed(!shouldFollow)
+  });
 
   return (
     <div className="mx-auto flex max-w-[950px] items-start border-b py-6">
@@ -110,7 +111,7 @@ function ProductSection({ product, isFollowed }: Props) {
           <div className="relative flex flex-col items-center gap-2 p-2">
             <ViewMoreButton product={product} />
             <LikeProductButton isLiked={product.isLiked} likesCount={product.likes} productId={product._id} />
-            <RateProductButton isRated={product.isReviewed} product={product} />
+            <RateProductButton isRated={getActualProductReview(product._id, product.isReviewed)} product={product} />
             <SaveProductButton isSaved={product.isSaved} productId={product._id} savesCount={product.saves} />
             <AddToCartButton product={product} />
           </div>
@@ -122,11 +123,11 @@ function ProductSection({ product, isFollowed }: Props) {
 
 export default React.memo(ProductSection, (prev, next) => {
   return (
-    prev.isFollowed === next.isFollowed &&
-    prev.isLiked === next.isLiked &&
-    prev.isRated === next.isRated &&
-    prev.isSaved === next.isSaved &&
-    prev.isInCart === next.isInCart &&
+    prev.product.vendor.isFollowed === next.product.vendor.isFollowed &&
+    prev.product.isLiked === next.product.isLiked &&
+    prev.product.isReviewed === next.product.isReviewed &&
+    prev.product.isSaved === next.product.isSaved &&
+    prev.product.isInCart === next.product.isInCart &&
     prev.product._id === next.product._id
   );
 });

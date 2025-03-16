@@ -11,7 +11,7 @@ export async function middleware(req: NextRequest) {
     const pathnameLang = getPathnameLang(pathname);
     const pathOnly = pathnameLang ? pathname.replace("/" + pathnameLang, "") : pathname;
 
-    if (!pathnameLang) {
+    if (!pathnameLang || lang !== pathnameLang) {
       req.nextUrl.pathname = `/${lang}${pathOnly}`;
       return NextResponse.redirect(req.nextUrl);
     }

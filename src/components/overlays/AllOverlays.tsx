@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo } from "react";
-import EditProfileOverlay from "./EditProfileOverlay";
+import EditProfileOverlay from "./editProfileOverlay/EditProfileOverlay";
 import AttributesOverlay from "./AttributesOverlay";
 import ProductMoreInfoOverlay from "./ProductMoreInfo";
 import AddReviewOverlay from "./AddReviewOverlay";
@@ -14,12 +14,11 @@ import { useProductStore } from "@/stores/productStore";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import HomeMenu from "./HomeMenu";
-import { useUserStore } from "@/stores/userStore";
-import { useLocalPathname } from "../LocalizedNavigation";
+import { setLastPageBeforSignUp } from "@/lib/localestorageAPI";
+import { usePathname } from "next/navigation";
 
 export default function AllOverlays() {
-  const setLastPageBeforSignUp = useUserStore((state) => state.setLastPageBeforSignUp);
-  const { pathname, lang } = useLocalPathname();
+  const pathname = usePathname();
 
   const {
     isEditProfileOpen,
@@ -68,7 +67,7 @@ export default function AllOverlays() {
 
     if (pathname.includes("/login") || pathname.includes("/register")) return;
     setLastPageBeforSignUp(pathname);
-  }, [pathname, lang]);
+  }, [pathname]);
 
   // Memoize the overlay active state
   const isAnyOverlayOpen = useMemo(

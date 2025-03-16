@@ -53,6 +53,9 @@
   "continueShopping": "Continuer vos achats",
   "description": "Description",
   "reviews": "Avis",
+  "save": "Enregistrer",
+  "confirm": "Confirmer",
+  "crop": "Recadrer",
 
   "productNotFound": "Produit non trouvé !",
   "faildToSubmitYourAction": "Échec de l'enregistrement du produit",
@@ -145,7 +148,7 @@
   "profile.orders": "Commandes",
   "profile.points": "Points",
   "profile.changePassword": "Changer le mot de passe",
-  "profile.ordersHistory": "Historique des commandes",
+  "profile.ordersHistory": "des commandes",
   "profile.addresses": "Adresses",
   "profile.cart": "Panier",
   "profile.orderDetails": "Détails de la commande",

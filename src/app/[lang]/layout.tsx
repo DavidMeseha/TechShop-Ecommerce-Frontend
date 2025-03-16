@@ -1,4 +1,4 @@
-import AppProviders from "@/components/layout/AppProviders";
+import AppProviders from "@/components/layouts/AppProviders";
 import { getDictionary } from "@/dictionary";
 import { languages } from "@/lib/misc";
 import { Language } from "@/types";

@@ -53,6 +53,9 @@
   "continueShopping": "Continue Shopping",
   "description": "Description",
   "reviews": "Reviews",
+  "save": "Save",
+  "confirm": "Confirm",
+  "crop": "Crop",
 
   "productNotFound": "Product Not Found!",
   "faildToSubmitYourAction": "Field to save product",

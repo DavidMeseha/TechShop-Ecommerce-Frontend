@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { likeProduct, unLikeProduct } from "@/services/userActions.service";
 import { useRef } from "react";
 import { isAxiosError } from "axios";
+import tempActions from "@/stores/tempActionsCache";
 
 interface LikeHookProps {
   productId: string;
@@ -21,7 +22,10 @@ export default function useLike({ productId, onError, onSuccess, onClick }: Like
   const likeMutation = useMutation({
     mutationKey: ["like", productId],
     mutationFn: () => likeProduct(productId),
-    onSuccess: () => onSuccess?.(true),
+    onSuccess: () => {
+      onSuccess?.(true);
+      tempActions.set("likes", productId, true);
+    },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status === 409) return;
       onError?.(true);
@@ -31,7 +35,10 @@ export default function useLike({ productId, onError, onSuccess, onClick }: Like
   const unlikeMutation = useMutation({
     mutationKey: ["unlike", productId],
     mutationFn: () => unLikeProduct(productId),
-    onSuccess: () => onSuccess?.(false),
+    onSuccess: () => {
+      tempActions.set("likes", productId, false);
+      onSuccess?.(false);
+    },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status === 409) return;
       onError?.(false);

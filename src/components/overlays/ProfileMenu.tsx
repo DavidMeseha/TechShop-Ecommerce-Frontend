@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import OverlayLayout from "./OverlayLayout";
+import OverlayLayout from "../layouts/OverlayLayout";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import { FiLogOut } from "react-icons/fi";
 import { useTranslation } from "@/context/Translation";

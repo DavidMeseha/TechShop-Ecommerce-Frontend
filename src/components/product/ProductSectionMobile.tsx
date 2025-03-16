@@ -12,10 +12,6 @@ import ProductCarosel from "./ProductCarosel";
 
 type Props = {
   product: IFullProduct;
-  isLiked: boolean;
-  isSaved: boolean;
-  isInCart: boolean;
-  isRated: boolean;
   isFollowed: boolean;
 };
 
@@ -44,10 +40,10 @@ export default React.memo(
   },
   (prevProps, nextProps) => {
     return (
-      prevProps.isSaved === nextProps.isSaved &&
-      prevProps.isInCart === nextProps.isInCart &&
-      prevProps.isLiked === nextProps.isLiked &&
-      prevProps.isRated === nextProps.isRated &&
+      prevProps.product.isSaved === nextProps.product.isSaved &&
+      prevProps.product.isInCart === nextProps.product.isInCart &&
+      prevProps.product.isLiked === nextProps.product.isLiked &&
+      prevProps.product.isReviewed === nextProps.product.isReviewed &&
       prevProps.product._id === nextProps.product._id
     );
   }

@@ -12,8 +12,8 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export default function Button({ className, isLoading, spinnerSize = 24, ...props }: Props) {
   return (
     <button
-      className={twMerge(clsx(["relative rounded-sm fill-white px-4 py-2", className]))}
       {...props}
+      className={twMerge(clsx(["relative rounded-sm fill-white px-4 py-2", className]))}
       disabled={isLoading}
     >
       {isLoading ? (

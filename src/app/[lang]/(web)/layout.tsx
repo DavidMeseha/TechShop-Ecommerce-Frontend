@@ -1,5 +1,5 @@
 import { ToastContainer } from "react-toastify";
-import MainLayout from "@/components/layout/MainLayout";
+import MainLayout from "@/components/layouts/main/MainLayout";
 import React, { ReactElement } from "react";
 import { cookies } from "next/headers";
 import { Analytics } from "@vercel/analytics/react";

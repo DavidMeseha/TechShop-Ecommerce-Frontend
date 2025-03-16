@@ -1,8 +1,10 @@
 import { addToCart, removeFromCart } from "@/services/userActions.service";
 import { useProductStore } from "@/stores/productStore";
+import tempActions from "@/stores/tempActionsCache";
 import { useUserStore } from "@/stores/userStore";
 import { IFullProduct, IProductAttribute } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 
 interface CartHookProps {
   product: IFullProduct;
@@ -16,6 +18,7 @@ interface CartMutationProps {
 
 export default function useAddToCart({ product, onSuccess }: CartHookProps) {
   const user = useUserStore((state) => state.user);
+  const getCartItems = useUserStore((state) => state.getCartItems);
   const setIsProductAttributesOpen = useProductStore((state) => state.setIsProductAttributesOpen);
   const queryClient = useQueryClient();
 
@@ -23,8 +26,14 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
     mutationKey: ["addToCart", product.seName],
     mutationFn: ({ attributes, quantity }: CartMutationProps) => addToCart(product._id, attributes, quantity),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      getCartItems();
       onSuccess?.(true);
+      tempActions.set("cart", product._id, true);
+      queryClient.invalidateQueries({ queryKey: ["checkoutCartItems"] });
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+    },
+    onError: (error) => {
+      if (isAxiosError(error) && error.response?.status === 409) onSuccess?.(false);
     }
   });
 
@@ -32,8 +41,14 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
     mutationKey: ["removeFromCart", product.seName],
     mutationFn: () => removeFromCart(product._id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
       onSuccess?.(false);
+      getCartItems();
+      tempActions.set("cart", product._id, false);
+      queryClient.invalidateQueries({ queryKey: ["checkoutCartItems"] });
+      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+    },
+    onError: (error) => {
+      if (isAxiosError(error) && error.response?.status === 409) onSuccess?.(false);
     }
   });
 

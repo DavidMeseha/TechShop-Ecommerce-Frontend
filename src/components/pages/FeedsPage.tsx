@@ -3,13 +3,11 @@
 import { BsSearch } from "react-icons/bs";
 import { BiMenu } from "react-icons/bi";
 import ProductSectionMobile from "@/components/product/ProductSectionMobile";
-import { useCallback } from "react";
 import { useInView } from "react-intersection-observer";
 import { useTranslation } from "@/context/Translation";
 import Button from "@/components/ui/Button";
 import ProductSection from "@/components/product/ProductSection";
 import { useOverlayStore } from "@/stores/overlayStore";
-import { useUserStore } from "@/stores/userStore";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { homeFeedProducts } from "@/services/products.service";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
@@ -18,15 +16,6 @@ export default function FeedsPage() {
   const { t } = useTranslation();
   const setIsHomeMenuOpen = useOverlayStore((state) => state.setIsHomeMenuOpen);
   const setIsSearchOpen = useOverlayStore((state) => state.setIsSearchOpen);
-
-  const cartItems = useUserStore((state) => state.cartItems);
-  const saves = useUserStore((state) => state.saves);
-  const likes = useUserStore((state) => state.likes);
-  const reviews = useUserStore((state) => state.reviews);
-  const followedVendors = useUserStore((state) => state.followedVendors);
-
-  const isInCart = useCallback((id: string) => !!cartItems.find((item) => item.product === id), [cartItems]);
-
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["feedProducts"],
     queryFn: async ({ pageParam = 1 }) => homeFeedProducts({ page: pageParam, limit: 3 }),
@@ -48,15 +37,7 @@ export default function FeedsPage() {
       <div className="hidden md:block">
         <div className="mt-6">
           {allProducts.map((product) => (
-            <ProductSection
-              isFollowed={followedVendors.includes(product.vendor._id)}
-              isInCart={isInCart(product._id)}
-              isLiked={likes.includes(product._id)}
-              isRated={reviews.includes(product._id)}
-              isSaved={saves.includes(product._id)}
-              key={product._id}
-              product={product}
-            />
+            <ProductSection key={product._id} product={product} />
           ))}
         </div>
       </div>
@@ -77,11 +58,7 @@ export default function FeedsPage() {
         <div className="relative">
           {allProducts.map((product) => (
             <ProductSectionMobile
-              isFollowed={followedVendors.includes(product.vendor._id)}
-              isInCart={isInCart(product._id)}
-              isLiked={likes.includes(product._id)}
-              isRated={reviews.includes(product._id)}
-              isSaved={saves.includes(product._id)}
+              isFollowed={product.vendor.isFollowed}
               key={product._id + "-mobile"}
               product={product}
             />

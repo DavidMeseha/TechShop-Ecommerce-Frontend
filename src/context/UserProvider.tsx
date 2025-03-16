@@ -8,6 +8,7 @@ import { createContext, ReactNode, useCallback, useContext, useMemo } from "reac
 import { toast } from "react-toastify";
 import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
+import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
 
 type ContextData = {
   setupUser: (user: { user: User; token: string }) => void;
@@ -16,8 +17,8 @@ type ContextData = {
 
 const UserContext = createContext<ContextData | undefined>(undefined);
 
-export default function UserProvider({ children }: { token?: string; children: ReactNode }) {
-  const setUserActions = useUserStore((state) => state.setUserActions);
+export default function UserProvider({ children }: { children: ReactNode }) {
+  const getCartItems = useUserStore((state) => state.getCartItems);
   const setUser = useUserStore((state) => state.setUser);
   const user = useUserStore((state) => state.user);
   const queryClient = useQueryClient();
@@ -30,35 +31,37 @@ export default function UserProvider({ children }: { token?: string; children: R
       config.headers.Authorization = `Bearer ${token}`;
       return config;
     });
-    queryClient.invalidateQueries({ queryKey: ["checkToken"] });
-    queryClient.invalidateQueries({ queryKey: ["userInfo"] });
-    queryClient.invalidateQueries({ queryKey: ["userAddresses"] });
   }, []);
 
-  const setupUser = async (data: { user: User; token: string }) => {
-    setUser(data.user);
-    await setToken(data.token);
-    await setLanguage(data.user.language);
-    resetAxiosIterceptor(data.token);
+  const cleanup = () => {
+    axios.interceptors.request.clear();
+    setUser(null);
     queryClient.clear();
   };
 
+  const setupUser = async (data: { user: User; token: string }) => {
+    cleanup();
+    resetAxiosIterceptor(data.token);
+    await setToken(data.token);
+    await setLanguage(data.user.language);
+    setUser(data.user);
+    router.push(getLastPageBeforSignUp() ?? "");
+  };
+
   const logout = async () => {
-    setUser(null);
-    setLanguage("en");
+    cleanup();
     await guestTokenMutation.mutateAsync();
     router.push("/login");
-    queryClient.clear();
   };
 
   //check token validity
   const _check = useQuery({
-    queryKey: ["checkToken"],
+    queryKey: ["check"],
     queryFn: () =>
       checkTokenValidity()
         .then((data) => {
           setUser(data);
-          setUserActions();
+          getCartItems();
           return null;
         })
         .catch(() => {
@@ -70,15 +73,12 @@ export default function UserProvider({ children }: { token?: string; children: R
 
   //new guest token
   const guestTokenMutation = useMutation({
-    mutationFn: () =>
-      getGuestToken().then(async (res) => {
-        await setToken(res.data.token);
-        return res;
-      }),
+    mutationFn: () => getGuestToken(),
     onSuccess: async (res) => {
-      setUser(res.data.user);
-      setUserActions();
       resetAxiosIterceptor(res.data.token);
+      await setToken(res.data.token);
+      setUser(res.data.user);
+      getCartItems();
     }
   });
 
@@ -88,12 +88,12 @@ export default function UserProvider({ children }: { token?: string; children: R
     queryFn: () =>
       refreshToken()
         .then((res) => {
-          setToken(res.data.token);
           resetAxiosIterceptor(res.data.token);
+          setToken(res.data.token);
           return null;
         })
         .catch(() => {
-          guestTokenMutation.mutate();
+          logout();
           return null;
         }),
 
