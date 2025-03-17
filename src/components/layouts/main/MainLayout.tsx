@@ -16,10 +16,10 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children, token }: MainLayoutProps) {
   const pathname = usePathname();
-  console.log("render => ", token);
+  // console.log("render => ", token);
 
   useMemo(() => {
-    console.log("useEffect => ", token);
+    // console.log("useEffect => ", token);
     axios.interceptors.request.clear();
     axios.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${token}`;
