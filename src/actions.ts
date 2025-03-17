@@ -22,6 +22,11 @@ export async function getLanguage() {
   return ((await cookies()).get("lang")?.value ?? "en") as Language;
 }
 
+export async function setupUserCookies(token: string, lang: Language) {
+  await setToken(token);
+  await setLanguage(lang);
+}
+
 export async function changeLanguage(lang: Language, pathname: string) {
   const pathnameLang = getPathnameLang(pathname);
   const tempPath = pathname;

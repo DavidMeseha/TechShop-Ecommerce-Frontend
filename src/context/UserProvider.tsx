@@ -1,14 +1,14 @@
-import { setLanguage, setToken } from "@/actions";
 import { useTranslation } from "@/context/Translation";
 import axios from "@/lib/axios";
 import { checkTokenValidity, getGuestToken, refreshToken } from "@/services/auth.service";
 import { useUserStore } from "@/stores/userStore";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createContext, ReactNode, useCallback, useContext, useMemo } from "react";
 import { toast } from "react-toastify";
-import { User } from "@/types";
+import { Language, User } from "@/types";
 import { useRouter } from "@bprogress/next";
 import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
+import { setToken, setupUserCookies } from "@/actions";
 
 type ContextData = {
   setupUser: (user: { user: User; token: string }) => void;
@@ -21,7 +21,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   const getCartItems = useUserStore((state) => state.getCartItems);
   const setUser = useUserStore((state) => state.setUser);
   const user = useUserStore((state) => state.user);
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -33,25 +33,20 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const cleanup = () => {
-    axios.interceptors.request.clear();
-    setUser(null);
-    queryClient.clear();
-  };
-
   const setupUser = async (data: { user: User; token: string }) => {
-    cleanup();
+    setupUserCookies(data.token, data.user.language as Language);
     resetAxiosIterceptor(data.token);
-    await setToken(data.token);
-    await setLanguage(data.user.language);
     setUser(data.user);
-    router.push(getLastPageBeforSignUp() ?? "");
+    getCartItems();
+    router.push(getLastPageBeforSignUp());
   };
 
   const logout = async () => {
-    cleanup();
-    await guestTokenMutation.mutateAsync();
-    router.push("/login");
+    setUser(null);
+    guestTokenMutation.mutateAsync();
+    router.refresh({
+      basePath: "/login"
+    });
   };
 
   //check token validity
@@ -75,8 +70,8 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   const guestTokenMutation = useMutation({
     mutationFn: () => getGuestToken(),
     onSuccess: async (res) => {
+      setupUserCookies(res.data.token, res.data.user.language as Language);
       resetAxiosIterceptor(res.data.token);
-      await setToken(res.data.token);
       setUser(res.data.user);
       getCartItems();
     }
