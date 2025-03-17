@@ -1,5 +1,5 @@
 import { Language, User } from "@/types";
-import { removeToken, setupUserCookies } from "@/actions";
+import { setupUserCookies } from "@/actions";
 import { resetAxiosIterceptor } from "@/lib/axios";
 import { useQueryClient } from "@tanstack/react-query";
 import tempActions from "@/stores/tempActionsCache";
@@ -18,17 +18,15 @@ export default function useUser() {
     resetAxiosIterceptor(token);
     tempActions.clear();
     queryClient.invalidateQueries();
-    setupUserCookies(token, user.language as Language);
-    router.push(getLastPageBeforSignUp());
+    setupUserCookies(token, user.language as Language).then(() => router.push(getLastPageBeforSignUp()));
   };
 
   const logout = async () => {
+    setUser(null);
     resetAxiosIterceptor("");
     tempActions.clear();
-    setUser(null);
     queryClient.invalidateQueries();
     // queryClient.invalidateQueries({ queryKey: ["userInfo"] });
-    removeToken();
     !pathname.includes("/login") && router.push("/login");
   };
 
