@@ -8,7 +8,6 @@ import { createContext, ReactNode, useCallback, useContext, useMemo } from "reac
 import { toast } from "react-toastify";
 import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
-import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
 
 type ContextData = {
   setupUser: (user: { user: User; token: string }) => void;
@@ -45,7 +44,6 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     await setToken(data.token);
     await setLanguage(data.user.language);
     setUser(data.user);
-    router.push(getLastPageBeforSignUp() ?? "");
   };
 
   const logout = async () => {

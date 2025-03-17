@@ -13,10 +13,13 @@ import { login } from "@/services/auth.service";
 import Button from "@/components/ui/Button";
 import { useUserSetup } from "@/context/UserProvider";
 import { isAxiosError } from "axios";
+import { useRouter } from "@bprogress/next";
+import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
   const { setupUser } = useUserSetup();
+  const router = useRouter();
   const { t } = useTranslation();
   const {
     register,
@@ -35,6 +38,7 @@ export default function Page() {
     onSuccess: async (data) => {
       setIsLoading(true);
       setupUser(data);
+      router.push(getLastPageBeforSignUp());
     },
     onError: (err) => {
       setIsLoading(false);
