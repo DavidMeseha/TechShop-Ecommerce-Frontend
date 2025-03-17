@@ -9,13 +9,13 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/auth.service";
 import Button from "@/components/ui/Button";
-import { useUserSetup } from "@/context/UserProvider";
 import OverlayLayout from "../../layouts/OverlayLayout";
 import { useOverlayStore } from "@/stores/overlayStore";
 import { isAxiosError } from "axios";
+import useUser from "@/hooks/useUser";
 
 export default function Login() {
-  const { setupUser } = useUserSetup();
+  const { login: handleLoginSuccess } = useUser();
   const setIsLoginOpen = useOverlayStore((state) => state.setIsLoginOpen);
   const switchSignupOverlay = useOverlayStore((state) => state.switchSignupOverlay);
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ export default function Login() {
     onSuccess: (data) => {
       if (!data) return;
       setIsLoginOpen(false);
-      setupUser(data);
+      handleLoginSuccess(data.user, data.token);
     },
     onError: (err) => {
       if (isAxiosError(err)) {

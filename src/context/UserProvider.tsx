@@ -1,57 +1,24 @@
 import { useTranslation } from "@/context/Translation";
-import axios from "@/lib/axios";
+import { resetAxiosIterceptor } from "@/lib/axios";
 import { checkTokenValidity, getGuestToken, refreshToken } from "@/services/auth.service";
 import { useUserStore } from "@/stores/userStore";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createContext, ReactNode, useCallback, useContext, useMemo } from "react";
+import { ReactNode } from "react";
 import { toast } from "react-toastify";
-import { Language, User } from "@/types";
-import { useRouter } from "@bprogress/next";
-import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
+import { Language } from "@/types";
 import { setToken, setupUserCookies } from "@/actions";
-
-type ContextData = {
-  setupUser: (user: { user: User; token: string }) => void;
-  logout: () => void;
-};
-
-const UserContext = createContext<ContextData | undefined>(undefined);
+import useUser from "@/hooks/useUser";
 
 export default function UserProvider({ children }: { children: ReactNode }) {
   const getCartItems = useUserStore((state) => state.getCartItems);
   const setUser = useUserStore((state) => state.setUser);
   const user = useUserStore((state) => state.user);
-  // const queryClient = useQueryClient();
-  const router = useRouter();
   const { t } = useTranslation();
-
-  const resetAxiosIterceptor = useCallback((token: string) => {
-    axios.interceptors.request.clear();
-    axios.interceptors.request.use((config) => {
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    });
-  }, []);
-
-  const setupUser = async (data: { user: User; token: string }) => {
-    setupUserCookies(data.token, data.user.language as Language);
-    resetAxiosIterceptor(data.token);
-    setUser(data.user);
-    getCartItems();
-    router.push(getLastPageBeforSignUp());
-  };
-
-  const logout = async () => {
-    setUser(null);
-    guestTokenMutation.mutateAsync();
-    router.refresh({
-      basePath: "/login"
-    });
-  };
+  const { logout } = useUser();
 
   //check token validity
-  const _check = useQuery({
-    queryKey: ["check"],
+  const _userSetup = useQuery({
+    queryKey: ["user"],
     queryFn: () =>
       checkTokenValidity()
         .then((data) => {
@@ -68,12 +35,13 @@ export default function UserProvider({ children }: { children: ReactNode }) {
 
   //new guest token
   const guestTokenMutation = useMutation({
+    mutationKey: ["guestToken"],
     mutationFn: () => getGuestToken(),
     onSuccess: async (res) => {
-      setupUserCookies(res.data.token, res.data.user.language as Language);
       resetAxiosIterceptor(res.data.token);
       setUser(res.data.user);
       getCartItems();
+      setupUserCookies(res.data.token, res.data.user.language as Language);
     }
   });
 
@@ -96,14 +64,5 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     refetchInterval: 1_680_000
   });
 
-  const value = useMemo(() => ({ setupUser, logout }), [setupUser, logout]);
-
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+  return children;
 }
-
-export const useUserSetup = () => {
-  const context = useContext(UserContext);
-
-  if (!context) throw new Error("useUserSetup must be used within a UserProvider");
-  return context;
-};
