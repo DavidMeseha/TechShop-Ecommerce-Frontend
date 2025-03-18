@@ -11,15 +11,12 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/auth.service";
 import Button from "@/components/ui/Button";
-import { useUserSetup } from "@/context/UserProvider";
 import { isAxiosError } from "axios";
-import { useRouter } from "@bprogress/next";
-import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
+import { useUserSetup } from "@/context/UserProvider";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
-  const { setupUser } = useUserSetup();
-  const router = useRouter();
+  const { loginUser } = useUserSetup();
   const { t } = useTranslation();
   const {
     register,
@@ -37,8 +34,7 @@ export default function Page() {
     mutationFn: (form: LoginForm) => login(form),
     onSuccess: async (data) => {
       setIsLoading(true);
-      setupUser(data);
-      router.push(getLastPageBeforSignUp());
+      loginUser(data);
     },
     onError: (err) => {
       setIsLoading(false);

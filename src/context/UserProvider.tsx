@@ -1,4 +1,4 @@
-import { setLanguage, setToken } from "@/actions";
+import { setToken, setUserCookies } from "@/actions";
 import { useTranslation } from "@/context/Translation";
 import axios from "@/lib/axios";
 import { checkTokenValidity, getGuestToken, refreshToken } from "@/services/auth.service";
@@ -8,9 +8,11 @@ import { createContext, ReactNode, useCallback, useContext, useMemo } from "reac
 import { toast } from "react-toastify";
 import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
+import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
+import tempActions from "@/stores/tempActionsCache";
 
 type ContextData = {
-  setupUser: (user: { user: User; token: string }) => void;
+  loginUser: (user: { user: User; token: string }) => void;
   logout: () => void;
 };
 
@@ -33,23 +35,22 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const cleanup = () => {
-    axios.interceptors.request.clear();
     setUser(null);
+    axios.interceptors.request.clear();
+    tempActions.clear();
     queryClient.clear();
   };
 
-  const setupUser = async (data: { user: User; token: string }) => {
+  const loginUser = async (data: { user: User; token: string }) => {
     cleanup();
     resetAxiosIterceptor(data.token);
-    await setToken(data.token);
-    await setLanguage(data.user.language);
     setUser(data.user);
+    setUserCookies(data.token, data.user.language).then(() => router.push(getLastPageBeforSignUp()));
   };
 
   const logout = async () => {
     cleanup();
-    await guestTokenMutation.mutateAsync();
-    router.push("/login");
+    guestTokenMutation.mutateAsync().then(() => router.push("/login"));
   };
 
   //check token validity
@@ -99,7 +100,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     refetchInterval: 1_680_000
   });
 
-  const value = useMemo(() => ({ setupUser, logout }), [setupUser, logout]);
+  const value = useMemo(() => ({ loginUser, logout }), [loginUser, logout]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
