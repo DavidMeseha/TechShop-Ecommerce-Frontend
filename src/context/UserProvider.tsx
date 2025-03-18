@@ -10,6 +10,7 @@ import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
 import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
 import tempActions from "@/stores/tempActionsCache";
+import { usePathname } from "next/navigation";
 
 type ContextData = {
   loginUser: (user: { user: User; token: string }) => void;
@@ -24,6 +25,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   const user = useUserStore((state) => state.user);
   const queryClient = useQueryClient();
   const router = useRouter();
+  const pathname = usePathname();
   const { t } = useTranslation();
 
   const resetAxiosIterceptor = useCallback((token: string) => {
@@ -45,7 +47,10 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     cleanup();
     resetAxiosIterceptor(data.token);
     setUser(data.user);
-    setUserCookies(data.token, data.user.language).then(() => router.push(getLastPageBeforSignUp()));
+    getCartItems();
+    setUserCookies(data.token, data.user.language).then(
+      () => pathname.includes("login") && router.push(getLastPageBeforSignUp())
+    );
   };
 
   const logout = async () => {
@@ -73,12 +78,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   //new guest token
   const guestTokenMutation = useMutation({
     mutationFn: () => getGuestToken(),
-    onSuccess: async (res) => {
-      resetAxiosIterceptor(res.data.token);
-      await setToken(res.data.token);
-      setUser(res.data.user);
-      getCartItems();
-    }
+    onSuccess: async (res) => loginUser(res.data)
   });
 
   //refresh Token(only active if user logged in)
