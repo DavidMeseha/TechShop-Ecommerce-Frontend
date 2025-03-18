@@ -1,38 +1,30 @@
-<<<<<<< HEAD
 import { setToken, setUserCookies } from "@/actions";
-=======
->>>>>>> addde30f08de3b0adab31f2274ed12eef59d03c8
 import { useTranslation } from "@/context/Translation";
-import { resetAxiosIterceptor } from "@/lib/axios";
+import axios from "@/lib/axios";
 import { checkTokenValidity, getGuestToken, refreshToken } from "@/services/auth.service";
 import { useUserStore } from "@/stores/userStore";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { ReactNode } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createContext, ReactNode, useCallback, useContext, useMemo } from "react";
 import { toast } from "react-toastify";
-<<<<<<< HEAD
 import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
 import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
 import tempActions from "@/stores/tempActionsCache";
 
 type ContextData = {
-  setupUser: (user: { user: User; token: string }) => void;
+  loginUser: (user: { user: User; token: string }) => void;
   logout: () => void;
 };
 
 const UserContext = createContext<ContextData | undefined>(undefined);
-=======
-import { Language } from "@/types";
-import { setToken, setupUserCookies } from "@/actions";
-import useUser from "@/hooks/useUser";
->>>>>>> addde30f08de3b0adab31f2274ed12eef59d03c8
 
 export default function UserProvider({ children }: { children: ReactNode }) {
   const getCartItems = useUserStore((state) => state.getCartItems);
   const setUser = useUserStore((state) => state.setUser);
   const user = useUserStore((state) => state.user);
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const { t } = useTranslation();
-<<<<<<< HEAD
 
   const resetAxiosIterceptor = useCallback((token: string) => {
     axios.interceptors.request.clear();
@@ -49,7 +41,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     queryClient.clear();
   };
 
-  const setupUser = async (data: { user: User; token: string }) => {
+  const loginUser = async (data: { user: User; token: string }) => {
     cleanup();
     resetAxiosIterceptor(data.token);
     setUser(data.user);
@@ -60,13 +52,10 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     cleanup();
     guestTokenMutation.mutateAsync().then(() => router.push("/login"));
   };
-=======
-  const { logout } = useUser();
->>>>>>> addde30f08de3b0adab31f2274ed12eef59d03c8
 
   //check token validity
-  const _userSetup = useQuery({
-    queryKey: ["user"],
+  const _check = useQuery({
+    queryKey: ["check"],
     queryFn: () =>
       checkTokenValidity()
         .then((data) => {
@@ -83,13 +72,12 @@ export default function UserProvider({ children }: { children: ReactNode }) {
 
   //new guest token
   const guestTokenMutation = useMutation({
-    mutationKey: ["guestToken"],
     mutationFn: () => getGuestToken(),
     onSuccess: async (res) => {
       resetAxiosIterceptor(res.data.token);
+      await setToken(res.data.token);
       setUser(res.data.user);
       getCartItems();
-      setupUserCookies(res.data.token, res.data.user.language as Language);
     }
   });
 
@@ -112,5 +100,14 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     refetchInterval: 1_680_000
   });
 
-  return children;
+  const value = useMemo(() => ({ loginUser, logout }), [loginUser, logout]);
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
+
+export const useUserSetup = () => {
+  const context = useContext(UserContext);
+
+  if (!context) throw new Error("useUserSetup must be used within a UserProvider");
+  return context;
+};

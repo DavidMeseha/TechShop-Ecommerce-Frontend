@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/auth.service";
 import Button from "@/components/ui/Button";
 import { isAxiosError } from "axios";
-import useUser from "@/hooks/useUser";
+import { useUserSetup } from "@/context/UserProvider";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
