@@ -1,5 +1,5 @@
 import { useTranslation } from "@/context/Translation";
-import useUser from "@/hooks/useUser";
+import { useUserSetup } from "@/context/UserProvider";
 import { headerProfileMenu } from "@/schemas/menus";
 import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function HeaderUserAvatar({ user }: Props) {
-  const { logout } = useUser();
+  const { logout } = useUserSetup();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const router = useRouter();
   const { t, lang } = useTranslation();
