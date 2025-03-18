@@ -9,11 +9,11 @@ import { FaRegAddressBook } from "react-icons/fa";
 import { BsStar } from "react-icons/bs";
 import { PiPassword } from "react-icons/pi";
 import { useOverlayStore } from "@/stores/overlayStore";
-import { useUserSetup } from "@/context/UserProvider";
+import useUser from "@/hooks/useUser";
 
 export default function ProfileMenuOverlay() {
   const setIsProfileMenuOpen = useOverlayStore((state) => state.setIsProfileMenuOpen);
-  const { logout } = useUserSetup();
+  const { logout } = useUser();
   const { t, lang } = useTranslation();
 
   const userMenuNav = useMemo(

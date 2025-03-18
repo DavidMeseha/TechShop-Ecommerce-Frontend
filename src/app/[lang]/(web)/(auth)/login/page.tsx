@@ -11,8 +11,8 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/auth.service";
 import Button from "@/components/ui/Button";
-import { useUserSetup } from "@/context/UserProvider";
 import { isAxiosError } from "axios";
+import useUser from "@/hooks/useUser";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(false);

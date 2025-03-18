@@ -9,10 +9,10 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/auth.service";
 import Button from "@/components/ui/Button";
-import { useUserSetup } from "@/context/UserProvider";
 import OverlayLayout from "../../layouts/OverlayLayout";
 import { useOverlayStore } from "@/stores/overlayStore";
 import { isAxiosError } from "axios";
+import { useUserSetup } from "@/context/UserProvider";
 
 export default function Login() {
   const { loginUser } = useUserSetup();
