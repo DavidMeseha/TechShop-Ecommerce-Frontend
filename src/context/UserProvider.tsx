@@ -48,14 +48,14 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     resetAxiosIterceptor(data.token);
     setUser(data.user);
     getCartItems();
-    setUserCookies(data.token, data.user.language).then(
-      () => pathname.includes("login") && router.push(getLastPageBeforSignUp())
+    setUserCookies(data.token, data.user.language).then(() =>
+      setTimeout(() => pathname.includes("login") && router.push(getLastPageBeforSignUp()), 500)
     );
   };
 
   const logout = async () => {
     cleanup();
-    guestTokenMutation.mutateAsync().then(() => router.push("/login"));
+    guestTokenMutation.mutateAsync().then(() => setTimeout(() => router.refresh(), 500));
   };
 
   //check token validity
