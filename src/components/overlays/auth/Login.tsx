@@ -15,7 +15,7 @@ import { useOverlayStore } from "@/stores/overlayStore";
 import { isAxiosError } from "axios";
 
 export default function Login() {
-  const { setupUser } = useUserSetup();
+  const { loginUser } = useUserSetup();
   const setIsLoginOpen = useOverlayStore((state) => state.setIsLoginOpen);
   const switchSignupOverlay = useOverlayStore((state) => state.switchSignupOverlay);
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ export default function Login() {
     onSuccess: (data) => {
       if (!data) return;
       setIsLoginOpen(false);
-      setupUser(data);
+      loginUser(data);
     },
     onError: (err) => {
       if (isAxiosError(err)) {

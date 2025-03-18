@@ -4,10 +4,7 @@ import React from "react";
 import { scan } from "react-scan";
 
 scan({
-  enabled: true,
-  dangerouslyForceRunInProduction: true,
-  trackUnnecessaryRenders: true,
-  _debug: "verbose"
+  enabled: true
 });
 
 export default function ReactScan() {
