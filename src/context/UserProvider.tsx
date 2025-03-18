@@ -1,10 +1,10 @@
 import { setToken, setUserCookies } from "@/actions";
 import { useTranslation } from "@/context/Translation";
-import axios from "@/lib/axios";
+import axios, { resetAxiosIterceptor } from "@/lib/axios";
 import { checkTokenValidity, getGuestToken, refreshToken } from "@/services/auth.service";
 import { useUserStore } from "@/stores/userStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createContext, ReactNode, useCallback, useContext, useMemo } from "react";
+import { createContext, ReactNode, useContext, useMemo } from "react";
 import { toast } from "react-toastify";
 import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
@@ -28,17 +28,9 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { t } = useTranslation();
 
-  const resetAxiosIterceptor = useCallback((token: string) => {
-    axios.interceptors.request.clear();
-    axios.interceptors.request.use((config) => {
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    });
-  }, []);
-
   const cleanup = () => {
-    setUser(null);
     axios.interceptors.request.clear();
+    setUser(null);
     tempActions.clear();
     queryClient.clear();
   };
@@ -48,14 +40,37 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     resetAxiosIterceptor(data.token);
     setUser(data.user);
     getCartItems();
-    setUserCookies(data.token, data.user.language).then(() =>
-      setTimeout(() => pathname.includes("login") && router.push(getLastPageBeforSignUp()), 500)
+    setUserCookies(data.token, data.user.language).then(
+      () => pathname.includes("login") && setTimeout(() => router.push(getLastPageBeforSignUp()), 500)
     );
   };
 
   const logout = async () => {
     cleanup();
-    guestTokenMutation.mutateAsync().then(() => setTimeout(() => router.refresh(), 500));
+    guestTokenMutation.mutateAsync().then(() => setTimeout(() => router.push("/login"), 500));
+  };
+
+  const initUser = (user: User) => {
+    setUser(user);
+    getCartItems();
+    return null;
+  };
+
+  const onInitFail = () => {
+    if (user?.isRegistered) toast.error(t("auth.forcedLogout"));
+    guestTokenMutation.mutate();
+    return null;
+  };
+
+  const successRefresh = (token: string) => {
+    resetAxiosIterceptor(token);
+    setToken(token);
+    return null;
+  };
+
+  const failedRefresh = () => {
+    logout();
+    return null;
   };
 
   //check token validity
@@ -63,16 +78,8 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     queryKey: ["check"],
     queryFn: () =>
       checkTokenValidity()
-        .then((data) => {
-          setUser(data);
-          getCartItems();
-          return null;
-        })
-        .catch(() => {
-          if (user?.isRegistered) toast.error(t("auth.forcedLogout"));
-          guestTokenMutation.mutate();
-          return null;
-        })
+        .then((data) => initUser(data))
+        .catch(() => onInitFail())
   });
 
   //new guest token
@@ -86,15 +93,8 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     queryKey: ["refresh"],
     queryFn: () =>
       refreshToken()
-        .then((res) => {
-          resetAxiosIterceptor(res.data.token);
-          setToken(res.data.token);
-          return null;
-        })
-        .catch(() => {
-          logout();
-          return null;
-        }),
+        .then((res) => successRefresh(res.data.token))
+        .catch(() => failedRefresh()),
 
     enabled: !!user?.isRegistered,
     refetchInterval: 1_680_000
