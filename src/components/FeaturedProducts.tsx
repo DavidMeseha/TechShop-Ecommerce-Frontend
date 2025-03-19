@@ -12,7 +12,7 @@ export function FeaturedProducts() {
 
   const { data, isPending } = useQuery({
     queryKey: ["featuredProducts"],
-    queryFn: async () => homeFeedProducts({ page: 2, limit: 7 }),
+    queryFn: async () => homeFeedProducts({ page: 1, limit: 7 }),
     enabled: inView
   });
   const products = data?.data ?? [];
