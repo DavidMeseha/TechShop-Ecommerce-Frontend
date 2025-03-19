@@ -1,10 +1,11 @@
 import React from "react";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
+import LoadingTheme from "./LoadingTheme";
 
 export default function AttributesOverlayLoading() {
   return (
     <div role="status">
-      <SkeletonTheme baseColor="#d5d5d5" highlightColor="#ececec">
+      <LoadingTheme>
         <Skeleton className="mb-1" height={20} width={100} />
         <Skeleton className="mb-6" height={40} />
         <Skeleton className="mb-2" height={20} width={100} />
@@ -30,7 +31,7 @@ export default function AttributesOverlayLoading() {
           </div>
         </div>
         <Skeleton className="mt-6" height={40} />
-      </SkeletonTheme>
+      </LoadingTheme>
     </div>
   );
 }

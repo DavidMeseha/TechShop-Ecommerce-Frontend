@@ -14,9 +14,10 @@ import { getActualProductCart, getActualProductLike, getActualProductSave } from
 type Props = {
   product: IFullProduct;
   canAddReview: boolean;
+  minWidth?: number | "auto";
 };
 
-function ProductCard({ product, canAddReview }: Props) {
+function ProductCard({ product, canAddReview, minWidth = "auto" }: Props) {
   const setIsAddReviewOpen = useProductStore((state) => state.setIsAddReviewOpen);
   const [like, setLike] = useState(() => ({
     state: getActualProductLike(product._id, product.isLiked),
@@ -51,7 +52,10 @@ function ProductCard({ product, canAddReview }: Props) {
   const rate = product.productReviewOverview.ratingSum / product.productReviewOverview.totalReviews;
 
   return (
-    <div className="flex w-full flex-col justify-between overflow-hidden rounded-sm border bg-white">
+    <div
+      className="flex w-full flex-col justify-between overflow-hidden rounded-sm border bg-white"
+      style={{ minWidth: minWidth }}
+    >
       <div>
         <ProductCarosel height={200} images={product.pictures} productName={product.name} />
 

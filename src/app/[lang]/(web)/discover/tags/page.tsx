@@ -17,7 +17,7 @@ type ListItemProps = {
 export default function Page() {
   const { hasNextPage, fetchNextPage, isFetching, data, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["tagsDiscover"],
-    queryFn: ({ pageParam }) => getTags({ page: pageParam }),
+    queryFn: ({ pageParam }) => getTags({ page: pageParam, limit: 10 }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1
   });
@@ -29,7 +29,7 @@ export default function Page() {
       <ul>
         <li className="hidden text-3xl font-bold md:inline-block">Tags</li>
         {tags.map((tag) => (
-          <ListItem key={tag._id} tag={tag} to={`/tag/${tag.seName}`} />
+          <TagItem key={tag._id} tag={tag} to={`/tag/${tag.seName}`} />
         ))}
       </ul>
 
@@ -50,7 +50,7 @@ export default function Page() {
   );
 }
 
-function ListItem({ tag, to }: ListItemProps) {
+function TagItem({ tag, to }: ListItemProps) {
   return (
     <li className="mx-2 my-2 inline-flex items-center rounded-full border px-4 py-2">
       <BsHash size={35} />

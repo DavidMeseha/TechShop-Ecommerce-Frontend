@@ -18,7 +18,7 @@ export default function ProfileLayout({ children }: Props) {
 
   useEffect(() => {
     if (user && !user.isRegistered) setIsLoginOpen(true);
-  }, [user]);
+  }, []);
 
   if (user?.isRegistered) return <div className="md:mt-0">{children}</div>;
 

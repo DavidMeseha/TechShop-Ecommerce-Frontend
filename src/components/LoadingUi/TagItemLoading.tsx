@@ -1,11 +1,10 @@
-import React from "react";
 import Skeleton from "react-loading-skeleton";
 import LoadingTheme from "./LoadingTheme";
 
-export default function ProfileImageLoading() {
+export default function TagItemLoading() {
   return (
     <LoadingTheme>
-      <Skeleton circle className="h-full w-full" />
+      <Skeleton borderRadius={999} className="h-14 min-w-32" />
     </LoadingTheme>
   );
 }
