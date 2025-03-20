@@ -31,6 +31,7 @@ export default function NewAddressPage({ onFinish }: { onFinish: () => void }) {
     mutationFn: (form: AddressForm) => newAddress(form),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["userAddresses"] });
+      await queryClient.invalidateQueries({ queryKey: ["checkoutData"] });
       onFinish();
       toast.success("Address Added Successfully");
     }

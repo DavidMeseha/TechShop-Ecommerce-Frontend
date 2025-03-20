@@ -10,14 +10,16 @@ import useAddToCart from "@/hooks/useAddToCart";
 import { useProductStore } from "@/stores/productStore";
 import ProductCarosel from "./ProductCarosel";
 import { getActualProductCart, getActualProductLike, getActualProductSave } from "@/stores/tempActionsCache";
+import { cn } from "@/lib/utils";
 
 type Props = {
   product: IFullProduct;
   canAddReview: boolean;
   minWidth?: number | "auto";
+  className?: string;
 };
 
-function ProductCard({ product, canAddReview, minWidth = "auto" }: Props) {
+function ProductCard({ product, canAddReview, minWidth = "auto", className }: Props) {
   const setIsAddReviewOpen = useProductStore((state) => state.setIsAddReviewOpen);
   const [like, setLike] = useState(() => ({
     state: getActualProductLike(product._id, product.isLiked),
@@ -53,7 +55,7 @@ function ProductCard({ product, canAddReview, minWidth = "auto" }: Props) {
 
   return (
     <div
-      className="flex w-full flex-col justify-between overflow-hidden rounded-sm border bg-white"
+      className={cn("flex w-full flex-col justify-between overflow-hidden rounded-sm border bg-white", className)}
       style={{ minWidth: minWidth }}
     >
       <div>

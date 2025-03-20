@@ -211,6 +211,7 @@
   "checkout.air": "Aérien",
   "checkout.failedToVerifyPayment": "Échec de la vérification de votre paiement",
   "checkout.orderPlacedSuccessfully": "Commande passée avec succès",
+  "checkout.noAddress": "Aucune adresse disponible, ajoutez-en une pour continuer",
 
   "discover.vendors": "Vendeurs",
   "discover.products": "Produits",

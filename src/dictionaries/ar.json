@@ -211,6 +211,7 @@
   "checkout.air": "جوي",
   "checkout.failedToVerifyPayment": "فشل اتمام عملة الدفع",
   "checkout.orderPlacedSuccessfully": "تم استلام طلبك بنجاح",
+  "checkout.noAddress": "لا يوجد عنوان متاح, اضف عنوان للمتابعة",
 
   "discover.vendors": "البائعون",
   "discover.products": "المنتجات",

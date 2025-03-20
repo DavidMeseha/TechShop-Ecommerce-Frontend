@@ -211,6 +211,7 @@
   "checkout.air": "Air",
   "checkout.failedToVerifyPayment": "Failed to verify your payment",
   "checkout.orderPlacedSuccessfully": "Order Placed Successfully",
+  "checkout.noAddress": "No Address Avilabele, Add One to proceed",
 
   "discover.vendors": "vendors",
   "discover.products": "Products",

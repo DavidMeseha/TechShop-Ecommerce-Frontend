@@ -10,18 +10,29 @@ import Image from "next/image";
 import Button from "./ui/Button";
 import { useTranslation } from "@/context/Translation";
 import VendorCardLoading from "./LoadingUi/VendorCardLoading";
+import useFollow from "@/hooks/useFollow";
 
 export function FeaturedVendors() {
   const [ref, inView] = useInView();
   const { isPending, data } = useQuery({
-    queryKey: ["vendorsDiscover"],
+    queryKey: ["featuredVendors"],
     queryFn: () => getVendors({ page: 1, limit: 10 }),
     enabled: inView
   });
   const vendors = data?.data ?? [];
 
   return (
-    <Carousel className="w-full px-10" opts={{ align: "start" }} ref={ref}>
+    <Carousel className="w-full md:px-10" opts={{ align: "start" }} ref={ref}>
+      <div className="mx-auto w-20">
+        <CarouselPrevious
+          className="static start-0 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50 md:absolute"
+          variant="default"
+        />
+        <CarouselNext
+          className="static end-0 ms-4 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50 md:absolute"
+          variant="default"
+        />
+      </div>
       <CarouselContent>
         {!isPending
           ? vendors.map((vendor) => (
@@ -35,20 +46,19 @@ export function FeaturedVendors() {
               </CarouselItem>
             ))}
       </CarouselContent>
-      <CarouselPrevious
-        className="start-0 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50"
-        variant="default"
-      />
-      <CarouselNext
-        className="end-0 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50"
-        variant="default"
-      />
     </Carousel>
   );
 }
 
 function VendorItem({ vendor }: { vendor: IVendor }) {
   const { t } = useTranslation();
+  const [isFollowed, setIsFollowed] = React.useState(vendor.isFollowed);
+  const followHandle = useFollow({
+    vendor,
+    onClick: (shouldFollow) => setIsFollowed(shouldFollow),
+    onError: (shouldFollow) => setIsFollowed(!shouldFollow)
+  });
+
   return (
     <div className="flex flex-col items-center rounded-md border px-2 py-4 text-center">
       <LocalLink className="" href={`/vendor/${vendor.seName}`}>
@@ -63,7 +73,12 @@ function VendorItem({ vendor }: { vendor: IVendor }) {
         />
         <p>{vendor.name}</p>
       </LocalLink>
-      <Button className="mt-4 w-max bg-primary text-xs text-primary-foreground">{t("follow")}</Button>
+      <Button
+        className={`mt-4 w-max bg-primary text-xs text-primary-foreground ${isFollowed ? "bg-red-600" : "bg-primary"}`}
+        onClick={() => followHandle(!isFollowed)}
+      >
+        {isFollowed ? t("unfollow") : t("follow")}
+      </Button>
     </div>
   );
 }

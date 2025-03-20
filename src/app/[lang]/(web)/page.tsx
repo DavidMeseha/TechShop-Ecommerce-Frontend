@@ -11,13 +11,13 @@ export default function Page() {
   return (
     <>
       <div className="relative">
-        <h1 className="absolute left-0 top-0 z-50 p-6 text-5xl font-bold text-primary-foreground">
+        <h1 className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center p-6 text-2xl font-bold text-primary-foreground sm:items-start sm:justify-start sm:text-start sm:text-5xl">
           <span>Tomorrow&apos;s Tech,</span>
-          <span className="block mt-2"> Today&apos;s Prices</span>
+          <span className="mt-2 block"> Today&apos;s Prices</span>
         </h1>
         <Image
           alt="Hero"
-          className="my-6 max-h-96 w-full rounded-lg object-cover object-left-top"
+          className="mb-6 max-h-96 w-full object-cover object-left-top md:my-6 md:rounded-lg"
           height={1080}
           priority
           quality={100}
@@ -25,17 +25,19 @@ export default function Page() {
           width={1920}
         />
       </div>
-      <div className="space-y-6">
-        <FeaturedTags />
-        <section className="py-2">
+      <div className="space-y-8 px-4 md:px-0">
+        <section>
+          <FeaturedTags />
+        </section>
+        <section>
           <SectionHeader title="Featured Products" />
           <FeaturedProducts />
         </section>
-        <section className="pt-2">
+        <section>
           <SectionHeader title={"Top Vendors"} />
           <FeaturedVendors />
         </section>
-        <section className="relative border-b py-2">
+        <section>
           <SectionHeader title={"More Products"} />
           <MoreProducts />
         </section>

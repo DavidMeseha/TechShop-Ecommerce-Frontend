@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import Card from "./product/Card";
+import ProductCard from "./product/ProductCard";
 import { useQuery } from "@tanstack/react-query";
 import { homeFeedProducts } from "@/services/products.service";
 import { useInView } from "react-intersection-observer";
@@ -18,8 +18,18 @@ export function FeaturedProducts() {
   const products = data?.data ?? [];
 
   return (
-    <Carousel className="w-full px-10" opts={{ align: "start" }} ref={ref}>
-      <CarouselContent>
+    <Carousel className="w-full md:px-10" opts={{ align: "start" }} ref={ref}>
+      <div className="mx-auto w-20">
+        <CarouselPrevious
+          className="static start-0 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50 md:absolute"
+          variant="default"
+        />
+        <CarouselNext
+          className="static end-0 ms-4 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50 md:absolute"
+          variant="default"
+        />
+      </div>
+      <CarouselContent className="items-stretch">
         {isPending
           ? Array.from({ length: 10 }, (_, index) => (
               <CarouselItem className="h-full basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5" key={index}>
@@ -28,18 +38,10 @@ export function FeaturedProducts() {
             ))
           : products.map((product) => (
               <CarouselItem className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5" key={product._id}>
-                <Card canAddReview={false} product={product} />
+                <ProductCard canAddReview={false} className="h-full" product={product} />
               </CarouselItem>
             ))}
       </CarouselContent>
-      <CarouselPrevious
-        className="start-0 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50"
-        variant="default"
-      />
-      <CarouselNext
-        className="end-0 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50"
-        variant="default"
-      />
     </Carousel>
   );
 }

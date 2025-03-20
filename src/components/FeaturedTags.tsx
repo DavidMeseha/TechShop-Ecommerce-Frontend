@@ -16,7 +16,7 @@ type ListItemProps = {
 export function FeaturedTags() {
   const [ref, inView] = useInView();
   const { isPending, data } = useQuery({
-    queryKey: ["tagsDiscover"],
+    queryKey: ["featuredTags"],
     queryFn: () => getTags({ page: 1, limit: 10 }),
     enabled: inView
   });
