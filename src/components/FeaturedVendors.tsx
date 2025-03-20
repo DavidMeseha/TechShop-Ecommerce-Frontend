@@ -11,6 +11,7 @@ import Button from "./ui/Button";
 import { useTranslation } from "@/context/Translation";
 import VendorCardLoading from "./LoadingUi/VendorCardLoading";
 import useFollow from "@/hooks/useFollow";
+import { getActualVendorFollow } from "@/stores/tempActionsCache";
 
 export function FeaturedVendors() {
   const [ref, inView] = useInView();
@@ -52,7 +53,7 @@ export function FeaturedVendors() {
 
 function VendorItem({ vendor }: { vendor: IVendor }) {
   const { t } = useTranslation();
-  const [isFollowed, setIsFollowed] = React.useState(vendor.isFollowed);
+  const [isFollowed, setIsFollowed] = React.useState(getActualVendorFollow(vendor._id, vendor.isFollowed));
   const followHandle = useFollow({
     vendor,
     onClick: (shouldFollow) => setIsFollowed(shouldFollow),

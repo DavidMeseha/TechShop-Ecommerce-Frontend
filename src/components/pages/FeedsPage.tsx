@@ -11,6 +11,7 @@ import { useOverlayStore } from "@/stores/overlayStore";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { homeFeedProducts } from "@/services/products.service";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
+import { getActualVendorFollow } from "@/stores/tempActionsCache";
 
 export default function FeedsPage() {
   const { t } = useTranslation();
@@ -58,7 +59,7 @@ export default function FeedsPage() {
         <div className="relative">
           {allProducts.map((product) => (
             <ProductSectionMobile
-              isFollowed={product.vendor.isFollowed}
+              isFollowed={getActualVendorFollow(product.vendor._id, product.vendor.isFollowed)}
               key={product._id + "-mobile"}
               product={product}
             />

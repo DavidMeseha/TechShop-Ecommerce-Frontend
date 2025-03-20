@@ -12,13 +12,17 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import useFollow from "@/hooks/useFollow";
 import ProductsGridView from "@/components/product/ProductsGridView";
 import { getProductsByVendor } from "@/services/products.service";
+import { getActualVendorFollow } from "@/stores/tempActionsCache";
 
 type Props = {
   vendor: IVendor;
 };
 
 export default function VendorProfilePage({ vendor }: Props) {
-  const [follow, setFollow] = useState({ state: vendor.isFollowed, count: vendor.followersCount });
+  const [follow, setFollow] = useState({
+    state: getActualVendorFollow(vendor._id, vendor.isFollowed),
+    count: vendor.followersCount
+  });
   const { t } = useTranslation();
   const [ref] = useInView({
     onChange: (inView) => {

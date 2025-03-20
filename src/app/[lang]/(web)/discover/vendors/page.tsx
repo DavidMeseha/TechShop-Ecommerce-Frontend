@@ -10,6 +10,7 @@ import Loading from "@/components/LoadingUi/LoadingSpinner";
 import useFollow from "@/hooks/useFollow";
 import { useTranslation } from "@/context/Translation";
 import { getVendors } from "@/services/products.service";
+import { getActualVendorFollow } from "@/stores/tempActionsCache";
 
 export default function Page() {
   const { t } = useTranslation();
@@ -50,7 +51,7 @@ export default function Page() {
 
 const MemoizedListItem = React.memo(
   function ListItem({ vendor }: { vendor: IVendor }) {
-    const [isFollowed, setIsFollowed] = useState(vendor.isFollowed);
+    const [isFollowed, setIsFollowed] = useState(getActualVendorFollow(vendor._id, vendor.isFollowed));
     const { t } = useTranslation();
     const handleFollow = useFollow({
       vendor,

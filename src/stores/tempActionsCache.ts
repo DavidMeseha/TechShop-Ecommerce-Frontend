@@ -83,7 +83,12 @@ export const getActualProductCart = (productId: string, serverCartState: boolean
   return serverCartState;
 };
 
-export const getActualProductReview = (productId: string, serverCartState: boolean) => {
-  if (tempActions.has("cart", productId)) return tempActions.get("reviews", productId);
-  return serverCartState;
+export const getActualProductReview = (productId: string, serverReviewState: boolean) => {
+  if (tempActions.has("reviews", productId)) return tempActions.get("reviews", productId);
+  return serverReviewState;
+};
+
+export const getActualVendorFollow = (vendorId: string, serverFollowState: boolean) => {
+  if (tempActions.has("follows", vendorId)) return tempActions.get("follows", vendorId);
+  return serverFollowState;
 };
