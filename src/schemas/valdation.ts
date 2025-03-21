@@ -58,10 +58,11 @@ export function editProfileSchema(t: TFunction) {
     phone: z.string().optional()
   });
 }
+
+export type EditProfileForm = z.infer<ReturnType<typeof editProfileSchema>>;
 export type RegisterForm = z.infer<ReturnType<typeof registerSchema>>;
 export type LoginForm = z.infer<ReturnType<typeof loginSchema>>;
 export type AddressForm = z.infer<ReturnType<typeof AddressSchema>>;
-
 export type CheckoutForm = {
   shippingAddressId: string;
   billingMethod: string;

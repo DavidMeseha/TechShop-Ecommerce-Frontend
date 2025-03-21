@@ -6,8 +6,9 @@ import { IFullProduct, IProductAttribute } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 
+export type IAddToCartProduct = Pick<IFullProduct, "_id" | "name" | "productAttributes" | "seName" | "hasAttributes">;
 interface CartHookProps {
-  product: IFullProduct;
+  product: IAddToCartProduct;
   onSuccess?: (added: boolean) => void;
 }
 
@@ -54,11 +55,7 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
 
   // Helper function to handle product attributes
   const handleProductAttributes = (quantity: number, attributes?: IProductAttribute[]) => {
-    if (!attributes)
-      return setIsProductAttributesOpen(true, product._id, (attributes) =>
-        addToCartMutation.mutate({ attributes, quantity })
-      );
-
+    if (!attributes) return setIsProductAttributesOpen(true, product._id);
     addToCartMutation.mutate({ attributes, quantity });
   };
 

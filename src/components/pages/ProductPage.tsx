@@ -2,7 +2,6 @@
 import AddToCartButton from "@/components/product/AddToCartButton";
 import LikeProductButton from "@/components/product/LikeButton";
 import ProductAttributes from "@/components/product/Attributes";
-import RateProductButton from "@/components/product/RateButton";
 import RatingStars from "@/components/ui/RatingStars";
 import SaveProductButton from "@/components/product/SaveButton";
 import { selectDefaultAttributes } from "@/lib/misc";
@@ -81,7 +80,6 @@ export default function ProductPage({ product }: Props) {
                 <LikeProductButton isLiked={product.isLiked} likesCount={product.likes} productId={product._id} />
                 <SaveProductButton isSaved={product.isSaved} productId={product._id} savesCount={product.saves} />
                 <AddToCartButton attributes={customAttributes} product={product} />
-                <RateProductButton isRated={product.isReviewed} product={product} />
               </div>
 
               <hr className="my-6 border-gray-200 md:my-8" />
@@ -94,9 +92,6 @@ export default function ProductPage({ product }: Props) {
 
       {/* Reviews Section */}
       <section className="my-4 border-t p-4">
-        <h2 className="p-4 text-2xl font-bold" ref={ref}>
-          Reviews
-        </h2>
         <ProductReviews reviews={product.productReviews} />
         {isReviewed ? null : (
           <>

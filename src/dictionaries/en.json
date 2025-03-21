@@ -56,6 +56,10 @@
   "save": "Save",
   "confirm": "Confirm",
   "crop": "Crop",
+  "featuredProducts": "Featured Products",
+  "topVendors": "Top Vendors",
+  "moreProducts": "More Products",
+  "similarProducts": "Similar Products",
 
   "productNotFound": "Product Not Found!",
   "faildToSubmitYourAction": "Field to save product",

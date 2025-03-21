@@ -24,6 +24,8 @@ export async function getProductAttributes(id: string) {
     .get<{
       _id: string;
       productAttributes: IProductAttribute[];
+      hasAttributes: boolean;
+      seName: string;
       name: string;
     }>(`/api/product/attributes/${id}`)
     .then((res) => res.data);

@@ -18,7 +18,7 @@ export function FeaturedProducts() {
   const products = data?.data ?? [];
 
   return (
-    <Carousel className="w-full md:px-10" opts={{ align: "start" }} ref={ref}>
+    <Carousel className="w-full md:px-10" dir="ltr" opts={{ align: "start" }} ref={ref}>
       <div className="mx-auto w-20">
         <CarouselPrevious
           className="static start-0 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50 md:absolute"

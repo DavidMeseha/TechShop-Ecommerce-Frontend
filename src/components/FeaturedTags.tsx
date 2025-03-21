@@ -23,7 +23,7 @@ export function FeaturedTags() {
   const tags = data?.data ?? [];
 
   return (
-    <Carousel className="w-full px-10" opts={{ align: "start" }} ref={ref}>
+    <Carousel className="w-full px-10" dir="ltr" opts={{ align: "start" }} ref={ref}>
       <CarouselContent>
         {!isPending
           ? tags.map((tag) => (

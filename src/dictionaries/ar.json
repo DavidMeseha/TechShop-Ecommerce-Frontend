@@ -13,7 +13,7 @@
   "tags": "العلامات",
   "tag": "العلامة",
   "inbox": "صندوق الوارد",
-  "profile": "الملف الشخصي",
+  "profile": "ملفك",
   "checkout": "شراء",
   "remove": "حذف",
   "address": "العنوان",
@@ -56,6 +56,10 @@
   "save": "حفظ",
   "confirm": "تأكيد",
   "crop": "قص",
+  "featuredProducts": "المنتجات المميزة",
+  "topVendors": "أفضل البائعين",
+  "moreProducts": "المزيد من المنتجات",
+  "similarProducts": "منتجات مشابهة",
 
   "productNotFound": "المنتج غير موجود!",
   "faildToSubmitYourAction": "فشل التنفيز",
@@ -126,7 +130,7 @@
   "upload.discard": "إلغاء",
   "upload.freeShipping": "شحن مجاني",
 
-  "menu.profile": "الملف الشخصي",
+  "menu.profile": "ملفك",
   "menu.dashboard": "لوحة التحكم",
   "menu.yourProducts": "منتجاتك",
   "menu.orders": "الطلبات",

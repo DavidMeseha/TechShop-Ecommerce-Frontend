@@ -69,7 +69,8 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   };
 
   const failedRefresh = () => {
-    logout();
+    cleanup();
+    guestTokenMutation.mutateAsync();
     return null;
   };
 

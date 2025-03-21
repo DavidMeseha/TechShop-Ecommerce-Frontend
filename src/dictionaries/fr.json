@@ -56,6 +56,10 @@
   "save": "Enregistrer",
   "confirm": "Confirmer",
   "crop": "Recadrer",
+  "featuredProducts": "Produits en vedette",
+  "topVendors": "Meilleurs vendeurs",
+  "moreProducts": "Plus de produits",
+  "similarProducts": "Produits similaires",
 
   "productNotFound": "Produit non trouvé !",
   "faildToSubmitYourAction": "Échec de l'enregistrement du produit",
