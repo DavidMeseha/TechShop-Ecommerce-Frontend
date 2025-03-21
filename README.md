@@ -30,7 +30,6 @@ Modern e-commerce platform built with Next.js and TailwindCSS.
 ### Testing
 
 - **Jest & React Testing Library** - Unit testing
-- **Cypress** - E2E testing
 
 ### Code Quality
 
