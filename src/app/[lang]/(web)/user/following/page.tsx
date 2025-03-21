@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import useFollow from "@/hooks/useFollow";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
 import { getFollowingVendors } from "@/services/user.service";
+import { getActualVendorFollow } from "@/stores/tempActionsCache";
 
 export default function FollowingPage() {
   const follwingVendorsQuery = useQuery({
@@ -33,7 +34,7 @@ export default function FollowingPage() {
 
 const ListItem = React.memo(
   function ListItem({ vendor }: { vendor: IVendor }) {
-    const [isFollowed, setIsFollowed] = useState(vendor.isFollowed);
+    const [isFollowed, setIsFollowed] = useState(getActualVendorFollow(vendor._id, vendor.isFollowed));
     const { t } = useTranslation();
     const handleFollow = useFollow({
       vendor,

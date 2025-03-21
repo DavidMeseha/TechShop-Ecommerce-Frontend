@@ -24,6 +24,8 @@ export async function getProductAttributes(id: string) {
     .get<{
       _id: string;
       productAttributes: IProductAttribute[];
+      hasAttributes: boolean;
+      seName: string;
       name: string;
     }>(`/api/product/attributes/${id}`)
     .then((res) => res.data);
@@ -45,7 +47,7 @@ export async function getCategories(params: { page: number }) {
     .then((res) => res.data);
 }
 
-export async function getTags(params: { page: number }) {
+export async function getTags(params: { page: number; limit: number }) {
   return axios
     .get<{ data: ITag[]; pages: Pagination }>("/api/catalog/discover/tags", { params })
     .then((res) => res.data);

@@ -16,11 +16,6 @@ const mockUser: User = {
 export const mockUserStore: UserStore = {
   user: mockUser,
   cartItems: ["product1", "product2"],
-  lastPageBeforSignUp: "/",
-
-  setLastPageBeforSignUp(page: string) {
-    mockUserStore.lastPageBeforSignUp = page;
-  },
 
   setUser: jest.fn((user: User | null) => {
     mockUserStore.user = user;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import OverlayLayout from "../layouts/OverlayLayout";
 import { IProductAttribute } from "@/types";
 import { selectDefaultAttributes } from "@/lib/misc";
@@ -10,10 +10,11 @@ import Button from "../ui/Button";
 import AttributesOverlayLoading from "../LoadingUi/AttributesOverlayLoading";
 import { getProductAttributes } from "@/services/products.service";
 import { useProductStore } from "@/stores/productStore";
+import useAddToCart, { IAddToCartProduct } from "@/hooks/useAddToCart";
+import { useTranslation } from "@/context/Translation";
 
 export default function AttributesOverlay() {
-  const { setIsProductAttributesOpen, productIdToOverlay, action } = useProductStore();
-  const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>([]);
+  const { setIsProductAttributesOpen, productIdToOverlay } = useProductStore();
 
   const productQuery = useQuery({
     queryKey: ["productAttributes", productIdToOverlay],
@@ -22,12 +23,26 @@ export default function AttributesOverlay() {
   });
   const product = productQuery.data;
 
-  useEffect(() => {
-    product && setCustomAttributes(selectDefaultAttributes(product.productAttributes));
-  }, [productQuery.data]);
+  return (
+    <OverlayLayout close={() => setIsProductAttributesOpen(false)} title={product?.name}>
+      {productQuery.isPending || !product ? <AttributesOverlayLoading /> : <MainLogic product={product} />}
+    </OverlayLayout>
+  );
+}
+
+function MainLogic({ product }: { product: IAddToCartProduct }) {
+  const setIsProductAttributesOpen = useProductStore((state) => state.setIsProductAttributesOpen);
+  const { t } = useTranslation();
+  const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>(() =>
+    selectDefaultAttributes(product.productAttributes)
+  );
+
+  const { handleAddToCart, isPending } = useAddToCart({
+    product: product,
+    onSuccess: () => setIsProductAttributesOpen(false)
+  });
 
   const handleAttributesChange = (attributeId: string, value: string[]) => {
-    if (!product) return;
     let tempAttributes = [...customAttributes];
     const index = tempAttributes.findIndex((attr) => attr._id === attributeId);
 
@@ -38,29 +53,20 @@ export default function AttributesOverlay() {
 
     setCustomAttributes(tempAttributes);
   };
-
   return (
-    <OverlayLayout close={() => setIsProductAttributesOpen(false)} title={product?.name}>
-      {productQuery.isFetching ? (
-        <AttributesOverlayLoading />
-      ) : product ? (
-        <>
-          <ProductAttributes
-            customAttributes={customAttributes}
-            handleChange={handleAttributesChange}
-            productAttributes={product.productAttributes}
-          />
-          <Button
-            className="mt-4 w-full bg-primary text-center text-white"
-            onClick={() => {
-              action && action(customAttributes);
-              setIsProductAttributesOpen(false);
-            }}
-          >
-            {"Add To Cart"}
-          </Button>
-        </>
-      ) : null}
-    </OverlayLayout>
+    <>
+      <ProductAttributes
+        customAttributes={customAttributes}
+        handleChange={handleAttributesChange}
+        productAttributes={product.productAttributes}
+      />
+      <Button
+        className="mt-4 w-full bg-primary text-center text-white"
+        isLoading={isPending}
+        onClick={() => handleAddToCart(true, customAttributes)}
+      >
+        {t("addToCart")}
+      </Button>
+    </>
   );
 }

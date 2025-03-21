@@ -12,8 +12,8 @@ import { Language } from "@/types";
 import { languages } from "@/lib/misc";
 import Skeleton from "react-loading-skeleton";
 import { useOverlayStore } from "@/stores/overlayStore";
-import HeaderUserAvatar from "../../HeaderUserAvatar";
-import HeaderNav from "@/components/HeaderNav";
+import HeaderUserAvatar from "./HeaderUserAvatar";
+import HeaderNav from "@/components/layouts/main/HeaderNav";
 import { useProgress } from "@bprogress/next";
 import { useMemo } from "react";
 
@@ -62,8 +62,8 @@ export default function Header() {
 
           {user ? (
             !user || !user.isRegistered ? (
-              <LocalLink className="rounded-sm bg-primary px-4 py-2 text-white" href="/login">
-                <span className="mx-4 whitespace-nowrap text-[15px] font-medium">{t("login")}</span>
+              <LocalLink className="rounded-sm bg-primary px-6 py-2 text-white" href="/login">
+                {t("login")}
               </LocalLink>
             ) : (
               <HeaderUserAvatar user={user} />

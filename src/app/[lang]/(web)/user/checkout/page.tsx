@@ -26,7 +26,7 @@ export default function CheckoutPage() {
   const { isProcessing, submit } = usePlaceOrder();
 
   const checkoutQuery = useQuery({
-    queryKey: ["cartItems"],
+    queryKey: ["checkoutData"],
     queryFn: () =>
       checkoutData().then((data) => {
         if (data.addresses.length > 0) setForm({ ...form, shippingAddressId: data.addresses[0]._id });
@@ -35,6 +35,7 @@ export default function CheckoutPage() {
   });
   const shoppingcartItems = checkoutQuery.data?.cartItems ?? [];
   const addresses = checkoutQuery.data?.addresses ?? [];
+  const handleSubmit = () => form.shippingAddressId.length > 0 && submit(form);
 
   return (
     <>
@@ -84,6 +85,7 @@ export default function CheckoutPage() {
             <div className="flex items-start gap-4">
               <div className="grow">
                 <FormDropdownInput
+                  error={addresses.length > 0 ? false : t("checkout.noAddress")}
                   label=""
                   name="shippingAddressId"
                   value={form.shippingAddressId}
@@ -134,7 +136,7 @@ export default function CheckoutPage() {
           ))}
       </div>
       <div className="fixed bottom-0 start-0 z-30 w-full border border-x-0 bg-white px-6 py-4 md:hidden">
-        <Button className="w-full bg-primary text-white" isLoading={isProcessing} onClick={() => submit(form)}>
+        <Button className="w-full bg-primary text-white" isLoading={isProcessing} onClick={handleSubmit}>
           <div className="flex w-full justify-between">
             {t("checkout.placeOrder")}({shoppingcartItems.length})<div>{checkoutQuery.data?.total}$</div>
           </div>

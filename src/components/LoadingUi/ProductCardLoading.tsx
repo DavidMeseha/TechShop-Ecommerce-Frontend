@@ -1,10 +1,11 @@
 import React from "react";
 import Button from "../ui/Button";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
+import LoadingTheme from "./LoadingTheme";
 
 export default function ProductCardLoading() {
   return (
-    <SkeletonTheme baseColor="#d5d5d5" highlightColor="#ececec">
+    <LoadingTheme>
       <div className="flex w-full flex-col justify-between overflow-hidden rounded-sm border bg-white">
         <div>
           <div className="p-2">
@@ -30,6 +31,6 @@ export default function ProductCardLoading() {
           </Button>
         </div>
       </div>
-    </SkeletonTheme>
+    </LoadingTheme>
   );
 }

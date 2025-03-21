@@ -1,21 +1,15 @@
 import { create } from "zustand";
-import { IProductAttribute } from "@/types";
 
 type Store = {
   isProductAttributesOpen: boolean;
   isAddReviewOpen: boolean;
   isProductMoreInfoOpen: boolean;
 
-  action: ((attr: IProductAttribute[]) => void) | undefined;
   productIdToOverlay: string | undefined;
 
   setIsProductMoreInfoOpen: (isOpen: boolean, productId?: string) => void;
   setIsAddReviewOpen: (isOpen: boolean, productId?: string) => void;
-  setIsProductAttributesOpen: (
-    isOpen: boolean,
-    productId?: string,
-    action?: (attr: IProductAttribute[]) => void
-  ) => void;
+  setIsProductAttributesOpen: (isOpen: boolean, productId?: string) => void;
 };
 
 export const useProductStore = create<Store>((set) => ({
@@ -25,7 +19,6 @@ export const useProductStore = create<Store>((set) => ({
   isAddReviewOpen: false,
   isProductMoreInfoOpen: false,
 
-  action: undefined,
   productIdToOverlay: undefined,
 
   setIsProductMoreInfoOpen: (isOpen: boolean, productId?: string) => {
@@ -50,12 +43,12 @@ export const useProductStore = create<Store>((set) => ({
       }, 150);
     }
   },
-  setIsProductAttributesOpen: (isOpen: boolean, productId?: string, action?: (attr: IProductAttribute[]) => void) => {
+  setIsProductAttributesOpen: (isOpen: boolean, productId?: string) => {
     set({ isProductAttributesOpen: isOpen });
-    if (isOpen) set({ productIdToOverlay: productId, action: action });
+    if (isOpen) set({ productIdToOverlay: productId });
     else {
       setTimeout(() => {
-        set({ action: undefined, productIdToOverlay: productId });
+        set({ productIdToOverlay: productId });
       }, 150);
     }
   }

@@ -56,6 +56,10 @@
   "save": "Enregistrer",
   "confirm": "Confirmer",
   "crop": "Recadrer",
+  "featuredProducts": "Produits en vedette",
+  "topVendors": "Meilleurs vendeurs",
+  "moreProducts": "Plus de produits",
+  "similarProducts": "Produits similaires",
 
   "productNotFound": "Produit non trouvé !",
   "faildToSubmitYourAction": "Échec de l'enregistrement du produit",
@@ -211,6 +215,7 @@
   "checkout.air": "Aérien",
   "checkout.failedToVerifyPayment": "Échec de la vérification de votre paiement",
   "checkout.orderPlacedSuccessfully": "Commande passée avec succès",
+  "checkout.noAddress": "Aucune adresse disponible, ajoutez-en une pour continuer",
 
   "discover.vendors": "Vendeurs",
   "discover.products": "Produits",

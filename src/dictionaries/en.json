@@ -56,6 +56,10 @@
   "save": "Save",
   "confirm": "Confirm",
   "crop": "Crop",
+  "featuredProducts": "Featured Products",
+  "topVendors": "Top Vendors",
+  "moreProducts": "More Products",
+  "similarProducts": "Similar Products",
 
   "productNotFound": "Product Not Found!",
   "faildToSubmitYourAction": "Field to save product",
@@ -211,6 +215,7 @@
   "checkout.air": "Air",
   "checkout.failedToVerifyPayment": "Failed to verify your payment",
   "checkout.orderPlacedSuccessfully": "Order Placed Successfully",
+  "checkout.noAddress": "No Address Avilabele, Add One to proceed",
 
   "discover.vendors": "vendors",
   "discover.products": "Products",
