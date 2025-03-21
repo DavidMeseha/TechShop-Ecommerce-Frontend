@@ -48,7 +48,6 @@ Modern e-commerce platform built with Next.js and TailwindCSS.
 ### Shopping Experience
 
 - Product browsing and search
-- Advanced filtering
 - Product attributes customization
 - Shopping cart management
 - Wishlist & favorites
