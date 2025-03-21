@@ -16,7 +16,7 @@ Modern e-commerce platform built with Next.js and TailwindCSS.
 
 ### Core
 
-- **React.js** - UI library
+- **React.js**
 - **Next.js** - React framework with App Router
 - **TypeScript** - Type safety
 - **TailwindCSS** - Styling
