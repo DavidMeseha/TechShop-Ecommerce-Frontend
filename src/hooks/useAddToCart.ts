@@ -55,7 +55,11 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
 
   // Helper function to handle product attributes
   const handleProductAttributes = (quantity: number, attributes?: IProductAttribute[]) => {
-    if (!attributes) return setIsProductAttributesOpen(true, product._id);
+    if (!attributes)
+      return setIsProductAttributesOpen(true, product._id, (attributes) =>
+        addToCartMutation.mutate({ attributes, quantity })
+      );
+
     addToCartMutation.mutate({ attributes, quantity });
   };
 

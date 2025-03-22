@@ -10,11 +10,11 @@ import Button from "../ui/Button";
 import AttributesOverlayLoading from "../LoadingUi/AttributesOverlayLoading";
 import { getProductAttributes } from "@/services/products.service";
 import { useProductStore } from "@/stores/productStore";
-import useAddToCart, { IAddToCartProduct } from "@/hooks/useAddToCart";
+import { IAddToCartProduct } from "@/hooks/useAddToCart";
 import { useTranslation } from "@/context/Translation";
 
 export default function AttributesOverlay() {
-  const { setIsProductAttributesOpen, productIdToOverlay } = useProductStore();
+  const { setIsProductAttributesOpen, productIdToOverlay, action } = useProductStore();
 
   const productQuery = useQuery({
     queryKey: ["productAttributes", productIdToOverlay],
@@ -23,24 +23,29 @@ export default function AttributesOverlay() {
   });
   const product = productQuery.data;
 
+  const handleSubmit = (customAttributes: IProductAttribute[]) => {
+    if (action) {
+      action(customAttributes);
+      setIsProductAttributesOpen(false);
+    }
+  };
+
   return (
     <OverlayLayout close={() => setIsProductAttributesOpen(false)} title={product?.name}>
-      {productQuery.isPending || !product ? <AttributesOverlayLoading /> : <MainLogic product={product} />}
+      {productQuery.isPending || !product ? (
+        <AttributesOverlayLoading />
+      ) : (
+        <MainLogic action={handleSubmit} product={product} />
+      )}
     </OverlayLayout>
   );
 }
 
-function MainLogic({ product }: { product: IAddToCartProduct }) {
-  const setIsProductAttributesOpen = useProductStore((state) => state.setIsProductAttributesOpen);
+function MainLogic({ product, action }: { product: IAddToCartProduct; action: (attr: IProductAttribute[]) => void }) {
   const { t } = useTranslation();
   const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>(() =>
     selectDefaultAttributes(product.productAttributes)
   );
-
-  const { handleAddToCart, isPending } = useAddToCart({
-    product: product,
-    onSuccess: () => setIsProductAttributesOpen(false)
-  });
 
   const handleAttributesChange = (attributeId: string, value: string[]) => {
     let tempAttributes = [...customAttributes];
@@ -60,11 +65,7 @@ function MainLogic({ product }: { product: IAddToCartProduct }) {
         handleChange={handleAttributesChange}
         productAttributes={product.productAttributes}
       />
-      <Button
-        className="mt-4 w-full bg-primary text-center text-white"
-        isLoading={isPending}
-        onClick={() => handleAddToCart(true, customAttributes)}
-      >
+      <Button className="mt-4 w-full bg-primary text-center text-white" onClick={() => action(customAttributes)}>
         {t("addToCart")}
       </Button>
     </>

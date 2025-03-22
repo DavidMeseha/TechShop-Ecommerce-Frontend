@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TranslationProvider } from "@/context/Translation";
 import React from "react";
 import { Language, User } from "@/types";
-import AppProviders from "@/components/layouts/AppProviders";
+import AppProviders from "@/components/layouts/AppProvidersLayout";
 
 const queryClient = new QueryClient();
 
