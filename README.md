@@ -16,7 +16,7 @@ Modern e-commerce platform built with Next.js and TailwindCSS.
 
 ### Core
 
-- **React.js** - UI library
+- **React.js**
 - **Next.js** - React framework with App Router
 - **TypeScript** - Type safety
 - **TailwindCSS** - Styling
@@ -30,7 +30,6 @@ Modern e-commerce platform built with Next.js and TailwindCSS.
 ### Testing
 
 - **Jest & React Testing Library** - Unit testing
-- **Cypress** - E2E testing
 
 ### Code Quality
 
@@ -49,7 +48,6 @@ Modern e-commerce platform built with Next.js and TailwindCSS.
 ### Shopping Experience
 
 - Product browsing and search
-- Advanced filtering
 - Product attributes customization
 - Shopping cart management
 - Wishlist & favorites
