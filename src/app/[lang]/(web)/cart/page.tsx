@@ -17,7 +17,7 @@ export default function Page() {
   const router = useRouter();
 
   const checkoutQuery = useQuery({
-    queryKey: ["checkoutCartItems"],
+    queryKey: ["cartItems", "checkout"],
     queryFn: () => checkoutData()
   });
 

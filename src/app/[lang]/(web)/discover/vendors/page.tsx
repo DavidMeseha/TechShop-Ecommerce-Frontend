@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import Image from "next/image";
 import { IVendor } from "@/types";
@@ -10,13 +10,12 @@ import Loading from "@/components/LoadingUi/LoadingSpinner";
 import useFollow from "@/hooks/useFollow";
 import { useTranslation } from "@/context/Translation";
 import { getVendors } from "@/services/products.service";
-import { getActualVendorFollow } from "@/stores/tempActionsCache";
 
 export default function Page() {
   const { t } = useTranslation();
 
   const { hasNextPage, fetchNextPage, isFetching, data, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["vendorsDiscover"],
+    queryKey: ["vendors", "discover"],
     queryFn: ({ pageParam }) => getVendors({ page: pageParam, limit: 10 }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1
@@ -51,13 +50,8 @@ export default function Page() {
 
 const MemoizedListItem = React.memo(
   function ListItem({ vendor }: { vendor: IVendor }) {
-    const [isFollowed, setIsFollowed] = useState(getActualVendorFollow(vendor._id, vendor.isFollowed));
     const { t } = useTranslation();
-    const handleFollow = useFollow({
-      vendor,
-      onClick: (shouldFollow) => setIsFollowed(shouldFollow),
-      onError: (shouldFollow) => setIsFollowed(!shouldFollow)
-    });
+    const handleFollow = useFollow({ vendor });
 
     return (
       <li className="flex items-center justify-between px-4 py-2">
@@ -78,7 +72,7 @@ const MemoizedListItem = React.memo(
           </div>
         </div>
         <div>
-          {isFollowed ? (
+          {vendor.isFollowed ? (
             <div className="text-gray-400">{t("profile.following")}</div>
           ) : (
             <Button className="bg-primary px-4 font-bold text-white" onClick={() => handleFollow(true)}>

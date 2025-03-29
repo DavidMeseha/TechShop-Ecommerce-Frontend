@@ -28,7 +28,7 @@ const queryClient = new QueryClient();
 
 export default async function Page() {
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ["feedProducts"],
+    queryKey: ["products", "feeds"],
     queryFn: ({ pageParam = 1 }) => getProducts(pageParam),
     initialPageParam: 1
   });

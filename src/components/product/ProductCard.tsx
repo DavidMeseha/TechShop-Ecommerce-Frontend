@@ -1,5 +1,5 @@
 import { IFullProduct } from "@/types";
-import React, { useState } from "react";
+import React from "react";
 import { LocalLink } from "../LocalizedNavigation";
 import { RiBookmark2Line, RiHeart2Line, RiShoppingCartLine } from "react-icons/ri";
 import Button from "../ui/Button";
@@ -9,7 +9,6 @@ import useSave from "@/hooks/useSave";
 import useAddToCart from "@/hooks/useAddToCart";
 import { useProductStore } from "@/stores/productStore";
 import ProductCarosel from "./ProductCarosel";
-import { getActualProductCart, getActualProductLike, getActualProductSave } from "@/stores/tempActionsCache";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -21,35 +20,10 @@ type Props = {
 
 function ProductCard({ product, canAddReview, minWidth = "auto", className }: Props) {
   const setIsAddReviewOpen = useProductStore((state) => state.setIsAddReviewOpen);
-  const [like, setLike] = useState(() => ({
-    state: getActualProductLike(product._id, product.isLiked),
-    count: product.likes
-  }));
-  const [save, setSave] = useState(() => ({
-    state: getActualProductSave(product._id, product.isSaved),
-    count: product.saves
-  }));
-  const [cart, setCart] = useState(() => ({
-    state: getActualProductCart(product._id, product.isInCart),
-    count: product.carts
-  }));
 
-  const likeHandler = useLike({
-    productId: product._id,
-    onClick: (shouldLike) => setLike({ state: shouldLike, count: like.count + (shouldLike ? 1 : -1) }),
-    onError: (shouldLike) => setLike({ state: !shouldLike, count: like.count + (shouldLike ? -1 : 1) })
-  });
-
-  const saveHandler = useSave({
-    productId: product._id,
-    onClick: (shouldSave) => setSave({ state: shouldSave, count: save.count + (shouldSave ? 1 : -1) }),
-    onError: (shouldSave) => setSave({ state: !shouldSave, count: save.count + (shouldSave ? -1 : 1) })
-  });
-
-  const addToCartHandler = useAddToCart({
-    product,
-    onSuccess: (shouldAdd) => setCart({ state: shouldAdd, count: cart.count + (shouldAdd ? 1 : -1) })
-  });
+  const likeHandler = useLike({ productId: product._id, likesCount: product.likes });
+  const saveHandler = useSave({ productId: product._id, savesCount: product.saves });
+  const addToCartHandler = useAddToCart({ product });
 
   const rate = product.productReviewOverview.ratingSum / product.productReviewOverview.totalReviews;
 
@@ -94,36 +68,36 @@ function ProductCard({ product, canAddReview, minWidth = "auto", className }: Pr
       <div className="mt-4 flex border-t border-gray-200">
         <Button
           aria-label="Add to cart"
-          className={`basis-1/3 rounded-none border-e fill-black p-1 ${cart.state ? "bg-green-200" : "bg-white"}`}
+          className={`basis-1/3 rounded-none border-e fill-black p-1 ${product.isInCart ? "bg-green-200" : "bg-white"}`}
           isLoading={addToCartHandler.isPending}
           spinnerSize="20"
-          onClick={() => addToCartHandler.handleAddToCart(!cart.state)}
+          onClick={() => addToCartHandler.handleAddToCart(!product.isInCart)}
         >
           <div className="flex items-center justify-center gap-1">
             <RiShoppingCartLine size={20} />
-            <span className="hidden text-sm sm:inline">{cart.count}</span>
+            <span className="hidden text-sm sm:inline">{product.carts}</span>
           </div>
         </Button>
         <Button
           aria-label="like product"
-          className={`basis-1/3 rounded-none border-e fill-black p-1 ${like.state ? "bg-red-200" : "bg-white"}`}
+          className={`basis-1/3 rounded-none border-e fill-black p-1 ${product.isLiked ? "bg-red-200" : "bg-white"}`}
           spinnerSize="20"
-          onClick={() => likeHandler(!like.state)}
+          onClick={() => likeHandler(!product.isLiked)}
         >
           <div className="flex items-center justify-center gap-1">
             <RiHeart2Line size={20} />
-            <span className="hidden text-sm sm:inline">{like.count}</span>
+            <span className="hidden text-sm sm:inline">{product.likes}</span>
           </div>
         </Button>
         <Button
           aria-label="save product"
-          className={`basis-1/3 rounded-none fill-black p-1 ${save.state ? "bg-yellow-200" : "bg-white"}`}
+          className={`basis-1/3 rounded-none fill-black p-1 ${product.isSaved ? "bg-yellow-200" : "bg-white"}`}
           spinnerSize="20"
-          onClick={() => saveHandler(!save.state)}
+          onClick={() => saveHandler(!product.isSaved)}
         >
           <div className="flex items-center justify-center gap-1">
             <RiBookmark2Line size={20} />
-            <span className="hidden text-sm sm:inline">{save.count}</span>
+            <span className="hidden text-sm sm:inline">{product.saves}</span>
           </div>
         </Button>
       </div>

@@ -14,14 +14,13 @@ import ProductsGridView from "@/components/product/ProductsGridView";
 import ProductCarosel from "@/components/product/ProductCarosel";
 import ProductReviews from "../Reviews";
 import AddReviewForm from "../forms/AddReviewForm";
-import { getActualProductReview } from "@/stores/tempActionsCache";
 
 type Props = {
   product: IFullProduct;
 };
 
 export default function ProductPage({ product }: Props) {
-  const [isReviewed, setIsReviewed] = useState(getActualProductReview(product._id, product.isReviewed));
+  const [isReviewed, setIsReviewed] = useState(product.isReviewed);
   const [customAttributes, setCustomAttributes] = useState(selectDefaultAttributes(product.productAttributes));
   const [ref, inView] = useInView();
   const rating = (product.productReviewOverview.ratingSum / (product.productReviewOverview.totalReviews || 1)).toFixed(
@@ -29,7 +28,7 @@ export default function ProductPage({ product }: Props) {
   );
 
   const productsQuery = useQuery({
-    queryKey: ["similarProducts", product.seName],
+    queryKey: ["products", "similar", product.seName],
     queryFn: () => homeFeedProducts({ page: 1, limit: 4 }).then((res) => res.data),
     enabled: inView
   });

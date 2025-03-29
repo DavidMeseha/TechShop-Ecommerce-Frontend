@@ -13,7 +13,7 @@ export default function MoreProducts() {
   const [ref, inView] = useInView();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
-    queryKey: ["moreProducts"],
+    queryKey: ["products", "more"],
     queryFn: async ({ pageParam = 1 }) => homeFeedProducts({ page: pageParam, limit: PRODUCTS_LIMIT }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1,

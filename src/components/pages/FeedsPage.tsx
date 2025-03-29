@@ -11,14 +11,13 @@ import { useOverlayStore } from "@/stores/overlayStore";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { homeFeedProducts } from "@/services/products.service";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
-import { getActualVendorFollow } from "@/stores/tempActionsCache";
 
 export default function FeedsPage() {
   const { t } = useTranslation();
   const setIsHomeMenuOpen = useOverlayStore((state) => state.setIsHomeMenuOpen);
   const setIsSearchOpen = useOverlayStore((state) => state.setIsSearchOpen);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["feedProducts"],
+    queryKey: ["products", "feeds"],
     queryFn: async ({ pageParam = 1 }) => homeFeedProducts({ page: pageParam, limit: 3 }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1
@@ -59,7 +58,7 @@ export default function FeedsPage() {
         <div className="relative">
           {allProducts.map((product) => (
             <ProductSectionMobile
-              isFollowed={getActualVendorFollow(product.vendor._id, product.vendor.isFollowed)}
+              isFollowed={product.vendor.isFollowed}
               key={product._id + "-mobile"}
               product={product}
             />

@@ -6,15 +6,14 @@ import { IVendor } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { LocalLink } from "@/components/LocalizedNavigation";
-import React, { useState } from "react";
+import React from "react";
 import useFollow from "@/hooks/useFollow";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
 import { getFollowingVendors } from "@/services/user.service";
-import { getActualVendorFollow } from "@/stores/tempActionsCache";
 
 export default function FollowingPage() {
   const follwingVendorsQuery = useQuery({
-    queryKey: ["following"],
+    queryKey: ["vendors", "following"],
     queryFn: () => getFollowingVendors()
   });
   const vendors = follwingVendorsQuery.data ?? [];
@@ -34,16 +33,11 @@ export default function FollowingPage() {
 
 const ListItem = React.memo(
   function ListItem({ vendor }: { vendor: IVendor }) {
-    const [isFollowed, setIsFollowed] = useState(getActualVendorFollow(vendor._id, vendor.isFollowed));
     const { t } = useTranslation();
-    const handleFollow = useFollow({
-      vendor,
-      onClick: (shouldFollow) => setIsFollowed(shouldFollow),
-      onError: (shouldFollow) => setIsFollowed(!shouldFollow)
-    });
+    const handleFollow = useFollow({ vendor });
 
     return (
-      <li className={`${isFollowed ? "opacity-100" : "opacity-60"} flex items-center justify-between px-4 py-2`}>
+      <li className={`${vendor.isFollowed ? "opacity-100" : "opacity-60"} flex items-center justify-between px-4 py-2`}>
         <div className="flex w-full items-center gap-3">
           <Image
             alt={vendor.name}
@@ -63,7 +57,7 @@ const ListItem = React.memo(
         <div>
           <Button
             className="flex items-center justify-center rounded-md bg-primary font-bold text-white"
-            onClick={() => isFollowed && handleFollow(false)}
+            onClick={() => vendor.isFollowed && handleFollow(false)}
           >
             {t("unfollow")}
           </Button>

@@ -11,12 +11,11 @@ import Button from "./ui/Button";
 import { useTranslation } from "@/context/Translation";
 import VendorCardLoading from "./LoadingUi/VendorCardLoading";
 import useFollow from "@/hooks/useFollow";
-import { getActualVendorFollow } from "@/stores/tempActionsCache";
 
 export function FeaturedVendors() {
   const [ref, inView] = useInView();
   const { isPending, data } = useQuery({
-    queryKey: ["featuredVendors"],
+    queryKey: ["vendors", "featured"],
     queryFn: () => getVendors({ page: 1, limit: 10 }),
     enabled: inView
   });
@@ -53,12 +52,7 @@ export function FeaturedVendors() {
 
 function VendorItem({ vendor }: { vendor: IVendor }) {
   const { t } = useTranslation();
-  const [isFollowed, setIsFollowed] = React.useState(getActualVendorFollow(vendor._id, vendor.isFollowed));
-  const followHandle = useFollow({
-    vendor,
-    onClick: (shouldFollow) => setIsFollowed(shouldFollow),
-    onError: (shouldFollow) => setIsFollowed(!shouldFollow)
-  });
+  const followHandle = useFollow({ vendor });
 
   return (
     <div className="flex flex-col items-center rounded-md border px-2 py-4 text-center">
@@ -75,10 +69,10 @@ function VendorItem({ vendor }: { vendor: IVendor }) {
         <p>{vendor.name}</p>
       </LocalLink>
       <Button
-        className={`mt-4 w-max bg-primary text-xs text-primary-foreground ${isFollowed ? "bg-red-600" : "bg-primary"}`}
-        onClick={() => followHandle(!isFollowed)}
+        className={`mt-4 w-max bg-primary text-xs text-primary-foreground ${vendor.isFollowed ? "bg-red-600" : "bg-primary"}`}
+        onClick={() => followHandle(!vendor.isFollowed)}
       >
-        {isFollowed ? t("unfollow") : t("follow")}
+        {vendor.isFollowed ? t("unfollow") : t("follow")}
       </Button>
     </div>
   );

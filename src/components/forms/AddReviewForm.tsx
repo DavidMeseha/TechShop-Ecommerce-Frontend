@@ -6,7 +6,7 @@ import { useState } from "react";
 import RatingStars from "../ui/RatingStars";
 import Button from "../ui/Button";
 import { useTranslation } from "@/context/Translation";
-import tempActions from "@/stores/tempActionsCache";
+import useAdjustProductsQueries from "@/hooks/useAdjustProductsQueries";
 
 type FormError = {
   reviewText: FieldError;
@@ -22,14 +22,15 @@ export default function AddReviewForm({ productId, onSuccess }: Props) {
   const [form, setForm] = useState({ reviewText: "", rating: 0 });
   const [error, setError] = useState<FormError>({ reviewText: false, rating: false });
   const { t } = useTranslation();
+  const adjustProductsQueries = useAdjustProductsQueries(productId);
 
   const addReviewMutation = useMutation({
     mutationKey: ["AddReview", productId],
     mutationFn: (productId: string) => addReview(productId, form),
     onSuccess: () => {
       toast.success("Review Added Successfully");
+      adjustProductsQueries({ isReviewed: true });
       setForm({ rating: 0, reviewText: "" });
-      tempActions.set("reviews", productId, true);
       onSuccess?.();
     },
 

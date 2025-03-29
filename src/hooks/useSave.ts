@@ -5,31 +5,38 @@ import { toast } from "react-toastify";
 import { saveProduct, unsaveProduct } from "@/services/userActions.service";
 import { useRef } from "react";
 import { isAxiosError } from "axios";
-import tempActions from "@/stores/tempActionsCache";
+import useAdjustProductsQueries from "./useAdjustProductsQueries";
 
 interface SaveHookProps {
   productId: string;
+  savesCount: number;
   onError?: (shouldSave: boolean) => void;
-  onSuccess?: (shouldLike: boolean) => void;
+  onSuccess?: (shouldSave: boolean) => void;
   onClick?: (shouldSave: boolean) => void;
 }
 
-export default function useSave({ productId, onError, onClick, onSuccess }: SaveHookProps) {
+export default function useSave({ productId, savesCount, onError, onClick, onSuccess }: SaveHookProps) {
   const user = useUserStore((state) => state.user);
+  const adjustQueriesCache = useAdjustProductsQueries(productId);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const timeoutRef = useRef<number>();
+
+  const handleDataAdjustment = (shouldSave: boolean) => {
+    const change = { isSaved: shouldSave, saves: savesCount + (shouldSave ? 1 : -1) };
+    adjustQueriesCache(change);
+  };
 
   const saveMutation = useMutation({
     mutationKey: ["save", productId],
     mutationFn: () => saveProduct(productId),
     onSuccess: () => {
       onSuccess?.(true);
-      tempActions.set("saves", productId, true);
-      queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
+      queryClient.invalidateQueries({ queryKey: ["Products", "saved"] });
     },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status === 409) return;
+      handleDataAdjustment(false);
       onError?.(true);
     }
   });
@@ -39,11 +46,11 @@ export default function useSave({ productId, onError, onClick, onSuccess }: Save
     mutationFn: () => unsaveProduct(productId),
     onSuccess: () => {
       onSuccess?.(false);
-      tempActions.set("saves", productId, false);
       queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
     },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status === 409) return;
+      handleDataAdjustment(true);
       onError?.(false);
     }
   });
@@ -52,6 +59,7 @@ export default function useSave({ productId, onError, onClick, onSuccess }: Save
     if (!user) return;
     if (!user.isRegistered) return toast.warn(t("loginToPerformAction"), { toastId: "saveError" });
 
+    handleDataAdjustment(shouldSave);
     onClick?.(shouldSave);
 
     if (timeoutRef.current) window.clearTimeout(timeoutRef.current);

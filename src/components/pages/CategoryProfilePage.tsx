@@ -21,7 +21,7 @@ export default function CategoryProfilePage({ category }: Props) {
   });
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching, isFetchedAfterMount } = useInfiniteQuery({
-    queryKey: ["categoryProducts", category.seName],
+    queryKey: ["products", "forCategory", category.seName],
     queryFn: ({ pageParam }) => getProductsByCateory(category._id, { page: pageParam }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1

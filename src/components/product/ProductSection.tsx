@@ -14,7 +14,6 @@ import Button from "../ui/Button";
 import ViewMoreButton from "../ui/ViewMoreButton";
 import useFollow from "@/hooks/useFollow";
 import ProductCarosel from "./ProductCarosel";
-import { getActualProductReview, getActualVendorFollow } from "@/stores/tempActionsCache";
 
 type Props = {
   product: IFullProduct;
@@ -25,7 +24,7 @@ function ProductSection({ product }: Props) {
   const [readMore, setReadMore] = useState(false);
   const descriptionRef = useRef(manipulateDescription(product.fullDescription));
   const [main, extend] = useMemo(() => descriptionRef.current, [descriptionRef.current]);
-  const [isFollowed, setIsFollowed] = useState(getActualVendorFollow(product.vendor._id, product.vendor.isFollowed));
+  const [isFollowed, setIsFollowed] = useState(product.vendor.isFollowed);
 
   const handleFollow = useFollow({
     vendor: product.vendor,
@@ -111,7 +110,7 @@ function ProductSection({ product }: Props) {
           <div className="relative flex flex-col items-center gap-2 p-2">
             <ViewMoreButton product={product} />
             <LikeProductButton isLiked={product.isLiked} likesCount={product.likes} productId={product._id} />
-            <RateProductButton isRated={getActualProductReview(product._id, product.isReviewed)} product={product} />
+            <RateProductButton isRated={product.isReviewed} product={product} />
             <SaveProductButton isSaved={product.isSaved} productId={product._id} savesCount={product.saves} />
             <AddToCartButton product={product} />
           </div>

@@ -4,12 +4,11 @@ import axios, { resetAxiosIterceptor } from "@/lib/axios";
 import { checkTokenValidity, getGuestToken, refreshToken } from "@/services/auth.service";
 import { useUserStore } from "@/stores/userStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createContext, ReactNode, useContext, useMemo } from "react";
+import { createContext, ReactNode, useContext } from "react";
 import { toast } from "react-toastify";
 import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
 import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
-import tempActions from "@/stores/tempActionsCache";
 import { usePathname } from "next/navigation";
 
 type ContextData = {
@@ -31,12 +30,11 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   const cleanup = () => {
     axios.interceptors.request.clear();
     setUser(null);
-    tempActions.clear();
     queryClient.clear();
   };
 
   const loginUser = async (data: { user: User; token: string }) => {
-    cleanup();
+    if (user) cleanup();
     resetAxiosIterceptor(data.token);
     setUser(data.user);
     getCartItems();
@@ -101,8 +99,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     refetchInterval: 1_680_000
   });
 
-  const value = useMemo(() => ({ loginUser, logout }), [loginUser, logout]);
-
+  const value = { loginUser, logout };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 

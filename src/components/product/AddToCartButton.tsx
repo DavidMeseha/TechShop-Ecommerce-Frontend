@@ -3,7 +3,6 @@ import { IFullProduct, IProductAttribute } from "@/types";
 import { BsCartFill } from "react-icons/bs";
 import { BiLoaderCircle } from "react-icons/bi";
 import useAddToCart from "@/hooks/useAddToCart";
-import { getActualProductCart } from "@/stores/tempActionsCache";
 
 type Props = {
   product: IFullProduct;
@@ -12,7 +11,7 @@ type Props = {
 
 export default React.memo(function AddToCartButton({ product, attributes }: Props) {
   const [cart, setCart] = useState(() => ({
-    state: getActualProductCart(product._id, product.isInCart),
+    state: product.isInCart,
     count: product.carts
   }));
 

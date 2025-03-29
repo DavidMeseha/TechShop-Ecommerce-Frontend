@@ -20,7 +20,7 @@ export default function TagProfilePage({ tag }: Props) {
   });
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching, isFetchedAfterMount } = useInfiniteQuery({
-    queryKey: ["tagProducts", tag._id],
+    queryKey: ["products", "forTag", tag._id],
     queryFn: ({ pageParam }) => getProductsByTag(tag._id, { page: pageParam }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1

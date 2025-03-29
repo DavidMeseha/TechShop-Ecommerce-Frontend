@@ -1,14 +1,14 @@
 import { addToCart, removeFromCart } from "@/services/userActions.service";
 import { useProductStore } from "@/stores/productStore";
-import tempActions from "@/stores/tempActionsCache";
 import { useUserStore } from "@/stores/userStore";
 import { IFullProduct, IProductAttribute } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
+import useAdjustProductsQueries from "./useAdjustProductsQueries";
 
 export type IAddToCartProduct = Pick<IFullProduct, "_id" | "name" | "productAttributes" | "seName" | "hasAttributes">;
 interface CartHookProps {
-  product: IAddToCartProduct;
+  product: IFullProduct;
   onSuccess?: (added: boolean) => void;
 }
 
@@ -23,18 +23,29 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
   const setIsProductAttributesOpen = useProductStore((state) => state.setIsProductAttributesOpen);
   const queryClient = useQueryClient();
 
+  const adjustQueriesCache = useAdjustProductsQueries(product._id);
+
+  const handleDataAdjustment = (shouldLike: boolean) => {
+    const change: Partial<IFullProduct> = { isInCart: shouldLike, carts: product.carts + (shouldLike ? 1 : -1) };
+    adjustQueriesCache(change);
+  };
+
   const addToCartMutation = useMutation({
     mutationKey: ["addToCart", product.seName],
     mutationFn: ({ attributes, quantity }: CartMutationProps) => addToCart(product._id, attributes, quantity),
     onSuccess: () => {
       getCartItems();
       onSuccess?.(true);
-      tempActions.set("cart", product._id, true);
-      queryClient.invalidateQueries({ queryKey: ["checkoutCartItems"] });
+      handleDataAdjustment(true);
+      handleDataAdjustment(true);
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
     },
     onError: (error) => {
-      if (isAxiosError(error) && error.response?.status === 409) onSuccess?.(false);
+      if (isAxiosError(error) && error.response?.status === 409) {
+        handleDataAdjustment(true);
+        return onSuccess?.(false);
+      }
+      handleDataAdjustment(false);
     }
   });
 
@@ -43,13 +54,16 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
     mutationFn: () => removeFromCart(product._id),
     onSuccess: () => {
       onSuccess?.(false);
-      getCartItems();
-      tempActions.set("cart", product._id, false);
-      queryClient.invalidateQueries({ queryKey: ["checkoutCartItems"] });
+      handleDataAdjustment(false);
       queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      getCartItems();
     },
     onError: (error) => {
-      if (isAxiosError(error) && error.response?.status === 409) onSuccess?.(false);
+      if (isAxiosError(error) && error.response?.status === 409) {
+        handleDataAdjustment(false);
+        return onSuccess?.(false);
+      }
+      handleDataAdjustment(true);
     }
   });
 

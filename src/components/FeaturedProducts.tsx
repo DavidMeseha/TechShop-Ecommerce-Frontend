@@ -11,7 +11,7 @@ export function FeaturedProducts() {
   const [ref, inView] = useInView();
 
   const { data, isPending } = useQuery({
-    queryKey: ["featuredProducts"],
+    queryKey: ["products", "featured"],
     queryFn: async () => homeFeedProducts({ page: 1, limit: 7 }),
     enabled: inView
   });

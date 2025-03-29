@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { BsBookmarkFill } from "react-icons/bs";
 import useSave from "@/hooks/useSave";
-import { getActualProductSave } from "@/stores/tempActionsCache";
 
 type Props = {
   productId: string;
@@ -12,10 +11,11 @@ type Props = {
 };
 
 export default React.memo(function SaveProductButton({ productId, isSaved, savesCount }: Props) {
-  const [save, setSave] = useState(() => ({ state: getActualProductSave(productId, isSaved), count: savesCount }));
+  const [save, setSave] = useState(() => ({ state: isSaved, count: savesCount }));
 
   const handleSave = useSave({
     productId,
+    savesCount,
     onClick: (shouldSave) => setSave({ state: shouldSave, count: save.count + (shouldSave ? 1 : -1) }),
     onError: (shouldSave) => setSave({ state: !shouldSave, count: save.count + (!shouldSave ? 1 : -1) })
   });
