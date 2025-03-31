@@ -30,7 +30,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   const cleanup = () => {
     axios.interceptors.request.clear();
     setUser(null);
-    queryClient.clear();
+    queryClient.invalidateQueries();
   };
 
   const loginUser = async (data: { user: User; token: string }) => {
@@ -55,7 +55,6 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   };
 
   const onInitFail = () => {
-    if (user?.isRegistered) toast.error(t("auth.forcedLogout"));
     guestTokenMutation.mutate();
     return null;
   };
@@ -68,6 +67,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
 
   const failedRefresh = () => {
     cleanup();
+    if (user?.isRegistered) toast.error(t("auth.forcedLogout"));
     guestTokenMutation.mutateAsync();
     return null;
   };
