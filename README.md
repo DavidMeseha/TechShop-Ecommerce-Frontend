@@ -1,124 +1,137 @@
-# TikShop Frontend
+# TikShop Frontend 🛍️
 
-Modern e-commerce platform built with Next.js and TailwindCSS.
+A modern e-commerce platform built with Next.js and TailwindCSS, offering a seamless shopping experience.
 
-## 🔗 Related Projects & Live Links
+[![Live Demo](https://img.shields.io/badge/demo-live-green)](https://techshop-commerce.vercel.app/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js&logoColor=white)](https://nextjs.org/)
 
-### Backend Application
+## 📋 Table of Contents
+- [Related Projects](#-related-projects)
+- [Features](#-features)
+- [Tech Stack](#-technology-stack)
+- [Getting Started](#-getting-started)
+- [Development](#-development)
+- [Internationalization](#-internationalization)
 
-- [Node.js Backend](https://github.com/DavidMeseha/allInOne-myShop-back)
+## 🔗 Related Projects
 
-### Live Demo
-
-- [Live Store](https://techshop-commerce.vercel.app/)
-
-## 🛠️ Technology Stack
-
-### Core
-
-- **React.js**
-- **Next.js** - React framework with App Router
-- **TypeScript** - Type safety
-- **TailwindCSS** - Styling
-
-### State Management
-
-- **Zustand** - Global state management
-- **Tanstack Query** - Server state management
-- **Axios** - HTTP client
-
-### Testing
-
-- **Jest & React Testing Library** - Unit testing
-
-### Code Quality
-
-- **ESLint** - Linting
-- **Prettier** - Code formatting
-- **TypeScript** - Static type checking
-
-### UI/UX
-
-- **Framer Motion** - Animations
-- **TailwindCSS** - Responsive design
-- **Headless UI** - Accessible components
+- **Backend Repository**: [Node.js Backend](https://github.com/DavidMeseha/allInOne-myShop-back)
+- **Live Demo**: [TikShop Store](https://techshop-commerce.vercel.app/)
 
 ## 🎯 Features
 
-### Shopping Experience
+### 🛒 Shopping Experience
+- Advanced product search and filtering
+- Customizable product attributes
+- Real-time shopping cart management
+- Wishlist functionality
+- Secure Stripe payment integration
 
-- Product browsing and search
-- Product attributes customization
-- Shopping cart management
-- Wishlist & favorites
-- Order placement with Stripe
+### 👤 User Features
+- Secure authentication
+- Profile management
+- Order tracking history
+- Multiple address management
+- Personalized preferences
 
-### User Features
+### 🔍 Product Discovery
+- Intuitive category navigation
+- Smart tag system
+- Vendor shop profiles
+- Advanced search capabilities
 
-- Authentication & profile management
-- Order history
-- Address management
-- Preferences settings
-
-### Product Discovery
-
-- Categories navigation
-- Tags browsing
-- Vendor shops
-- Search functionality
-
-### Technical Features
-
-- Infinite scrolling
-- Responsive design
-- Image optimization
-- ISG/SSG for static pages
+### ⚡ Technical Features
+- Infinite scroll implementation
+- Responsive mobile-first design
+- Next.js image optimization
+- ISG/SSG for performance
 - Multi-language support
-- RTL support
+- RTL layout support
 
-## 🌐 Internationalization
+## 🛠️ Technology Stack
 
-Supported languages:
+### Core Technologies
+```typescript
+{
+  "frontend": {
+    "framework": "Next.js (App Router)",
+    "language": "TypeScript",
+    "styling": "TailwindCSS"
+  }
+}
+```
 
-- English (en)
-- Arabic (ar)
-- French (fr)
+### State Management & Data Fetching
+- **Zustand** - Lightweight state management
+- **Tanstack Query** - Server state handling
+- **Axios** - HTTP client
+
+### Development Tools
+- **Jest & React Testing Library** - Testing suite
+- **ESLint & Prettier** - Code quality
+- **TypeScript** - Type safety
+
+### UI Components
+- **Framer Motion** - Smooth animations
+- **Headless UI** - Accessible components
+- **TailwindCSS** - Utility-first CSS
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+```bash
+Node.js >= v18.0.0
+npm >= v8.0.0
+```
 
-- Node.js (v18+)
-- npm
+### Installation Steps
 
-### Installation
-
-1. Clone the repository:
-
+1. Clone the repository
+```bash
 git clone https://github.com/DavidMeseha/TechShop-Ecommerce-Frontend.git
 cd TechShop-Ecommerce-Frontend
+```
 
-2. Install dependencies:
-
+2. Install dependencies
+```bash
 npm install
+```
 
-3. Configure environment variables:
-
-env
+3. Configure environment variables
+```env
 NEXT_PUBLIC_API_URL=http://localhost:3000
 NEXT_PUBLIC_STRIPE_KEY=your_stripe_public_key
+```
 
-4. Start development server:
-
+4. Start development server
+```bash
 npm run dev
+```
 
 ## 🧪 Development
 
-### Scripts
+### Available Scripts
+```json
+{
+  "scripts": {
+    "dev": "Start development server",
+    "build": "Build for production",
+    "start": "Start production server",
+    "test": "Run test suite",
+    "lint": "Run ESLint",
+    "format": "Format with Prettier"
+  }
+}
+```
 
-- **npm run dev** # Start development server
-- **npm run build** # Build for production
-- **npm run start** # Start production server
-- **npm run test** # Run tests
-- **npm run lint** # Run linter
-- **npm run format** # Format code
+## 🌐 Internationalization
+
+### Supported Languages
+- 🇺🇸 English (en)
+- 🇸🇦 Arabic (ar)
+- 🇫🇷 French (fr)
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
