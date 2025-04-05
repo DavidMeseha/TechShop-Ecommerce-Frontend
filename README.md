@@ -45,7 +45,7 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 - Infinite scroll implementation
 - Responsive mobile-first design
 - Next.js image optimization
-- ISG/SSG for performance
+- ISG/SSG for performance and SEO
 - Multi-language support
 - RTL layout support
 
@@ -74,7 +74,6 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 
 ### UI Components
 - **Framer Motion** - Smooth animations
-- **Headless UI** - Accessible components
 - **TailwindCSS** - Utility-first CSS
 
 ## 🚀 Getting Started
