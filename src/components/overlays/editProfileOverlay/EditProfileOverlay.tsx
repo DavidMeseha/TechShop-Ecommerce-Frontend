@@ -57,7 +57,7 @@ export default function EditProfileOverlay() {
     mutationFn: (form: UserInfoForm) => updateUserInfo(form),
     onSuccess: () => {
       toast.success("Profile Updated Successfully");
-      queryClient.invalidateQueries({ queryKey: ["userInfo"] });
+      queryClient.invalidateQueries({ queryKey: ["info"] });
       queryClient.invalidateQueries({ queryKey: ["check"] });
       setIsEditProfileOpen(false);
     }
@@ -70,9 +70,7 @@ export default function EditProfileOverlay() {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const updateUserInfoSubmit = (form: UserInfoForm) => {
-    userInfoMutation.mutate(form);
-  };
+  const updateUserInfoSubmit = (form: UserInfoForm) => userInfoMutation.mutate(form);
 
   const onImageUpload = (imageUrl: string) => {
     formHook.setValue("imageUrl", imageUrl);

@@ -13,7 +13,7 @@ const getVendorInfo = cache(async (seName: string) => {
   return await axios
     .get<IVendor>(`/api/catalog/vendor/${seName}`, {
       headers: {
-        Authorization: `Bearer ${await (await cookies()).get("session")?.value}`
+        Authorization: `Bearer ${(await cookies()).get("session")?.value}`
       }
     })
     .then((res) => res.data);

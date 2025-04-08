@@ -37,7 +37,7 @@ export function FeaturedVendors() {
         {!isPending
           ? vendors.map((vendor) => (
               <CarouselItem className="basis-auto" key={vendor._id}>
-                <VendorItem vendor={vendor} />
+                <VendorItemMemoized vendor={vendor} />
               </CarouselItem>
             ))
           : Array.from({ length: 8 }, (_, index) => (
@@ -77,3 +77,7 @@ function VendorItem({ vendor }: { vendor: IVendor }) {
     </div>
   );
 }
+
+const VendorItemMemoized = React.memo(VendorItem, (prevProps, nextProps) => {
+  return prevProps.vendor._id === nextProps.vendor._id && prevProps.vendor.isFollowed === nextProps.vendor.isFollowed;
+});

@@ -37,7 +37,7 @@ export default function Page() {
   });
 
   const userInfoQuery = useQuery({
-    queryKey: ["userInfo"],
+    queryKey: ["user", "info"],
     queryFn: () => getUserInfo()
   });
 
