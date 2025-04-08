@@ -13,7 +13,7 @@ export default function Reviews({ reviews }: Props) {
   return reviews.map((review) => {
     const customer = review.customer;
     return (
-      <>
+      <React.Fragment key={review._id}>
         <h2 className="p-4 text-2xl font-bold">{t("reviews")}</h2>
         <div className="mb-4 flex items-start gap-3" key={review._id}>
           <Image
@@ -32,7 +32,7 @@ export default function Reviews({ reviews }: Props) {
             <p className="text-end text-xs text-gray-400">{new Date(review.createdAt).toLocaleString()}</p>
           </div>
         </div>
-      </>
+      </React.Fragment>
     );
   });
 }

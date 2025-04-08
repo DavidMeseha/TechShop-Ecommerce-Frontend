@@ -7,11 +7,12 @@ import useAddToCart from "@/hooks/useAddToCart";
 type Props = {
   product: IFullProduct;
   attributes?: IProductAttribute[];
+  isInCart: boolean;
 };
 
-export default React.memo(function AddToCartButton({ product, attributes }: Props) {
+export default React.memo(function AddToCartButton({ product, attributes, isInCart }: Props) {
   const [cart, setCart] = useState(() => ({
-    state: product.isInCart,
+    state: isInCart,
     count: product.carts
   }));
 

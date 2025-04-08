@@ -62,7 +62,7 @@ export default function Header() {
 
           {user ? (
             !user || !user.isRegistered ? (
-              <LocalLink className="rounded-sm bg-primary px-6 py-2 text-white whitespace-nowrap" href="/login">
+              <LocalLink className="whitespace-nowrap rounded-sm bg-primary px-6 py-2 text-white" href="/login">
                 {t("login")}
               </LocalLink>
             ) : (

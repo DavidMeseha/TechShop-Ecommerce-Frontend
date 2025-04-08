@@ -30,7 +30,7 @@ export default React.memo(
                 <LikeProductButton isLiked={product.isLiked} likesCount={product.likes} productId={product._id} />
                 <RateProductButton isRated={product.isReviewed} product={product} />
                 <SaveProductButton isSaved={product.isSaved} productId={product._id} savesCount={product.saves} />
-                <AddToCartButton product={product} />
+                <AddToCartButton isInCart={product.isInCart} product={product} />
               </div>
             </div>
           </div>

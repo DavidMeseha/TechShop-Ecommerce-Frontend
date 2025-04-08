@@ -7,6 +7,7 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 [![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js&logoColor=white)](https://nextjs.org/)
 
 ## 📋 Table of Contents
+
 - [Related Projects](#-related-projects)
 - [Features](#-features)
 - [Tech Stack](#-technology-stack)
@@ -22,6 +23,7 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 ## 🎯 Features
 
 ### 🛒 Shopping Experience
+
 - Advanced product search and filtering
 - Customizable product attributes
 - Real-time shopping cart management
@@ -29,6 +31,7 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 - Secure Stripe payment integration
 
 ### 👤 User Features
+
 - Secure authentication
 - Profile management
 - Order tracking history
@@ -36,12 +39,14 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 - Personalized preferences
 
 ### 🔍 Product Discovery
+
 - Intuitive category navigation
 - Smart tag system
 - Vendor shop profiles
 - Advanced search capabilities
 
 ### ⚡ Technical Features
+
 - Infinite scroll implementation
 - Responsive mobile-first design
 - Next.js image optimization
@@ -52,6 +57,7 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 ## 🛠️ Technology Stack
 
 ### Core Technologies
+
 ```typescript
 {
   "frontend": {
@@ -63,22 +69,26 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 ```
 
 ### State Management & Data Fetching
+
 - **Zustand** - Lightweight state management
 - **Tanstack Query** - Server state handling
 - **Axios** - HTTP client
 
 ### Development Tools
+
 - **Jest & React Testing Library** - Testing suite
 - **ESLint & Prettier** - Code quality
 - **TypeScript** - Type safety
 
 ### UI Components
+
 - **Framer Motion** - Smooth animations
 - **TailwindCSS** - Utility-first CSS
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 ```bash
 Node.js >= v18.0.0
 npm >= v8.0.0
@@ -87,23 +97,27 @@ npm >= v8.0.0
 ### Installation Steps
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/DavidMeseha/TechShop-Ecommerce-Frontend.git
 cd TechShop-Ecommerce-Frontend
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Configure environment variables
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:3000
 NEXT_PUBLIC_STRIPE_KEY=your_stripe_public_key
 ```
 
 4. Start development server
+
 ```bash
 npm run dev
 ```
@@ -111,6 +125,7 @@ npm run dev
 ## 🧪 Development
 
 ### Available Scripts
+
 ```json
 {
   "scripts": {
@@ -127,6 +142,7 @@ npm run dev
 ## 🌐 Internationalization
 
 ### Supported Languages
+
 - 🇺🇸 English (en)
 - 🇸🇦 Arabic (ar)
 - 🇫🇷 French (fr)

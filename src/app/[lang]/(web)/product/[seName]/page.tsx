@@ -1,37 +1,43 @@
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { cache } from "react";
 import { IFullProduct } from "@/types";
 import ProductPage from "@/components/pages/ProductPage";
 import { homeFeedProducts } from "@/services/products.service";
-import { cookies } from "next/headers";
 import { BASE_URL } from "@/lib/axios";
 
 interface Props {
   params: Promise<{ seName: string }>;
 }
 
-export const revalidate = 600_000;
+export const revalidate = 600;
 
-const getProduct = cache(async (seName: string): Promise<IFullProduct> => {
+async function getProduct(seName: string): Promise<IFullProduct> {
   try {
-    const product: IFullProduct = await fetch(`${BASE_URL}/api/product/details/${seName}`, {
-      cache: "no-store",
-      headers: {
-        Authorization: `Bearer ${(await cookies()).get("session")?.value}`
+    const res = await fetch(`${BASE_URL}/api/product/details/${seName}`, {
+      next: {
+        revalidate: 600 // 10 minutes
       }
-    }).then((res) => res.json());
-    return product;
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch product");
+    }
+
+    return res.json();
   } catch {
     notFound();
   }
-});
+}
 
 export async function generateStaticParams() {
-  const products = await homeFeedProducts({ page: 1, limit: 5 });
-  return products.data.map((product) => ({
-    seName: product.seName
-  }));
+  try {
+    const products = await homeFeedProducts({ page: 1, limit: 20 }); // Increased limit for more static pages
+    return products.data.map((product) => ({
+      seName: product.seName
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
@@ -39,7 +45,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   try {
     const [product, parentMeta] = await Promise.all([getProduct(seName), parent]);
 
-    const metadata: Metadata = {
+    return {
       title: `${parentMeta.title?.absolute} | ${product.name}`,
       description: product.fullDescription,
       openGraph: {
@@ -49,8 +55,6 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
         description: product.fullDescription
       }
     };
-
-    return metadata;
   } catch {
     return { title: "Product Not Found" };
   }

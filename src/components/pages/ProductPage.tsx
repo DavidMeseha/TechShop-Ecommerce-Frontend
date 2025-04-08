@@ -9,23 +9,36 @@ import { IFullProduct, IProductAttribute } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { homeFeedProducts } from "@/services/products.service";
+import { getProductUserActions, homeFeedProducts } from "@/services/products.service";
 import ProductsGridView from "@/components/product/ProductsGridView";
 import ProductCarosel from "@/components/product/ProductCarosel";
 import ProductReviews from "../Reviews";
 import AddReviewForm from "../forms/AddReviewForm";
+import ProductActionsLoading from "../LoadingUi/ProductActionsLoading";
 
 type Props = {
   product: IFullProduct;
 };
 
 export default function ProductPage({ product }: Props) {
-  const [isReviewed, setIsReviewed] = useState(product.isReviewed);
+  const [isReviewed, setIsReviewed] = useState(false);
   const [customAttributes, setCustomAttributes] = useState(selectDefaultAttributes(product.productAttributes));
   const [ref, inView] = useInView();
   const rating = (product.productReviewOverview.ratingSum / (product.productReviewOverview.totalReviews || 1)).toFixed(
     1
   );
+
+  const actionsQuery = useQuery({
+    queryKey: ["product", "actions", product.seName],
+    queryFn: () =>
+      getProductUserActions(product.seName).then((res) => {
+        setIsReviewed(res.isReviewed);
+        return res;
+      }),
+    enabled: !!product,
+    gcTime: 0,
+    refetchOnMount: true
+  });
 
   const productsQuery = useQuery({
     queryKey: ["products", "similar", product.seName],
@@ -76,9 +89,27 @@ export default function ProductPage({ product }: Props) {
               </div>
 
               <div className="mt-6 flex items-center gap-4 sm:mt-8">
-                <LikeProductButton isLiked={product.isLiked} likesCount={product.likes} productId={product._id} />
-                <SaveProductButton isSaved={product.isSaved} productId={product._id} savesCount={product.saves} />
-                <AddToCartButton attributes={customAttributes} product={product} />
+                {actionsQuery.isPending ? (
+                  <ProductActionsLoading />
+                ) : (
+                  <>
+                    <LikeProductButton
+                      isLiked={!!actionsQuery?.data?.isLiked}
+                      likesCount={product.likes}
+                      productId={product._id}
+                    />
+                    <SaveProductButton
+                      isSaved={!!actionsQuery?.data?.isSaved}
+                      productId={product._id}
+                      savesCount={product.saves}
+                    />
+                    <AddToCartButton
+                      attributes={customAttributes}
+                      isInCart={!!actionsQuery.data?.isInCart}
+                      product={product}
+                    />
+                  </>
+                )}
               </div>
 
               <hr className="my-6 border-gray-200 md:my-8" />

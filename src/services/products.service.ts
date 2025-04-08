@@ -4,13 +4,7 @@ import { ICategory, IFullProduct, IProductAttribute, ITag, IVendor, Pagination }
 export async function homeFeedProducts({ page, limit }: { page: number; limit: number }) {
   return axios
     .get<{ data: IFullProduct[]; pages: Pagination }>("/api/catalog/homefeed", {
-      params: { page, limit },
-      headers: {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        Pragma: "no-cache",
-        Expires: "0",
-        cache: false
-      }
+      params: { page, limit }
     })
     .then((res) => res.data);
 }
@@ -68,5 +62,16 @@ export async function getProductsByTag(tagId: string, params: { page: number }) 
 export async function getProductsByVendor(vendorId: string, params: { page: number; limit: number }) {
   return axios
     .get<{ data: IFullProduct[]; pages: Pagination }>(`/api/catalog/VendorProducts/${vendorId}`, { params })
+    .then((res) => res.data);
+}
+
+export async function getProductUserActions(seName: string) {
+  return axios
+    .get<{
+      isLiked: boolean;
+      isSaved: boolean;
+      isInCart: boolean;
+      isReviewed: boolean;
+    }>(`/api/product/actions/${seName}`)
     .then((res) => res.data);
 }
