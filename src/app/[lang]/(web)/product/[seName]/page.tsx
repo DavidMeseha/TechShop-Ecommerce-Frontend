@@ -11,6 +11,8 @@ interface Props {
   params: Promise<{ seName: string }>;
 }
 
+export const revalidate = 600_000;
+
 const getProduct = cache(async (seName: string): Promise<IFullProduct> => {
   try {
     const product: IFullProduct = await fetch(`${BASE_URL}/api/product/details/${seName}`, {
@@ -24,9 +26,6 @@ const getProduct = cache(async (seName: string): Promise<IFullProduct> => {
     notFound();
   }
 });
-
-export const revalidate = 0;
-export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const products = await homeFeedProducts({ page: 1, limit: 5 });

@@ -5,11 +5,18 @@ import { cache } from "react";
 import { Metadata, ResolvingMetadata } from "next";
 import { AxiosError } from "axios";
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 
 type Props = { params: Promise<{ seName: string }> };
 
 const getVendorInfo = cache(async (seName: string) => {
-  return await axios.get<IVendor>(`/api/catalog/vendor/${seName}`).then((res) => res.data);
+  return await axios
+    .get<IVendor>(`/api/catalog/vendor/${seName}`, {
+      headers: {
+        Authorization: `Bearer ${await (await cookies()).get("session")?.value}`
+      }
+    })
+    .then((res) => res.data);
 });
 
 export const revalidate = 600;

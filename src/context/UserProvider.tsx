@@ -27,14 +27,16 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { t } = useTranslation();
 
-  const cleanup = () => {
+  const cleanup = async () => {
     axios.interceptors.request.clear();
     setUser(null);
-    queryClient.invalidateQueries();
+    await queryClient.invalidateQueries({
+      predicate: (q) => !q.queryKey.includes("check") && !q.queryKey.includes("refresh")
+    });
   };
 
   const loginUser = async (data: { user: User; token: string }) => {
-    if (user) cleanup();
+    if (user) await cleanup();
     resetAxiosIterceptor(data.token);
     setUser(data.user);
     getCartItems();
@@ -84,7 +86,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   //new guest token
   const guestTokenMutation = useMutation({
     mutationFn: () => getGuestToken(),
-    onSuccess: async (res) => loginUser(res.data)
+    onSuccess: (res) => loginUser(res.data)
   });
 
   //refresh Token(only active if user logged in)
