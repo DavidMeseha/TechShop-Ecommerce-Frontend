@@ -1,6 +1,6 @@
-# TikShop Frontend 🛍️
+# TechShop Frontend 🛍️
 
-A modern e-commerce platform built with Next.js and TailwindCSS, offering a seamless shopping experience.
+A modern e-commerce platform built with Next.js and TailwindCSS.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-green)](https://techshop-commerce.vercel.app/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -17,7 +17,7 @@ A modern e-commerce platform built with Next.js and TailwindCSS, offering a seam
 ## 🔗 Related Projects
 
 - **Backend Repository**: [Node.js Backend](https://github.com/DavidMeseha/allInOne-myShop-back)
-- **Live Demo**: [TikShop Store](https://techshop-commerce.vercel.app/)
+- **Live Demo**: [TechShop Store](https://techshop-commerce.vercel.app/)
 
 ## 🎯 Features
 
@@ -45,7 +45,7 @@ A modern e-commerce platform built with Next.js and TailwindCSS, offering a seam
 - Infinite scroll implementation
 - Responsive mobile-first design
 - Next.js image optimization
-- ISG/SSG for performance
+- ISG/SSG for performance and SEO
 - Multi-language support
 - RTL layout support
 
@@ -74,7 +74,6 @@ A modern e-commerce platform built with Next.js and TailwindCSS, offering a seam
 
 ### UI Components
 - **Framer Motion** - Smooth animations
-- **Headless UI** - Accessible components
 - **TailwindCSS** - Utility-first CSS
 
 ## 🚀 Getting Started
@@ -131,7 +130,3 @@ npm run dev
 - 🇺🇸 English (en)
 - 🇸🇦 Arabic (ar)
 - 🇫🇷 French (fr)
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
