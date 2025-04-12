@@ -46,7 +46,7 @@ export default function useSave({ productId, savesCount, onError, onClick, onSuc
     mutationFn: () => unsaveProduct(productId),
     onSuccess: () => {
       onSuccess?.(false);
-      queryClient.invalidateQueries({ queryKey: ["savedProducts"] });
+      queryClient.invalidateQueries({ queryKey: ["products", "saved"] });
     },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status === 409) return;

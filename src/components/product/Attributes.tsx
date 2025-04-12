@@ -14,7 +14,7 @@ type Props = {
 
 export default function ProductAttributes({ productAttributes, customAttributes, handleChange }: Props) {
   return productAttributes.map((attr, index) => (
-    <React.Fragment key={index}>
+    <div className="border p-4 my-2 rounded-md" key={index}>
       {attr.attributeControlType === "TextBox" && (
         <FormTextInput
           label={attr.name}
@@ -64,6 +64,6 @@ export default function ProductAttributes({ productAttributes, customAttributes,
           onChange={(value) => handleChange(attr._id, value)}
         />
       )}
-    </React.Fragment>
+    </div>
   ));
 }
