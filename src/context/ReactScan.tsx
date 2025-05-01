@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { scan } from "react-scan";
 
-scan({
-  enabled: true
-});
-
 export default function ReactScan() {
+  useEffect(() => {
+    scan({
+      enabled: true
+    });
+  }, []);
   return <script async crossOrigin="anonymous" src="//unpkg.com/react-scan/dist/auto.global.js" />;
 }
