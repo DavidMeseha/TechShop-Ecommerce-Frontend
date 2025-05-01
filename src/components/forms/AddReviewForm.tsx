@@ -47,7 +47,7 @@ export default function AddReviewForm({ productId, onSuccess }: Props) {
     setForm({ ...form, [name]: value });
   };
   return (
-    <>
+    <form onSubmit={addReviewSubmit}>
       <RatingStars isEditable rate={form.rating} onChange={(value) => setForm({ ...form, rating: value })} />
       <div className="text-end text-[12px] text-gray-400">{form.reviewText.length}/150</div>
       <textarea
@@ -61,10 +61,10 @@ export default function AddReviewForm({ productId, onSuccess }: Props) {
       <div className="min-h-[21px] text-[14px] font-semibold text-red-500">{error.reviewText}</div>
 
       <div className="flex justify-end">
-        <Button className="bg-primary text-white" isLoading={addReviewMutation.isPending} onClick={addReviewSubmit}>
+        <Button className="bg-primary text-white" isLoading={addReviewMutation.isPending} type="submit">
           {t("addReview")}
         </Button>
       </div>
-    </>
+    </form>
   );
 }

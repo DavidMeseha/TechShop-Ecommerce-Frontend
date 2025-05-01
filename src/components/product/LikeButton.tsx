@@ -26,8 +26,8 @@ export default React.memo(function LikeProductButton({ productId, isLiked, likes
   const handleLikeAction = () => handleLike(!like.state);
 
   return (
-    <div aria-label="Like Product" className="fill-black text-center">
-      <button className="block rounded-full bg-gray-200 p-2" onClick={handleLikeAction}>
+    <div className="fill-black text-center">
+      <button aria-label="Like Product" className="block rounded-full bg-gray-200 p-2" onClick={handleLikeAction}>
         <AiFillHeart
           className={`transition-all ${like.state ? "fill-primary" : "fill-black"} text-black hover:fill-primary`}
           size="25"

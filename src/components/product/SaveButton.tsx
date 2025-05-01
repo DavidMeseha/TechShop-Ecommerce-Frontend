@@ -22,8 +22,8 @@ export default React.memo(function SaveProductButton({ productId, isSaved, saves
 
   const handleSaveAction = () => handleSave(!save.state);
   return (
-    <div aria-label="Like Product" className="fill-black text-center">
-      <button className="block rounded-full bg-gray-200 p-2" onClick={handleSaveAction}>
+    <div className="fill-black text-center">
+      <button aria-label="Save Product" className="block rounded-full bg-gray-200 p-2" onClick={handleSaveAction}>
         <BsBookmarkFill
           className={`transition-all ${save.state ? "fill-primary" : "fill-black"} text-black hover:fill-primary`}
           size="25"

@@ -24,8 +24,8 @@ export default React.memo(function AddToCartButton({ product, attributes, isInCa
   const addToCart = () => handleAddToCart(!cart.state, attributes);
 
   return (
-    <button aria-label="Product add to cart" className="fill-black text-center" onClick={addToCart}>
-      <div className="rounded-full bg-gray-200 p-2">
+    <button className="fill-black text-center" onClick={addToCart}>
+      <div aria-label="Product add to cart" className="rounded-full bg-gray-200 p-2">
         {isPending ? (
           <BiLoaderCircle className="animate-spin" size="25" />
         ) : (

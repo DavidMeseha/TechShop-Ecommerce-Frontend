@@ -15,6 +15,7 @@ import ProductCarosel from "@/components/product/ProductCarosel";
 import ProductReviews from "../Reviews";
 import AddReviewForm from "../forms/AddReviewForm";
 import ProductActionsLoading from "../LoadingUi/ProductActionsLoading";
+import { useTranslation } from "@/context/Translation";
 
 type Props = {
   product: IFullProduct;
@@ -24,6 +25,7 @@ export default function ProductPage({ product }: Props) {
   const [isReviewed, setIsReviewed] = useState(false);
   const [customAttributes, setCustomAttributes] = useState(selectDefaultAttributes(product.productAttributes));
   const [ref, inView] = useInView();
+  const { t } = useTranslation();
   const rating = (product.productReviewOverview.ratingSum / (product.productReviewOverview.totalReviews || 1)).toFixed(
     1
   );
@@ -127,7 +129,7 @@ export default function ProductPage({ product }: Props) {
         <ProductReviews reviews={product.productReviews} />
         {isReviewed ? null : (
           <>
-            <h4 className="py-2 text-2xl font-bold">Add Review</h4>
+            <h2 className="py-2 text-2xl font-bold">{t("addReview")}</h2>
             <AddReviewForm productId={product._id} onSuccess={() => setIsReviewed(true)} />
           </>
         )}
@@ -135,9 +137,9 @@ export default function ProductPage({ product }: Props) {
 
       {/* Similar Products Section */}
       <section className="my-4 border-t p-4">
-        <h3 className="p-4 text-2xl font-bold" ref={ref}>
+        <h2 className="p-4 text-2xl font-bold" ref={ref}>
           Similar Products
-        </h3>
+        </h2>
         <ProductsGridView isLoading={productsQuery.isPending || !productsQuery.data} products={products} />
       </section>
     </>

@@ -37,18 +37,18 @@ function ProductCard({ product, canAddReview, minWidth = "auto", className }: Pr
 
         {/* Product Info */}
         <div className="mt-2 flex flex-col gap-1 px-2 sm:px-4">
-          <LocalLink className="font-semibold text-gray-800 hover:underline" href={`/product/${product.seName}`}>
+          <LocalLink className="font-semibold hover:underline" href={`/product/${product.seName}`}>
             <span title={product.name}>{product.name}</span>
           </LocalLink>
           {product.vendor.name ? (
-            <p className="-mt-1 text-sm text-gray-400">
+            <p className="-mt-1 text-sm text-gray-600">
               sold by:{" "}
-              <LocalLink className="hover:text-primary" href={`/vendor/${product.vendor.seName}`}>
+              <LocalLink className="underline hover:text-primary" href={`/vendor/${product.vendor.seName}`}>
                 {product.vendor.name}
               </LocalLink>
             </p>
           ) : null}
-          <span className="font-semibold text-gray-800">{product.price.price}$</span>
+          <span className="font-semibold">{product.price.price}$</span>
           <div className="flex items-center">
             <RatingStars rate={rate} size={15} />
             {canAddReview ? (
