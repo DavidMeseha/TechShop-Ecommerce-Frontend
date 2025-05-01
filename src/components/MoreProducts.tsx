@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import ProductsGridView from "./product/ProductsGridView";
 import Button from "./ui/Button";
@@ -5,6 +7,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/context/Translation";
 import { homeFeedProducts } from "@/services/products.service";
 import { useInView } from "react-intersection-observer";
+import SectionHeader from "./SectionHeader";
 
 const PRODUCTS_LIMIT = 5;
 
@@ -23,6 +26,8 @@ export default function MoreProducts() {
 
   return (
     <>
+      <SectionHeader title={t("moreProducts")} />
+
       <div ref={ref}>
         <ProductsGridView
           isLoading={isLoading || isFetchingNextPage || !data}

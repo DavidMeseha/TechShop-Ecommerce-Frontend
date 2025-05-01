@@ -1,5 +1,6 @@
-import * as React from "react";
+"use client";
 
+import * as React from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { IVendor } from "@/types";
 import { LocalLink } from "./LocalizedNavigation";
@@ -11,9 +12,12 @@ import Button from "./ui/Button";
 import { useTranslation } from "@/context/Translation";
 import VendorCardLoading from "./LoadingUi/VendorCardLoading";
 import useFollow from "@/hooks/useFollow";
+import SectionHeader from "./SectionHeader";
 
 export function FeaturedVendors() {
   const [ref, inView] = useInView();
+  const { t } = useTranslation();
+
   const { isPending, data } = useQuery({
     queryKey: ["vendors", "featured"],
     queryFn: () => getVendors({ page: 1, limit: 10 }),
@@ -22,31 +26,35 @@ export function FeaturedVendors() {
   const vendors = data?.data ?? [];
 
   return (
-    <Carousel className="w-full md:px-10" dir="ltr" opts={{ align: "start" }} ref={ref}>
-      <div className="mx-auto w-20">
-        <CarouselPrevious
-          className="static start-0 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50 md:absolute"
-          variant="default"
-        />
-        <CarouselNext
-          className="static end-0 ms-4 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50 md:absolute"
-          variant="default"
-        />
-      </div>
-      <CarouselContent>
-        {!isPending
-          ? vendors.map((vendor) => (
-              <CarouselItem className="basis-auto" key={vendor._id}>
-                <VendorItemMemoized vendor={vendor} />
-              </CarouselItem>
-            ))
-          : Array.from({ length: 8 }, (_, index) => (
-              <CarouselItem className="basis-auto" key={index}>
-                <VendorCardLoading />
-              </CarouselItem>
-            ))}
-      </CarouselContent>
-    </Carousel>
+    <>
+      <SectionHeader title={t("topVendors")} />
+
+      <Carousel className="w-full md:px-10" dir="ltr" opts={{ align: "start" }} ref={ref}>
+        <div className="mx-auto w-20">
+          <CarouselPrevious
+            className="static start-0 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50 md:absolute"
+            variant="default"
+          />
+          <CarouselNext
+            className="static end-0 ms-4 border bg-transparent p-2 text-white hover:border-slate-500 disabled:opacity-50 md:absolute"
+            variant="default"
+          />
+        </div>
+        <CarouselContent>
+          {!isPending
+            ? vendors.map((vendor) => (
+                <CarouselItem className="basis-auto" key={vendor._id}>
+                  <VendorItemMemoized vendor={vendor} />
+                </CarouselItem>
+              ))
+            : Array.from({ length: 8 }, (_, index) => (
+                <CarouselItem className="basis-auto" key={index}>
+                  <VendorCardLoading />
+                </CarouselItem>
+              ))}
+        </CarouselContent>
+      </Carousel>
+    </>
   );
 }
 

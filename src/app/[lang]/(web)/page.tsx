@@ -1,15 +1,43 @@
-"use client";
-
 import Image from "next/image";
-import { FeaturedTags } from "../../../components/FeaturedTags";
-import SectionHeader from "@/components/SectionHeader";
+import { FeaturedTags } from "@/components/FeaturedTags";
 import { FeaturedProducts } from "@/components/FeaturedProducts";
 import { FeaturedVendors } from "@/components/FeaturedVendors";
 import MoreProducts from "@/components/MoreProducts";
-import { useTranslation } from "@/context/Translation";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { IFullProduct, Pagination } from "@/types";
+import axios from "@/lib/axios";
+import { cookies } from "next/headers";
+import { getTags } from "@/services/products.service";
 
-export default function Page() {
-  const { t } = useTranslation();
+const getProducts = async (page = 1) => {
+  const res = await axios
+    .get<{ data: IFullProduct[]; pages: Pagination }>("api/catalog/homefeed", {
+      params: {
+        page: page,
+        limit: 7
+      },
+      headers: {
+        Authorization: `Bearer ${(await cookies()).get("session")?.value}`
+      }
+    })
+    .catch(() => ({ data: { data: [], pages: { current: 0, limit: 0, hasNext: false } } }));
+
+  return res.data ?? [];
+};
+
+const queryClient = new QueryClient({});
+
+export default async function Page() {
+  await queryClient.prefetchQuery({
+    queryKey: ["products", "featured"],
+    queryFn: () => getProducts()
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ["tags", "featured"],
+    queryFn: () => getTags({ page: 1, limit: 10 })
+  });
+
   return (
     <>
       <div className="relative">
@@ -32,19 +60,18 @@ export default function Page() {
         />
       </div>
       <div className="space-y-8 px-4 md:px-0">
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <section>
+            <FeaturedTags />
+          </section>
+          <section>
+            <FeaturedProducts />
+          </section>
+        </HydrationBoundary>
         <section>
-          <FeaturedTags />
-        </section>
-        <section>
-          <SectionHeader title={t("featuredProducts")} />
-          <FeaturedProducts />
-        </section>
-        <section>
-          <SectionHeader title={t("topVendors")} />
           <FeaturedVendors />
         </section>
         <section>
-          <SectionHeader title={t("moreProducts")} />
           <MoreProducts />
         </section>
       </div>

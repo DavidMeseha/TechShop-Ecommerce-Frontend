@@ -1,5 +1,6 @@
-import * as React from "react";
+"use client";
 
+import * as React from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ITag } from "@/types";
 import { BsHash } from "react-icons/bs";
@@ -16,7 +17,7 @@ type ListItemProps = {
 export function FeaturedTags() {
   const [ref, inView] = useInView();
   const { isPending, data } = useQuery({
-    queryKey: ["featuredTags"],
+    queryKey: ["tags", "featured"],
     queryFn: () => getTags({ page: 1, limit: 10 }),
     enabled: inView
   });
