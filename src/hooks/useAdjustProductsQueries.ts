@@ -1,3 +1,4 @@
+import { PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
 import { IFullProduct, IVendor } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -12,7 +13,7 @@ export default function useAdjustProductsQueries(productId: string) {
   //just not to fetch all product requests once again
   const adjustQueriesCash = (fieldsToChange: PartialProduct) => {
     queryClient.setQueriesData(
-      { queryKey: ["products"] }, // Match any query key starting with "products"
+      { queryKey: [PRODUCTS_QUERY_KEY] }, // Match any query key starting with "products"
       (oldData: IFullProduct[] | { data: IFullProduct[] } | { pages: { data: IFullProduct[] }[] }) => {
         if (!oldData) return;
         if (Array.isArray(oldData)) {

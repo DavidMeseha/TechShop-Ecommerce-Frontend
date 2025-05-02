@@ -3,7 +3,7 @@ import FormTextInput from "../FormTextInput";
 import RadioGroup from "../RadioGroup";
 import CheckboxGroup from "../CheckboxGroup";
 import FormDropdownInput from "../FormDropdownInput";
-import { IProductAttribute } from "../../types";
+import { IProductAttribute } from "@/types";
 import ColorsGroup from "../ColorsGroup";
 
 type Props = {

@@ -8,6 +8,7 @@ import { IFullProduct, Pagination } from "@/types";
 import axios from "@/lib/axios";
 import { cookies } from "next/headers";
 import { getTags } from "@/services/products.service";
+import { FEATURED_QUERY_KEY, PRODUCTS_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
 
 const getProducts = async (page = 1) => {
   const res = await axios
@@ -29,12 +30,12 @@ const queryClient = new QueryClient({});
 
 export default async function Page() {
   await queryClient.prefetchQuery({
-    queryKey: ["products", "featured"],
+    queryKey: [PRODUCTS_QUERY_KEY, FEATURED_QUERY_KEY],
     queryFn: () => getProducts()
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ["tags", "featured"],
+    queryKey: [TAGS_QUERY_KEY, FEATURED_QUERY_KEY],
     queryFn: () => getTags({ page: 1, limit: 10 })
   });
 

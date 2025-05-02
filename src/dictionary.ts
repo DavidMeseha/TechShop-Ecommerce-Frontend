@@ -1,5 +1,5 @@
 import "server-only";
-import { Language } from "./types";
+import { Language, TranslationKey } from "./types";
 
 const dictionaries = {
   en: import("@/dictionaries/en.json").then((module) => module.default),
@@ -8,3 +8,8 @@ const dictionaries = {
 };
 
 export const getDictionary = async (locale: Language) => await dictionaries[locale];
+export const getServerTranslation = async (locale: Language) => {
+  const d = await dictionaries[locale];
+  const t = (key: TranslationKey) => d[key];
+  return t;
+};

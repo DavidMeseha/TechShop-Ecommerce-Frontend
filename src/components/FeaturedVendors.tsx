@@ -13,13 +13,14 @@ import { useTranslation } from "@/context/Translation";
 import VendorCardLoading from "./LoadingUi/VendorCardLoading";
 import useFollow from "@/hooks/useFollow";
 import SectionHeader from "./SectionHeader";
+import { FEATURED_QUERY_KEY, VENDORS_QUERY_KEY } from "@/constants/query-keys";
 
 export function FeaturedVendors() {
   const [ref, inView] = useInView();
   const { t } = useTranslation();
 
   const { isPending, data } = useQuery({
-    queryKey: ["vendors", "featured"],
+    queryKey: [VENDORS_QUERY_KEY, FEATURED_QUERY_KEY],
     queryFn: () => getVendors({ page: 1, limit: 10 }),
     enabled: inView
   });

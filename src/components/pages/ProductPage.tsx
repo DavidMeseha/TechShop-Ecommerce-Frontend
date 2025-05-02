@@ -16,6 +16,12 @@ import ProductReviews from "../Reviews";
 import AddReviewForm from "../forms/AddReviewForm";
 import ProductActionsLoading from "../LoadingUi/ProductActionsLoading";
 import { useTranslation } from "@/context/Translation";
+import {
+  PRODUCT_ACTIONS_QUERY_KEY,
+  PRODUCTS_QUERY_KEY,
+  SIMILAR_QUERY_KEY,
+  SINGLE_PRODUCT_QUERY_KEY
+} from "@/constants/query-keys";
 
 type Props = {
   product: IFullProduct;
@@ -31,7 +37,7 @@ export default function ProductPage({ product }: Props) {
   );
 
   const actionsQuery = useQuery({
-    queryKey: ["product", "actions", product.seName],
+    queryKey: [SINGLE_PRODUCT_QUERY_KEY, PRODUCT_ACTIONS_QUERY_KEY, product.seName],
     queryFn: () =>
       getProductUserActions(product.seName).then((res) => {
         setIsReviewed(res.isReviewed);
@@ -43,7 +49,7 @@ export default function ProductPage({ product }: Props) {
   });
 
   const productsQuery = useQuery({
-    queryKey: ["products", "similar", product.seName],
+    queryKey: [PRODUCTS_QUERY_KEY, SIMILAR_QUERY_KEY, product.seName],
     queryFn: () => homeFeedProducts({ page: 1, limit: 4 }).then((res) => res.data),
     enabled: inView
   });

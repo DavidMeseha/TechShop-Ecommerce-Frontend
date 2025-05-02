@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import Loading from "@/components/LoadingUi/LoadingSpinner";
 import { getCategories } from "@/services/products.service";
+import { CATEGORIES_QUERY_KEY, DISCOVER_QUERY_KEY } from "@/constants/query-keys";
 
 type ListItemProps = {
   category: ICategory;
@@ -18,7 +19,7 @@ export default function Page() {
   const { t } = useTranslation();
 
   const { hasNextPage, fetchNextPage, isFetching, data, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["categoriesDiscover"],
+    queryKey: [CATEGORIES_QUERY_KEY, DISCOVER_QUERY_KEY],
     queryFn: ({ pageParam }) => getCategories({ page: pageParam }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1

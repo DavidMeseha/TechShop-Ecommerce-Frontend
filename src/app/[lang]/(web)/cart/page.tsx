@@ -9,6 +9,7 @@ import { LocalLink } from "@/components/LocalizedNavigation";
 import { BiLoaderCircle } from "react-icons/bi";
 import { useUserStore } from "@/stores/userStore";
 import { checkoutData } from "@/services/checkout.service";
+import { CART_QUERY_KEY, CHECKOUT_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
 
 export default function Page() {
   const { t } = useTranslation();
@@ -17,7 +18,7 @@ export default function Page() {
   const router = useRouter();
 
   const checkoutQuery = useQuery({
-    queryKey: ["cartItems", "checkout"],
+    queryKey: [USER_QUERY_KEY, CART_QUERY_KEY, CHECKOUT_QUERY_KEY],
     queryFn: () => checkoutData()
   });
 

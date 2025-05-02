@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "@/context/Translation";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "@bprogress/next";
+import { APP_STATUS_QUERY_KEY } from "@/constants/query-keys";
 
 export default function NetworkErrors({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<"NoNetwork" | "ServerDown" | false>(false);
@@ -28,7 +29,7 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
             if (error.response.status === 401) router.push("/login");
             if (error.response.status === 500) toast.error(t("serverFail"));
           } else {
-            // setOnlineState("ServerDown");
+            setOnlineState("ServerDown");
           }
         }
 
@@ -51,7 +52,7 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
 
   // Status check query
   const _status = useQuery({
-    queryKey: ["status"],
+    queryKey: [APP_STATUS_QUERY_KEY],
     queryFn: async () =>
       axios
         .get("/api/status")

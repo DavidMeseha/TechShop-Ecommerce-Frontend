@@ -11,6 +11,7 @@ import FormDropdownInput from "../FormDropdownInput";
 import Button from "../ui/Button";
 import { useAppStore } from "@/stores/appStore";
 import { IAddress } from "@/types";
+import { ADDRESSES_QUERY_KEY, CITIES_QUERY_KEY } from "@/constants/query-keys";
 
 type Props = {
   addresses: IAddress[];
@@ -53,14 +54,14 @@ export default function EditAddressPage({ addresses, preSelectedAddress, onFinis
     mutationKey: ["updateAddress"],
     mutationFn: (form: AddressForm) => updateAddress({ ...form, _id: selectedAddress._id }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["userAddresses"] });
+      queryClient.invalidateQueries({ queryKey: [ADDRESSES_QUERY_KEY] });
       onFinish();
       toast.success("Address Updated Successfully");
     }
   });
 
   const citiesQuery = useQuery({
-    queryKey: ["cities", getValues("country")],
+    queryKey: [CITIES_QUERY_KEY, getValues("country")],
     queryFn: () => citiesInCountry(getValues("country")),
     enabled: !!selectedAddress._id
   });

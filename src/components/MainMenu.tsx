@@ -8,7 +8,7 @@ import DropdownButton from "./DropdownButton";
 import { changeLanguage } from "@/actions";
 import { languages } from "@/lib/misc";
 import { Language } from "@/types";
-import { mobileMenu } from "@/schemas/menus";
+import { mobileMenu } from "@/constants/menus";
 import { useProgress } from "@bprogress/next";
 
 export default React.memo(function MainMenu() {

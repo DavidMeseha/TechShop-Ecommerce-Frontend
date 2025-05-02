@@ -75,3 +75,7 @@ export async function getProductUserActions(seName: string) {
     }>(`/api/product/actions/${seName}`)
     .then((res) => res.data);
 }
+
+export async function getVendorInfo(seName: string) {
+  return axios.get<IVendor>(`/api/catalog/vendor/${seName}`).then((res) => res.data);
+}

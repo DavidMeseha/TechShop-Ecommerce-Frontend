@@ -10,10 +10,11 @@ import React from "react";
 import useFollow from "@/hooks/useFollow";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
 import { getFollowingVendors } from "@/services/user.service";
+import { FOLLOWING_QUERY_KEY, USER_QUERY_KEY, VENDORS_QUERY_KEY } from "@/constants/query-keys";
 
 export default function FollowingPage() {
   const follwingVendorsQuery = useQuery({
-    queryKey: ["vendors", "following"],
+    queryKey: [USER_QUERY_KEY, FOLLOWING_QUERY_KEY, VENDORS_QUERY_KEY],
     queryFn: () => getFollowingVendors()
   });
   const vendors = follwingVendorsQuery.data ?? [];

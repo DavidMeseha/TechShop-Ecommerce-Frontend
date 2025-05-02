@@ -4,18 +4,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { editProfileSchema } from "@/schemas/valdation";
 import "react-advanced-cropper/dist/style.css";
-import OverlayLayout from "../../layouts/OverlayLayout";
+import OverlayLayout from "@/components/layouts/OverlayLayout";
 import { useTranslation } from "@/context/Translation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import Button from "../../ui/Button";
+import Button from "@/components/ui/Button";
 import { UserInfoForm } from "@/types";
 import { useUserStore } from "@/stores/userStore";
 import { getUserInfo, updateUserInfo } from "@/services/user.service";
 import { useOverlayStore } from "@/stores/overlayStore";
-import ProfileImageInput from "../../ProfileImageInput";
+import ProfileImageInput from "@/components/ProfileImageInput";
 import EditUserInfoFormInputs from "./EditUserInfoFormInputs";
 import ImageCrop from "./ImageCropAndUpload";
+import { INFO_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
 
 export default function EditProfileOverlay() {
   const todyRef = useRef(new Date());
@@ -39,7 +40,7 @@ export default function EditProfileOverlay() {
   const errors = formHook.formState.errors;
 
   const userInfoQuery = useQuery({
-    queryKey: ["userInfo"],
+    queryKey: [USER_QUERY_KEY, INFO_QUERY_KEY],
     queryFn: () => getUserInfo()
   });
 

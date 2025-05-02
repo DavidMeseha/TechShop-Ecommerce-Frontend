@@ -10,6 +10,7 @@ import FormTextInput from "../FormTextInput";
 import FormDropdownInput from "../FormDropdownInput";
 import Button from "../ui/Button";
 import { useAppStore } from "@/stores/appStore";
+import { CITIES_QUERY_KEY } from "@/constants/query-keys";
 
 export default function NewAddressPage({ onFinish }: { onFinish: () => void }) {
   const { countries } = useAppStore();
@@ -38,7 +39,7 @@ export default function NewAddressPage({ onFinish }: { onFinish: () => void }) {
   });
 
   const citiesQuery = useQuery({
-    queryKey: ["cities", getValues("country")],
+    queryKey: [CITIES_QUERY_KEY, getValues("country")],
     queryFn: () =>
       citiesInCountry(getValues("country")).then((data) => {
         setValue("city", data[0]._id);

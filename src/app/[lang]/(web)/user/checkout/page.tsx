@@ -12,6 +12,7 @@ import { checkoutData } from "@/services/checkout.service";
 import { useOverlayStore } from "@/stores/overlayStore";
 import { CheckoutForm } from "@/schemas/valdation";
 import usePlaceOrder from "@/hooks/usePlaceOrder";
+import { ADDRESSES_QUERY_KEY, CART_QUERY_KEY, CHECKOUT_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
 
 const initialCheckoutForm: CheckoutForm = {
   billingMethod: "cod",
@@ -26,7 +27,7 @@ export default function CheckoutPage() {
   const { isProcessing, submit } = usePlaceOrder();
 
   const checkoutQuery = useQuery({
-    queryKey: ["checkoutData"],
+    queryKey: [USER_QUERY_KEY, CHECKOUT_QUERY_KEY, ADDRESSES_QUERY_KEY, CART_QUERY_KEY],
     queryFn: () =>
       checkoutData().then((data) => {
         if (data.addresses.length > 0) setForm({ ...form, shippingAddressId: data.addresses[0]._id });

@@ -7,6 +7,7 @@ import { followVendor, unfollowVendor } from "@/services/userActions.service";
 import { isAxiosError } from "axios";
 import { useRef } from "react";
 import useAdjustVendorsQueries from "./useAdjustVendorsQueries";
+import { FOLLOWING_QUERY_KEY } from "@/constants/query-keys";
 
 interface FollowHookProps {
   vendor: IVendor;
@@ -34,7 +35,7 @@ export default function useFollow({ vendor, onClick, onError }: FollowHookProps)
     mutationKey: ["follow", vendor._id],
     mutationFn: () => followVendor(vendor._id),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ["following"] });
+      queryClient.invalidateQueries({ queryKey: [FOLLOWING_QUERY_KEY] });
     },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status === 409) return;
@@ -47,7 +48,7 @@ export default function useFollow({ vendor, onClick, onError }: FollowHookProps)
     mutationKey: ["unfollow", vendor._id],
     mutationFn: () => unfollowVendor(vendor._id),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ["following"] });
+      queryClient.invalidateQueries({ queryKey: [FOLLOWING_QUERY_KEY] });
     },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status === 409) return;

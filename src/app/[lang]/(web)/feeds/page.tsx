@@ -3,6 +3,7 @@ import InfiniteFeed from "@/components/pages/FeedsPage";
 import { cookies } from "next/headers";
 import axios from "@/lib/axios";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { FEED_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
 
 const getProducts = async (page = 1) => {
   const res = await axios
@@ -24,7 +25,7 @@ const queryClient = new QueryClient();
 
 export default async function Page() {
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ["products", "feeds"],
+    queryKey: [PRODUCTS_QUERY_KEY, FEED_QUERY_KEY],
     queryFn: ({ pageParam = 1 }) => getProducts(pageParam),
     initialPageParam: 1
   });

@@ -5,6 +5,7 @@ import { IFullProduct, IProductAttribute } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import useAdjustProductsQueries from "./useAdjustProductsQueries";
+import { CART_QUERY_KEY } from "@/constants/query-keys";
 
 export type IAddToCartProduct = Pick<IFullProduct, "_id" | "name" | "productAttributes" | "seName" | "hasAttributes">;
 interface CartHookProps {
@@ -38,7 +39,7 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
       onSuccess?.(true);
       handleDataAdjustment(true);
       handleDataAdjustment(true);
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      queryClient.invalidateQueries({ queryKey: [CART_QUERY_KEY] });
     },
     onError: (error) => {
       if (isAxiosError(error) && error.response?.status === 409) {
@@ -55,7 +56,7 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
     onSuccess: () => {
       onSuccess?.(false);
       handleDataAdjustment(false);
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      queryClient.invalidateQueries({ queryKey: [CART_QUERY_KEY] });
       getCartItems();
     },
     onError: (error) => {

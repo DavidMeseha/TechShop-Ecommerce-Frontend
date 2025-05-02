@@ -11,6 +11,7 @@ import { LocalLink } from "@/components/LocalizedNavigation";
 import { BiLoaderCircle } from "react-icons/bi";
 import { Variants, motion } from "framer-motion";
 import { useOverlayStore } from "@/stores/overlayStore";
+import { SEARCH_QUERY_KEY } from "@/constants/query-keys";
 
 type SearchResponseItem = {
   item: IFullProduct | IVendor | ITag | ICategory;
@@ -50,7 +51,7 @@ export default function SearchOverlay() {
   };
 
   const searchQuery = useQuery({
-    queryKey: ["find", searchText, options],
+    queryKey: [SEARCH_QUERY_KEY, searchText, options],
     queryFn: () =>
       axios.post<SearchResponseItem[]>("/api/common/find", {
         ...options,

@@ -1,9 +1,9 @@
 import { useUserStore } from "@/stores/userStore";
 import React, { useMemo } from "react";
-import { LocalLink, useLocalPathname } from "../../LocalizedNavigation";
+import { LocalLink, useLocalPathname } from "@/components/LocalizedNavigation";
 import { useTranslation } from "@/context/Translation";
-import mainNavItems from "@/schemas/mainNav";
-import DropdownButton from "../../DropdownButton";
+import mainNavItems from "@/constants/main-nav";
+import DropdownButton from "@/components/DropdownButton";
 import { useRouter } from "@bprogress/next";
 
 export default function HeaderNav() {

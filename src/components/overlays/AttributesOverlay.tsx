@@ -12,12 +12,13 @@ import { getProductAttributes } from "@/services/products.service";
 import { useProductStore } from "@/stores/productStore";
 import { IAddToCartProduct } from "@/hooks/useAddToCart";
 import { useTranslation } from "@/context/Translation";
+import { PRODUCT_ATTRIBUTES_QUERY_KEY } from "@/constants/query-keys";
 
 export default function AttributesOverlay() {
   const { setIsProductAttributesOpen, productIdToOverlay, action } = useProductStore();
 
   const productQuery = useQuery({
-    queryKey: ["productAttributes", productIdToOverlay],
+    queryKey: [PRODUCT_ATTRIBUTES_QUERY_KEY, productIdToOverlay],
     queryFn: () => getProductAttributes(productIdToOverlay ?? "0"),
     enabled: !!productIdToOverlay
   });

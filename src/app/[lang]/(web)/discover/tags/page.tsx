@@ -8,6 +8,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/LoadingUi/LoadingSpinner";
 import { getTags } from "@/services/products.service";
+import { DISCOVER_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
 
 type ListItemProps = {
   tag: ITag;
@@ -16,7 +17,7 @@ type ListItemProps = {
 
 export default function Page() {
   const { hasNextPage, fetchNextPage, isFetching, data, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["tagsDiscover"],
+    queryKey: [TAGS_QUERY_KEY, DISCOVER_QUERY_KEY],
     queryFn: ({ pageParam }) => getTags({ page: pageParam, limit: 10 }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1

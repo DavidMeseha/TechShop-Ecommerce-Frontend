@@ -3,12 +3,12 @@
 import { TranslationProvider } from "@/context/Translation";
 import { Language, Translation } from "@/types";
 import { ReactNode, useEffect } from "react";
-import NetworkErrors from "../../context/NetworkErrors";
+import NetworkErrors from "@/context/NetworkErrors";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAppStore } from "@/stores/appStore";
-import QueryProvider from "../../context/QueryProvider";
+import QueryProvider from "@/context/QueryProvider";
 import ProgressBarProvider from "@/context/ProgressBarProvider";
-import ReactScan from "../../context/ReactScan";
+import ReactScan from "@/context/ReactScan";
 
 type Props = {
   children: ReactNode;

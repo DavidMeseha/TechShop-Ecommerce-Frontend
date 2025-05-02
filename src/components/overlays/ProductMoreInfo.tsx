@@ -6,7 +6,7 @@ import { selectDefaultAttributes } from "@/lib/misc";
 import { LocalLink } from "@/components/LocalizedNavigation";
 import ProductAttributes from "../product/Attributes";
 import { useQuery } from "@tanstack/react-query";
-import { IFullProduct, IProductAttribute } from "../../types";
+import { IFullProduct, IProductAttribute } from "@/types";
 import Button from "../ui/Button";
 import { useTranslation } from "@/context/Translation";
 import useAddToCart from "@/hooks/useAddToCart";
@@ -15,13 +15,14 @@ import { getProductDetails } from "@/services/products.service";
 import { useProductStore } from "@/stores/productStore";
 import ProductReviews from "../Reviews";
 import ProductCarosel from "../product/ProductCarosel";
+import { SINGLE_PRODUCT_QUERY_KEY } from "@/constants/query-keys";
 
 export default function ProductMoreInfoOverlay() {
   const setIsProductMoreInfoOpen = useProductStore((state) => state.setIsProductMoreInfoOpen);
   const productId = useProductStore((state) => state.productIdToOverlay);
 
   const productQuery = useQuery({
-    queryKey: ["product", productId],
+    queryKey: [SINGLE_PRODUCT_QUERY_KEY, productId],
     queryFn: () => getProductDetails(productId ?? ""),
     enabled: !!productId
   });

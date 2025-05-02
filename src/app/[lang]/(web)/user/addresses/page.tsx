@@ -10,6 +10,7 @@ import EditAddressPage from "@/components/pages/EditAddressPage";
 import { deleteAddress, userAdresses } from "@/services/user.service";
 import Button from "@/components/ui/Button";
 import { IAddress } from "@/types";
+import { ADDRESSES_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
 
 type Tap = "newaddress" | "addresses" | "editaddress";
 
@@ -19,13 +20,13 @@ export default function Page() {
   const { t } = useTranslation();
 
   const addressesQuery = useQuery({
-    queryKey: ["userAddresses"],
+    queryKey: [USER_QUERY_KEY, ADDRESSES_QUERY_KEY],
     queryFn: () => userAdresses()
   });
   const addresses = addressesQuery.data ?? [];
 
   const deleteAddressMutation = useMutation({
-    mutationKey: ["addAddress"],
+    mutationKey: ["removeAddress"],
     mutationFn: (id: string) => deleteAddress(id),
     onSuccess: () => {
       addressesQuery.refetch();

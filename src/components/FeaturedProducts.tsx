@@ -9,13 +9,14 @@ import { useInView } from "react-intersection-observer";
 import ProductCardLoading from "./LoadingUi/ProductCardLoading";
 import SectionHeader from "./SectionHeader";
 import { useTranslation } from "@/context/Translation";
+import { FEATURED_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
 
 export function FeaturedProducts() {
   const [ref, inView] = useInView();
   const { t } = useTranslation();
 
   const { data, isPending } = useQuery({
-    queryKey: ["products", "featured"],
+    queryKey: [PRODUCTS_QUERY_KEY, FEATURED_QUERY_KEY],
     queryFn: async () => homeFeedProducts({ page: 1, limit: 7 }),
     enabled: inView
   });

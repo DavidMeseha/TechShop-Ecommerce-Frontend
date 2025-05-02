@@ -10,6 +10,7 @@ import { IFullProduct, IProductAttribute } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { removeFromCart } from "@/services/userActions.service";
 import { useUserStore } from "@/stores/userStore";
+import { CART_QUERY_KEY } from "@/constants/query-keys";
 
 type Props = {
   product: IFullProduct;
@@ -33,7 +34,7 @@ export default React.memo(
       onSuccess: () => {
         setIsInCart(false);
         getCartItems();
-        queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+        queryClient.invalidateQueries({ queryKey: [CART_QUERY_KEY] });
       }
     });
 

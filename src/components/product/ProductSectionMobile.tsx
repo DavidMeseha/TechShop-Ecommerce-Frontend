@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { IFullProduct } from "../../types";
+import { IFullProduct } from "@/types";
 import ProductVendorButton from "./VendorButton";
 import LikeProductButton from "./LikeButton";
 import RateProductButton from "./RateButton";

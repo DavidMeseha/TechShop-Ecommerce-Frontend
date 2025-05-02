@@ -8,6 +8,7 @@ import { useTranslation } from "@/context/Translation";
 import { homeFeedProducts } from "@/services/products.service";
 import { useInView } from "react-intersection-observer";
 import SectionHeader from "./SectionHeader";
+import { PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
 
 const PRODUCTS_LIMIT = 5;
 
@@ -16,7 +17,7 @@ export default function MoreProducts() {
   const [ref, inView] = useInView();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
-    queryKey: ["products", "more"],
+    queryKey: [PRODUCTS_QUERY_KEY],
     queryFn: async ({ pageParam = 1 }) => homeFeedProducts({ page: pageParam, limit: PRODUCTS_LIMIT }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1,

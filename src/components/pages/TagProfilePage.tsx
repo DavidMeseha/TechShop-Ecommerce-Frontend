@@ -6,6 +6,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import ProductsGridView from "@/components/product/ProductsGridView";
 import { getProductsByTag } from "@/services/products.service";
+import { PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY } from "@/constants/query-keys";
 
 type Props = {
   tag: ITag;
@@ -20,7 +21,7 @@ export default function TagProfilePage({ tag }: Props) {
   });
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching, isFetchedAfterMount } = useInfiniteQuery({
-    queryKey: ["products", "forTag", tag._id],
+    queryKey: [PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY, tag.seName],
     queryFn: ({ pageParam }) => getProductsByTag(tag._id, { page: pageParam }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1

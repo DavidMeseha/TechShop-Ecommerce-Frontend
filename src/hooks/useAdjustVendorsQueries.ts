@@ -1,3 +1,4 @@
+import { PRODUCTS_QUERY_KEY, VENDORS_QUERY_KEY } from "@/constants/query-keys";
 import { IFullProduct, IVendor } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -7,7 +8,7 @@ export default function useAdjustVendorsQueries(vendorId: string) {
   //just not to fetch all vendor requests once again
   const adjustVendorsQueries = (fieldsToChange: Partial<IVendor>) => {
     queryClient.setQueriesData(
-      { queryKey: ["vendors"] },
+      { queryKey: [VENDORS_QUERY_KEY] },
       (oldData: IVendor[] | { data: IVendor[] } | { pages: { data: IVendor[] }[] }) => {
         if (!oldData) return;
         if (Array.isArray(oldData)) {
@@ -33,7 +34,7 @@ export default function useAdjustVendorsQueries(vendorId: string) {
 
   const adjustProductsQueries = (fieldsToChange: Partial<IVendor>) => {
     queryClient.setQueriesData(
-      { queryKey: ["products"] }, // Match any query key starting with "products"
+      { queryKey: [PRODUCTS_QUERY_KEY] }, // Match any query key starting with "products"
       (oldData: IFullProduct[] | { data: IFullProduct[] } | { pages: { data: IFullProduct[] }[] }) => {
         if (!oldData) return;
         if (Array.isArray(oldData)) {

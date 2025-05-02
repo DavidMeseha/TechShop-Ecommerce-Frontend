@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getTags } from "@/services/products.service";
 import TagItemLoading from "./LoadingUi/TagItemLoading";
 import { useInView } from "react-intersection-observer";
+import { FEATURED_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
 
 type ListItemProps = {
   tag: ITag;
@@ -16,8 +17,9 @@ type ListItemProps = {
 
 export function FeaturedTags() {
   const [ref, inView] = useInView();
+
   const { isPending, data } = useQuery({
-    queryKey: ["tags", "featured"],
+    queryKey: [TAGS_QUERY_KEY, FEATURED_QUERY_KEY],
     queryFn: () => getTags({ page: 1, limit: 10 }),
     enabled: inView
   });

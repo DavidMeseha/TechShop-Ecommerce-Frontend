@@ -11,13 +11,14 @@ import { useOverlayStore } from "@/stores/overlayStore";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { homeFeedProducts } from "@/services/products.service";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
+import { FEED_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
 
 export default function FeedsPage() {
   const { t } = useTranslation();
   const setIsHomeMenuOpen = useOverlayStore((state) => state.setIsHomeMenuOpen);
   const setIsSearchOpen = useOverlayStore((state) => state.setIsSearchOpen);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["products", "feeds"],
+    queryKey: [PRODUCTS_QUERY_KEY, FEED_QUERY_KEY],
     queryFn: async ({ pageParam = 1 }) => homeFeedProducts({ page: pageParam, limit: 3 }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1

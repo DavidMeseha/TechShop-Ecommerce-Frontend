@@ -1,6 +1,6 @@
 import { useTranslation } from "@/context/Translation";
 import { useUserSetup } from "@/context/UserProvider";
-import { headerProfileMenu } from "@/schemas/menus";
+import { headerProfileMenu } from "@/constants/menus";
 import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
 import Image from "next/image";

@@ -12,6 +12,7 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import useFollow from "@/hooks/useFollow";
 import ProductsGridView from "@/components/product/ProductsGridView";
 import { getProductsByVendor } from "@/services/products.service";
+import { PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY } from "@/constants/query-keys";
 
 type Props = {
   vendor: IVendor;
@@ -48,8 +49,8 @@ export default function VendorProfilePage({ vendor }: Props) {
     onError: (shouldFollow) => setFollow({ state: !shouldFollow, count: follow.count + (!shouldFollow ? 1 : -1) })
   });
 
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching, isFetchedAfterMount } = useInfiniteQuery({
-    queryKey: ["products", "forVendor", vendor._id],
+  const { data, hasNextPage, fetchNextPage, isLoading, isFetchedAfterMount, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: [PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY, vendor.seName],
     queryFn: ({ pageParam }) => getProductsByVendor(vendor._id, { page: pageParam, limit: 10 }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1
@@ -90,7 +91,7 @@ export default function VendorProfilePage({ vendor }: Props) {
       {products.length < 1 && isFetchedAfterMount ? (
         <div className="py-14 text-center text-gray-400">{t("profile.noProducts")}</div>
       ) : (
-        <ProductsGridView isLoading={isFetchingNextPage || isFetching} limit={5} products={products} />
+        <ProductsGridView isLoading={isLoading} limit={10} products={products} />
       )}
 
       {hasNextPage ? <div className="h-4" ref={ref} /> : null}

@@ -14,6 +14,13 @@ import ProductsGridView from "@/components/product/ProductsGridView";
 import { useOverlayStore } from "@/stores/overlayStore";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
 import { UserActivity } from "@/components/UserActivity";
+import {
+  CART_QUERY_KEY,
+  INFO_QUERY_KEY,
+  PRODUCTS_QUERY_KEY,
+  SAVED_PRODUCTS_QUERY_KEY,
+  USER_QUERY_KEY
+} from "@/constants/query-keys";
 
 export default function Page() {
   const isEditProfileOpen = useOverlayStore((state) => state.isEditProfileOpen);
@@ -25,19 +32,19 @@ export default function Page() {
   const [isCart, setIsCart] = useState<boolean>(true);
 
   const cartItemsQuery = useQuery({
-    queryKey: ["products", "cartItems"],
+    queryKey: [USER_QUERY_KEY, PRODUCTS_QUERY_KEY, CART_QUERY_KEY],
     queryFn: () => getCartProducts(),
     enabled: isCart
   });
 
   const savesQuery = useQuery({
-    queryKey: ["products", "saved"],
+    queryKey: [USER_QUERY_KEY, PRODUCTS_QUERY_KEY, SAVED_PRODUCTS_QUERY_KEY],
     queryFn: () => getSavedProducts(),
     enabled: !isCart
   });
 
   const userInfoQuery = useQuery({
-    queryKey: ["user", "info"],
+    queryKey: [USER_QUERY_KEY, INFO_QUERY_KEY],
     queryFn: () => getUserInfo()
   });
 

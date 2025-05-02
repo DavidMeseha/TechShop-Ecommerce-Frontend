@@ -1,5 +1,5 @@
 import React from "react";
-import OverlayLayout from "../../layouts/OverlayLayout";
+import OverlayLayout from "@/components/layouts/OverlayLayout";
 import { useOverlayStore } from "@/stores/overlayStore";
 import LoginPageForm from "@/components/forms/LoginPageForm";
 

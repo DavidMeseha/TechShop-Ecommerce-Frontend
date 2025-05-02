@@ -6,11 +6,12 @@ import OrderItem from "@/components/OrderItem";
 import { BiLoaderCircle } from "react-icons/bi";
 import { useTranslation } from "@/context/Translation";
 import { getOrders } from "@/services/user.service";
+import { ORDERS_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
 
 export default function OrdersPage() {
   const { t } = useTranslation();
   const ordersQuery = useQuery({
-    queryKey: ["orders"],
+    queryKey: [USER_QUERY_KEY, ORDERS_QUERY_KEY],
     queryFn: () => getOrders()
   });
 

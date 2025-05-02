@@ -10,12 +10,13 @@ import Loading from "@/components/LoadingUi/LoadingSpinner";
 import useFollow from "@/hooks/useFollow";
 import { useTranslation } from "@/context/Translation";
 import { getVendors } from "@/services/products.service";
+import { DISCOVER_QUERY_KEY, VENDORS_QUERY_KEY } from "@/constants/query-keys";
 
 export default function Page() {
   const { t } = useTranslation();
 
   const { hasNextPage, fetchNextPage, isFetching, data, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["vendors", "discover"],
+    queryKey: [VENDORS_QUERY_KEY, DISCOVER_QUERY_KEY],
     queryFn: ({ pageParam }) => getVendors({ page: pageParam, limit: 10 }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1
