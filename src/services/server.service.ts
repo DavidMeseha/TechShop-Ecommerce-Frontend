@@ -10,7 +10,7 @@ export default async function productsServerRepo() {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: `Bearer${(await cookies()).get("session")?.value}`
+      Authorization: `Bearer ${(await cookies()).get("session")?.value}`
     }
   });
 

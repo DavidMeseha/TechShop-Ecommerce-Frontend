@@ -8,13 +8,21 @@ import { PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY } from "@/constants/query-k
 import productsServerRepo from "@/services/server.service";
 import { cache } from "react";
 import { getVendorInfo } from "@/services/products.service";
+import { notFound } from "next/navigation";
 
 export const revalidate = 600;
 export const dynamicParams = true;
 
 type Props = { params: Promise<{ seName: string }> };
 
-const cachedVendorInfo = cache((seName: string) => getVendorInfo(seName));
+const cachedVendorInfo = cache(async (seName: string) => {
+  try {
+    const vendor = await getVendorInfo(seName);
+    return vendor;
+  } catch {
+    notFound();
+  }
+});
 
 export async function generateStaticParams() {
   const vendors = await axios.get<{ seName: string }[]>(`/api/catalog/allVendors`).then((res) => res.data);
@@ -43,15 +51,7 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
   }
 }
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false
-    }
-  }
-});
+const queryClient = new QueryClient({});
 
 export default async function Page(props: Props) {
   const { seName } = await props.params;
@@ -62,8 +62,7 @@ export default async function Page(props: Props) {
   await queryClient.prefetchInfiniteQuery({
     queryKey: [PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY, vendor.seName],
     queryFn: ({ pageParam = 1 }) => getProductsByVendor(vendor._id, { page: pageParam, limit: 10 }),
-    initialPageParam: 1,
-    staleTime: 1000 * 60 * 5
+    initialPageParam: 1
   });
 
   return (
@@ -71,8 +70,4 @@ export default async function Page(props: Props) {
       <VendorProfilePage vendor={vendor} />
     </HydrationBoundary>
   );
-  // try {
-  // } catch (err: any) {
-  //   if (isAxiosError(err) && err.response && err.response.status >= 400 && err.response.status < 500) notFound();
-  // }
 }
