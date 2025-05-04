@@ -3,23 +3,20 @@ import { NextResponse } from "next/server";
 import { getPathnameLang } from "./lib/misc";
 
 export async function middleware(req: NextRequest) {
-  try {
-    let res: NextResponse = NextResponse.next();
-    const { pathname } = req.nextUrl;
-    const lang = req.cookies.get("lang")?.value ?? "en";
+  let res: NextResponse = NextResponse.next();
 
-    const pathnameLang = getPathnameLang(pathname);
-    const pathOnly = pathnameLang ? pathname.replace("/" + pathnameLang, "") : pathname;
+  const { pathname } = req.nextUrl;
+  const lang = req.cookies.get("lang")?.value ?? "en";
 
-    if (!pathnameLang || lang !== pathnameLang) {
-      req.nextUrl.pathname = `/${lang}${pathOnly}`;
-      return NextResponse.redirect(req.nextUrl);
-    }
+  const pathnameLang = getPathnameLang(pathname);
+  const pathOnly = pathnameLang ? pathname.replace("/" + pathnameLang, "") : pathname;
 
-    return res;
-  } catch {
-    return NextResponse.next();
+  if (!pathnameLang || lang !== pathnameLang) {
+    req.nextUrl.pathname = `/${lang}${pathOnly}`;
+    return NextResponse.redirect(req.nextUrl);
   }
+
+  return res;
 }
 
 export const config: MiddlewareConfig = {

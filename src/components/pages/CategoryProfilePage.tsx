@@ -7,6 +7,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import ProductsGridView from "@/components/product/ProductsGridView";
 import { getProductsByCateory } from "@/services/products.service";
+import { PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY } from "@/constants/query-keys";
 
 type Props = {
   category: ICategory;
@@ -21,7 +22,7 @@ export default function CategoryProfilePage({ category }: Props) {
   });
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching, isFetchedAfterMount } = useInfiniteQuery({
-    queryKey: ["products", "forCategory", category.seName],
+    queryKey: [PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY, category.seName],
     queryFn: ({ pageParam }) => getProductsByCateory(category._id, { page: pageParam }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1

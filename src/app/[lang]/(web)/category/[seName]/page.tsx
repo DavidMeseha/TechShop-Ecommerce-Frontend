@@ -1,31 +1,35 @@
 import CategoryProfilePage from "@/components/pages/CategoryProfilePage";
-import { ICategory } from "@/types";
-import axios from "@/lib/axios";
-import { AxiosError } from "axios";
 import { cache } from "react";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
+import prefetchServerRepo from "@/services/prefetchServerRepo";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY } from "@/constants/query-keys";
+import { categoriesToGenerate } from "@/services/staticGeneration.service";
 
 type Props = { params: Promise<{ seName: string }> };
-
-const getCategoryInfo = cache(async (seName: string) => {
-  return await axios.get<ICategory>(`/api/Catalog/Category/${seName}`).then((res) => res.data);
-});
 
 export const revalidate = 600;
 export const dynamicParams = true;
 
+const cachedCategoryInfo = cache(async (seName: string) => {
+  const { getCategoryInfo } = await prefetchServerRepo();
+  try {
+    const category = await getCategoryInfo(seName);
+    return category;
+  } catch {
+    notFound();
+  }
+});
+
 export async function generateStaticParams() {
-  const categories = await axios.get<{ seName: string }[]>(`/api/catalog/allCategories`).then((res) => res.data);
-  return categories.map((category) => ({
-    seName: category.seName
-  }));
+  return await categoriesToGenerate();
 }
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const seName = (await params).seName;
+  const { seName } = await params;
   try {
-    const category = await getCategoryInfo(seName);
+    const category = await cachedCategoryInfo(seName);
     const parentMeta = await parent;
 
     return {
@@ -42,25 +46,22 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   }
 }
 
+const queryClient = new QueryClient({});
+
 export default async function Page({ params }: Props) {
   const seName = (await params).seName;
-  try {
-    const category = await getCategoryInfo(seName);
-    return <CategoryProfilePage category={category} />;
-  } catch (err: any) {
-    const error = err as AxiosError;
-    if (error.response) {
-      if (error.response.status === 404) {
-        notFound();
-      } else if (error.response.status >= 400 && error.response.status < 500) {
-        throw new Error(`Client error: ${error.response.status} ${error.response.statusText}`, { cause: error });
-      } else if (error.response.status >= 500) {
-        throw new Error(`Server error: ${error.response.status} ${error.response.statusText}`, { cause: error });
-      }
-    } else if (error.request) {
-      throw new Error("Network error: No response received", { cause: error });
-    } else {
-      throw new Error(`Request error: ${error.message}`, { cause: error });
-    }
-  }
+  const { getProductsByCategory } = await prefetchServerRepo();
+  const category = await cachedCategoryInfo(seName);
+
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY, category.seName],
+    queryFn: ({ pageParam }) => getProductsByCategory(category._id, { page: pageParam }),
+    initialPageParam: 1
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <CategoryProfilePage category={category} />;
+    </HydrationBoundary>
+  );
 }

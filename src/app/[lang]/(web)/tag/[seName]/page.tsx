@@ -1,30 +1,35 @@
-import axios from "@/lib/axios";
-import { ITag } from "@/types";
 import TagProfilePage from "@/components/pages/TagProfilePage";
-import { cache } from "react";
 import { Metadata, ResolvingMetadata } from "next";
-import { AxiosError } from "axios";
 import { notFound } from "next/navigation";
-
-type Props = { params: Promise<{ seName: string }> };
-
-const getTagInfo = cache(async (seName: string) => {
-  return await axios.get<ITag>(`/api/Catalog/tag/${seName}`).then((res) => res.data);
-});
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { cache } from "react";
+import prefetchServerRepo from "@/services/prefetchServerRepo";
+import { PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY } from "@/constants/query-keys";
+import { tagsToGenerate } from "@/services/staticGeneration.service";
 
 export const revalidate = 600;
 export const dynamicParams = true;
+
+type Props = { params: Promise<{ seName: string }> };
+
+const cachedTagInfo = cache(async (seName: string) => {
+  const { getTagInfo } = await prefetchServerRepo();
+  try {
+    const tag = await getTagInfo(seName);
+    return tag;
+  } catch {
+    notFound();
+  }
+});
+
 export async function generateStaticParams() {
-  const tags = await axios.get<{ seName: string }[]>(`/api/catalog/allTags`).then((res) => res.data);
-  return tags.map((tag) => ({
-    seName: tag.seName
-  }));
+  return await tagsToGenerate();
 }
 
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const seName = (await props.params).seName;
+  const { seName } = await props.params;
   try {
-    const tag = await getTagInfo(seName);
+    const tag = await cachedTagInfo(seName);
     const parentMeta = await parent;
 
     return {
@@ -41,13 +46,22 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
   }
 }
 
+const queryClient = new QueryClient({});
+
 export default async function Page(props: Props) {
   const seName = (await props.params).seName;
-  try {
-    const tag = await getTagInfo(seName);
-    return <TagProfilePage tag={tag} />;
-  } catch (err: any) {
-    const error = err as AxiosError;
-    if (error.response && error.response.status >= 400 && error.response.status < 500) notFound();
-  }
+  const { getProductsByTag } = await prefetchServerRepo();
+  const tag = await cachedTagInfo(seName);
+
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY, tag.seName],
+    queryFn: ({ pageParam }) => getProductsByTag(tag._id, { page: pageParam }),
+    initialPageParam: 1
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <TagProfilePage tag={tag} />;
+    </HydrationBoundary>
+  );
 }

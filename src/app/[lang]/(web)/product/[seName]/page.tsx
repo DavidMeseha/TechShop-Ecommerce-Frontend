@@ -62,6 +62,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 
 export default async function Page({ params }: Props) {
   const seName = (await params).seName;
+
   try {
     const product = await getProduct(seName);
     return <ProductPage product={product} />;
