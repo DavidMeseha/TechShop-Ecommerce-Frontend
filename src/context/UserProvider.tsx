@@ -10,7 +10,7 @@ import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
 import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
 import { usePathname } from "next/navigation";
-import { CHECK_USER_TOKEN_QUERY_KEY, REFRESH_TOKEN_QUERY_KEY } from "@/constants/query-keys";
+import { CHECK_TOKEN_QUERY_KEY, REFRESH_TOKEN_QUERY_KEY } from "@/constants/query-keys";
 
 type ContextData = {
   loginUser: (user: { user: User; token: string }) => void;
@@ -32,8 +32,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     axios.interceptors.request.clear();
     setUser(null);
     await queryClient.invalidateQueries({
-      predicate: (q) =>
-        !q.queryKey.includes(CHECK_USER_TOKEN_QUERY_KEY) && !q.queryKey.includes(REFRESH_TOKEN_QUERY_KEY)
+      predicate: (q) => !q.queryKey.includes(CHECK_TOKEN_QUERY_KEY) && !q.queryKey.includes(REFRESH_TOKEN_QUERY_KEY)
     });
   };
 
@@ -78,7 +77,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
 
   //check token validity
   const _check = useQuery({
-    queryKey: [CHECK_USER_TOKEN_QUERY_KEY],
+    queryKey: [CHECK_TOKEN_QUERY_KEY],
     queryFn: () =>
       checkTokenValidity()
         .then((data) => initUser(data))

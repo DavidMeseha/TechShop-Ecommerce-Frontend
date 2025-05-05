@@ -15,15 +15,21 @@ type Props = { params: Promise<{ seName: string }> };
 const cachedTagInfo = cache(async (seName: string) => {
   const { getTagInfo } = await prefetchServerRepo();
   try {
-    const tag = await getTagInfo(seName);
-    return tag;
+    return await getTagInfo(seName);
   } catch {
     notFound();
   }
 });
 
 export async function generateStaticParams() {
-  return await tagsToGenerate();
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  /* eslint-disable no-console */
+  try {
+    return await tagsToGenerate();
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
 }
 
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {

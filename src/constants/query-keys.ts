@@ -20,7 +20,7 @@ export const SEARCH_QUERY_KEY = "find";
 export const CITIES_QUERY_KEY = "cities";
 
 export const USER_QUERY_KEY = "user";
-export const CHECK_USER_TOKEN_QUERY_KEY = "check-token";
+export const CHECK_TOKEN_QUERY_KEY = "check-token";
 export const REFRESH_TOKEN_QUERY_KEY = "refresh-token";
 export const INFO_QUERY_KEY = "info";
 export const CART_QUERY_KEY = "cart";
