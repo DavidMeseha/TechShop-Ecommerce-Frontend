@@ -1,7 +1,8 @@
+import { BASE_URL } from "@/lib/axios";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.API_URL
+  baseURL: BASE_URL
 });
 
 export async function tagsToGenerate() {
