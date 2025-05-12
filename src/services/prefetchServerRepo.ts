@@ -1,10 +1,9 @@
 "use server";
 
+import { BASE_URL } from "@/lib/axios";
 import { ICategory, IFullProduct, ITag, IVendor, Pagination } from "@/types";
 import axios from "axios";
 import { cookies } from "next/headers";
-
-const BASE_URL = process.env.API_URL;
 
 export default async function prefetchServerRepo() {
   const api = axios.create({
