@@ -1,4 +1,3 @@
-import { setToken, setUserCookies } from "@/actions";
 import { useTranslation } from "@/context/Translation";
 import axios, { resetAxiosIterceptor } from "@/lib/axios";
 import { checkTokenValidity, getGuestToken, refreshToken } from "@/services/auth.service";
@@ -9,8 +8,8 @@ import { toast } from "react-toastify";
 import { User } from "@/types";
 import { useRouter } from "@bprogress/next";
 import { getLastPageBeforSignUp } from "@/lib/localestorageAPI";
-import { usePathname } from "next/navigation";
 import { CHECK_TOKEN_QUERY_KEY, REFRESH_TOKEN_QUERY_KEY } from "@/constants/query-keys";
+import { setToken } from "@/lib/token";
 
 type ContextData = {
   loginUser: (user: { user: User; token: string }) => void;
@@ -25,7 +24,6 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   const user = useUserStore((state) => state.user);
   const queryClient = useQueryClient();
   const router = useRouter();
-  const pathname = usePathname();
   const { t } = useTranslation();
 
   const cleanup = async () => {
@@ -41,14 +39,14 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     resetAxiosIterceptor(data.token);
     setUser(data.user);
     getCartItems();
-    setUserCookies(data.token, data.user.language).then(
-      () => pathname.includes("login") && setTimeout(() => router.push(getLastPageBeforSignUp()), 500)
-    );
+    setToken(data.token);
+    router.push(getLastPageBeforSignUp());
   };
 
   const logout = async () => {
     cleanup();
-    guestTokenMutation.mutateAsync().then(() => setTimeout(() => router.push("/login"), 500));
+    await guestTokenMutation.mutateAsync();
+    router.push("/login");
   };
 
   const initUser = (user: User) => {
@@ -71,7 +69,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   const failedRefresh = () => {
     cleanup();
     if (user?.isRegistered) toast.error(t("auth.forcedLogout"));
-    guestTokenMutation.mutateAsync();
+    guestTokenMutation.mutate();
     return null;
   };
 

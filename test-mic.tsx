@@ -27,7 +27,7 @@ export const renderWithProviders = async (ui: React.ReactNode, lang: Language = 
   return await act(async () =>
     render(
       <AppProviders dictionary={dictionary} lang={lang}>
-        <MainLayout token="xxxxx-xxxx-xxxx">{ui}</MainLayout>
+        <MainLayout>{ui}</MainLayout>
       </AppProviders>
     )
   );

@@ -5,26 +5,40 @@ import { FeaturedVendors } from "@/components/FeaturedVendors";
 import MoreProducts from "@/components/MoreProducts";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { IFullProduct, Pagination } from "@/types";
-import axios from "@/lib/axios";
+import { BASE_URL } from "@/lib/axios";
 import { cookies } from "next/headers";
 import { getTags } from "@/services/products.service";
 import { FEATURED_QUERY_KEY, PRODUCTS_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
 
-const getProducts = async (page = 1) => {
-  const res = await axios
-    .get<{ data: IFullProduct[]; pages: Pagination }>("api/catalog/homefeed", {
-      params: {
-        page: page,
-        limit: 7
-      },
-      headers: {
-        Authorization: `Bearer ${(await cookies()).get("session")?.value}`
-      }
-    })
-    .catch(() => ({ data: { data: [], pages: { current: 0, limit: 0, hasNext: false } } }));
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-  return res.data ?? [];
-};
+async function getProducts(page = 1): Promise<{ data: IFullProduct[]; pages: Pagination }> {
+  try {
+    const cookieStore = await cookies();
+    const response = await fetch(`${BASE_URL}/api/catalog/homefeed?page=${page}&limit=7`, {
+      headers: {
+        Authorization: `Bearer ${cookieStore.get("session")?.value}`,
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0"
+      },
+      next: {
+        revalidate: 0
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data ?? { dta: [], pages: { current: 0, limit: 0, hasNext: false } };
+  } catch {
+    return { data: [], pages: { current: 0, limit: 0, hasNext: false } };
+  }
+}
 
 const queryClient = new QueryClient({});
 

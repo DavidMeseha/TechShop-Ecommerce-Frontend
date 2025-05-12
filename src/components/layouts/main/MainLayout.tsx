@@ -8,21 +8,20 @@ import UserHandler from "@/context/UserProvider";
 import axios from "@/lib/axios";
 import TopMobileNav from "./TopMobileNav";
 import { usePathname } from "next/navigation";
+import { getToken } from "@/lib/token";
 
 interface MainLayoutProps {
   children: React.ReactNode;
-  token?: string;
 }
 
-export default function MainLayout({ children, token }: MainLayoutProps) {
+export default function MainLayout({ children }: MainLayoutProps) {
   const pathname = usePathname();
-  // console.log("render => ", token);
 
   useMemo(() => {
     // console.log("useEffect => ", token);
     axios.interceptors.request.clear();
     axios.interceptors.request.use((config) => {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${getToken()}`;
       return config;
     });
   }, []);

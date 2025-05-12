@@ -10,10 +10,18 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     title: "TechShop",
-    description: ""
+    description: "an ecommerce description"
   },
   verification: {
     google: "LNXuD0OB-K9UiZBq_wJGKs72Ypb6eJ2Y1I-GvhN7a_o"
+  },
+  alternates: {
+    canonical: "https://techshop-commerce.vercel.app",
+    languages: {
+      en: "/en",
+      ru: "/ru",
+      uk: "/uk"
+    }
   }
 };
 
