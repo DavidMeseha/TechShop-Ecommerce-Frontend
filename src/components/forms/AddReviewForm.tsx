@@ -2,7 +2,7 @@ import { FieldError } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { addReview } from "@/services/products.service";
-import { useState } from "react";
+import React, { useState } from "react";
 import RatingStars from "../ui/RatingStars";
 import Button from "../ui/Button";
 import { useTranslation } from "@/context/Translation";
@@ -37,7 +37,8 @@ export default function AddReviewForm({ productId, onSuccess }: Props) {
     onError: () => toast.error("Failed to add review")
   });
 
-  const addReviewSubmit = () => {
+  const addReviewSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (form.rating <= 0 || form.reviewText.length === 0 || !productId) return;
     addReviewMutation.mutate(productId);
   };
