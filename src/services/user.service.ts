@@ -69,3 +69,7 @@ export async function getUserReviews(params: { page: number }) {
     .get<{ data: IProductReview[]; pages: Pagination }>("/api/user/reviews", { params })
     .then((res) => res.data);
 }
+
+export async function vendorIsFollowed(seName: string) {
+  return axios.get<IVendor>(`/api/catalog/vendor/${seName}`).then((res) => res.data.isFollowed);
+}

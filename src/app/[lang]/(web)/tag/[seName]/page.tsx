@@ -1,14 +1,9 @@
 import TagProfilePage from "@/components/pages/TagProfilePage";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { cache } from "react";
 import prefetchServerRepo from "@/services/prefetchServerRepo";
-import { PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY } from "@/constants/query-keys";
 import { tagsToGenerate } from "@/services/staticGeneration.service";
-
-export const revalidate = 600;
-export const dynamicParams = true;
 
 type Props = { params: Promise<{ seName: string }> };
 
@@ -22,12 +17,9 @@ const cachedTagInfo = cache(async (seName: string) => {
 });
 
 export async function generateStaticParams() {
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  /* eslint-disable no-console */
   try {
     return await tagsToGenerate();
-  } catch (error) {
-    console.error("Error generating static params:", error);
+  } catch {
     return [];
   }
 }
@@ -52,22 +44,9 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
   }
 }
 
-const queryClient = new QueryClient({});
-
 export default async function Page(props: Props) {
-  const seName = (await props.params).seName;
-  const { getProductsByTag } = await prefetchServerRepo();
+  const { seName } = await props.params;
   const tag = await cachedTagInfo(seName);
 
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: [PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY, tag.seName],
-    queryFn: ({ pageParam }) => getProductsByTag(tag._id, { page: pageParam }),
-    initialPageParam: 1
-  });
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <TagProfilePage tag={tag} />;
-    </HydrationBoundary>
-  );
+  return <TagProfilePage tag={tag} />;
 }

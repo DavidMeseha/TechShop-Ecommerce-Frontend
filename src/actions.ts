@@ -7,11 +7,11 @@ import { Language } from "./types";
 import { getPathnameLang } from "./lib/misc";
 
 export async function setToken(token: string) {
-  (await cookies()).set("session", token, { httpOnly: true, sameSite: "strict", secure: true });
+  (await cookies()).set("token", token, { httpOnly: true, sameSite: "strict", secure: true });
 }
 
 export async function removeToken() {
-  (await cookies()).delete("session");
+  (await cookies()).delete("token");
 }
 
 export async function setLanguage(lang: Language) {
@@ -38,7 +38,7 @@ export async function changeLanguage(lang: Language, pathname: string) {
       {},
       {
         headers: {
-          Authorization: `Bearer ${(await cookies()).get("session")?.value}`,
+          Authorization: `Bearer ${(await cookies()).get("token")?.value}`,
           "Accept-Language": (await cookies()).get("lang")?.value
         }
       }

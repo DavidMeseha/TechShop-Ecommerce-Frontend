@@ -13,7 +13,7 @@ const getProducts = async (page = 1) => {
         limit: 2
       },
       headers: {
-        Authorization: `Bearer ${(await cookies()).get("session")?.value}`
+        Authorization: `Bearer ${(await cookies()).get("token")?.value}`
       }
     })
     .catch(() => ({ data: { data: [], pages: { current: 0, limit: 0, hasNext: false } } }));

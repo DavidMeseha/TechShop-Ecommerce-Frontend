@@ -18,7 +18,7 @@ async function getProducts(page = 1): Promise<{ data: IFullProduct[]; pages: Pag
     const cookieStore = await cookies();
     const response = await fetch(`${BASE_URL}/api/catalog/homefeed?page=${page}&limit=7`, {
       headers: {
-        Authorization: `Bearer ${cookieStore.get("session")?.value}`,
+        Authorization: `Bearer ${cookieStore.get("token")?.value}`,
         "Content-Type": "application/json",
         "Cache-Control": "no-cache, no-store, must-revalidate",
         Pragma: "no-cache",

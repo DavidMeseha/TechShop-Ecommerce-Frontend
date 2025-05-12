@@ -6,13 +6,16 @@ import { UserActivity } from "../UserActivity";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
 import { IVendor } from "@/types";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import useFollow from "@/hooks/useFollow";
 import ProductsGridView from "@/components/product/ProductsGridView";
 import { getProductsByVendor } from "@/services/products.service";
-import { PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY } from "@/constants/query-keys";
+import { PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
+import { vendorIsFollowed } from "@/services/user.service";
+
+const PRODUCTS_PER_PAGE = 10;
 
 type Props = {
   vendor: IVendor;
@@ -49,13 +52,22 @@ export default function VendorProfilePage({ vendor }: Props) {
     onError: (shouldFollow) => setFollow({ state: !shouldFollow, count: follow.count + (!shouldFollow ? 1 : -1) })
   });
 
-  const { data, hasNextPage, fetchNextPage, isFetchedAfterMount, isFetchingNextPage } = useInfiniteQuery({
+  const { data, hasNextPage, fetchNextPage, isFetchedAfterMount, isPending, isFetchingNextPage } = useInfiniteQuery({
     queryKey: [PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY, vendor.seName],
-    queryFn: ({ pageParam }) => getProductsByVendor(vendor._id, { page: pageParam, limit: 10 }),
+    queryFn: ({ pageParam }) => getProductsByVendor(vendor._id, { page: pageParam, limit: PRODUCTS_PER_PAGE }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1
   });
   const products = data?.pages.flatMap((page) => page.data) ?? [];
+
+  const vendorIsFollowedQuery = useQuery({
+    queryKey: [SINGLE_VENDOR_QUERY_KEY, USER_QUERY_KEY, vendor.seName],
+    queryFn: () =>
+      vendorIsFollowed(vendor.seName).then((data) => {
+        setFollow({ ...follow, state: data });
+        return data;
+      })
+  });
 
   return (
     <div className="py-4">
@@ -77,6 +89,7 @@ export default function VendorProfilePage({ vendor }: Props) {
           </div>
           <Button
             className="item-center mt-3 block bg-primary px-8 py-1.5 text-[15px] font-semibold text-white"
+            isLoading={vendorIsFollowedQuery.isPending}
             onClick={() => handleFollow(!follow.state)}
           >
             {follow.state ? t("unfollow") : t("follow")}
@@ -91,7 +104,7 @@ export default function VendorProfilePage({ vendor }: Props) {
       {products.length < 1 && isFetchedAfterMount ? (
         <div className="py-14 text-center text-gray-400">{t("profile.noProducts")}</div>
       ) : (
-        <ProductsGridView isLoading={isFetchingNextPage} limit={10} products={products} />
+        <ProductsGridView isLoading={isFetchingNextPage || isPending} limit={PRODUCTS_PER_PAGE} products={products} />
       )}
 
       {hasNextPage ? <div className="h-4" ref={ref} /> : null}

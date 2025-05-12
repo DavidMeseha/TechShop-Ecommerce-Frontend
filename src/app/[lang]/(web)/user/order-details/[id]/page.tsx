@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 async function getOrder(id: string) {
   return axios
     .get<IOrder>(`/api/user/order/${id}`, {
-      headers: { Authorization: `Bearer ${(await cookies()).get("session")?.value}` }
+      headers: { Authorization: `Bearer ${(await cookies()).get("token")?.value}` }
     })
     .then((res) => res.data);
 }
