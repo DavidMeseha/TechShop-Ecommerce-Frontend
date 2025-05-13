@@ -14,7 +14,7 @@ type Props = {
 
 export default function ProductAttributes({ productAttributes, customAttributes, handleChange }: Props) {
   return productAttributes.map((attr, index) => (
-    <div className="border p-4 my-2 rounded-md" key={index}>
+    <div className="my-2 rounded-md border p-4" key={index}>
       {attr.attributeControlType === "TextBox" && (
         <FormTextInput
           label={attr.name}

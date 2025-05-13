@@ -1,17 +1,17 @@
 import { languages } from "@/lib/misc";
 import type { MetadataRoute } from "next";
 
-type RobotRoutes = {
-  [key: string]: string[];
-};
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
+
+type RobotRoutes = Record<string, string[]>;
 
 // Define allowed routes by type
 const allowedRoutes: RobotRoutes = {
-  auth: ["login", "register"],
-  product: ["product/*"],
-  profile: ["profile/vendor/*", "profile/tag/*", "profile/category/*"],
-  pages: ["feeds"],
-  system: ["sitemap.xml"]
+  auth: ["/login", "/register"],
+  product: ["/product/*"],
+  profile: ["/vendor/*", "/tag/*", "/category/*"],
+  pages: ["/feeds"],
+  system: ["/sitemap.xml"]
 };
 
 export default function robots(): MetadataRoute.Robots {
@@ -55,6 +55,7 @@ export default function robots(): MetadataRoute.Robots {
         "/private/*" // Block private routes
       ]
     },
-    sitemap: "https://techshop-commerce.vercel.app/sitemap.xml"
+    sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl
   };
 }

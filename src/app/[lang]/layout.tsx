@@ -15,8 +15,9 @@ export default async function Layout({
   children: ReactNode;
   params: Promise<{ lang: Language }>;
 }) {
-  const lang = (await params).lang;
+  const { lang } = await params;
   const dictionary = await getDictionary(lang);
+  const now = new Date().toISOString();
 
   return (
     <html className="snap-both snap-mandatory" dir={lang === "ar" ? "rtl" : "ltr"} lang={lang}>
@@ -25,6 +26,11 @@ export default async function Layout({
           <AppProviders dictionary={dictionary} lang={lang}>
             {children}
           </AppProviders>
+        </div>
+        <div className="fixed start-0 top-0 z-[99] bg-white">
+          <div>
+            <p>Generated at: {now}</p>
+          </div>
         </div>
       </body>
     </html>

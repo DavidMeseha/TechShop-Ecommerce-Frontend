@@ -9,13 +9,13 @@ interface Props {
   params: Promise<{ seName: string }>;
 }
 
-export const revalidate = 600;
+export const revalidate = 3600;
 
 async function getProduct(seName: string): Promise<IFullProduct> {
   try {
     const res = await fetch(`${BASE_URL}/api/product/details/${seName}`, {
       next: {
-        revalidate: 600 // 10 minutes
+        revalidate: 3600 // 60 minutes
       }
     });
 
@@ -31,7 +31,7 @@ async function getProduct(seName: string): Promise<IFullProduct> {
 
 export async function generateStaticParams() {
   try {
-    const products = await homeFeedProducts({ page: 1, limit: 20 }); // Increased limit for more static pages
+    const products = await homeFeedProducts({ page: 1, limit: 20 });
     return products.data.map((product) => ({
       seName: product.seName
     }));
@@ -41,7 +41,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const seName = (await params).seName;
+  const { seName } = await params;
   try {
     const [product, parentMeta] = await Promise.all([getProduct(seName), parent]);
 
@@ -61,12 +61,8 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 }
 
 export default async function Page({ params }: Props) {
-  const seName = (await params).seName;
+  const { seName } = await params;
+  const product = await getProduct(seName);
 
-  try {
-    const product = await getProduct(seName);
-    return <ProductPage product={product} />;
-  } catch {
-    notFound();
-  }
+  return <ProductPage product={product} />;
 }

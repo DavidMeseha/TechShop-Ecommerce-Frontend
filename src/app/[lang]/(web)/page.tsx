@@ -4,50 +4,12 @@ import { FeaturedProducts } from "@/components/FeaturedProducts";
 import { FeaturedVendors } from "@/components/FeaturedVendors";
 import MoreProducts from "@/components/MoreProducts";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import { IFullProduct, Pagination } from "@/types";
-import { BASE_URL } from "@/lib/axios";
-import { cookies } from "next/headers";
 import { getTags } from "@/services/products.service";
-import { FEATURED_QUERY_KEY, PRODUCTS_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
-async function getProducts(page = 1): Promise<{ data: IFullProduct[]; pages: Pagination }> {
-  try {
-    const cookieStore = await cookies();
-    const response = await fetch(`${BASE_URL}/api/catalog/homefeed?page=${page}&limit=7`, {
-      headers: {
-        Authorization: `Bearer ${cookieStore.get("token")?.value}`,
-        "Content-Type": "application/json",
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        Pragma: "no-cache",
-        Expires: "0"
-      },
-      next: {
-        revalidate: 0
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data ?? { dta: [], pages: { current: 0, limit: 0, hasNext: false } };
-  } catch {
-    return { data: [], pages: { current: 0, limit: 0, hasNext: false } };
-  }
-}
+import { FEATURED_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
 
 const queryClient = new QueryClient({});
 
 export default async function Page() {
-  await queryClient.prefetchQuery({
-    queryKey: [PRODUCTS_QUERY_KEY, FEATURED_QUERY_KEY],
-    queryFn: () => getProducts()
-  });
-
   await queryClient.prefetchQuery({
     queryKey: [TAGS_QUERY_KEY, FEATURED_QUERY_KEY],
     queryFn: () => getTags({ page: 1, limit: 10 })
@@ -79,10 +41,10 @@ export default async function Page() {
           <section>
             <FeaturedTags />
           </section>
-          <section>
-            <FeaturedProducts />
-          </section>
         </HydrationBoundary>
+        <section>
+          <FeaturedProducts />
+        </section>
         <section>
           <FeaturedVendors />
         </section>

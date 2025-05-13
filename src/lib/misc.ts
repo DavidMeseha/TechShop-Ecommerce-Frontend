@@ -1,6 +1,11 @@
 import { IProductAttribute, Language } from "@/types";
 
 export const languages: Language[] = ["en", "ar", "fr"];
+export const seoLanguages: { lang: Language; locale: string }[] = [
+  { lang: "en", locale: "en_US" },
+  { lang: "ar", locale: "ar_EG" },
+  { lang: "fr", locale: "fr_FR" }
+];
 
 /**
  * Sets the default attributes by limiting the values to the first one.

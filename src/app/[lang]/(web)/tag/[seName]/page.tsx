@@ -1,20 +1,23 @@
 import TagProfilePage from "@/components/pages/TagProfilePage";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { cache } from "react";
 import prefetchServerRepo from "@/services/prefetchServerRepo";
 import { tagsToGenerate } from "@/services/staticGeneration.service";
 
 type Props = { params: Promise<{ seName: string }> };
 
-const cachedTagInfo = cache(async (seName: string) => {
+async function tagInfo(seName: string) {
   const { getTagInfo } = await prefetchServerRepo();
   try {
     return await getTagInfo(seName);
   } catch {
     notFound();
   }
-});
+}
+
+export const dynamic = "force-static";
+export const dynamicParams = true;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   try {
@@ -27,7 +30,7 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { seName } = await props.params;
   try {
-    const tag = await cachedTagInfo(seName);
+    const tag = await tagInfo(seName);
     const parentMeta = await parent;
 
     return {
@@ -46,7 +49,7 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
 
 export default async function Page(props: Props) {
   const { seName } = await props.params;
-  const tag = await cachedTagInfo(seName);
+  const tag = await tagInfo(seName);
 
   return <TagProfilePage tag={tag} />;
 }

@@ -1,29 +1,65 @@
 import "react-toastify/dist/ReactToastify.css";
-import { Metadata } from "next";
 import React, { ReactElement } from "react";
 import "@/globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import { languages, seoLanguages } from "@/lib/misc";
+import { getCurrentPath } from "@/lib/serverPathname";
+import { Language } from "@/types";
 
-export const metadata: Metadata = {
-  title: "TechShop",
-  description: "an ecommerce shop in the way of social Interaction",
-  openGraph: {
-    type: "website",
-    title: "TechShop",
-    description: "an ecommerce description"
-  },
-  verification: {
-    google: "LNXuD0OB-K9UiZBq_wJGKs72Ypb6eJ2Y1I-GvhN7a_o"
-  },
-  alternates: {
-    canonical: "https://techshop-commerce.vercel.app",
-    languages: {
-      en: "/en",
-      ru: "/ru",
-      uk: "/uk"
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
+
+function generateLanguageAlternates(pathname: string) {
+  // Get the current language from the pathname
+  const pathParts = pathname.split("/");
+  const currentLang = pathParts[1] || "en";
+  const cleanPath = pathParts.slice(2).join("/");
+
+  return {
+    // Make canonical URL point to the current language version
+    canonical: cleanPath ? `${baseUrl}/${currentLang}/${cleanPath}` : `${baseUrl}/${currentLang}`,
+    languages: languages.reduce(
+      (acc, lang) => ({
+        ...acc,
+        [lang]: cleanPath ? `${baseUrl}/${lang}/${cleanPath}` : `${baseUrl}/${lang}`
+      }),
+      {}
+    )
+  };
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: Language }> }) {
+  const { pathname } = await getCurrentPath();
+  const { canonical, languages: langAlternates } = generateLanguageAlternates(pathname);
+  const { lang } = await params;
+
+  return {
+    metadataBase: new URL(baseUrl),
+    title: {
+      default: "TechShop - Your Social Tech Store",
+      template: "%s | TechShop"
+    },
+    description: "Discover tech products through social interaction at TechShop",
+    openGraph: {
+      type: "website",
+      siteName: "TechShop",
+      title: "TechShop - Your Social Tech Store",
+      description: "Discover tech products through social interaction at TechShop",
+      url: baseUrl,
+      locale: seoLanguages.filter((language) => language.lang === lang).map((language) => language.locale),
+      alternateLocale: [...seoLanguages.filter((language) => language.lang !== lang).map((language) => language.locale)]
+    },
+    verification: {
+      google: "LNXuD0OB-K9UiZBq_wJGKs72Ypb6eJ2Y1I-GvhN7a_o"
+    },
+    alternates: {
+      canonical,
+      languages: langAlternates
+    },
+    other: {
+      "google-site-verification": "LNXuD0OB-K9UiZBq_wJGKs72Ypb6eJ2Y1I-GvhN7a_o"
     }
-  }
-};
+  };
+}
 
 export default async function RootLayout({ children }: { children: ReactElement }) {
   return <>{children}</>;

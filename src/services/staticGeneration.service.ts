@@ -8,9 +8,7 @@ const api = axios.create({
 export async function tagsToGenerate() {
   try {
     const tags = await api.get<{ seName: string }[]>(`/api/catalog/allTags`).then((res) => res.data);
-    return tags.map((tag) => ({
-      seName: tag.seName
-    }));
+    return tags;
   } catch {
     return [];
   }
