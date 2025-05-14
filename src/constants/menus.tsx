@@ -23,7 +23,7 @@ export function headerProfileMenu(t: TFunction) {
     },
     {
       name: t("profile.ordersHistory"),
-      to: "/user/reviews",
+      to: "/user/orders",
       icon: <BiHistory size={20} />
     }
   ];
