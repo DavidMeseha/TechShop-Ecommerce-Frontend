@@ -7,7 +7,7 @@ import { ICategory, IFullProduct, ITag, IVendor } from "@/types";
 import Image from "next/image";
 import { RiCloseLine } from "react-icons/ri";
 import Button from "../ui/Button";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import { BiLoaderCircle } from "react-icons/bi";
 import { Variants, motion } from "framer-motion";
 import { useOverlayStore } from "@/stores/overlayStore";

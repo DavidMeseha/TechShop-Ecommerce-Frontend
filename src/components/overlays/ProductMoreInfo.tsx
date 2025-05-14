@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import OverlayLayout from "../layouts/OverlayLayout";
 import { selectDefaultAttributes } from "@/lib/misc";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import ProductAttributes from "../product/Attributes";
 import { useQuery } from "@tanstack/react-query";
 import { IFullProduct, IProductAttribute } from "@/types";

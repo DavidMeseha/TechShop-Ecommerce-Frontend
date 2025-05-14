@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAppStore } from "@/stores/appStore";
 import QueryProvider from "@/context/QueryProvider";
 import ProgressBarProvider from "@/context/ProgressBarProvider";
-import ReactScan from "@/context/ReactScan";
+import ReactScan from "@/components/util/ReactScan";
 
 type Props = {
   children: ReactNode;

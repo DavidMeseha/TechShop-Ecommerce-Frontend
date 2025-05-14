@@ -1,4 +1,4 @@
-import { useLocalPathname } from "@/components/LocalizedNavigation";
+import { useLocalPathname } from "@/components/util/LocalizedNavigation";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "@/context/Translation";
 import { useOverlayStore } from "@/stores/overlayStore";

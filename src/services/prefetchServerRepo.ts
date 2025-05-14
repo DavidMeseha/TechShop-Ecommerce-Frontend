@@ -1,7 +1,7 @@
 "use server";
 
 import { BASE_URL } from "@/lib/axios";
-import { ICategory, ITag, IVendor } from "@/types";
+import { ICategory, IFullProduct, ITag, IVendor, Pagination } from "@/types";
 import { cookies } from "next/headers";
 
 export default async function prefetchServerRepo() {
@@ -33,9 +33,25 @@ export default async function prefetchServerRepo() {
     return api(`api/Catalog/Category/${seName}`, 3600);
   };
 
+  const getProduct = (seName: string): Promise<IFullProduct> => {
+    return api(`api/product/details/${seName}`, 3600);
+  };
+
+  const getFeedProducts = ({
+    page,
+    limit
+  }: {
+    limit: number;
+    page: number;
+  }): Promise<{ data: IFullProduct[]; pages: Pagination }> => {
+    return api(`api/catalog/homefeed?page=${page}&limit=${limit}`, 3600);
+  };
+
   return {
     getTagInfo,
     getVendorInfo,
-    getCategoryInfo
+    getCategoryInfo,
+    getProduct,
+    getFeedProducts
   };
 }

@@ -5,7 +5,7 @@ import { useTranslation } from "@/context/Translation";
 import { IVendor } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import React from "react";
 import useFollow from "@/hooks/useFollow";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";

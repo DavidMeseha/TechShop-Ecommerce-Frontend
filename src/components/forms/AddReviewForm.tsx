@@ -51,8 +51,12 @@ export default function AddReviewForm({ productId, onSuccess }: Props) {
     <form onSubmit={addReviewSubmit}>
       <RatingStars isEditable rate={form.rating} onChange={(value) => setForm({ ...form, rating: value })} />
       <div className="text-end text-[12px] text-gray-400">{form.reviewText.length}/150</div>
+      <label className="hidden" htmlFor="add-review">
+        {t("addReview")}
+      </label>
       <textarea
         className="w-full rounded-md border p-2.5 focus:border-primary focus:outline-none focus:ring-0"
+        id="add-review"
         maxLength={150}
         name="reviewText"
         rows={4}

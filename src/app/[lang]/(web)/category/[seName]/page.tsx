@@ -6,18 +6,6 @@ import { categoriesToGenerate } from "@/services/staticGeneration.service";
 
 type Props = { params: Promise<{ seName: string }> };
 
-async function categoryInfo(seName: string) {
-  const { getCategoryInfo } = await prefetchServerRepo();
-  try {
-    const category = await getCategoryInfo(seName);
-    return category;
-  } catch {
-    notFound();
-  }
-}
-
-export const dynamic = "force-static";
-export const dynamicParams = true;
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
@@ -26,9 +14,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { seName } = await params;
+  const { getCategoryInfo } = await prefetchServerRepo();
+
   try {
-    const category = await categoryInfo(seName);
-    const parentMeta = await parent;
+    const [category, parentMeta] = await Promise.all([getCategoryInfo(seName), parent]);
 
     return {
       title: `${parentMeta.title?.absolute} | ${category.name}`,
@@ -45,8 +34,13 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 }
 
 export default async function Page({ params }: Props) {
-  const seName = (await params).seName;
-  const category = await categoryInfo(seName);
+  const { seName } = await params;
+  const { getCategoryInfo } = await prefetchServerRepo();
 
-  return <CategoryProfilePage category={category} />;
+  try {
+    const category = await getCategoryInfo(seName);
+    return <CategoryProfilePage category={category} />;
+  } catch {
+    notFound();
+  }
 }

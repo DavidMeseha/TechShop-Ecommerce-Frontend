@@ -7,6 +7,9 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import { getTags } from "@/services/products.service";
 import { FEATURED_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
 
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
 const queryClient = new QueryClient({});
 
 export default async function Page() {

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterForm, registerSchema } from "@/schemas/valdation";
 import { useTranslation } from "@/context/Translation";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import FormTextInput from "@/components/FormTextInput";
 import RadioGroup from "@/components/RadioGroup";
 import DateDropdownNumbers from "@/components/ui/DateDropdownNumbers";

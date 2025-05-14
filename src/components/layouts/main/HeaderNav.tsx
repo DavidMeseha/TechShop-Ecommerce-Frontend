@@ -1,6 +1,6 @@
 import { useUserStore } from "@/stores/userStore";
 import React, { useMemo } from "react";
-import { LocalLink, useLocalPathname } from "@/components/LocalizedNavigation";
+import { LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
 import { useTranslation } from "@/context/Translation";
 import mainNavItems from "@/constants/main-nav";
 import DropdownButton from "@/components/DropdownButton";

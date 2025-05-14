@@ -2,7 +2,7 @@
 
 import { ICategory } from "@/types";
 import { useTranslation } from "@/context/Translation";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import React from "react";
 import Button from "@/components/ui/Button";
 import { useInfiniteQuery } from "@tanstack/react-query";

@@ -6,32 +6,18 @@ import { tagsToGenerate } from "@/services/staticGeneration.service";
 
 type Props = { params: Promise<{ seName: string }> };
 
-async function tagInfo(seName: string) {
-  const { getTagInfo } = await prefetchServerRepo();
-  try {
-    return await getTagInfo(seName);
-  } catch {
-    notFound();
-  }
-}
-
-export const dynamic = "force-static";
-export const dynamicParams = true;
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  try {
-    return await tagsToGenerate();
-  } catch {
-    return [];
-  }
+  return await tagsToGenerate();
 }
 
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { seName } = await props.params;
+  const { getTagInfo } = await prefetchServerRepo();
+
   try {
-    const tag = await tagInfo(seName);
-    const parentMeta = await parent;
+    const [tag, parentMeta] = await Promise.all([getTagInfo(seName), parent]);
 
     return {
       title: `${parentMeta.title?.absolute} | #${tag.name}`,
@@ -49,7 +35,12 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
 
 export default async function Page(props: Props) {
   const { seName } = await props.params;
-  const tag = await tagInfo(seName);
+  const { getTagInfo } = await prefetchServerRepo();
 
-  return <TagProfilePage tag={tag} />;
+  try {
+    const tag = await getTagInfo(seName);
+    return <TagProfilePage tag={tag} />;
+  } catch {
+    notFound();
+  }
 }

@@ -6,18 +6,6 @@ import { vendorsToGenerate } from "@/services/staticGeneration.service";
 
 type Props = { params: Promise<{ seName: string }> };
 
-async function vendorInfo(seName: string) {
-  try {
-    const { getVendorInfo } = await prefetchServerRepo();
-    const vendor = await getVendorInfo(seName);
-    return vendor;
-  } catch {
-    notFound();
-  }
-}
-
-export const dynamic = "force-static";
-export const dynamicParams = true;
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
@@ -26,9 +14,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { seName } = await props.params;
+  const { getVendorInfo } = await prefetchServerRepo();
+
   try {
-    const vendor = await vendorInfo(seName);
-    const parentMeta = await parent;
+    const [vendor, parentMeta] = await Promise.all([getVendorInfo(seName), parent]);
 
     return {
       title: `${parentMeta.title?.absolute} | ${vendor.name}`,
@@ -46,7 +35,11 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
 
 export default async function Page(props: Props) {
   const { seName } = await props.params;
-  const vendor = await vendorInfo(seName);
-
-  return <VendorProfilePage vendor={vendor} />;
+  const { getVendorInfo } = await prefetchServerRepo();
+  try {
+    const vendor = await getVendorInfo(seName);
+    return <VendorProfilePage vendor={vendor} />;
+  } catch {
+    notFound();
+  }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import Image from "next/image";
 import { IVendor } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";

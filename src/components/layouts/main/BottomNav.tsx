@@ -1,6 +1,6 @@
 import { useUserStore } from "@/stores/userStore";
 import { useTranslation } from "@/context/Translation";
-import { LocalLink, useLocalPathname } from "@/components/LocalizedNavigation";
+import { LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
 import React, { useMemo } from "react";
 import { BsCompass, BsCompassFill, BsHouse, BsHouseFill } from "react-icons/bs";
 import { RiProfileFill, RiProfileLine, RiShoppingCartFill, RiShoppingCartLine } from "react-icons/ri";

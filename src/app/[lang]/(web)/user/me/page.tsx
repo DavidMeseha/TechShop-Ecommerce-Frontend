@@ -8,7 +8,7 @@ import Image from "next/image";
 import { FiSettings } from "react-icons/fi";
 import { BsBookmark, BsCart } from "react-icons/bs";
 import { BiLoaderCircle, BiPencil } from "react-icons/bi";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import { getCartProducts, getSavedProducts, getUserInfo } from "@/services/user.service";
 import ProductsGridView from "@/components/product/ProductsGridView";
 import { useOverlayStore } from "@/stores/overlayStore";

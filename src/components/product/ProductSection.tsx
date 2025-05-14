@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useRef, useState } from "react";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import LikeProductButton from "./LikeButton";
 import RateProductButton from "./RateButton";
 import SaveProductButton from "./SaveButton";

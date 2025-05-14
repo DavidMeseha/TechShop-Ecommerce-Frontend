@@ -1,4 +1,4 @@
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import React from "react";
 
 type Props = {

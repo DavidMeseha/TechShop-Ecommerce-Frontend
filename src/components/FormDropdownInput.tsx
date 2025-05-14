@@ -13,11 +13,12 @@ const FormDropdownInput = forwardRef<HTMLSelectElement, FormDropdownInputProps>(
   ({ label, error, options, isLoading, ...props }, ref) => {
     return (
       <div className="relative pb-1">
-        <label>{label}</label>
+        <label htmlFor={label}>{label}</label>
         <select
           {...props}
           className="block w-full rounded-sm border px-4 py-2 focus:border-primary focus:ring-primary"
           dir="ltr"
+          id={label}
           ref={ref}
         >
           {options.map((option, index) => (

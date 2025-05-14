@@ -3,7 +3,7 @@
 import { useState } from "react";
 import FormTextInput from "@/components/FormTextInput";
 import { FieldError } from "@/types";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import { useTranslation } from "@/context/Translation";
 import { LoginForm, loginSchema } from "@/schemas/valdation";
 import { zodResolver } from "@hookform/resolvers/zod";

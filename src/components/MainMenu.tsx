@@ -1,6 +1,6 @@
 "use client";
 
-import { LocalLink, useLocalPathname } from "@/components/LocalizedNavigation";
+import { LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
 import React, { useMemo } from "react";
 import { useTranslation } from "@/context/Translation";
 import { useUserStore } from "@/stores/userStore";

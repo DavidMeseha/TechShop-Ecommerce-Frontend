@@ -5,7 +5,7 @@ import { useTranslation } from "@/context/Translation";
 import { useQuery } from "@tanstack/react-query";
 import Button from "@/components/ui/Button";
 import { useRouter } from "@bprogress/next";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import { BiLoaderCircle } from "react-icons/bi";
 import { useUserStore } from "@/stores/userStore";
 import { checkoutData } from "@/services/checkout.service";

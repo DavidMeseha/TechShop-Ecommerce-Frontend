@@ -4,6 +4,9 @@ import { languages } from "@/lib/misc";
 import { Language } from "@/types";
 import { ReactNode } from "react";
 
+export const dynamic = "force-static";
+export const dynamicParams = true;
+
 export function generateStaticParams() {
   return languages.map((lang) => ({ lang }));
 }

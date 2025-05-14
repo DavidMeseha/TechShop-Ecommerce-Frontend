@@ -32,6 +32,8 @@ const nextConfig = {
     ]
   },
 
+  expireTime: 86_400, //1 day
+
   experimental: {
     turbo: {
       rules: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import React from "react";
 import { BsHash } from "react-icons/bs";
 import { ITag } from "@/types";

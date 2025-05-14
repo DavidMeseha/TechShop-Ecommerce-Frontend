@@ -1,6 +1,6 @@
 import { IFullProduct } from "@/types";
 import React from "react";
-import { LocalLink } from "../LocalizedNavigation";
+import { LocalLink } from "../util/LocalizedNavigation";
 import { RiBookmark2Line, RiHeart2Line, RiShoppingCartLine } from "react-icons/ri";
 import Button from "../ui/Button";
 import useLike from "@/hooks/useLike";

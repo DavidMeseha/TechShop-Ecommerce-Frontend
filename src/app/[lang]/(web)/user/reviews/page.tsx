@@ -4,7 +4,7 @@ import Button from "@/components/ui/Button";
 import RatingStars from "@/components/ui/RatingStars";
 import { IProductReview } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import React from "react";
 import { BiLoaderCircle } from "react-icons/bi";
 import { getUserReviews } from "@/services/user.service";

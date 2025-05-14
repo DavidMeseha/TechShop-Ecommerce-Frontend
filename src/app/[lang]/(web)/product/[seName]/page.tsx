@@ -1,33 +1,14 @@
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { IFullProduct } from "@/types";
 import ProductPage from "@/components/pages/ProductPage";
 import { homeFeedProducts } from "@/services/products.service";
-import { BASE_URL } from "@/lib/axios";
+import prefetchServerRepo from "@/services/prefetchServerRepo";
 
 interface Props {
   params: Promise<{ seName: string }>;
 }
 
 export const revalidate = 3600;
-
-async function getProduct(seName: string): Promise<IFullProduct> {
-  try {
-    const res = await fetch(`${BASE_URL}/api/product/details/${seName}`, {
-      next: {
-        revalidate: 3600 // 60 minutes
-      }
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch product");
-    }
-
-    return res.json();
-  } catch {
-    notFound();
-  }
-}
 
 export async function generateStaticParams() {
   try {
@@ -42,6 +23,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { seName } = await params;
+  const { getProduct } = await prefetchServerRepo();
+
   try {
     const [product, parentMeta] = await Promise.all([getProduct(seName), parent]);
 
@@ -62,7 +45,12 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 
 export default async function Page({ params }: Props) {
   const { seName } = await params;
-  const product = await getProduct(seName);
+  const { getProduct } = await prefetchServerRepo();
 
-  return <ProductPage product={product} />;
+  try {
+    const product = await getProduct(seName);
+    return <ProductPage product={product} />;
+  } catch {
+    notFound();
+  }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import { BiSearch, BiShoppingBag } from "react-icons/bi";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "@/context/Translation";

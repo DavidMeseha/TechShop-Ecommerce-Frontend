@@ -1,6 +1,6 @@
 "use client";
 
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import React from "react";
 import { PiPlus } from "react-icons/pi";
 import Image from "next/image";

@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import OverlayLayout from "../layouts/OverlayLayout";
-import { LocalLink } from "@/components/LocalizedNavigation";
+import { LocalLink } from "@/components/util/LocalizedNavigation";
 import { FiLogOut } from "react-icons/fi";
 import { useTranslation } from "@/context/Translation";
 import { FaRegAddressBook } from "react-icons/fa";

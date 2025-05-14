@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { IVendor } from "@/types";
-import { LocalLink } from "./LocalizedNavigation";
+import { LocalLink } from "./util/LocalizedNavigation";
 import { useQuery } from "@tanstack/react-query";
 import { getVendors } from "@/services/products.service";
 import { useInView } from "react-intersection-observer";

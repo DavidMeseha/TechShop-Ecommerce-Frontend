@@ -4,7 +4,7 @@ import * as React from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ITag } from "@/types";
 import { BsHash } from "react-icons/bs";
-import { LocalLink } from "./LocalizedNavigation";
+import { LocalLink } from "./util/LocalizedNavigation";
 import { useQuery } from "@tanstack/react-query";
 import { getTags } from "@/services/products.service";
 import TagItemLoading from "./LoadingUi/TagItemLoading";
