@@ -3,10 +3,13 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import { FEED_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
 import prefetchServerRepo from "@/services/prefetchServerRepo";
 
-const queryClient = new QueryClient();
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function Page() {
   const { getFeedProducts } = await prefetchServerRepo();
+
+  const queryClient = new QueryClient({});
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: [PRODUCTS_QUERY_KEY, FEED_QUERY_KEY],

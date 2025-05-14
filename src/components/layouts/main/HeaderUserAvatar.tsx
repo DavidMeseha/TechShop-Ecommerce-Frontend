@@ -40,7 +40,7 @@ export default function HeaderUserAvatar({ user }: Props) {
         </button>
 
         {showMenu ? (
-          <ul className="absolute end-0 top-12 w-[200px] rounded-lg border bg-white shadow-xl">
+          <ul className="absolute end-0 top-12 w-[200px] overflow-clip rounded-lg border bg-white shadow-xl">
             {menu.map((item, index) => (
               <li className="block hover:bg-gray-100" key={index}>
                 <button

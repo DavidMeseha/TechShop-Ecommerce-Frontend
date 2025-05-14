@@ -44,7 +44,7 @@ export default async function prefetchServerRepo() {
     limit: number;
     page: number;
   }): Promise<{ data: IFullProduct[]; pages: Pagination }> => {
-    return api(`api/catalog/homefeed?page=${page}&limit=${limit}`, 3600);
+    return api(`api/catalog/homefeed?page=${page}&limit=${limit}`, 0);
   };
 
   return {
