@@ -9,7 +9,7 @@ export default React.memo(function ViewMoreButton({ product }: { product: IFullP
     <button
       aria-label="Open product more info"
       className="rounded-full bg-gray-200 fill-black p-2 text-center"
-      onClick={() => setIsProductMoreInfoOpen(true, product._id)}
+      onClick={() => setIsProductMoreInfoOpen(true, product.seName)}
     >
       <PiDotsThreeOutlineVerticalFill className={`text-black transition-colors hover:fill-primary`} size="25" />
     </button>

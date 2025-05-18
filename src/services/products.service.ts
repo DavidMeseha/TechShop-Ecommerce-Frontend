@@ -9,8 +9,8 @@ export async function homeFeedProducts({ page, limit }: { page: number; limit: n
     .then((res) => res.data);
 }
 
-export async function getProductDetails(id: string) {
-  return axios.get<IFullProduct>(`/api/catalog/product/${id}`).then((res) => res.data);
+export async function getProductDetails(seName: string) {
+  return axios.get<IFullProduct>(`/api/catalog/product/${seName}`).then((res) => res.data);
 }
 
 export async function getProductAttributes(seName?: string) {
