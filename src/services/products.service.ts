@@ -13,7 +13,8 @@ export async function getProductDetails(id: string) {
   return axios.get<IFullProduct>(`/api/catalog/product/${id}`).then((res) => res.data);
 }
 
-export async function getProductAttributes(id: string) {
+export async function getProductAttributes(seName?: string) {
+  if (!seName) throw new Error("seName not passed");
   return axios
     .get<{
       _id: string;
@@ -21,7 +22,7 @@ export async function getProductAttributes(id: string) {
       hasAttributes: boolean;
       seName: string;
       name: string;
-    }>(`/api/product/attributes/${id}`)
+    }>(`/api/product/attributes/${seName}`)
     .then((res) => res.data);
 }
 

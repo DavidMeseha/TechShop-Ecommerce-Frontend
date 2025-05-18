@@ -32,13 +32,13 @@ export default function Page() {
   const [isCart, setIsCart] = useState<boolean>(true);
 
   const cartItemsQuery = useQuery({
-    queryKey: [USER_QUERY_KEY, PRODUCTS_QUERY_KEY, CART_QUERY_KEY],
+    queryKey: [PRODUCTS_QUERY_KEY, USER_QUERY_KEY, CART_QUERY_KEY],
     queryFn: () => getCartProducts(),
     enabled: isCart
   });
 
   const savesQuery = useQuery({
-    queryKey: [USER_QUERY_KEY, PRODUCTS_QUERY_KEY, SAVED_PRODUCTS_QUERY_KEY],
+    queryKey: [PRODUCTS_QUERY_KEY, USER_QUERY_KEY, SAVED_PRODUCTS_QUERY_KEY],
     queryFn: () => getSavedProducts(),
     enabled: !isCart
   });

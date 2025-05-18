@@ -52,34 +52,35 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   const initUser = (user: User) => {
     setUser(user);
     getCartItems();
-    return null;
   };
 
   const onInitFail = () => {
     guestTokenMutation.mutate();
-    return null;
   };
 
   const successRefresh = (token: string) => {
     resetAxiosIterceptor(token);
     setToken(token);
-    return null;
   };
 
   const failedRefresh = () => {
     cleanup();
     if (user?.isRegistered) toast.error(t("auth.forcedLogout"));
     guestTokenMutation.mutate();
-    return null;
   };
 
   //check token validity
   const _check = useQuery({
     queryKey: [CHECK_TOKEN_QUERY_KEY],
-    queryFn: () =>
-      checkTokenValidity()
-        .then((data) => initUser(data))
-        .catch(() => onInitFail())
+    queryFn: async () => {
+      try {
+        const user = await checkTokenValidity();
+        initUser(user);
+      } catch {
+        onInitFail();
+      }
+      return "null";
+    }
   });
 
   //new guest token
@@ -91,10 +92,15 @@ export default function UserProvider({ children }: { children: ReactNode }) {
   //refresh Token(only active if user logged in)
   const _refresh = useQuery({
     queryKey: [REFRESH_TOKEN_QUERY_KEY],
-    queryFn: () =>
-      refreshToken()
-        .then((res) => successRefresh(res.data.token))
-        .catch(() => failedRefresh()),
+    queryFn: async () => {
+      try {
+        const refresh = await refreshToken();
+        successRefresh(refresh.data.token);
+      } catch {
+        failedRefresh();
+      }
+      return "null";
+    },
 
     enabled: !!user?.isRegistered,
     refetchInterval: 1_680_000

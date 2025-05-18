@@ -6,7 +6,7 @@ import { saveProduct, unsaveProduct } from "@/services/userActions.service";
 import { useRef } from "react";
 import { isAxiosError } from "axios";
 import useAdjustProductsQueries from "./useAdjustProductsQueries";
-import { PRODUCTS_QUERY_KEY, SAVED_PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
+import { SAVED_PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
 
 interface SaveHookProps {
   productId: string;
@@ -33,7 +33,9 @@ export default function useSave({ productId, savesCount, onError, onClick, onSuc
     mutationFn: () => saveProduct(productId),
     onSuccess: () => {
       onSuccess?.(true);
-      queryClient.invalidateQueries({ queryKey: [PRODUCTS_QUERY_KEY, SAVED_PRODUCTS_QUERY_KEY] });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey.includes(SAVED_PRODUCTS_QUERY_KEY)
+      });
     },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status === 409) return;
@@ -47,7 +49,9 @@ export default function useSave({ productId, savesCount, onError, onClick, onSuc
     mutationFn: () => unsaveProduct(productId),
     onSuccess: () => {
       onSuccess?.(false);
-      queryClient.invalidateQueries({ queryKey: [PRODUCTS_QUERY_KEY, SAVED_PRODUCTS_QUERY_KEY] });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey.includes(SAVED_PRODUCTS_QUERY_KEY)
+      });
     },
     onError: (err) => {
       if (isAxiosError(err) && err.response?.status === 409) return;

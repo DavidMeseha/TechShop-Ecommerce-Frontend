@@ -19,7 +19,7 @@ export default function AttributesOverlay() {
 
   const productQuery = useQuery({
     queryKey: [PRODUCT_ATTRIBUTES_QUERY_KEY, productIdToOverlay],
-    queryFn: () => getProductAttributes(productIdToOverlay ?? "0"),
+    queryFn: () => getProductAttributes(productIdToOverlay),
     enabled: !!productIdToOverlay
   });
   const product = productQuery.data;

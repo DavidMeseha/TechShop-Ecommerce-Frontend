@@ -39,7 +39,9 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
       onSuccess?.(true);
       handleDataAdjustment(true);
       handleDataAdjustment(true);
-      queryClient.invalidateQueries({ queryKey: [CART_QUERY_KEY] });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey.includes(CART_QUERY_KEY)
+      });
     },
     onError: (error) => {
       if (isAxiosError(error) && error.response?.status === 409) {
@@ -56,7 +58,9 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
     onSuccess: () => {
       onSuccess?.(false);
       handleDataAdjustment(false);
-      queryClient.invalidateQueries({ queryKey: [CART_QUERY_KEY] });
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey.includes(CART_QUERY_KEY)
+      });
       getCartItems();
     },
     onError: (error) => {
@@ -71,7 +75,7 @@ export default function useAddToCart({ product, onSuccess }: CartHookProps) {
   // Helper function to handle product attributes
   const handleProductAttributes = (quantity: number, attributes?: IProductAttribute[]) => {
     if (!attributes)
-      return setIsProductAttributesOpen(true, product._id, (attributes) =>
+      return setIsProductAttributesOpen(true, product.seName, (attributes) =>
         addToCartMutation.mutate({ attributes, quantity })
       );
 
