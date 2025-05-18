@@ -10,7 +10,7 @@ import FormTextInput from "../FormTextInput";
 import FormDropdownInput from "../FormDropdownInput";
 import Button from "../ui/Button";
 import { useAppStore } from "@/stores/appStore";
-import { CITIES_QUERY_KEY } from "@/constants/query-keys";
+import { ADDRESSES_QUERY_KEY, CITIES_QUERY_KEY, CHECKOUT_QUERY_KEY } from "@/constants/query-keys";
 
 export default function NewAddressPage({ onFinish }: { onFinish: () => void }) {
   const { countries } = useAppStore();
@@ -31,8 +31,8 @@ export default function NewAddressPage({ onFinish }: { onFinish: () => void }) {
     mutationKey: ["addAddress"],
     mutationFn: (form: AddressForm) => newAddress(form),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["userAddresses"] });
-      await queryClient.invalidateQueries({ queryKey: ["checkoutData"] });
+      await queryClient.invalidateQueries({ predicate: (query) => query.queryKey.includes(ADDRESSES_QUERY_KEY) });
+      await queryClient.invalidateQueries({ predicate: (query) => query.queryKey.includes(CHECKOUT_QUERY_KEY) });
       onFinish();
       toast.success("Address Added Successfully");
     }

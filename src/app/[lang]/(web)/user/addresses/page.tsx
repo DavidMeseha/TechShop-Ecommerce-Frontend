@@ -11,6 +11,7 @@ import { deleteAddress, userAdresses } from "@/services/user.service";
 import Button from "@/components/ui/Button";
 import { IAddress } from "@/types";
 import { ADDRESSES_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
+import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
 
 type Tap = "newaddress" | "addresses" | "editaddress";
 
@@ -67,39 +68,46 @@ export default function Page() {
         </ul>
       </div>
 
-      <div className="px-4 pb-6 pt-4 md:mt-0">
-        {activeTap === "addresses" ? (
-          addresses.length > 0 ? (
-            addresses.map((address) => (
-              <AddressItem
-                address={address}
-                handleDelete={(id) => deleteAddressMutation.mutate(id)}
-                key={address._id}
-                handleEdit={() => {
-                  setPreSelectedAddress(address);
-                  changeTap("editaddress");
-                }}
-              />
-            ))
-          ) : (
-            <div className="text-center">
-              {t("addresses.noAvilableAdresses")}{" "}
-              <span className="cursor-pointer text-primary hover:underline" onClick={() => setActiveTap("newaddress")}>
-                {t("addresses.addOne")}
-              </span>
-            </div>
-          )
-        ) : null}
+      {addressesQuery.isPending ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="px-4 pb-6 pt-4 md:mt-0">
+          {activeTap === "addresses" ? (
+            addresses.length > 0 ? (
+              addresses.map((address) => (
+                <AddressItem
+                  address={address}
+                  handleDelete={(id) => deleteAddressMutation.mutate(id)}
+                  key={address._id}
+                  handleEdit={() => {
+                    setPreSelectedAddress(address);
+                    changeTap("editaddress");
+                  }}
+                />
+              ))
+            ) : (
+              <div className="text-center">
+                {t("addresses.noAvilableAdresses")}{" "}
+                <span
+                  className="cursor-pointer text-primary hover:underline"
+                  onClick={() => setActiveTap("newaddress")}
+                >
+                  {t("addresses.addOne")}
+                </span>
+              </div>
+            )
+          ) : null}
 
-        {activeTap === "editaddress" ? (
-          <EditAddressPage
-            addresses={addresses}
-            preSelectedAddress={preSelectedAddress}
-            onFinish={() => setActiveTap("addresses")}
-          />
-        ) : null}
-        {activeTap === "newaddress" ? <NewAddressPage onFinish={() => setActiveTap("addresses")} /> : null}
-      </div>
+          {activeTap === "editaddress" ? (
+            <EditAddressPage
+              addresses={addresses}
+              preSelectedAddress={preSelectedAddress}
+              onFinish={() => setActiveTap("addresses")}
+            />
+          ) : null}
+          {activeTap === "newaddress" ? <NewAddressPage onFinish={() => setActiveTap("addresses")} /> : null}
+        </div>
+      )}
     </>
   );
 }
