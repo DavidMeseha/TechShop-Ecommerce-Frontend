@@ -1,4 +1,4 @@
-import { IProductAttribute, Language } from "@/types";
+import { ICustomeProductAttribute, IProductAttribute, Language } from "@/types";
 
 export const languages: Language[] = ["en", "ar", "fr"];
 export const seoLanguages: { lang: Language; locale: string }[] = [
@@ -12,8 +12,8 @@ export const seoLanguages: { lang: Language; locale: string }[] = [
  * @param {IProductAttribute[]} attributes - The array of product attributes.
  * @returns {IProductAttribute[]} The array of product attributes with selected values.
  */
-export const selectDefaultAttributes = (attributes: IProductAttribute[]): IProductAttribute[] => {
-  return attributes.map((attr) => ({ ...attr, values: [attr.values[0]] }));
+export const selectDefaultAttributes = (attributes: IProductAttribute[]): ICustomeProductAttribute[] => {
+  return attributes.map((attr) => ({ _id: attr._id, values: [{ _id: attr.values[0]._id }] }));
 };
 
 /**

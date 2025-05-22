@@ -16,7 +16,7 @@ import { useOverlayStore } from "@/stores/overlayStore";
 import ProfileImageInput from "@/components/ProfileImageInput";
 import EditUserInfoFormInputs from "./EditUserInfoFormInputs";
 import ImageCrop from "./ImageCropAndUpload";
-import { INFO_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
+import { CHECK_TOKEN_QUERY_KEY, INFO_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
 
 export default function EditProfileOverlay() {
   const todyRef = useRef(new Date());
@@ -57,10 +57,10 @@ export default function EditProfileOverlay() {
     mutationKey: ["updateUserInfo"],
     mutationFn: (form: UserInfoForm) => updateUserInfo(form),
     onSuccess: () => {
-      toast.success("Profile Updated Successfully");
-      queryClient.invalidateQueries({ queryKey: ["info"] });
-      queryClient.invalidateQueries({ queryKey: ["check"] });
       setIsEditProfileOpen(false);
+      toast.success("Profile Updated Successfully");
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey.includes(INFO_QUERY_KEY) });
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey.includes(CHECK_TOKEN_QUERY_KEY) });
     }
   });
 

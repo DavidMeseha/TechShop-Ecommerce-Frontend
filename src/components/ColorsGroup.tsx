@@ -2,12 +2,12 @@ import { ChangeEvent } from "react";
 
 type Props = {
   title: string;
-  values: string;
+  value: string;
   options: { name: string; value: string; color: string }[];
   onChange: (value: string) => void;
 };
 
-export default function ColorsGroup({ values, options, title, onChange }: Props) {
+export default function ColorsGroup({ value, options, title, onChange }: Props) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
@@ -22,7 +22,7 @@ export default function ColorsGroup({ values, options, title, onChange }: Props)
           <div className="mb-2" key={index}>
             <label htmlFor={`${title}-${option.value}`} title={option.name}>
               <input
-                checked={values.includes(option.value)}
+                checked={value === option.value}
                 className={`me-2 h-6 w-6 rounded border-[${option.color}] focus:ring-[${option.color}]`}
                 id={`${title}-${option.value}`}
                 name={title}

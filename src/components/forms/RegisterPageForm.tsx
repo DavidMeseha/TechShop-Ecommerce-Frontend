@@ -48,7 +48,7 @@ export default function RegisterPageForm() {
     onError: (error) => {
       setIsLoading(false);
       if (isAxiosError(error)) {
-        if (error.response?.data?.code === "EMAIL_IN_USE") {
+        if (error.response?.data?.message === "EMAIL_IN_USE") {
           return setFormError(t("auth.emailNotValid"));
         }
         setFormError(error.response?.data?.message ?? t("SomethingWentWrong"));

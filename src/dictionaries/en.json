@@ -66,6 +66,8 @@
   "loginToPerformAction": "You need to login to perform action",
   "couldNotChangeLanguage": "Could not change language",
   "SomethingWentWrong": "Something went wrong try again later",
+  "cartMaxSizeError": "Cart size is limited to 10 items",
+  "savesMaxSizeError": "Saves size is limited to 25 items",
 
   "auth.password": "Password",
   "auth.login": "Login",

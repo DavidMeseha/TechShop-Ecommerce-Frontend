@@ -26,5 +26,7 @@ export async function registerUser(payload: RegisterForm) {
 }
 
 export async function login(payload: LoginForm) {
-  return axios.post<{ user: User; token: string }>("/api/auth/login", { ...payload }).then((res) => res.data);
+  return axios
+    .post<{ user: User; token: string; expiry: number }>("/api/auth/login", { ...payload })
+    .then((res) => res.data);
 }

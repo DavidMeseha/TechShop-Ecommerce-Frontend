@@ -66,6 +66,8 @@
   "loginToPerformAction": "Vous devez vous connecter pour effectuer cette action",
   "couldNotChangeLanguage": "Impossible de changer de langue",
   "SomethingWentWrong": "Une erreur s'est produite",
+  "cartMaxSizeError": "Le panier a atteint sa taille maximale (10 produits)",
+  "savesMaxSizeError": "La liste de souhaits a atteint sa taille maximale (25 produits)",
 
   "auth.password": "Mot de passe",
   "auth.login": "Connexion",

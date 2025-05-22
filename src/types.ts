@@ -39,7 +39,6 @@ export interface FeedProduct {
 export interface User {
   firstName: string;
   lastName: string;
-  email: string;
   isVendor: boolean;
   isRegistered: boolean;
   imageUrl: string;
@@ -108,6 +107,7 @@ export interface IOrder {
   subTotal: number;
   totalValue: number;
   shippingFees: number;
+  codFees: number;
 }
 
 export interface UserProfile {
@@ -440,6 +440,11 @@ export interface IProductAttribute {
   attributeControlType: string;
   values: IProductAttributeValue[];
   _id: string;
+}
+
+export interface ICustomeProductAttribute {
+  _id: string;
+  values: { _id: string }[];
 }
 
 export interface IProductAttributeValue {

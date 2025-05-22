@@ -23,7 +23,9 @@ function ProductCard({ product, canAddReview, minWidth = "auto", className }: Pr
 
   const likeHandler = useLike({ productId: product._id, likesCount: product.likes });
   const saveHandler = useSave({ productId: product._id, savesCount: product.saves });
-  const addToCartHandler = useAddToCart({ product });
+  const addToCartHandler = useAddToCart({
+    product: { _id: product._id, seName: product.seName, carts: product.carts }
+  });
 
   const rate = product.productReviewOverview.ratingSum / product.productReviewOverview.totalReviews;
 

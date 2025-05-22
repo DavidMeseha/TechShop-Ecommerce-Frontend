@@ -1,11 +1,11 @@
 import axios from "@/lib/axios";
-import { IProductAttribute } from "@/types";
+import { ICustomeProductAttribute } from "@/types";
 
 export async function removeFromCart(id: string) {
   return axios.delete(`/api/common/cart/remove/${id}`);
 }
 
-export async function addToCart(id: string, attributes: IProductAttribute[], quantity: number) {
+export async function addToCart(id: string, attributes: ICustomeProductAttribute[], quantity: number) {
   return axios.post(`/api/common/cart/add/${id}`, { attributes, quantity });
 }
 

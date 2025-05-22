@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import OverlayLayout from "../layouts/OverlayLayout";
-import { IProductAttribute } from "@/types";
+import { ICustomeProductAttribute } from "@/types";
 import { selectDefaultAttributes } from "@/lib/misc";
 import ProductAttributes from "../product/Attributes";
 import { useQuery } from "@tanstack/react-query";
@@ -24,9 +24,9 @@ export default function AttributesOverlay() {
   });
   const product = productQuery.data;
 
-  const handleSubmit = (customAttributes: IProductAttribute[]) => {
+  const handleSubmit = (customAttributes: ICustomeProductAttribute[], quantity: number) => {
     if (action) {
-      action(customAttributes);
+      action(customAttributes, quantity);
       setIsProductAttributesOpen(false);
     }
   };
@@ -42,31 +42,36 @@ export default function AttributesOverlay() {
   );
 }
 
-function MainLogic({ product, action }: { product: IAddToCartProduct; action: (attr: IProductAttribute[]) => void }) {
+function MainLogic({
+  product,
+  action
+}: {
+  product: IAddToCartProduct;
+  action: (attr: ICustomeProductAttribute[], quantity: number) => void;
+}) {
   const { t } = useTranslation();
-  const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>(() =>
+  const [quantity, setQuentity] = useState(1);
+  const [customAttributes, setCustomAttributes] = useState<ICustomeProductAttribute[]>(() =>
     selectDefaultAttributes(product.productAttributes)
   );
 
-  const handleAttributesChange = (attributeId: string, value: string[]) => {
-    let tempAttributes = [...customAttributes];
-    const index = tempAttributes.findIndex((attr) => attr._id === attributeId);
-
-    const originalAttribute = product.productAttributes.find((attr) => attr._id === attributeId) as IProductAttribute;
-    const selectedValues = originalAttribute.values.filter((val) => value.includes(val._id)) as IProductAttribute[];
-
-    tempAttributes[index] = { ...originalAttribute, values: selectedValues };
-
-    setCustomAttributes(tempAttributes);
+  const setValues = (attr: ICustomeProductAttribute[], q: number) => {
+    setCustomAttributes(attr);
+    setQuentity(q);
   };
+
   return (
     <>
       <ProductAttributes
         customAttributes={customAttributes}
-        handleChange={handleAttributesChange}
         productAttributes={product.productAttributes}
+        onChange={(attr, quantity) => setValues(attr, quantity)}
       />
-      <Button className="mt-4 w-full bg-primary text-center text-white" onClick={() => action(customAttributes)}>
+
+      <Button
+        className="mt-4 w-full bg-primary text-center text-white"
+        onClick={() => action(customAttributes, quantity)}
+      >
         {t("addToCart")}
       </Button>
     </>

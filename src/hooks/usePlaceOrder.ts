@@ -19,7 +19,7 @@ export default function usePlaceOrder() {
 
   const placeOrderMutation = useMutation({
     mutationKey: ["placeOrder"],
-    mutationFn: (form: CheckoutForm) => placeOrder(form),
+    mutationFn: (form: CheckoutForm & { paymentId?: string }) => placeOrder(form),
     onSuccess: (res) => router.push(`/user/order-success/${res.data._id}`),
     onError: () => {
       toast.error("Could not place order");
@@ -34,9 +34,7 @@ export default function usePlaceOrder() {
 
   const submit = async (form: CheckoutForm) => {
     const process = async () => {
-      if (form.billingMethod === "cod") {
-        return placeOrderMutation.mutate(form);
-      }
+      if (form.billingMethod === "cod") return placeOrderMutation.mutate(form);
 
       if (!elements || !stripe) {
         setIsProcessing(false);
@@ -57,17 +55,17 @@ export default function usePlaceOrder() {
       }
 
       // Confirm the payment with the card details
-      const { error: stripeError } = await stripe.confirmCardPayment(paymentSecret, {
+      const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(paymentSecret, {
         payment_method: {
           card: cardElement
         }
       });
 
-      if (stripeError) {
+      if (stripeError || !paymentIntent) {
         setIsProcessing(false);
         toast.error(stripeError.message);
         return toast.error(t("checkout.failedToVerifyPayment"));
-      } else placeOrderMutation.mutate(form);
+      } else placeOrderMutation.mutate({ ...form, paymentId: paymentIntent.id });
     };
 
     setIsProcessing(true);

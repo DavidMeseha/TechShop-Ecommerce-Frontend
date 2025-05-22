@@ -4,10 +4,11 @@ import { getServerTranslation } from "@/dictionary";
 import axios from "axios";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
+import { BASE_URL } from "@/lib/axios";
 
 async function getOrder(id: string) {
   return axios
-    .get<IOrder>(`/api/user/order/${id}`, {
+    .get<IOrder>(`${BASE_URL}/api/user/order/${id}`, {
       headers: { Authorization: `Bearer ${(await cookies()).get("token")?.value}` }
     })
     .then((res) => res.data);
@@ -55,12 +56,12 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
 
               <div className="grid grow grid-cols-2 border-t-2 p-2">
                 <div>{t("orderDetails.codFees")}</div>
-                <div className="text-end">{order?.billingStatus === "cod" ? 10 : 0}$</div>
+                <div className="text-end">{order.codFees}$</div>
               </div>
 
               <div className="grid grow grid-cols-2 border-t-2 border-black p-2">
                 <div>{t("total")}</div>
-                <div className="text-end">{order?.totalValue ?? 0 + (order?.billingStatus === "cod" ? 10 : 0)}$</div>
+                <div className="text-end">{order?.totalValue}$</div>
               </div>
             </div>
           </div>
@@ -71,7 +72,6 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
     notFound();
   }
 }
-
 function ProductListItem({
   item
 }: {

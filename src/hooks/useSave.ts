@@ -38,6 +38,7 @@ export default function useSave({ productId, savesCount, onError, onClick, onSuc
       });
     },
     onError: (err) => {
+      if (isAxiosError(err) && err.response?.status === 400) toast.error(t("savesMaxSizeError"));
       if (isAxiosError(err) && err.response?.status === 409) return;
       handleDataAdjustment(false);
       onError?.(true);

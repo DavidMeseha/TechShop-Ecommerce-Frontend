@@ -21,12 +21,12 @@ type Props = {
 
 export default React.memo(
   function CartItem({ product, attributes, quantity, canEdit = false }: Props) {
+    const { t } = useTranslation();
     const getCartItems = useUserStore((state) => state.getCartItems);
     const queryClient = useQueryClient();
     const [showDetails, setShowDetails] = useState(false);
     const [isInCart, setIsInCart] = useState(product.isInCart);
     const containerRef = useRef(null);
-    const { t } = useTranslation();
 
     const removeFromCartMutation = useMutation({
       mutationKey: ["removeFromCart", product._id],
@@ -34,18 +34,19 @@ export default React.memo(
       onSuccess: () => {
         setIsInCart(false);
         getCartItems();
-        queryClient.invalidateQueries({ queryKey: [CART_QUERY_KEY] });
+        queryClient.invalidateQueries({ predicate: (q) => q.queryKey.includes(CART_QUERY_KEY) });
       }
     });
 
     useClickRecognition({ onOutsideClick: () => setShowDetails(false), containerRef });
 
-    const handleRemoveFromCartClick = () => {
-      removeFromCartMutation.mutate();
-    };
+    const handleRemoveFromCartClick = () => removeFromCartMutation.mutate();
 
     return (
-      <li className={`${!isInCart && canEdit && "opacity-50"} list-none border-b px-4`} ref={containerRef}>
+      <li
+        className={`${!isInCart && canEdit && "pointer-events-none opacity-50"} list-none border-b px-4`}
+        ref={containerRef}
+      >
         <div className="flex items-center justify-between py-2">
           <div className="flex w-full items-center gap-3">
             <Image

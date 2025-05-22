@@ -6,7 +6,7 @@ import { selectDefaultAttributes } from "@/lib/misc";
 import { LocalLink } from "@/components/util/LocalizedNavigation";
 import ProductAttributes from "../product/Attributes";
 import { useQuery } from "@tanstack/react-query";
-import { IFullProduct, IProductAttribute } from "@/types";
+import { ICustomeProductAttribute, IFullProduct } from "@/types";
 import Button from "../ui/Button";
 import { useTranslation } from "@/context/Translation";
 import useAddToCart from "@/hooks/useAddToCart";
@@ -38,7 +38,8 @@ export default function ProductMoreInfoOverlay() {
 function MainLogic({ product }: { product: IFullProduct }) {
   const { t } = useTranslation();
   const [activeTap, setActiveTap] = useState<"description" | "reviews">("description");
-  const [customAttributes, setCustomAttributes] = useState<IProductAttribute[]>(() =>
+  const [quantity, setQuantity] = useState(1);
+  const [customAttributes, setCustomAttributes] = useState<ICustomeProductAttribute[]>(() =>
     selectDefaultAttributes(product.productAttributes)
   );
   const [cart, setCart] = useState(() => ({
@@ -47,27 +48,19 @@ function MainLogic({ product }: { product: IFullProduct }) {
   }));
 
   const { handleAddToCart, isPending } = useAddToCart({
-    product,
+    product: { _id: product._id, seName: product.seName, carts: product.carts },
     onSuccess: (shouldAdd) => {
       setCart({ count: cart.count + (shouldAdd ? 1 : -1), state: shouldAdd });
     }
   });
 
-  const handleAttributesChange = (attributeId: string, value: string[]) => {
-    if (!product) return;
-    let tempAttributes = [...customAttributes];
-    const index = tempAttributes.findIndex((attr) => attr._id === attributeId);
-
-    const originalAttribute = product.productAttributes.find((attr) => attr._id === attributeId) as IProductAttribute;
-    const selectedValues = originalAttribute.values.filter((val) => value.includes(val._id)) as IProductAttribute[];
-
-    tempAttributes[index] = { ...originalAttribute, values: selectedValues };
-
-    setCustomAttributes(tempAttributes);
-  };
-
-  const addToCartClickHandle = () => handleAddToCart(!cart.state, customAttributes);
+  const addToCartClickHandle = () => handleAddToCart(!cart.state, quantity, customAttributes);
   const reviews = product.productReviews ?? [];
+
+  const setCartValues = (attr: ICustomeProductAttribute[], quantity: number) => {
+    setCustomAttributes(attr);
+    setQuantity(quantity);
+  };
 
   return (
     <>
@@ -93,8 +86,8 @@ function MainLogic({ product }: { product: IFullProduct }) {
         <div className="mb-4">
           <ProductAttributes
             customAttributes={customAttributes}
-            handleChange={handleAttributesChange}
             productAttributes={product.productAttributes}
+            onChange={(attr, quantity) => setCartValues(attr, quantity)}
           />
         </div>
       ) : null}

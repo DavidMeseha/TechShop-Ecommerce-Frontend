@@ -66,6 +66,8 @@
   "loginToPerformAction": "يجب تسجيل الدخول لتتمكن من تنفيز الطلب",
   "couldNotChangeLanguage": "فشل تغيير اللغة",
   "SomethingWentWrong": "حدث خطاء ما, حاول مجدادا لاحقا",
+  "cartMaxSizeError": "(10) عذرا, لا يمكنك اضافة المزيد من المنتجات, عربة التسوق ممتلئة",
+  "savesMaxSizeError": "(25) عذرا, لا يمكنك اضافة المزيد من المنتجات, قائمة المحفوظات ممتلئة",
 
   "auth.password": "كلمة المرور",
   "auth.login": "تسجيل الدخول",

@@ -3,7 +3,6 @@ import Input from "../ui/Input";
 import { useQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import Checkbox from "../ui/Checkbox";
-import { ICategory, IFullProduct, ITag, IVendor } from "@/types";
 import Image from "next/image";
 import { RiCloseLine } from "react-icons/ri";
 import Button from "../ui/Button";
@@ -14,7 +13,7 @@ import { useOverlayStore } from "@/stores/overlayStore";
 import { SEARCH_QUERY_KEY } from "@/constants/query-keys";
 
 type SearchResponseItem = {
-  item: IFullProduct | IVendor | ITag | ICategory;
+  item: { _id: string; name: string; seName: string; imageUrl: string };
   type: "product" | "category" | "vendor" | "tag";
 };
 
@@ -53,7 +52,7 @@ export default function SearchOverlay() {
   const searchQuery = useQuery({
     queryKey: [SEARCH_QUERY_KEY, searchText, options],
     queryFn: () =>
-      axios.post<SearchResponseItem[]>("/api/common/find", {
+      axios.post<SearchResponseItem[]>("/api/catalog/find", {
         ...options,
         searchText
       }),
@@ -101,17 +100,6 @@ export default function SearchOverlay() {
                   href={setupItemLocalLink(item)}
                   key={item.item._id}
                 >
-                  {"pictures" in item.item ? (
-                    <div>
-                      <Image
-                        alt={item.item.name}
-                        className="rounded-md object-cover"
-                        height={40}
-                        src={item.item.pictures[0].imageUrl}
-                        width={40}
-                      />
-                    </div>
-                  ) : null}
                   {"imageUrl" in item.item ? (
                     <div>
                       <Image

@@ -1,12 +1,12 @@
 import { create } from "zustand";
-import { IProductAttribute } from "@/types";
+import { ICustomeProductAttribute } from "@/types";
 
 type Store = {
   isProductAttributesOpen: boolean;
   isAddReviewOpen: boolean;
   isProductMoreInfoOpen: boolean;
 
-  action: ((attr: IProductAttribute[]) => void) | undefined;
+  action: ((attr: ICustomeProductAttribute[], quantity: number) => void) | undefined;
   productIdToOverlay: string | undefined;
 
   setIsProductMoreInfoOpen: (isOpen: boolean, productId?: string) => void;
@@ -14,7 +14,7 @@ type Store = {
   setIsProductAttributesOpen: (
     isOpen: boolean,
     productId?: string,
-    action?: (attr: IProductAttribute[]) => void
+    action?: (attr: ICustomeProductAttribute[], quantity: number) => void
   ) => void;
 };
 
@@ -50,7 +50,11 @@ export const useProductStore = create<Store>((set) => ({
       }, 150);
     }
   },
-  setIsProductAttributesOpen: (isOpen: boolean, productId?: string, action?: (attr: IProductAttribute[]) => void) => {
+  setIsProductAttributesOpen: (
+    isOpen: boolean,
+    productId?: string,
+    action?: (attr: ICustomeProductAttribute[], quantity: number) => void
+  ) => {
     set({ isProductAttributesOpen: isOpen });
     if (isOpen) set({ productIdToOverlay: productId, action: action });
     else {

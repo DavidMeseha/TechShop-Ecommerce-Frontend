@@ -5,7 +5,7 @@ import ProductAttributes from "@/components/product/Attributes";
 import RatingStars from "@/components/ui/RatingStars";
 import SaveProductButton from "@/components/product/SaveButton";
 import { selectDefaultAttributes } from "@/lib/misc";
-import { IFullProduct, IProductAttribute } from "@/types";
+import { ICustomeProductAttribute, IFullProduct } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -30,6 +30,7 @@ type Props = {
 export default function ProductPage({ product }: Props) {
   const [isReviewed, setIsReviewed] = useState(false);
   const [customAttributes, setCustomAttributes] = useState(selectDefaultAttributes(product.productAttributes));
+  const [quantity, setQuantity] = useState(1);
   const [ref, inView] = useInView();
   const { t } = useTranslation();
   const rating = (product.productReviewOverview.ratingSum / (product.productReviewOverview.totalReviews || 1)).toFixed(
@@ -55,17 +56,9 @@ export default function ProductPage({ product }: Props) {
   });
   const products = productsQuery.data ?? [];
 
-  const handleAttributesChange = (attributeId: string, value: string[]) => {
-    if (!product) return;
-    let tempAttributes = [...customAttributes];
-    const index = tempAttributes.findIndex((attr) => attr._id === attributeId);
-
-    const originalAttribute = product.productAttributes.find((attr) => attr._id === attributeId) as IProductAttribute;
-    const selectedValues = originalAttribute.values.filter((val) => value.includes(val._id)) as IProductAttribute[];
-
-    tempAttributes[index] = { ...originalAttribute, values: selectedValues };
-
-    setCustomAttributes(tempAttributes);
+  const setCartValues = (attr: ICustomeProductAttribute[], quantity: number) => {
+    setCustomAttributes(attr);
+    setQuantity(quantity);
   };
 
   return (
@@ -93,8 +86,8 @@ export default function ProductPage({ product }: Props) {
               <div className="mt-6">
                 <ProductAttributes
                   customAttributes={customAttributes}
-                  handleChange={handleAttributesChange}
                   productAttributes={product.productAttributes}
+                  onChange={(attr, quantity) => setCartValues(attr, quantity)}
                 />
               </div>
 
@@ -117,6 +110,7 @@ export default function ProductPage({ product }: Props) {
                       attributes={customAttributes}
                       isInCart={!!actionsQuery.data?.isInCart}
                       product={product}
+                      quantity={quantity}
                     />
                   </>
                 )}

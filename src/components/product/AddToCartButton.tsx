@@ -1,27 +1,28 @@
 import React, { useState } from "react";
-import { IFullProduct, IProductAttribute } from "@/types";
+import { ICustomeProductAttribute, IFullProduct } from "@/types";
 import { BsCartFill } from "react-icons/bs";
 import { BiLoaderCircle } from "react-icons/bi";
 import useAddToCart from "@/hooks/useAddToCart";
 
 type Props = {
   product: IFullProduct;
-  attributes?: IProductAttribute[];
+  attributes?: ICustomeProductAttribute[];
   isInCart: boolean;
+  quantity?: number;
 };
 
-export default React.memo(function AddToCartButton({ product, attributes, isInCart }: Props) {
+export default React.memo(function AddToCartButton({ product, attributes, isInCart, quantity }: Props) {
   const [cart, setCart] = useState(() => ({
     state: isInCart,
     count: product.carts
   }));
 
   const { handleAddToCart, isPending } = useAddToCart({
-    product,
+    product: { _id: product._id, seName: product.seName, carts: product.carts },
     onSuccess: (shouldAdd) => setCart({ state: shouldAdd, count: cart.count + (shouldAdd ? 1 : -1) })
   });
 
-  const addToCart = () => handleAddToCart(!cart.state, attributes);
+  const addToCart = () => handleAddToCart(!cart.state, quantity ?? 1, attributes);
 
   return (
     <button className="fill-black text-center" onClick={addToCart}>
