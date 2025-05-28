@@ -14,7 +14,7 @@ export async function likeProduct(id: string) {
 }
 
 export async function unLikeProduct(id: string) {
-  return axios.post(`/api/v2/user/unlikeProduct/${id}`);
+  return axios.post(`/api/v2/user/actions/unlikeProduct/${id}`);
 }
 
 export async function followVendor(id: string) {
