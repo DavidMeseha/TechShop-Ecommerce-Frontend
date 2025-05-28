@@ -10,7 +10,7 @@ export async function addToCart(id: string, attributes: ICustomeProductAttribute
 }
 
 export async function likeProduct(id: string) {
-  return axios.post(`/api/v2/user/likeProduct/${id}`);
+  return axios.post(`/api/v2/user/actions/likeProduct/${id}`);
 }
 
 export async function unLikeProduct(id: string) {
@@ -18,17 +18,17 @@ export async function unLikeProduct(id: string) {
 }
 
 export async function followVendor(id: string) {
-  return axios.post(`/api/v2/user/followVendor/${id}`);
+  return axios.post(`/api/v2/user/actions/followVendor/${id}`);
 }
 
 export async function unfollowVendor(id: string) {
-  return axios.post(`/api/v2/user/unfollowVendor/${id}`);
+  return axios.post(`/api/v2/user/actions/unfollowVendor/${id}`);
 }
 
 export async function saveProduct(id: string) {
-  return axios.post(`/api/v2/user/saveProduct/${id}`);
+  return axios.post(`/api/v2/user/actions/saveProduct/${id}`);
 }
 
 export async function unsaveProduct(id: string) {
-  return axios.post(`/api/v2/user/unsaveProduct/${id}`);
+  return axios.post(`/api/v2/user/actions/unsaveProduct/${id}`);
 }
