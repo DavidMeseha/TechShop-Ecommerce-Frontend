@@ -1,5 +1,5 @@
 import React from "react";
-import { citiesInCountry, newAddress } from "@/services/user.service";
+import { newAddress } from "@/services/user.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,6 +11,7 @@ import FormDropdownInput from "../FormDropdownInput";
 import Button from "../ui/Button";
 import { useAppStore } from "@/stores/appStore";
 import { ADDRESSES_QUERY_KEY, CITIES_QUERY_KEY, CHECKOUT_QUERY_KEY } from "@/constants/query-keys";
+import { citiesInCountry } from "@/services/getCountries.service";
 
 export default function NewAddressPage({ onFinish }: { onFinish: () => void }) {
   const { countries } = useAppStore();

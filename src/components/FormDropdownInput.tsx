@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { FieldError } from "../types";
+import { FieldError } from "@/types";
 import { BiLoaderCircle } from "react-icons/bi";
 
 export interface FormDropdownInputProps extends React.HTMLProps<HTMLSelectElement> {

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import upload from "@/services/upload.service";
+import { uploadImage } from "@/services/upload.service";
 import { CircleStencil, Cropper, CropperRef } from "react-advanced-cropper";
 import { useMutation } from "@tanstack/react-query";
 import Button from "@/components/ui/Button";
@@ -18,7 +18,7 @@ export default function ImageCropAndUpload({ onSuccess, imageSrc, onCancel }: Pr
 
   const uploadImageMutation = useMutation({
     mutationKey: ["upload"],
-    mutationFn: (formData: FormData) => upload(formData),
+    mutationFn: (formData: FormData) => uploadImage(formData),
     onSuccess: (data) => onSuccess(data.imageUrl)
   });
 

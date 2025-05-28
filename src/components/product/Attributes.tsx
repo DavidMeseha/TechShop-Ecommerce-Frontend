@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { ChangeEvent, useRef } from "react";
 import FormTextInput from "../FormTextInput";
 import RadioGroup from "../RadioGroup";
 import CheckboxGroup from "../CheckboxGroup";
@@ -28,6 +28,12 @@ export default function ProductAttributes({ productAttributes, customAttributes,
     onChange(tempAttributes, quantity.current ? parseInt(quantity.current.value) : 1);
   };
 
+  const handleQuantityChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (parseInt(e.target.value) > 10) e.target.value = "10";
+    else if (parseInt(e.target.value) < 0) e.target.value = "0";
+    onChange(customAttributes, parseInt(e.target.value ?? 1));
+  };
+
   return (
     <>
       <div className="my-2 flex items-center gap-1 rounded-md border p-4">
@@ -39,11 +45,7 @@ export default function ProductAttributes({ productAttributes, customAttributes,
           min="1"
           ref={quantity}
           type="number"
-          onChange={(e) => {
-            if (parseInt(e.target.value) > 10) e.target.value = "10";
-            else if (parseInt(e.target.value) < 0) e.target.value = "0";
-            onChange(customAttributes, parseInt(e.target.value ?? 1));
-          }}
+          onChange={handleQuantityChange}
         />
       </div>
 

@@ -1,5 +1,5 @@
 import { BsCompass, BsCompassFill, BsHouse, BsHouseFill } from "react-icons/bs";
-import { TFunction } from "../types";
+import { TFunction } from "@/types";
 import { PiInfinity, PiShoppingCart, PiShoppingCartFill } from "react-icons/pi";
 import { RiProfileFill, RiProfileLine } from "react-icons/ri";
 

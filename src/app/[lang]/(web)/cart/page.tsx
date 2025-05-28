@@ -24,16 +24,25 @@ export default function Page() {
 
   const products = checkoutQuery.data?.cartItems ?? [];
   const total = checkoutQuery.data?.total ?? 0;
+  const errors = checkoutQuery.data?.errors ?? [];
+  const isError = errors.length > 0;
+
+  const handleCheckoutClick = () => {
+    if (errors.length > 0) return;
+    if (user?.isRegistered) router.push("/user/checkout");
+    else router.push("/login");
+  };
 
   if (cartItems.length > 0)
     return (
-      <>
-        <div className="sticky z-20 flex items-center justify-between border-b bg-white pb-2 pt-2 md:top-[60px] md:mx-0">
+      <div className="mx-2 sm:mx-auto">
+        <div className="sticky z-20 flex items-center justify-between border-b bg-white py-2 md:top-[60px]">
           <h1 className="hidden text-3xl font-bold md:block">{t("yourCart")}</h1>
           <Button
-            className="mx-4 block w-full rounded-md bg-primary font-semibold text-white md:mx-0 md:w-auto"
+            className={`block w-full rounded-md bg-primary font-semibold text-white md:mx-0 md:w-auto ${isError ? "cursor-not-allowed opacity-50" : ""}`}
+            disabled={isError}
             isLoading={checkoutQuery.isFetching}
-            onClick={() => (user?.isRegistered ? router.push("/user/checkout") : router.push("/login"))}
+            onClick={handleCheckoutClick}
           >
             <div className="flex w-full justify-between gap-8">
               <div>
@@ -44,16 +53,23 @@ export default function Page() {
           </Button>
         </div>
 
+        {isError && (
+          <div className="my-2 rounded-lg bg-red-200 px-4 py-2 text-center text-xs text-red-600">
+            {t("checkoutCartAvilabilityError")}
+          </div>
+        )}
+
         {products.map((item) => (
           <CartItem
             attributes={item.attributes}
             canEdit
+            className={errors.find((err) => err.productId === item.product._id) ? "border-red-600" : ""}
             key={item.product.seName}
             product={item.product}
             quantity={item.quantity}
           />
         ))}
-      </>
+      </div>
     );
 
   if (checkoutQuery.isFetching)

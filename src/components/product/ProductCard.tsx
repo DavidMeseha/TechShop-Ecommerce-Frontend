@@ -10,6 +10,7 @@ import useAddToCart from "@/hooks/useAddToCart";
 import { useProductStore } from "@/stores/productStore";
 import ProductCarosel from "./ProductCarosel";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/context/Translation";
 
 type Props = {
   product: IFullProduct;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 function ProductCard({ product, canAddReview, minWidth = "auto", className }: Props) {
+  const { t } = useTranslation();
   const setIsAddReviewOpen = useProductStore((state) => state.setIsAddReviewOpen);
 
   const likeHandler = useLike({ productId: product._id, likesCount: product.likes });
@@ -31,9 +33,17 @@ function ProductCard({ product, canAddReview, minWidth = "auto", className }: Pr
 
   return (
     <div
-      className={cn("flex w-full flex-col justify-between overflow-hidden rounded-sm border bg-white", className)}
       style={{ minWidth: minWidth }}
+      className={cn(
+        "relative flex w-full flex-col justify-between overflow-hidden rounded-sm border bg-white",
+        className
+      )}
     >
+      {product.inStock ? null : (
+        <div className="absolute start-2 top-2 z-20 rounded-sm bg-red-200 px-2 py-1 text-[0.6rem] text-red-600">
+          {t("noStock")}
+        </div>
+      )}
       <div>
         <ProductCarosel height={200} images={product.pictures} productName={product.name} />
 

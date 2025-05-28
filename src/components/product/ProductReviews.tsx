@@ -2,7 +2,7 @@ import { IProductReview } from "@/types";
 import React from "react";
 import Image from "next/image";
 import RatingStars from "../ui/RatingStars";
-import { BiLoaderCircle } from "react-icons/bi";
+import ReviewItemLoadingUi from "../LoadingUi/ReviewLoadingUi";
 
 export default function ProductReviews({ reviews, isLoading }: { reviews?: IProductReview[]; isLoading: boolean }) {
   return (
@@ -27,9 +27,10 @@ export default function ProductReviews({ reviews, isLoading }: { reviews?: IProd
           </div>
         ))}
         {isLoading ? (
-          <div>
-            <BiLoaderCircle className="animate-spin fill-inherit" size={20} />
-          </div>
+          <>
+            <ReviewItemLoadingUi />
+            <ReviewItemLoadingUi />
+          </>
         ) : null}
       </div>
     </>

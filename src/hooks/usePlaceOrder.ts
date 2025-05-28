@@ -4,16 +4,18 @@ import { useTranslation } from "@/context/Translation";
 import { CheckoutForm } from "@/schemas/valdation";
 import { placeOrder, preperCardPayment } from "@/services/checkout.service";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 // import { useRouter } from "@bprogress/next";
 import { useRouter } from "@bprogress/next";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { ORDERS_QUERY_KEY } from "@/constants/query-keys";
 
 export default function usePlaceOrder() {
   const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
+  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -24,6 +26,7 @@ export default function usePlaceOrder() {
     onError: () => {
       toast.error("Could not place order");
       setIsProcessing(false);
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey.includes(ORDERS_QUERY_KEY) });
     }
   });
 

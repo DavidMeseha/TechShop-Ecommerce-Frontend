@@ -2,33 +2,33 @@ import axios from "@/lib/axios";
 import { ICustomeProductAttribute } from "@/types";
 
 export async function removeFromCart(id: string) {
-  return axios.delete(`/api/common/cart/remove/${id}`);
+  return axios.delete(`/api/v2/user/cart/remove/${id}`);
 }
 
 export async function addToCart(id: string, attributes: ICustomeProductAttribute[], quantity: number) {
-  return axios.post(`/api/common/cart/add/${id}`, { attributes, quantity });
+  return axios.post(`/api/v2/user/cart/add/${id}`, { attributes, quantity });
 }
 
 export async function likeProduct(id: string) {
-  return axios.post(`/api/user/likeProduct/${id}`);
+  return axios.post(`/api/v2/user/likeProduct/${id}`);
 }
 
 export async function unLikeProduct(id: string) {
-  return axios.post(`/api/user/unlikeProduct/${id}`);
+  return axios.post(`/api/v2/user/unlikeProduct/${id}`);
 }
 
 export async function followVendor(id: string) {
-  return axios.post(`/api/user/followVendor/${id}`);
+  return axios.post(`/api/v2/user/followVendor/${id}`);
 }
 
 export async function unfollowVendor(id: string) {
-  return axios.post(`/api/user/unfollowVendor/${id}`);
+  return axios.post(`/api/v2/user/unfollowVendor/${id}`);
 }
 
 export async function saveProduct(id: string) {
-  return axios.post(`/api/user/saveProduct/${id}`);
+  return axios.post(`/api/v2/user/saveProduct/${id}`);
 }
 
 export async function unsaveProduct(id: string) {
-  return axios.post(`/api/user/unsaveProduct/${id}`);
+  return axios.post(`/api/v2/user/unsaveProduct/${id}`);
 }

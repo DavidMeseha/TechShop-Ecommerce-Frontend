@@ -1,13 +1,11 @@
 import axios from "@/lib/axios";
 
-function uploadImage(formData: FormData) {
+export async function uploadImage(formData: FormData) {
   return axios
-    .post<{ imageUrl: string }>("/api/common/upload", formData, {
+    .post<{ imageUrl: string }>("/api/v2/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       }
     })
     .then((res) => res.data);
 }
-
-export default uploadImage;

@@ -60,6 +60,7 @@
   "topVendors": "Meilleurs vendeurs",
   "moreProducts": "Plus de produits",
   "similarProducts": "Produits similaires",
+  "noStock": "Non Stock",
 
   "productNotFound": "Produit non trouvé !",
   "faildToSubmitYourAction": "Échec de l'enregistrement du produit",
@@ -68,6 +69,7 @@
   "SomethingWentWrong": "Une erreur s'est produite",
   "cartMaxSizeError": "Le panier a atteint sa taille maximale (10 produits)",
   "savesMaxSizeError": "La liste de souhaits a atteint sa taille maximale (25 produits)",
+  "checkoutCartAvilabilityError": "Certains produits dans votre panier ne sont pas disponibles ou n'ont pas assez de stock.",
 
   "auth.password": "Mot de passe",
   "auth.login": "Connexion",

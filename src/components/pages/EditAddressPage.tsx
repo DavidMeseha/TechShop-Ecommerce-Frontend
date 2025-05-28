@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { citiesInCountry, updateAddress } from "@/services/user.service";
+import { updateAddress } from "@/services/user.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,6 +12,7 @@ import Button from "../ui/Button";
 import { useAppStore } from "@/stores/appStore";
 import { IAddress } from "@/types";
 import { ADDRESSES_QUERY_KEY, CITIES_QUERY_KEY } from "@/constants/query-keys";
+import { citiesInCountry } from "@/services/getCountries.service";
 
 type Props = {
   addresses: IAddress[];

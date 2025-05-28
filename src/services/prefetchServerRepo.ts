@@ -22,19 +22,19 @@ export default async function prefetchServerRepo() {
   };
 
   const getTagInfo = async (seName: string): Promise<ITag> => {
-    return api(`api/Catalog/tag/${seName}`, 3600);
+    return api(`api/v2/Catalog/tag/${seName}`, 3600);
   };
 
   const getVendorInfo = async (seName: string): Promise<IVendor> => {
-    return api(`api/catalog/vendor/${seName}`, 3600);
+    return api(`api/v2/catalog/vendor/${seName}`, 3600);
   };
 
   const getCategoryInfo = async (seName: string): Promise<ICategory> => {
-    return api(`api/Catalog/Category/${seName}`, 3600);
+    return api(`api/v2/Catalog/Category/${seName}`, 3600);
   };
 
   const getProduct = (seName: string): Promise<IFullProduct> => {
-    return api(`api/product/details/${seName}`, 3600);
+    return api(`api/v2/product/details/${seName}`, 3600);
   };
 
   const getFeedProducts = ({
@@ -44,7 +44,7 @@ export default async function prefetchServerRepo() {
     limit: number;
     page: number;
   }): Promise<{ data: IFullProduct[]; pages: Pagination }> => {
-    return api(`api/catalog/homefeed?page=${page}&limit=${limit}`, 0);
+    return api(`api/v2/catalog/homefeed?page=${page}&limit=${limit}`, 0);
   };
 
   return {

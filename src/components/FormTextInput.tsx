@@ -1,6 +1,6 @@
 "use client";
 import React, { forwardRef } from "react";
-import { FieldError } from "../types";
+import { FieldError } from "@/types";
 import Input from "./ui/Input";
 
 export interface TextInputProps extends React.HTMLProps<HTMLInputElement> {

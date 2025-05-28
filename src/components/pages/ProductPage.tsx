@@ -125,17 +125,15 @@ export default function ProductPage({ product }: Props) {
       </section>
 
       {/* Reviews Section */}
-      {product.productReviews.length > 0 && (
-        <section className="my-4 border-t p-4">
-          <ProductReviews reviews={product.productReviews} />
-          {isReviewed ? null : (
-            <>
-              <h2 className="py-2 text-2xl font-bold">{t("addReview")}</h2>
-              <AddReviewForm productId={product._id} onSuccess={() => setIsReviewed(true)} />
-            </>
-          )}
-        </section>
-      )}
+      <section className="my-4 border-t p-4">
+        <ProductReviews reviews={product.productReviews} />
+        {isReviewed ? null : (
+          <>
+            <h2 className="py-2 text-2xl font-bold">{t("addReview")}</h2>
+            <AddReviewForm productId={product._id} onSuccess={() => setIsReviewed(true)} />
+          </>
+        )}
+      </section>
 
       {/* Similar Products Section */}
       <section className="my-4 border-t p-4">

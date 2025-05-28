@@ -7,45 +7,38 @@ import { BiLoaderCircle } from "react-icons/bi";
 import { useTranslation } from "@/context/Translation";
 import Image from "next/image";
 import { IFullProduct, IProductAttribute } from "@/types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { removeFromCart } from "@/services/userActions.service";
-import { useUserStore } from "@/stores/userStore";
-import { CART_QUERY_KEY } from "@/constants/query-keys";
+import { cn } from "@/lib/utils";
+import useAddToCart from "@/hooks/useAddToCart";
 
 type Props = {
   product: IFullProduct;
   canEdit?: boolean;
   attributes: IProductAttribute[];
   quantity: number;
+  className?: string;
 };
 
 export default React.memo(
-  function CartItem({ product, attributes, quantity, canEdit = false }: Props) {
+  function CartItem({ product, attributes, quantity, canEdit = false, className = "" }: Props) {
     const { t } = useTranslation();
-    const getCartItems = useUserStore((state) => state.getCartItems);
-    const queryClient = useQueryClient();
     const [showDetails, setShowDetails] = useState(false);
     const [isInCart, setIsInCart] = useState(product.isInCart);
     const containerRef = useRef(null);
 
-    const removeFromCartMutation = useMutation({
-      mutationKey: ["removeFromCart", product._id],
-      mutationFn: () => removeFromCart(product._id),
-      onSuccess: () => {
-        setIsInCart(false);
-        getCartItems();
-        queryClient.invalidateQueries({ predicate: (q) => q.queryKey.includes(CART_QUERY_KEY) });
-      }
+    const { handleAddToCart, isPending } = useAddToCart({
+      product,
+      onSuccess: () => setIsInCart(false)
     });
 
     useClickRecognition({ onOutsideClick: () => setShowDetails(false), containerRef });
 
-    const handleRemoveFromCartClick = () => removeFromCartMutation.mutate();
-
     return (
       <li
-        className={`${!isInCart && canEdit && "pointer-events-none opacity-50"} list-none border-b px-4`}
         ref={containerRef}
+        className={cn(
+          `${!isInCart && canEdit && "pointer-events-none opacity-50"} my-2 list-none rounded-md border px-4`,
+          className
+        )}
       >
         <div className="flex items-center justify-between py-2">
           <div className="flex w-full items-center gap-3">
@@ -69,9 +62,7 @@ export default React.memo(
         </div>
 
         {canEdit ? (
-          <div
-            className={`px-1 transition-all ${showDetails ? "max-h-[300vh] overflow-auto" : "max-h-0 overflow-hidden"}`}
-          >
+          <div className={`overflow-hidden px-1 transition-all ${showDetails ? "max-h-[700px]" : "max-h-0"}`}>
             {attributes.map((attribute) => (
               <div className="mb-2" key={attribute._id}>
                 {attribute.name}: {attribute.values.map((value) => value.name + ", ")}
@@ -79,12 +70,8 @@ export default React.memo(
             ))}
 
             <div className="mb-4 flex justify-end">
-              <button className="bg-lightGray rounded-md px-4 py-2" onClick={() => handleRemoveFromCartClick()}>
-                {removeFromCartMutation.isPending ? (
-                  <BiLoaderCircle className="animate-spin" color="#000" size={25} />
-                ) : (
-                  t("remove")
-                )}
+              <button className="rounded-md bg-gray-200 px-4 py-2" onClick={() => handleAddToCart(false)}>
+                {isPending ? <BiLoaderCircle className="animate-spin" color="#000" size={25} /> : t("remove")}
               </button>
             </div>
           </div>

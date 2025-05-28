@@ -60,6 +60,7 @@
   "topVendors": "أفضل البائعين",
   "moreProducts": "المزيد من المنتجات",
   "similarProducts": "منتجات مشابهة",
+  "noStock": "غير متاح",
 
   "productNotFound": "المنتج غير موجود!",
   "faildToSubmitYourAction": "فشل التنفيز",
@@ -68,6 +69,7 @@
   "SomethingWentWrong": "حدث خطاء ما, حاول مجدادا لاحقا",
   "cartMaxSizeError": "(10) عذرا, لا يمكنك اضافة المزيد من المنتجات, عربة التسوق ممتلئة",
   "savesMaxSizeError": "(25) عذرا, لا يمكنك اضافة المزيد من المنتجات, قائمة المحفوظات ممتلئة",
+  "checkoutCartAvilabilityError": "بعض المنتجات في سلة التسوق الخاصة بك غير متوفرة أو الكمية غير كافية.",
 
   "auth.password": "كلمة المرور",
   "auth.login": "تسجيل الدخول",

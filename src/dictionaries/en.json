@@ -60,6 +60,7 @@
   "topVendors": "Top Vendors",
   "moreProducts": "More Products",
   "similarProducts": "Similar Products",
+  "noStock": "No Stock",
 
   "productNotFound": "Product Not Found!",
   "faildToSubmitYourAction": "Field to save product",
@@ -68,6 +69,7 @@
   "SomethingWentWrong": "Something went wrong try again later",
   "cartMaxSizeError": "Cart size is limited to 10 items",
   "savesMaxSizeError": "Saves size is limited to 25 items",
+  "checkoutCartAvilabilityError": "Some items in your cart are out of stock or have limited availability.",
 
   "auth.password": "Password",
   "auth.login": "Login",
