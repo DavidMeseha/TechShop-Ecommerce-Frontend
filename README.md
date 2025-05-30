@@ -19,6 +19,8 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 
 - **Backend Repository**: [Node.js Backend](https://github.com/DavidMeseha/allInOne-myShop-back)
 - **Live Demo**: [TechShop Store](https://techshop-commerce.vercel.app/)
+- **Vue/Nuxt Demo**: [TechShop Store](https://techshop-commerce.vercel.app/)
+- **Vue/Nuxt Codebase**: [TechShop Store](https://github.com/DavidMeseha/myshop-nuxt)
 
 ## 🎯 Features
 
