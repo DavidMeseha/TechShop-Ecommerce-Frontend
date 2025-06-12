@@ -4,7 +4,6 @@ import { getPathnameLang } from "./lib/misc";
 
 export async function middleware(req: NextRequest) {
   let res: NextResponse = NextResponse.next();
-
   const { pathname } = req.nextUrl;
   const lang = req.cookies.get("lang")?.value ?? "en";
 

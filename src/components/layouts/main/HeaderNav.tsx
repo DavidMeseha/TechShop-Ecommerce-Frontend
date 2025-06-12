@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
 import { useTranslation } from "@/context/Translation";
 import mainNavItems from "@/constants/main-nav";
-import DropdownButton from "@/components/DropdownButton";
+import DropdownButton from "@/components/ui/DropdownButton";
 import { useRouter } from "@bprogress/next";
 
 export default function HeaderNav() {

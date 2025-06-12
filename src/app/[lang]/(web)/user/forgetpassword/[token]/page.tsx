@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/ui/Button";
-import FormTextInput from "@/components/FormTextInput";
+import FormTextInput from "@/components/ui/FormTextInput";
 import { useTranslation } from "@/context/Translation";
 import { FieldError } from "@/types";
 import React, { ChangeEvent, useState } from "react";

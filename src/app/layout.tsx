@@ -3,13 +3,12 @@ import React, { ReactElement } from "react";
 import "@/globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import { languages, seoLanguages } from "@/lib/misc";
-import { getCurrentPath } from "@/lib/serverPathname";
+import { getCurrentPath } from "@/lib/server-only/serverPathname";
 import { Language } from "@/types";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
 
 function generateLanguageAlternates(pathname: string) {
-  // Get the current language from the pathname
   const pathParts = pathname.split("/");
   const currentLang = pathParts[1] || "en";
   const cleanPath = pathParts.slice(2).join("/");

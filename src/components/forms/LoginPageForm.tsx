@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import FormTextInput from "@/components/FormTextInput";
+import FormTextInput from "@/components/ui/FormTextInput";
 import { FieldError } from "@/types";
 import { LocalLink } from "@/components/util/LocalizedNavigation";
 import { useTranslation } from "@/context/Translation";
@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/auth.service";
 import Button from "@/components/ui/Button";
 import { isAxiosError } from "axios";
-import { useUserSetup } from "@/context/UserProvider";
+import { useUserSetup } from "@/context/User";
 import { useOverlayStore } from "@/stores/overlayStore";
 
 export default function LoginPageForm() {

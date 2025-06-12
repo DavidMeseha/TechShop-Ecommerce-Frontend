@@ -4,18 +4,22 @@ import { FeaturedProducts } from "@/components/FeaturedProducts";
 import { FeaturedVendors } from "@/components/FeaturedVendors";
 import MoreProducts from "@/components/MoreProducts";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import { getTags } from "@/services/products.service";
-import { FEATURED_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
-
-export const dynamic = "force-static";
-export const revalidate = 3600;
-
-const queryClient = new QueryClient({});
+import { getTags, homeFeedProducts } from "@/services/catalog.service";
+import { FEATURED_QUERY_KEY, PRODUCTS_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
+import createServerServices from "@/services/server/createServerService";
 
 export default async function Page() {
+  const queryClient = new QueryClient({});
+  await createServerServices();
+
   await queryClient.prefetchQuery({
     queryKey: [TAGS_QUERY_KEY, FEATURED_QUERY_KEY],
     queryFn: () => getTags({ page: 1, limit: 10 })
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: [PRODUCTS_QUERY_KEY, FEATURED_QUERY_KEY],
+    queryFn: async () => homeFeedProducts({ page: 1, limit: 7 })
   });
 
   return (
@@ -44,10 +48,10 @@ export default async function Page() {
           <section>
             <FeaturedTags />
           </section>
+          <section>
+            <FeaturedProducts />
+          </section>
         </HydrationBoundary>
-        <section>
-          <FeaturedProducts />
-        </section>
         <section>
           <FeaturedVendors />
         </section>

@@ -1,20 +1,15 @@
-import TagProfilePage from "@/components/pages/TagProfilePage";
+import TagProfilePage from "@/app/[lang]/(web)/tag/TagProfilePage";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import prefetchServerRepo from "@/services/prefetchServerRepo";
-import { tagsToGenerate } from "@/services/staticGeneration.service";
+import { getProductsByTag, getTagInfo } from "@/services/catalog.service";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import createServerService from "@/services/server/createServerService";
+import { PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY } from "@/constants/query-keys";
 
 type Props = { params: Promise<{ seName: string }> };
 
-export const revalidate = 3600;
-
-export async function generateStaticParams() {
-  return await tagsToGenerate();
-}
-
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { seName } = await props.params;
-  const { getTagInfo } = await prefetchServerRepo();
 
   try {
     const [tag, parentMeta] = await Promise.all([getTagInfo(seName), parent]);
@@ -35,11 +30,23 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
 
 export default async function Page(props: Props) {
   const { seName } = await props.params;
-  const { getTagInfo } = await prefetchServerRepo();
+  const queryClient = new QueryClient();
+  await createServerService();
 
   try {
     const tag = await getTagInfo(seName);
-    return <TagProfilePage tag={tag} />;
+
+    await queryClient.prefetchInfiniteQuery({
+      queryKey: [PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY, seName],
+      queryFn: ({ pageParam }) => getProductsByTag(tag._id, { page: pageParam }),
+      initialPageParam: 1
+    });
+
+    return (
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <TagProfilePage tag={tag} />;
+      </HydrationBoundary>
+    );
   } catch {
     notFound();
   }

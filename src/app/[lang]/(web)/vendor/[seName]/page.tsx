@@ -1,20 +1,15 @@
-import VendorProfilePage from "@/components/pages/VendorProfilePage";
+import VendorProfilePage from "../VendorProfilePage";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import prefetchServerRepo from "@/services/prefetchServerRepo";
-import { vendorsToGenerate } from "@/services/staticGeneration.service";
+import { getProductsByVendor, getVendorInfo } from "@/services/catalog.service";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import createServerService from "@/services/server/createServerService";
+import { PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY } from "@/constants/query-keys";
 
 type Props = { params: Promise<{ seName: string }> };
 
-export const revalidate = 3600;
-
-export async function generateStaticParams() {
-  return await vendorsToGenerate();
-}
-
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { seName } = await props.params;
-  const { getVendorInfo } = await prefetchServerRepo();
 
   try {
     const [vendor, parentMeta] = await Promise.all([getVendorInfo(seName), parent]);
@@ -35,10 +30,23 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
 
 export default async function Page(props: Props) {
   const { seName } = await props.params;
-  const { getVendorInfo } = await prefetchServerRepo();
+  const queryClient = new QueryClient();
+  await createServerService();
+
   try {
     const vendor = await getVendorInfo(seName);
-    return <VendorProfilePage vendor={vendor} />;
+
+    await queryClient.prefetchInfiniteQuery({
+      queryKey: [PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY, seName],
+      queryFn: ({ pageParam }) => getProductsByVendor(vendor._id, { page: pageParam, limit: 10 }),
+      initialPageParam: 1
+    });
+
+    return (
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <VendorProfilePage vendor={vendor} />;
+      </HydrationBoundary>
+    );
   } catch {
     notFound();
   }

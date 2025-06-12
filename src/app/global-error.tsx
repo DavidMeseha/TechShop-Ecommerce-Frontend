@@ -37,7 +37,7 @@ export default function GlobalError() {
               fontSize: "1rem",
               padding: "9px 18px"
             }}
-            onClick={() => router.refresh()}
+            onClick={() => router.push("/")}
           >
             Try Again
           </Button>

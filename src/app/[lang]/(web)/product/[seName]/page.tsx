@@ -1,8 +1,7 @@
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import ProductPage from "@/components/pages/ProductPage";
-import { homeFeedProducts } from "@/services/products.service";
-import prefetchServerRepo from "@/services/prefetchServerRepo";
+import { getProduct, homeFeedProducts } from "@/services/catalog.service";
+import ProductPage from "../ProductPage";
 
 interface Props {
   params: Promise<{ seName: string }>;
@@ -23,7 +22,6 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { seName } = await params;
-  const { getProduct } = await prefetchServerRepo();
 
   try {
     const [product, parentMeta] = await Promise.all([getProduct(seName), parent]);
@@ -45,7 +43,6 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 
 export default async function Page({ params }: Props) {
   const { seName } = await params;
-  const { getProduct } = await prefetchServerRepo();
 
   try {
     const product = await getProduct(seName);

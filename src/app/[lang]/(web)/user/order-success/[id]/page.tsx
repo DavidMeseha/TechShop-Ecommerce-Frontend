@@ -1,6 +1,6 @@
 import { Success } from "@/components/ui/Icons";
 import { LocalLink } from "@/components/util/LocalizedNavigation";
-import { getServerTranslation } from "@/dictionary";
+import { getServerTranslation } from "@/services/server/translation";
 import { Language } from "@/types";
 
 export default async function Page({ params }: { params: Promise<{ lang: Language; id: string }> }) {

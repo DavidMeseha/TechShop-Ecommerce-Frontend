@@ -1,7 +1,6 @@
 import { BsCompass, BsCompassFill, BsHouse, BsHouseFill } from "react-icons/bs";
 import { TFunction } from "@/types";
 import { PiInfinity, PiShoppingCart, PiShoppingCartFill } from "react-icons/pi";
-import { RiProfileFill, RiProfileLine } from "react-icons/ri";
 
 const mainNavItems = (t: TFunction, cartItemsCount: number) => [
   {
@@ -17,13 +16,6 @@ const mainNavItems = (t: TFunction, cartItemsCount: number) => [
     to: "/feeds",
     icon: <PiInfinity size={20} />,
     iconActive: <PiInfinity size={20} />
-  },
-  {
-    id: 3,
-    name: t("profile"),
-    to: `/user/me`,
-    icon: <RiProfileLine size={20} />,
-    iconActive: <RiProfileFill size={20} />
   },
   {
     id: 4,

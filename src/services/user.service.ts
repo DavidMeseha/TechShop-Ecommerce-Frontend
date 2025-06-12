@@ -1,14 +1,6 @@
 import axios from "@/lib/axios";
-import {
-  IAddress,
-  IFullProduct,
-  IOrder,
-  IProductReview,
-  IVendor,
-  Pagination,
-  UserInfoForm,
-  UserProfile
-} from "@/types";
+import { IAddress, IFullProduct, IOrder, IProductReview, IVendor, Pagination, UserInfoForm } from "@/types";
+import { UserProfile } from "./types";
 
 export async function userAdresses() {
   return axios.get<IAddress[]>("/api/v2/user/addresses").then((res) => res.data);

@@ -29,5 +29,6 @@ export const ADDRESSES_QUERY_KEY = "addresses";
 export const ORDERS_QUERY_KEY = "orders";
 export const FOLLOWING_QUERY_KEY = "following";
 export const SAVED_PRODUCTS_QUERY_KEY = "saved";
+export const REVIEWS_QUERY_KEY = "reviews";
 
 export const APP_STATUS_QUERY_KEY = "app-status";

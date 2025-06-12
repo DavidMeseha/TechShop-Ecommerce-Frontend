@@ -5,13 +5,13 @@ import CartItem from "@/components/CartItem";
 import { useTranslation } from "@/context/Translation";
 import { useQuery } from "@tanstack/react-query";
 import Button from "@/components/ui/Button";
-import FormDropdownInput from "@/components/FormDropdownInput";
-import RadioGroup from "@/components/RadioGroup";
+import FormDropdownInput from "@/components/ui/FormDropdownInput";
+import RadioGroup from "@/components/ui/RadioGroup";
 import { CardElement } from "@stripe/react-stripe-js";
 import { checkoutData } from "@/services/checkout.service";
 import { useOverlayStore } from "@/stores/overlayStore";
 import { CheckoutForm } from "@/schemas/valdation";
-import usePlaceOrder from "@/hooks/usePlaceOrder";
+import usePlaceOrder from "@/app/[lang]/(web)/user/checkout/usePlaceOrder";
 import { ADDRESSES_QUERY_KEY, CART_QUERY_KEY, CHECKOUT_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
 
 const initialCheckoutForm: CheckoutForm = {

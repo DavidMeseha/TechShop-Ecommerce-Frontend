@@ -1,7 +1,7 @@
 import { TFunction } from "@/types";
 import z from "zod";
 
-const passwordValidationRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
+const passwordRegexValidation = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g;
 
 export function registerSchema(t: TFunction) {
   return z
@@ -18,7 +18,7 @@ export function registerSchema(t: TFunction) {
       gender: z.enum(["male", "female"]),
       password: z
         .string()
-        .regex(passwordValidationRegex, {
+        .regex(passwordRegexValidation, {
           message: t("auth.passwordFormatError")
         })
         .min(8, { message: t("auth.passwordMinimumLength") }),

@@ -1,12 +1,12 @@
 import { FieldError } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { addReview } from "@/services/products.service";
 import React, { useState } from "react";
 import RatingStars from "../ui/RatingStars";
 import Button from "../ui/Button";
 import { useTranslation } from "@/context/Translation";
 import useAdjustProductsQueries from "@/hooks/useAdjustProductsQueries";
+import { addReview } from "@/services/userActions.service";
 
 type FormError = {
   reviewText: FieldError;

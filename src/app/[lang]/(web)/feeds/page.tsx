@@ -1,25 +1,22 @@
-import InfiniteFeed from "@/components/pages/FeedsPage";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { FEED_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
-import prefetchServerRepo from "@/services/prefetchServerRepo";
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+import FeedPage from "./FeedPage";
+import createServerService from "@/services/server/createServerService";
+import { homeFeedProducts } from "@/services/catalog.service";
 
 export default async function Page() {
-  const { getFeedProducts } = await prefetchServerRepo();
-
   const queryClient = new QueryClient({});
+  await createServerService();
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: [PRODUCTS_QUERY_KEY, FEED_QUERY_KEY],
-    queryFn: ({ pageParam = 1 }) => getFeedProducts({ page: pageParam, limit: 2 }),
+    queryFn: ({ pageParam = 1 }) => homeFeedProducts({ page: pageParam, limit: 2 }),
     initialPageParam: 1
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <InfiniteFeed />
+      <FeedPage />
     </HydrationBoundary>
   );
 }

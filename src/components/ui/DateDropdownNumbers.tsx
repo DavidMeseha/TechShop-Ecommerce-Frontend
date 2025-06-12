@@ -1,6 +1,6 @@
 "use client";
-import { cn } from "@/lib/utils";
-import Dropdown from "../DropDown";
+import { cn } from "@/lib/cn";
+import Dropdown from "./DropDown";
 import { HTMLProps, useMemo, useRef } from "react";
 
 interface Props {

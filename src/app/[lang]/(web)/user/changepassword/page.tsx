@@ -1,6 +1,6 @@
 "use client";
 
-import FormTextInput from "@/components/FormTextInput";
+import FormTextInput from "@/components/ui/FormTextInput";
 import { FieldError } from "@/types";
 import React, { useState } from "react";
 import { useTranslation } from "@/context/Translation";

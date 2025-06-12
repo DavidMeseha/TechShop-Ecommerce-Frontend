@@ -1,7 +1,7 @@
 import { languages } from "@/lib/misc";
 import { MetadataRoute } from "next";
-import { categoriesToGenerate, tagsToGenerate, vendorsToGenerate } from "@/services/staticGeneration.service";
-import { homeFeedProducts } from "@/services/products.service";
+import { categoriesToGenerate, tagsToGenerate, vendorsToGenerate } from "@/services/server/staticGeneration.service";
+import { homeFeedProducts } from "@/services/catalog.service";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
 

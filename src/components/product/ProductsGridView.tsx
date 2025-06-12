@@ -3,7 +3,7 @@ import ProductCard from "@/components/product/ProductCard";
 import { IFullProduct } from "@/types";
 import ProductsSetLoading from "../LoadingUi/ProductsSetLoading";
 import { useUserStore } from "@/stores/userStore";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
 
 type Props = {
   products: IFullProduct[];

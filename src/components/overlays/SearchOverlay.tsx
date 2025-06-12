@@ -39,7 +39,7 @@ export default function SearchOverlay() {
     tags: false,
     products: false
   });
-  const timeoutRef = useRef<number>();
+  const timeoutRef = useRef<number>(null);
 
   const handleChange = (value: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);

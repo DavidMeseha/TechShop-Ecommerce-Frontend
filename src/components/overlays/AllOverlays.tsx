@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo } from "react";
 import EditProfileOverlay from "./editProfileOverlay/EditProfileOverlay";
-import AttributesOverlay from "./AttributesOverlay";
+import AttributesOverlay from "./AttributesOverlay/AttributesOverlay";
 import ProductMoreInfoOverlay from "./ProductMoreInfo";
 import AddReviewOverlay from "./AddReviewOverlay";
 import AddNewAddress from "./AddNewAddress";
@@ -14,7 +14,7 @@ import { useProductStore } from "@/stores/productStore";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import HomeMenu from "./HomeMenu";
-import { setLastPageBeforSignUp } from "@/lib/localestorageAPI";
+import { setLastPageBeforSignUp } from "@/lib/last-page-before-signup";
 import { usePathname } from "next/navigation";
 
 export default function AllOverlays() {

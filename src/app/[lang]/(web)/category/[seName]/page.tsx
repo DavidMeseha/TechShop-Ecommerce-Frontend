@@ -1,20 +1,15 @@
-import CategoryProfilePage from "@/components/pages/CategoryProfilePage";
+import CategoryProfilePage from "../CategoryProfilePage";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import prefetchServerRepo from "@/services/prefetchServerRepo";
-import { categoriesToGenerate } from "@/services/staticGeneration.service";
+import { getCategoryInfo, getProductsByCateory } from "@/services/catalog.service";
+import { PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY } from "@/constants/query-keys";
+import createServerService from "@/services/server/createServerService";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
 type Props = { params: Promise<{ seName: string }> };
 
-export const revalidate = 3600;
-
-export async function generateStaticParams() {
-  return await categoriesToGenerate();
-}
-
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { seName } = await params;
-  const { getCategoryInfo } = await prefetchServerRepo();
 
   try {
     const [category, parentMeta] = await Promise.all([getCategoryInfo(seName), parent]);
@@ -35,11 +30,23 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 
 export default async function Page({ params }: Props) {
   const { seName } = await params;
-  const { getCategoryInfo } = await prefetchServerRepo();
+  const queryClient = new QueryClient();
+  await createServerService();
 
   try {
     const category = await getCategoryInfo(seName);
-    return <CategoryProfilePage category={category} />;
+
+    await queryClient.prefetchInfiniteQuery({
+      queryKey: [PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY, seName],
+      queryFn: ({ pageParam }) => getProductsByCateory(category._id, { page: pageParam }),
+      initialPageParam: 1
+    });
+
+    return (
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <CategoryProfilePage category={category} />;
+      </HydrationBoundary>
+    );
   } catch {
     notFound();
   }

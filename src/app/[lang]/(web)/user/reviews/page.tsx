@@ -1,68 +1,22 @@
-"use client";
-
-import Button from "@/components/ui/Button";
-import RatingStars from "@/components/ui/RatingStars";
-import { IProductReview } from "@/types";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
-import React from "react";
-import { BiLoaderCircle } from "react-icons/bi";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import createServerService from "@/services/server/createServerService";
 import { getUserReviews } from "@/services/user.service";
-import { useTranslation } from "@/context/Translation";
+import ReviewsPage from "./ReviewsPage";
+import { REVIEWS_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
 
-export default function ReviewsPage() {
-  const { t } = useTranslation();
+export default async function Page() {
+  const queryClient = new QueryClient();
+  await createServerService();
 
-  const { hasNextPage, fetchNextPage, data, isFetchedAfterMount, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["myReviews"],
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [USER_QUERY_KEY, REVIEWS_QUERY_KEY],
     queryFn: ({ pageParam }) => getUserReviews({ page: pageParam }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined)
+    initialPageParam: 1
   });
-  const reviews = data?.pages.flatMap((page) => page.data) ?? [];
 
   return (
-    <ul className="block px-4">
-      {isFetchedAfterMount ? (
-        reviews.length > 0 ? (
-          reviews.map((review) => <ReviewItem key={review._id} review={review} />)
-        ) : (
-          <div className="py-14 text-center text-gray-400">{t("profile.noReviews")}</div>
-        )
-      ) : (
-        <div className="flex w-full flex-col items-center justify-center py-2">
-          <BiLoaderCircle className="animate-spin fill-primary" size={35} />
-        </div>
-      )}
-
-      {isFetchedAfterMount && hasNextPage ? (
-        <Button
-          className="mx-auto w-full bg-primary text-white"
-          isLoading={isFetchingNextPage}
-          onClick={() => fetchNextPage()}
-        >
-          {t("loadMore")}
-        </Button>
-      ) : null}
-    </ul>
-  );
-}
-
-function ReviewItem({ review }: { review: IProductReview }) {
-  return (
-    <li className="border-b py-6">
-      <div className="flex justify-between">
-        <LocalLink className="mt-2 font-bold text-primary hover:underline" href={`/product/${review.product?.seName}`}>
-          {review.product?.name}
-        </LocalLink>
-        <div>
-          <RatingStars rate={review.rating} size={14} />
-        </div>
-      </div>
-      <p className="mt-2">{review.reviewText}</p>
-      {review.createdAt ? (
-        <div className="flex justify-end text-xs text-gray-400">{new Date(review.createdAt).toLocaleString()}</div>
-      ) : null}
-    </li>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ReviewsPage />
+    </HydrationBoundary>
   );
 }

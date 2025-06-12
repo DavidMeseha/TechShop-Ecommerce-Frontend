@@ -7,8 +7,8 @@ import { BiLoaderCircle } from "react-icons/bi";
 import { useTranslation } from "@/context/Translation";
 import Image from "next/image";
 import { IFullProduct, IProductAttribute } from "@/types";
-import { cn } from "@/lib/utils";
-import useAddToCart from "@/hooks/useAddToCart";
+import { cn } from "@/lib/cn";
+import useAddToCart from "@/features/add-to-cart/useAddToCart";
 
 type Props = {
   product: IFullProduct;

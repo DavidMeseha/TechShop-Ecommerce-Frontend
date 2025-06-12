@@ -1,14 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, { isServer }) => {
-    config.resolve.symlinks = false;
-    // Add a rule to handle the canvas.node binary module
-    config.module.rules.push({ test: /\.node$/, use: "raw-loader" });
-
-    // Exclude canvas from being processed by Next.js in the browser
-    if (!isServer) config.externals.push("canvas");
-    return config;
-  },
   images: {
     remotePatterns: [
       {
@@ -34,13 +25,11 @@ const nextConfig = {
 
   expireTime: 86_400, //1 day
 
-  experimental: {
-    turbo: {
-      rules: {
-        "*.svg": {
-          loaders: ["@svgr/webpack"],
-          as: "*.js"
-        }
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js"
       }
     }
   }

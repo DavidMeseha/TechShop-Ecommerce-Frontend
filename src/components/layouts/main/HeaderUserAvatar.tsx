@@ -1,5 +1,5 @@
 import { useTranslation } from "@/context/Translation";
-import { useUserSetup } from "@/context/UserProvider";
+import { useUserSetup } from "@/context/User";
 import { headerProfileMenu } from "@/constants/menus";
 import { User } from "@/types";
 import { useRouter } from "@bprogress/next";

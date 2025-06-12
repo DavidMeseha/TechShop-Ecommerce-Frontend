@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { RiCloseLine } from "react-icons/ri";
-import MainMenu from "../MainMenu";
+import MainMenu from "./MainMenu";
 import { useTranslation } from "@/context/Translation";
 import { useOverlayStore } from "@/stores/overlayStore";
 

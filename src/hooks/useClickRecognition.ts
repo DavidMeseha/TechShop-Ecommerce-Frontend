@@ -4,7 +4,7 @@ import { RefObject, useEffect, useCallback } from "react";
 
 interface ClickRecognitionProps {
   onOutsideClick: () => void;
-  containerRef: RefObject<HTMLElement>;
+  containerRef: RefObject<HTMLElement | null>;
   enabled?: boolean;
 }
 

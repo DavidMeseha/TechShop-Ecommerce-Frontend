@@ -3,12 +3,12 @@
 import { TranslationProvider } from "@/context/Translation";
 import { Language, Translation } from "@/types";
 import { ReactNode, useEffect } from "react";
-import NetworkErrors from "@/context/NetworkErrors";
+import NetworkErrors from "@/components/util/NetworkErrors";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAppStore } from "@/stores/appStore";
-import QueryProvider from "@/context/QueryProvider";
-import ProgressBarProvider from "@/context/ProgressBarProvider";
-import ReactScan from "@/components/util/ReactScan";
+import TanstackQuery from "@/context/TanstackQuery";
+import ProgressBar from "@/components/util/ProgressBar";
+// import ReactScan from "@/components/util/ReactScan";
 
 type Props = {
   children: ReactNode;
@@ -24,16 +24,16 @@ export default function AppProvidrs({ children, dictionary, lang }: Props) {
   }, []);
 
   return (
-    <ProgressBarProvider>
-      <QueryProvider>
+    <ProgressBar>
+      <TanstackQuery>
         <TranslationProvider lang={lang} translation={dictionary}>
           <NetworkErrors>
-            <ReactScan />
+            {/* <ReactScan /> */}
             {children}
           </NetworkErrors>
         </TranslationProvider>
         <ReactQueryDevtools initialIsOpen={false} />
-      </QueryProvider>
-    </ProgressBarProvider>
+      </TanstackQuery>
+    </ProgressBar>
   );
 }

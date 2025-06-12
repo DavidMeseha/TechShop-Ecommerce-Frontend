@@ -1,5 +1,5 @@
-import FormTextInput from "@/components/FormTextInput";
-import RadioGroup from "@/components/RadioGroup";
+import FormTextInput from "@/components/ui/FormTextInput";
+import RadioGroup from "@/components/ui/RadioGroup";
 import DateDropdownNumbers from "@/components/ui/DateDropdownNumbers";
 import { UserInfoForm } from "@/types";
 import React from "react";

@@ -3,13 +3,13 @@ import React from "react";
 import { LocalLink } from "../util/LocalizedNavigation";
 import { RiBookmark2Line, RiHeart2Line, RiShoppingCartLine } from "react-icons/ri";
 import Button from "../ui/Button";
-import useLike from "@/hooks/useLike";
+import useLike from "@/features/like-product/useLike";
 import RatingStars from "../ui/RatingStars";
-import useSave from "@/hooks/useSave";
-import useAddToCart from "@/hooks/useAddToCart";
+import useSave from "@/features/save-product/useSave";
+import useAddToCart from "@/features/add-to-cart/useAddToCart";
 import { useProductStore } from "@/stores/productStore";
 import ProductCarosel from "./ProductCarosel";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
 import { useTranslation } from "@/context/Translation";
 
 type Props = {

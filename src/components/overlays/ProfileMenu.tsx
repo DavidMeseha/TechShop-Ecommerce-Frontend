@@ -9,7 +9,7 @@ import { FaRegAddressBook } from "react-icons/fa";
 import { BsStar } from "react-icons/bs";
 import { PiPassword } from "react-icons/pi";
 import { useOverlayStore } from "@/stores/overlayStore";
-import { useUserSetup } from "@/context/UserProvider";
+import { useUserSetup } from "@/context/User";
 
 export default function ProfileMenuOverlay() {
   const setIsProfileMenuOpen = useOverlayStore((state) => state.setIsProfileMenuOpen);

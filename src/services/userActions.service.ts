@@ -32,3 +32,7 @@ export async function saveProduct(id: string) {
 export async function unsaveProduct(id: string) {
   return axios.post(`/api/v2/user/actions/unsaveProduct/${id}`);
 }
+
+export async function addReview(productId: string, form: { reviewText: string; rating: number }) {
+  return axios.post(`/api/v2/user/actions/addReview/${productId}`, { ...form });
+}

@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { LocalLink } from "@/components/util/LocalizedNavigation";
 import React from "react";
-import useFollow from "@/hooks/useFollow";
+import useFollow from "@/features/follow-vendor/useFollow";
 import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
 import { getFollowingVendors } from "@/services/user.service";
 import { FOLLOWING_QUERY_KEY, USER_QUERY_KEY, VENDORS_QUERY_KEY } from "@/constants/query-keys";
