@@ -1,16 +1,16 @@
 import Image from "next/image";
-import { FeaturedTags } from "@/components/FeaturedTags";
-import { FeaturedProducts } from "@/components/FeaturedProducts";
-import { FeaturedVendors } from "@/components/FeaturedVendors";
-import MoreProducts from "@/components/MoreProducts";
+import { FeaturedTags } from "@/components/catalogs/FeaturedTags";
+import { FeaturedProducts } from "@/components/catalogs/FeaturedProducts";
+import { FeaturedVendors } from "@/components/catalogs/FeaturedVendors";
+import MoreProducts from "@/components/catalogs/MoreProducts";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { getTags, homeFeedProducts } from "@/services/catalog.service";
 import { FEATURED_QUERY_KEY, PRODUCTS_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
-import createServerServices from "@/services/server/createServerService";
+import configureServerRequests from "@/services/server/configureServerRequest";
 
 export default async function Page() {
   const queryClient = new QueryClient({});
-  await createServerServices();
+  await configureServerRequests();
 
   await queryClient.prefetchQuery({
     queryKey: [TAGS_QUERY_KEY, FEATURED_QUERY_KEY],

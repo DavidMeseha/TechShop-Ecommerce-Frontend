@@ -29,3 +29,15 @@ export interface UserProfile {
   imageUrl: string;
   ordersCount: number;
 }
+
+export interface UserInfoForm {
+  email: string;
+  gender?: "male" | "female";
+  firstName: string;
+  lastName: string;
+  dateOfBirthDay?: number;
+  dateOfBirthMonth?: number;
+  dateOfBirthYear?: number;
+  phone?: string;
+  imageUrl: string;
+}

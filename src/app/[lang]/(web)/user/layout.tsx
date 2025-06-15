@@ -1,5 +1,5 @@
 import React from "react";
-import createServerServices from "@/services/server/createServerService";
+import configureServerRequests from "@/services/server/configureServerRequest";
 import { redirect } from "next/navigation";
 import { checkTokenValidity } from "@/services/auth.service";
 import NotRegisterd from "@/components/pages/NotRegisterdDisplay";
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default async function Layout({ children }: Props) {
-  const { token } = await createServerServices();
+  const { token } = await configureServerRequests();
 
   try {
     if (token) await checkTokenValidity();

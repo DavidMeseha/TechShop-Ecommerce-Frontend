@@ -13,60 +13,19 @@ export interface Pagination {
   hasNext: boolean;
 }
 
-export interface FeedProduct {
-  gender: string[];
-  category: ICategory;
-  defaultPicture?: IPicture;
-  pictures: IPicture[];
-  name: string;
-  shortDescription: string;
-  fullDescription: string;
-  seName: string;
-  sku: string;
-  vendor?: string;
-  productTags: ITag[];
-  hasAttributes: boolean;
-  productReviewOverview?: {
-    ratingSum: number;
-    totalReviews: number;
-  };
-  likes?: number;
-  carts?: number;
-  saves?: number;
-  inStock?: boolean;
-}
-
-export interface User {
+export interface IUser {
+  _id: string;
   firstName: string;
   lastName: string;
   isVendor: boolean;
   isRegistered: boolean;
   imageUrl: string;
-  _id: string;
   language: Language;
-}
-
-export interface Review {
-  customer_id: number;
-  customer_avatar_url: string;
-  customer_name: string;
-  allow_viewing_profiles: true;
-  title: string;
-  review_text: string;
-  reply_text: string;
-  rating: number;
-  written_on_str: string;
-  helpfulness: {
-    product_review_id: number;
-    helpful_yes_total: number;
-    helpful_no_total: number;
-  };
-  id: number;
 }
 
 export interface IOrder {
   _id: string;
-  customer: User;
+  customer: IUser;
   billingStatus: string;
   billingMethod: string;
   shippingAddress: IAddress;
@@ -82,30 +41,6 @@ export interface IOrder {
   codFees: number;
 }
 
-export interface ProductPicture {
-  image_url: string;
-  thumb_image_url: string;
-  full_size_image_url: string;
-  title: string;
-  alternate_text: string;
-  id: number;
-}
-
-export interface RegisterForm {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  gender: "male" | "female" | string;
-  firstName: string;
-  lastName: string;
-  dayOfBirth: number;
-  monthOfBirth: number;
-  yearOfBirth: number;
-}
-
-//be interfaces============================
-//be interfaces============================
-//be interfaces============================
 export interface ICountry {
   _id: string;
   name: string;
@@ -222,18 +157,6 @@ export interface IFullProduct {
   isSaved: boolean;
   isReviewed: boolean;
   isInCart: boolean;
-}
-
-export interface UserInfoForm {
-  email: string;
-  gender?: "male" | "female";
-  firstName: string;
-  lastName: string;
-  dateOfBirthDay?: number;
-  dateOfBirthMonth?: number;
-  dateOfBirthYear?: number;
-  phone?: string;
-  imageUrl: string;
 }
 
 export interface Paginated<Data> {

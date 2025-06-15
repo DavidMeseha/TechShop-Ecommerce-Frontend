@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import ProductCard from "./product/ProductCard";
+import ProductCard from "../ProductCard";
 import { useQuery } from "@tanstack/react-query";
 import { homeFeedProducts } from "@/services/catalog.service";
 import { useInView } from "react-intersection-observer";
-import ProductCardLoading from "./LoadingUi/ProductCardLoading";
-import SectionHeader from "./ui/SectionHeader";
+import ProductCardLoading from "../LoadingUi/ProductCardLoading";
+import SectionHeader from "../ui/SectionHeader";
 import { useTranslation } from "@/context/Translation";
 import { FEATURED_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
 

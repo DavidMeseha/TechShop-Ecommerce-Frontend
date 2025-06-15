@@ -1,5 +1,5 @@
 import React from "react";
-import LoadingTheme from "./LoadingTheme";
+import LoadingTheme from "./LoadingSkeletonTheme";
 import Skeleton from "react-loading-skeleton";
 
 export default function VendorCardLoading() {

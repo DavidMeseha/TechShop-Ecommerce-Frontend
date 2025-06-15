@@ -1,6 +1,6 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
-import LoadingTheme from "../../LoadingUi/LoadingTheme";
+import LoadingTheme from "../../LoadingUi/LoadingSkeletonTheme";
 
 export default function AttributesOverlayLoading() {
   return (

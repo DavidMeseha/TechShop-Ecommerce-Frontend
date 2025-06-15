@@ -1,4 +1,4 @@
-import RegisterPageForm from "@/components/forms/RegisterPageForm";
+import RegisterPageForm from "@/components/forms/RegisterForm";
 
 export const dynamic = "force-static";
 export const revalidate = false;

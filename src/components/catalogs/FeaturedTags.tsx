@@ -4,10 +4,10 @@ import * as React from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ITag } from "@/types";
 import { BsHash } from "react-icons/bs";
-import { LocalLink } from "./util/LocalizedNavigation";
+import { LocalLink } from "../util/LocalizedNavigation";
 import { useQuery } from "@tanstack/react-query";
 import { getTags } from "@/services/catalog.service";
-import TagItemLoading from "./LoadingUi/TagItemLoading";
+import TagItemLoading from "../LoadingUi/TagItemLoading";
 import { useInView } from "react-intersection-observer";
 import { FEATURED_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
 

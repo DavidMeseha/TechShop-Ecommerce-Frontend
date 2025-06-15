@@ -1,7 +1,7 @@
 import React from "react";
 import OverlayLayout from "@/components/layouts/OverlayLayout";
 import { useOverlayStore } from "@/stores/overlayStore";
-import LoginPageForm from "@/components/forms/LoginPageForm";
+import LoginPageForm from "@/components/forms/LoginForm";
 
 export default function Login() {
   const setIsLoginOpen = useOverlayStore((state) => state.setIsLoginOpen);

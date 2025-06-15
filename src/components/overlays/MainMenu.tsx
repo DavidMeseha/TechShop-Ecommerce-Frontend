@@ -1,11 +1,11 @@
 "use client";
 
-import { LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
+import { AppRoutes, LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
 import React, { useMemo } from "react";
 import { useTranslation } from "@/context/Translation";
 import { useUserStore } from "@/stores/userStore";
 import DropdownButton from "../ui/DropdownButton";
-import { changeLanguage } from "@/app/actions";
+import { changeLanguage } from "@/actions";
 import { languages } from "@/lib/misc";
 import { Language } from "@/types";
 import { mobileMenu } from "@/constants/menus";
@@ -30,7 +30,7 @@ export default React.memo(function MainMenu() {
       {menu.map((item, index) => (
         <li key={index}>
           <LocalLink
-            href={item.to}
+            href={item.to as AppRoutes}
             className={`hover:bg-lightGray mb-2 flex w-full items-center gap-2 rounded-md p-2 text-lg font-semibold ${
               pathname === item.to ? "text-primary" : ""
             }`}

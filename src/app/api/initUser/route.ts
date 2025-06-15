@@ -1,9 +1,9 @@
 import { checkTokenValidity } from "@/services/auth.service";
-import createServerService from "@/services/server/createServerService";
+import configureServerRequest from "@/services/server/configureServerRequest";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const { token } = await createServerService();
+  const { token } = await configureServerRequest();
   if (!token) return NextResponse.json(null, { status: 400 });
 
   try {

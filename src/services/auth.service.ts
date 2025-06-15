@@ -1,13 +1,13 @@
-import axios from "@/lib/axios";
+import axios from "@/services/api/axios.config";
 import { LoginForm, RegisterForm } from "@/schemas/valdation";
-import { User } from "@/types";
+import { IUser } from "@/types";
 
 export async function checkTokenValidity() {
-  return axios.get<User>("/api/v2/auth/check").then((res) => res.data);
+  return axios.get<IUser>("/api/v2/auth/check").then((res) => res.data);
 }
 
 export async function getGuestToken() {
-  return axios.get<{ user: User; token: string }>("/api/v2/auth/guest");
+  return axios.get<{ user: IUser; token: string }>("/api/v2/auth/guest");
 }
 
 export async function refreshToken() {
@@ -27,6 +27,6 @@ export async function registerUser(payload: RegisterForm) {
 
 export async function login(payload: LoginForm) {
   return axios
-    .post<{ user: User; token: string; expiry: number }>("/api/v2/auth/login", { ...payload })
+    .post<{ user: IUser; token: string; expiry: number }>("/api/v2/auth/login", { ...payload })
     .then((res) => res.data);
 }

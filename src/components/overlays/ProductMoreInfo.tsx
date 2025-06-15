@@ -14,7 +14,7 @@ import LoadingSpinner from "../LoadingUi/LoadingSpinner";
 import { getProductDetails } from "@/services/catalog.service";
 import { useProductStore } from "@/stores/productStore";
 import ProductReviews from "../product/Reviews";
-import ProductCarosel from "../product/ProductCarosel";
+import ProductCarosel from "../product/ProductPictureCarosel";
 import { SINGLE_PRODUCT_QUERY_KEY } from "@/constants/query-keys";
 
 export default function ProductMoreInfoOverlay() {

@@ -1,5 +1,5 @@
 import AppProviders from "@/components/layouts/AppProvidersLayout";
-import { getDictionary } from "@/services/server/translation";
+import { getDictionary } from "@/services/server/translation.service";
 import { languages } from "@/lib/misc";
 import { Language } from "@/types";
 import { ReactNode } from "react";

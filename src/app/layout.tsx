@@ -1,5 +1,5 @@
 import "react-toastify/dist/ReactToastify.css";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import "@/globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import { languages, seoLanguages } from "@/lib/misc";
@@ -61,5 +61,5 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
 }
 
 export default async function RootLayout({ children }: { children: ReactElement }) {
-  return <>{children}</>;
+  return children;
 }

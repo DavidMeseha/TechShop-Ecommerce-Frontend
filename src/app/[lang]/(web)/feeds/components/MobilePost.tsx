@@ -2,9 +2,9 @@
 
 import React from "react";
 import { IFullProduct } from "@/types";
-import ProductCarosel from "@/components/product/ProductCarosel";
+import ProductCarosel from "@/components/product/ProductPictureCarosel";
 import ViewMoreButton from "@/components/ui/ViewMoreButton";
-import ProductVendorButton from "@/components/product/VendorButton";
+import ProductVendorButton from "@/features/follow-vendor/VendorButton";
 import SaveProductButton from "@/features/save-product/SaveButton";
 import AddToCartButton from "@/features/add-to-cart/AddToCartButton";
 import RateButton from "@/components/product/RateButton";

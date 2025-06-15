@@ -8,7 +8,7 @@ import { manipulateDescription } from "@/lib/misc";
 import { IFullProduct } from "@/types";
 import useFollow from "@/features/follow-vendor/useFollow";
 import Button from "@/components/ui/Button";
-import ProductCarosel from "@/components/product/ProductCarosel";
+import ProductCarosel from "@/components/product/ProductPictureCarosel";
 import ViewMoreButton from "@/components/ui/ViewMoreButton";
 import LikeButton from "@/features/like-product/LikeButton";
 import RateButton from "@/components/product/RateButton";

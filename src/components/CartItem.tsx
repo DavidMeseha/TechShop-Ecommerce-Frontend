@@ -3,12 +3,12 @@
 import React, { useRef, useState } from "react";
 import useClickRecognition from "@/hooks/useClickRecognition";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { BiLoaderCircle } from "react-icons/bi";
 import { useTranslation } from "@/context/Translation";
 import Image from "next/image";
 import { IFullProduct, IProductAttribute } from "@/types";
 import { cn } from "@/lib/cn";
 import useAddToCart from "@/features/add-to-cart/useAddToCart";
+import Button from "./ui/Button";
 
 type Props = {
   product: IFullProduct;
@@ -63,16 +63,23 @@ export default React.memo(
 
         {canEdit ? (
           <div className={`overflow-hidden px-1 transition-all ${showDetails ? "max-h-[700px]" : "max-h-0"}`}>
-            {attributes.map((attribute) => (
-              <div className="mb-2" key={attribute._id}>
-                {attribute.name}: {attribute.values.map((value) => value.name + ", ")}
-              </div>
-            ))}
+            <div className="mb-4 space-y-2 divide-y divide-gray-100">
+              {attributes.map((attribute) => (
+                <div className="flex items-center justify-between py-2 text-sm" key={attribute._id}>
+                  <span className="font-medium text-gray-700">{attribute.name}</span>
+                  <span className="text-gray-600">{attribute.values.map((value) => value.name).join(", ")}</span>
+                </div>
+              ))}
+            </div>
 
-            <div className="mb-4 flex justify-end">
-              <button className="rounded-md bg-gray-200 px-4 py-2" onClick={() => handleAddToCart(false)}>
-                {isPending ? <BiLoaderCircle className="animate-spin" color="#000" size={25} /> : t("remove")}
-              </button>
+            <div className="mb-4 flex justify-end border-t pt-4">
+              <Button
+                className="rounded-md bg-red-50 text-sm font-medium text-red-600 transition-colors hover:bg-red-100"
+                isLoading={isPending}
+                onClick={() => handleAddToCart(false)}
+              >
+                {t("remove")}
+              </Button>
             </div>
           </div>
         ) : null}

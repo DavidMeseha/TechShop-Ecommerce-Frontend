@@ -3,7 +3,7 @@ import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { getProductsByVendor, getVendorInfo } from "@/services/catalog.service";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import createServerService from "@/services/server/createServerService";
+import configureServerRequest from "@/services/server/configureServerRequest";
 import { PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY } from "@/constants/query-keys";
 
 type Props = { params: Promise<{ seName: string }> };
@@ -31,7 +31,7 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
 export default async function Page(props: Props) {
   const { seName } = await props.params;
   const queryClient = new QueryClient();
-  await createServerService();
+  await configureServerRequest();
 
   try {
     const vendor = await getVendorInfo(seName);

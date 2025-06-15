@@ -5,7 +5,7 @@ import { BiSearch, BiShoppingBag } from "react-icons/bi";
 import Button from "@/components/ui/Button";
 import { useTranslation } from "@/context/Translation";
 import DropdownButton from "@/components/ui/DropdownButton";
-import { changeLanguage } from "@/app/actions";
+import { changeLanguage } from "@/actions";
 import { usePathname } from "next/navigation";
 import { useUserStore } from "@/stores/userStore";
 import { Language } from "@/types";

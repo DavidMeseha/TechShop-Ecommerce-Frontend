@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import CheckboxGroup from "@/components/ui/CheckboxGroup";
 
 describe("Checkbox group", () => {
@@ -9,6 +10,7 @@ describe("Checkbox group", () => {
   ];
   const onChange = jest.fn();
   const title = "checkbox group";
+  const user = userEvent.setup();
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -30,10 +32,10 @@ describe("Checkbox group", () => {
   });
 
   it("fires onChange with correct values", async () => {
-    fireEvent.click(screen.getByLabelText("option 1"));
+    await user.click(screen.getByLabelText("option 1"));
     expect(onChange).toHaveBeenCalledWith([]);
 
-    fireEvent.click(screen.getByLabelText("option 2"));
+    await user.click(screen.getByLabelText("option 2"));
     expect(onChange).toHaveBeenCalledWith(["option1", "option2"]);
   });
 });

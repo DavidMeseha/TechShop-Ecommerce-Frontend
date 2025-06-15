@@ -1,12 +1,12 @@
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { FEED_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
 import FeedPage from "./FeedPage";
-import createServerService from "@/services/server/createServerService";
+import configureServerRequest from "@/services/server/configureServerRequest";
 import { homeFeedProducts } from "@/services/catalog.service";
 
 export default async function Page() {
   const queryClient = new QueryClient({});
-  await createServerService();
+  await configureServerRequest();
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: [PRODUCTS_QUERY_KEY, FEED_QUERY_KEY],

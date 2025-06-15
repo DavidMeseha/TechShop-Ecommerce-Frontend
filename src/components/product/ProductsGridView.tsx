@@ -1,5 +1,5 @@
 import React from "react";
-import ProductCard from "@/components/product/ProductCard";
+import ProductCard from "@/components/ProductCard";
 import { IFullProduct } from "@/types";
 import ProductsSetLoading from "../LoadingUi/ProductsSetLoading";
 import { useUserStore } from "@/stores/userStore";

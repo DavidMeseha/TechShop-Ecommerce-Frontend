@@ -3,16 +3,16 @@
 import * as React from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { IVendor } from "@/types";
-import { LocalLink } from "./util/LocalizedNavigation";
+import { LocalLink } from "../util/LocalizedNavigation";
 import { useQuery } from "@tanstack/react-query";
 import { getVendors } from "@/services/catalog.service";
 import { useInView } from "react-intersection-observer";
 import Image from "next/image";
-import Button from "./ui/Button";
+import Button from "../ui/Button";
 import { useTranslation } from "@/context/Translation";
-import VendorCardLoading from "./LoadingUi/VendorCardLoading";
+import VendorCardLoading from "../LoadingUi/VendorCardLoading";
 import useFollow from "@/features/follow-vendor/useFollow";
-import SectionHeader from "./ui/SectionHeader";
+import SectionHeader from "../ui/SectionHeader";
 import { FEATURED_QUERY_KEY, VENDORS_QUERY_KEY } from "@/constants/query-keys";
 
 export function FeaturedVendors() {

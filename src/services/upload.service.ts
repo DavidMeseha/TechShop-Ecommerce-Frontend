@@ -1,4 +1,4 @@
-import axios from "@/lib/axios";
+import axios from "@/services/api/axios.config";
 
 export async function uploadImage(formData: FormData) {
   return axios

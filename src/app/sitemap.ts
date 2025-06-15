@@ -1,6 +1,5 @@
 import { languages } from "@/lib/misc";
 import { MetadataRoute } from "next";
-import { categoriesToGenerate, tagsToGenerate, vendorsToGenerate } from "@/services/server/staticGeneration.service";
 import { homeFeedProducts } from "@/services/catalog.service";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
@@ -38,18 +37,10 @@ const createEntry = (
 // Fetch data for dynamic routes
 async function fetchDynamicRoutes() {
   try {
-    const [categories, products, tags, vendors] = await Promise.all([
-      categoriesToGenerate(),
-      homeFeedProducts({ page: 1, limit: 20 }),
-      tagsToGenerate(),
-      vendorsToGenerate()
-    ]);
+    const [products] = await Promise.all([homeFeedProducts({ page: 1, limit: 20 })]);
 
     return {
-      categories: categories || [],
-      products: products.data || [],
-      tags: tags || [],
-      vendors: vendors || []
+      products: products.data || []
     };
   } catch {
     return {
@@ -62,7 +53,7 @@ async function fetchDynamicRoutes() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { categories, products, tags, vendors } = await fetchDynamicRoutes();
+  const { products } = await fetchDynamicRoutes();
 
   // Generate static routes for all languages
   const staticSitemapEntries = languages.flatMap((lang) => [
@@ -79,16 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Generate dynamic routes for all languages
   const dynamicSitemapEntries = languages.flatMap((lang) => [
     // Products
-    ...products.map((product) => createEntry(`/product/${product.seName}`, lang, 0.9, "daily")),
-
-    // Categories
-    ...categories.map((category) => createEntry(`/category/${category.seName}`, lang, 0.8, "weekly")),
-
-    // Tags
-    ...tags.map((tag) => createEntry(`/tag/${tag.seName}`, lang, 0.7, "weekly")),
-
-    // Vendors
-    ...vendors.map((vendor) => createEntry(`/vendor/${vendor.seName}`, lang, 0.8, "daily"))
+    ...products.map((product) => createEntry(`/product/${product.seName}`, lang, 0.9, "daily"))
   ]);
 
   return [...staticSitemapEntries, ...dynamicSitemapEntries];

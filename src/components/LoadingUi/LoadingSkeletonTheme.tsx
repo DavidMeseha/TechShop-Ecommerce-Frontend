@@ -5,7 +5,7 @@ type Props = {
   children: ReactNode;
 };
 
-export default function LoadingTheme({ children }: Props) {
+export default function LoadingSkeletonTheme({ children }: Props) {
   return (
     <SkeletonTheme baseColor="#d5d5d5" highlightColor="#ececec">
       {children}

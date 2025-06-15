@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import OverlayLayout from "../layouts/OverlayLayout";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import { AppRoutes, LocalLink } from "@/components/util/LocalizedNavigation";
 import { FiLogOut } from "react-icons/fi";
 import { useTranslation } from "@/context/Translation";
 import { FaRegAddressBook } from "react-icons/fa";
@@ -42,7 +42,7 @@ export default function ProfileMenuOverlay() {
       <ul>
         {userMenuNav.map((item, index) => (
           <li key={index}>
-            <LocalLink className="flex items-center gap-4 py-2 font-semibold" href={item.to}>
+            <LocalLink className="flex items-center gap-4 py-2 font-semibold" href={item.to as AppRoutes}>
               {item.icon}
               {item.name}
             </LocalLink>

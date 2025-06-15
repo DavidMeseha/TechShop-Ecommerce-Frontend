@@ -1,6 +1,6 @@
-import axios from "@/lib/axios";
+import axios from "@/services/api/axios.config";
 
-const getCountries = async () => {
+export const getCountries = async () => {
   try {
     const ids = await axios.get<{ name: string; code: string; _id: string }[]>(`/api/v2/common/countries`);
     return ids.data;
@@ -14,5 +14,3 @@ export async function citiesInCountry(countryId: string) {
     .get<{ name: string; code: string; _id: string }[]>(`/api/v2/common/cities/${countryId}`)
     .then((res) => res.data);
 }
-
-export default getCountries;

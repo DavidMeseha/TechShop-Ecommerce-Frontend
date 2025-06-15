@@ -1,5 +1,5 @@
 import Skeleton from "react-loading-skeleton";
-import LoadingTheme from "./LoadingTheme";
+import LoadingTheme from "./LoadingSkeletonTheme";
 
 export default function TagItemLoading() {
   return (

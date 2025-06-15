@@ -1,4 +1,4 @@
-import createServerServices from "@/services/server/createServerService";
+import configureServerRequests from "@/services/server/configureServerRequest";
 import React from "react";
 import EditAddressPage from "../../../pages/EditAddressPage";
 import { userAdresses } from "@/services/user.service";
@@ -9,7 +9,7 @@ type Props = {
 
 export default async function page({ params }: Props) {
   const { id } = await params;
-  await createServerServices();
+  await configureServerRequests();
   const addresses = await userAdresses();
 
   return <EditAddressPage addresses={addresses} preSelectedAddress={addresses.find((address) => address._id === id)} />;

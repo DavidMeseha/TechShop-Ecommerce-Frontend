@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/ui/Button";
-import axios from "@/lib/axios";
+import axios from "@/services/api/axios.config";
 import { isAxiosError } from "axios";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";

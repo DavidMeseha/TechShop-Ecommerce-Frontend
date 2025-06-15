@@ -23,7 +23,7 @@ export default function TagsDescoverPage() {
       <ul>
         <li className="hidden text-3xl font-bold md:inline-block">Tags</li>
         {tags.map((tag) => (
-          <TagItem key={tag._id} tag={tag} to={`/tag/${tag.seName}`} />
+          <TagItem key={tag._id} tag={tag} />
         ))}
       </ul>
 

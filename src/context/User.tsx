@@ -1,21 +1,21 @@
 "use client";
 
 import { useTranslation } from "@/context/Translation";
-import axios, { resetAxiosIterceptor } from "@/lib/axios";
+import axios, { resetAxiosIterceptor } from "@/services/api/axios.config";
 import { getGuestToken, refreshToken } from "@/services/auth.service";
 import { useUserStore } from "@/stores/userStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createContext, ReactNode, useContext } from "react";
 import { toast } from "react-toastify";
-import { User } from "@/types";
+import { IUser } from "@/types";
 import { useRouter } from "@bprogress/next";
 import { getLastPageBeforSignUp } from "@/lib/last-page-before-signup";
 import { CHECK_TOKEN_QUERY_KEY, REFRESH_TOKEN_QUERY_KEY } from "@/constants/query-keys";
-import { setToken } from "@/app/actions";
-import initClient from "@/services/initClient.service";
+import { setToken } from "@/actions";
+import initClient from "@/services/client/initClient.service";
 
 type ContextData = {
-  loginUser: (user: { user: User; token: string }) => void;
+  loginUser: (user: { user: IUser; token: string }) => void;
   logout: () => void;
 };
 
@@ -40,7 +40,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const loginUser = async (data: { user: User; token: string }) => {
+  const loginUser = async (data: { user: IUser; token: string }) => {
     if (user) await cleanup();
     resetAxiosIterceptor(data.token);
     setUser(data.user);
@@ -54,7 +54,7 @@ export default function UserProvider({ children }: { children: ReactNode }) {
     // router.push("/login");
   };
 
-  const initUser = (user: User) => {
+  const initUser = (user: IUser) => {
     setUser(user);
     getCartItems();
   };

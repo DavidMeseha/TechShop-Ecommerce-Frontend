@@ -1,4 +1,4 @@
-import axios from "@/lib/axios";
+import axios from "@/services/api/axios.config";
 import { IAddress, IFullProduct, IOrder, IProductAttribute } from "@/types";
 
 type CheckoutDetails = {

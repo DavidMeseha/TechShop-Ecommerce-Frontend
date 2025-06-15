@@ -1,4 +1,4 @@
-import LoginPageForm from "@/components/forms/LoginPageForm";
+import LoginPageForm from "@/components/forms/LoginForm";
 
 export const dynamic = "force-static";
 export const revalidate = false;

@@ -1,6 +1,6 @@
-import axios from "@/lib/axios";
-import { IAddress, IFullProduct, IOrder, IProductReview, IVendor, Pagination, UserInfoForm } from "@/types";
-import { UserProfile } from "./types";
+import axios from "@/services/api/axios.config";
+import { IAddress, IFullProduct, IOrder, IProductReview, IVendor, Paginated } from "@/types";
+import { UserInfoForm, UserProfile } from "./types";
 
 export async function userAdresses() {
   return axios.get<IAddress[]>("/api/v2/user/addresses").then((res) => res.data);
@@ -51,9 +51,7 @@ export async function getOrders() {
 }
 
 export async function getUserReviews(params: { page: number }) {
-  return axios
-    .get<{ data: IProductReview[]; pages: Pagination }>("/api/v2/user/reviews", { params })
-    .then((res) => res.data);
+  return axios.get<Paginated<IProductReview>>("/api/v2/user/reviews", { params }).then((res) => res.data);
 }
 
 export async function vendorIsFollowed(seName: string) {

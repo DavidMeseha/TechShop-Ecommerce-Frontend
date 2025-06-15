@@ -1,6 +1,6 @@
-import getCountries from "@/services/getCountries.service";
+import { getCountries } from "@/services/countries.service";
 import { create } from "zustand";
-import { persist, devtools, createJSONStorage } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 export interface AppStore {
   countries: { name: string; _id: string; code: string }[];
@@ -8,23 +8,21 @@ export interface AppStore {
 }
 
 export const useAppStore = create<AppStore>()(
-  devtools(
-    persist(
-      (set) => ({
-        countries: [],
+  persist(
+    (set) => ({
+      countries: [],
 
-        setCountries: async () => {
-          const { countries } = useAppStore.getState();
-          if (countries.length < 0) {
-            const fetchedCountries = await getCountries();
-            set({ countries: fetchedCountries });
-          }
+      setCountries: async () => {
+        const { countries } = useAppStore.getState();
+        if (countries.length < 0) {
+          const fetchedCountries = await getCountries();
+          set({ countries: fetchedCountries });
         }
-      }),
-      {
-        name: "store",
-        storage: createJSONStorage(() => localStorage)
       }
-    )
+    }),
+    {
+      name: "store",
+      storage: createJSONStorage(() => localStorage)
+    }
   )
 );

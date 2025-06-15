@@ -1,5 +1,5 @@
 import Skeleton from "react-loading-skeleton";
-import LoadingTheme from "./LoadingTheme";
+import LoadingTheme from "./LoadingSkeletonTheme";
 
 interface Props {
   height: number;

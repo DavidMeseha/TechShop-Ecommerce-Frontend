@@ -9,7 +9,6 @@ import { useTranslation } from "@/context/Translation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import Button from "@/components/ui/Button";
-import { UserInfoForm } from "@/types";
 import { useUserStore } from "@/stores/userStore";
 import { getUserInfo, updateUserInfo } from "@/services/user.service";
 import { useOverlayStore } from "@/stores/overlayStore";
@@ -17,6 +16,7 @@ import ProfileImageInput from "@/components/overlays/editProfileOverlay/ProfileI
 import EditUserInfoFormInputs from "./EditUserInfoFormInputs";
 import ImageCrop from "./ImageCropAndUpload";
 import { CHECK_TOKEN_QUERY_KEY, INFO_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
+import { UserInfoForm } from "@/services/types";
 
 export default function EditProfileOverlay() {
   const todyRef = useRef(new Date());

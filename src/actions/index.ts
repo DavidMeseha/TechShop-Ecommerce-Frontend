@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import axios from "@/lib/axios";
+import axios from "@/services/api/axios.config";
 import { redirect } from "next/navigation";
 import { Language } from "@/types";
 import { getPathnameLang } from "@/lib/misc";

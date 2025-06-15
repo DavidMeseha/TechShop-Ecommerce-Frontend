@@ -1,5 +1,5 @@
-import axios from "@/lib/axios";
-import { ICategory, IFullProduct, IProductAttribute, ITag, IVendor, Pagination } from "@/types";
+import axios from "@/services/api/axios.config";
+import { ICategory, IFullProduct, IProductAttribute, ITag, IVendor } from "@/types";
 import { UserProductActions } from "./types";
 import { Paginated } from "../types";
 
@@ -55,7 +55,7 @@ export async function getProductsByTag(tagId: string, params: { page: number }) 
 
 export async function getProductsByVendor(vendorId: string, params: { page: number; limit: number }) {
   return axios
-    .get<{ data: IFullProduct[]; pages: Pagination }>(`/api/v2/catalog/vendor/products/${vendorId}`, { params })
+    .get<Paginated<IFullProduct>>(`/api/v2/catalog/vendor/products/${vendorId}`, { params })
     .then((res) => res.data);
 }
 

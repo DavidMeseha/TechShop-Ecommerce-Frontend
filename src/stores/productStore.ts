@@ -19,8 +19,6 @@ type Store = {
 };
 
 export const useProductStore = create<Store>((set) => ({
-  overlayProduct: null,
-  overlayProductId: null,
   isProductAttributesOpen: false,
   isAddReviewOpen: false,
   isProductMoreInfoOpen: false,

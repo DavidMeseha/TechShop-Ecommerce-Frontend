@@ -1,6 +1,6 @@
 import { useUserStore } from "@/stores/userStore";
 import React, { useMemo } from "react";
-import { LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
+import { AppRoutes, LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
 import { useTranslation } from "@/context/Translation";
 import mainNavItems from "@/constants/main-nav";
 import DropdownButton from "@/components/ui/DropdownButton";
@@ -20,7 +20,7 @@ export default function HeaderNav() {
         <li className="mx-2 inline-block" key={item.id}>
           {item.to ? (
             <LocalLink
-              href={item.to}
+              href={item.to as AppRoutes}
               className={`hover:bg-lightGray text-md mb-2 flex w-full items-center gap-2 rounded-md p-2 font-semibold ${
                 pathname === item.to ? "text-primary" : ""
               }`}

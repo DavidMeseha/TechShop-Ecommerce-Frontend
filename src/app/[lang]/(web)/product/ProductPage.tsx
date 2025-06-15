@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { getProductUserActions, homeFeedProducts } from "@/services/catalog.service";
 import ProductsGridView from "@/components/product/ProductsGridView";
-import ProductCarosel from "@/components/product/ProductCarosel";
+import ProductCarosel from "@/components/product/ProductPictureCarosel";
 import { useTranslation } from "@/context/Translation";
 import {
   PRODUCT_ACTIONS_QUERY_KEY,

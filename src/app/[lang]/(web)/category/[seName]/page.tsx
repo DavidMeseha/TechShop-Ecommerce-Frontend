@@ -3,7 +3,7 @@ import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { getCategoryInfo, getProductsByCateory } from "@/services/catalog.service";
 import { PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY } from "@/constants/query-keys";
-import createServerService from "@/services/server/createServerService";
+import configureServerRequest from "@/services/server/configureServerRequest";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
 type Props = { params: Promise<{ seName: string }> };
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 export default async function Page({ params }: Props) {
   const { seName } = await params;
   const queryClient = new QueryClient();
-  await createServerService();
+  await configureServerRequest();
 
   try {
     const category = await getCategoryInfo(seName);

@@ -1,4 +1,4 @@
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import { AppRoutes, LocalLink } from "@/components/util/LocalizedNavigation";
 import React from "react";
 
 type Props = {
@@ -15,7 +15,7 @@ export function UserActivity({ activities }: Props) {
       {activities.map((activity, index) => (
         <React.Fragment key={index + activity.name}>
           {activity.to ? (
-            <LocalLink className="min-w-[120px] flex-grow" href={activity.to}>
+            <LocalLink className="min-w-[120px] flex-grow" href={activity.to as AppRoutes}>
               <div className="font-bold">{activity.value}</div>
               <div className="ps-1.5 text-[15px] font-light text-gray-500">{activity.name}</div>
             </LocalLink>

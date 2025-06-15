@@ -11,7 +11,7 @@ import FormDropdownInput from "../ui/FormDropdownInput";
 import Button from "../ui/Button";
 import { useAppStore } from "@/stores/appStore";
 import { ADDRESSES_QUERY_KEY, CITIES_QUERY_KEY, CHECKOUT_QUERY_KEY } from "@/constants/query-keys";
-import { citiesInCountry } from "@/services/getCountries.service";
+import { citiesInCountry } from "@/services/countries.service";
 
 type Props = { onFinish?: () => void; onCancel: () => void };
 

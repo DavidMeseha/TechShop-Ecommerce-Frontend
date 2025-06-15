@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import Input from "../ui/Input";
 import { useQuery } from "@tanstack/react-query";
-import axios from "@/lib/axios";
+import axios from "@/services/api/axios.config";
 import Checkbox from "../ui/Checkbox";
 import Image from "next/image";
 import { RiCloseLine } from "react-icons/ri";
@@ -61,7 +61,7 @@ export default function SearchOverlay() {
   const items = searchQuery.data?.data ?? [];
 
   const setupItemLocalLink = (item: SearchResponseItem) => {
-    return `/${item.type === "product" ? `product/${item.item.seName}` : `profile/${item.type}/${item.item.seName}`}`;
+    return `/${item.type === "product" ? `product/${item.item.seName}` : `profile/${item.type}/${item.item.seName}`}` as any;
   };
 
   return (

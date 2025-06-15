@@ -25,7 +25,7 @@ export default function CategoriesDiscoverPage() {
     <>
       <ul>
         {categories.map((category) => (
-          <CategoryItem category={category} key={category._id} to={`/category/${category.seName}`} />
+          <CategoryItem category={category} key={category._id} />
         ))}
       </ul>
 

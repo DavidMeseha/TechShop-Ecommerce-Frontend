@@ -1,14 +1,14 @@
 import { useTranslation } from "@/context/Translation";
 import { useUserSetup } from "@/context/User";
 import { headerProfileMenu } from "@/constants/menus";
-import { User } from "@/types";
+import { IUser } from "@/types";
 import { useRouter } from "@bprogress/next";
 import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 
 type Props = {
-  user: User;
+  user: IUser;
 };
 
 export default function HeaderUserAvatar({ user }: Props) {

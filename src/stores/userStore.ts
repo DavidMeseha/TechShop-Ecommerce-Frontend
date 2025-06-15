@@ -1,12 +1,12 @@
 import { create } from "zustand";
-import { User } from "@/types";
-import { getCartIds } from "@/services/getUserActions.service";
+import { IUser } from "@/types";
+import { getCartIds } from "@/services/userActions.service";
 
 export interface UserStore {
-  user: User | null;
+  user: IUser | null;
   cartItems: string[];
 
-  setUser: (user: User | null) => void;
+  setUser: (user: IUser | null) => void;
   getCartItems: () => Promise<void>;
 }
 
@@ -19,5 +19,5 @@ export const useUserStore = create<UserStore>()((set) => ({
     set({ cartItems: result });
   },
 
-  setUser: (user: User | null) => set({ user: user })
+  setUser: (user: IUser | null) => set({ user: user })
 }));

@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import ProductsGridView from "./product/ProductsGridView";
-import Button from "./ui/Button";
+import ProductsGridView from "../product/ProductsGridView";
+import Button from "../ui/Button";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/context/Translation";
 import { homeFeedProducts } from "@/services/catalog.service";
 import { useInView } from "react-intersection-observer";
-import SectionHeader from "./ui/SectionHeader";
+import SectionHeader from "../ui/SectionHeader";
 import { PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
 
 const PRODUCTS_LIMIT = 5;

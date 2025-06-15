@@ -1,6 +1,6 @@
 import { useUserStore } from "@/stores/userStore";
 import { useTranslation } from "@/context/Translation";
-import { LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
+import { AppRoutes, LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
 import React, { useMemo } from "react";
 import { BsCompass, BsCompassFill, BsHouse, BsHouseFill } from "react-icons/bs";
 import { RiProfileFill, RiProfileLine, RiShoppingCartFill, RiShoppingCartLine } from "react-icons/ri";
@@ -52,7 +52,7 @@ export default React.memo(function BottomNav() {
       <div className="flex w-full justify-between text-center font-bold">
         {bottomNav.map((item, index) => (
           <React.Fragment key={index}>
-            <LocalLink className="block w-1/4 p-2" href={item.to} scroll={false}>
+            <LocalLink className="block w-1/4 p-2" href={item.to as AppRoutes} scroll={false}>
               <div className="relative inline-block">
                 {pathname === item.to ? item.iconActive : item.icon}
                 <div className="text-xs capitalize">{item.name}</div>

@@ -13,7 +13,7 @@ import Button from "@/components/ui/Button";
 import { useAppStore } from "@/stores/appStore";
 import { IAddress } from "@/types";
 import { ADDRESSES_QUERY_KEY, CITIES_QUERY_KEY } from "@/constants/query-keys";
-import { citiesInCountry } from "@/services/getCountries.service";
+import { citiesInCountry } from "@/services/countries.service";
 import { LocalLink } from "@/components/util/LocalizedNavigation";
 import { useRouter } from "@bprogress/next";
 import FormTextInput from "@/components/ui/FormTextInput";

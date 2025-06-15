@@ -1,9 +1,9 @@
 import FormTextInput from "@/components/ui/FormTextInput";
 import RadioGroup from "@/components/ui/RadioGroup";
 import DateDropdownNumbers from "@/components/ui/DateDropdownNumbers";
-import { UserInfoForm } from "@/types";
 import React from "react";
 import { FieldErrors, UseFormClearErrors, UseFormRegister } from "react-hook-form";
+import { UserInfoForm } from "@/services/types";
 
 type Props = {
   register: UseFormRegister<UserInfoForm>;

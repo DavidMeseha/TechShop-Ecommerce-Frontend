@@ -1,4 +1,4 @@
-import axios from "@/lib/axios";
+import axios from "@/services/api/axios.config";
 import { ICustomeProductAttribute } from "@/types";
 
 export async function removeFromCart(id: string) {
@@ -35,4 +35,13 @@ export async function unsaveProduct(id: string) {
 
 export async function addReview(productId: string, form: { reviewText: string; rating: number }) {
   return axios.post(`/api/v2/user/actions/addReview/${productId}`, { ...form });
+}
+
+export async function getCartIds() {
+  try {
+    const res = await axios.get<string[]>("/api/v2/user/cart/ids");
+    return res.data;
+  } catch {
+    return [];
+  }
 }
