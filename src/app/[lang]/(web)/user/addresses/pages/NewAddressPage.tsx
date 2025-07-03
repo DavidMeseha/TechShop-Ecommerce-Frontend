@@ -1,7 +1,7 @@
 "use client";
 
-import NewAddressForm from "@/components/forms/NewAddressForm";
-import { useTranslation } from "@/context/Translation";
+import NewAddressForm from "@/web/components/forms/NewAddressForm";
+import { useTranslation } from "@/common/context/Translation";
 import { useRouter } from "@bprogress/next";
 
 export default function NewAddressPage() {

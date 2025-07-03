@@ -1,8 +1,12 @@
-import AppProviders from "@/components/layouts/AppProvidersLayout";
-import { getDictionary } from "@/services/server/translation.service";
-import { languages } from "@/lib/misc";
+import AppProviders from "@/common/layouts/AppProvidersLayout";
+import { getDictionary } from "@/common/services/server/translation.service";
+import { languages } from "@/common/lib/utils";
 import { Language } from "@/types";
 import { ReactNode } from "react";
+import MainLayout from "@/common/layouts/main/MainLayout";
+import { ToastContainer } from "react-toastify";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export function generateStaticParams() {
   return languages.map((lang) => ({ lang }));
@@ -23,7 +27,12 @@ export default async function Layout({
       <body className={`w-auto overflow-x-hidden md:w-screen ${lang === "ar" ? "md:ms-4" : ""} md:pr-4`} dir="ltr">
         <div dir={lang === "ar" ? "rtl" : "ltr"}>
           <AppProviders dictionary={dictionary} lang={lang}>
-            {children}
+            <MainLayout>
+              {children}
+              <ToastContainer />
+            </MainLayout>
+            <Analytics />
+            <SpeedInsights />
           </AppProviders>
         </div>
       </body>

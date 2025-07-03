@@ -1,7 +1,7 @@
-import Button from "@/components/ui/Button";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
-import { useTranslation } from "@/context/Translation";
-import useFollow from "@/features/follow-vendor/useFollow";
+import { Button } from "@/common/components/ui/button";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
+import { useTranslation } from "@/common/context/Translation";
+import useFollow from "@/web/features/follow-vendor/useFollow";
 import { IVendor } from "@/types";
 import Image from "next/image";
 import React from "react";

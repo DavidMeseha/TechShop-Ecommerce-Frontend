@@ -2,13 +2,13 @@
 
 import React from "react";
 import { IFullProduct } from "@/types";
-import ProductCarosel from "@/components/product/ProductPictureCarosel";
-import ViewMoreButton from "@/components/ui/ViewMoreButton";
-import ProductVendorButton from "@/features/follow-vendor/VendorButton";
-import SaveProductButton from "@/features/save-product/SaveButton";
-import AddToCartButton from "@/features/add-to-cart/AddToCartButton";
-import RateButton from "@/components/product/RateButton";
-import LikeButton from "@/features/like-product/LikeButton";
+import ProductCarosel from "@/web/components/product/ProductPictureCarosel";
+import ViewMoreButton from "@/common/components/ui/extend/ViewMoreButton";
+import ProductVendorButton from "@/web/features/follow-vendor/VendorButton";
+import SaveProductButton from "@/web/features/save-product/SaveButton";
+import AddToCartButton from "@/web/features/add-to-cart/AddToCartButton";
+import RateButton from "@/web/components/product/RateButton";
+import LikeButton from "@/web/features/like-product/LikeButton";
 
 type Props = {
   product: IFullProduct;

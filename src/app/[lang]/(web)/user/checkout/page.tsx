@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import CartItem from "@/components/CartItem";
-import { useTranslation } from "@/context/Translation";
+import CartItem from "@/web/components/CartItem";
+import { useTranslation } from "@/common/context/Translation";
 import { useQuery } from "@tanstack/react-query";
-import Button from "@/components/ui/Button";
-import FormDropdownInput from "@/components/ui/FormDropdownInput";
-import RadioGroup from "@/components/ui/RadioGroup";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
+import FormDropdown from "@/common/components/ui/extend/FormDropdown";
+import RadioGroup from "@/common/components/ui/extend/RadioGroup";
 import { CardElement } from "@stripe/react-stripe-js";
-import { checkoutData } from "@/services/checkout.service";
-import { useOverlayStore } from "@/stores/overlayStore";
-import { CheckoutForm } from "@/schemas/valdation";
+import { checkoutData } from "@/web/services/checkout.service";
+import { useOverlayStore } from "@/web/stores/overlayStore";
+import { CheckoutForm } from "@/web/schemas/valdation";
 import usePlaceOrder from "@/app/[lang]/(web)/user/checkout/usePlaceOrder";
-import { ADDRESSES_QUERY_KEY, CART_QUERY_KEY, CHECKOUT_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
+import { ADDRESSES_QUERY_KEY, CART_QUERY_KEY, CHECKOUT_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
 
 const initialCheckoutForm: CheckoutForm = {
   billingMethod: "cod",
@@ -57,14 +57,18 @@ export default function CheckoutPage() {
             </a>
           </li>
         </ul>
-        <Button className="text-nowrap bg-primary text-white" isLoading={isProcessing} onClick={() => submit(form)}>
+        <SubmitButton
+          className="text-nowrap bg-primary text-white"
+          isLoading={isProcessing}
+          onClick={() => submit(form)}
+        >
           <div className="flex gap-6">
             <div>
               {t("checkout.placeOrder")}({shoppingcartItems.length})
             </div>
             <div>{checkoutQuery.data?.total}$</div>
           </div>
-        </Button>
+        </SubmitButton>
       </div>
 
       <ul className="sticky top-11 z-30 flex w-full cursor-pointer border-b bg-white md:hidden">
@@ -85,8 +89,8 @@ export default function CheckoutPage() {
           <>
             <div className="flex items-start gap-4">
               <div className="grow">
-                <FormDropdownInput
-                  error={addresses.length > 0 ? false : t("checkout.noAddress")}
+                <FormDropdown
+                  error={addresses.length > 0 ? null : t("checkout.noAddress")}
                   label=""
                   name="shippingAddressId"
                   value={form.shippingAddressId}
@@ -94,12 +98,12 @@ export default function CheckoutPage() {
                     name: address.address,
                     value: address._id
                   }))}
-                  onChange={(e) => setForm({ ...form, shippingAddressId: e.currentTarget.value })}
+                  onValueChange={(v) => setForm({ ...form, shippingAddressId: v })}
                 />
               </div>
-              <Button className="bg-primary text-white" onClick={() => setIsAddAddressOpen(true)}>
+              <SubmitButton className="bg-primary text-white" onClick={() => setIsAddAddressOpen(true)}>
                 {t("addresses.newAddress")}
-              </Button>
+              </SubmitButton>
             </div>
 
             <RadioGroup
@@ -137,11 +141,11 @@ export default function CheckoutPage() {
           ))}
       </div>
       <div className="fixed bottom-0 start-0 z-30 w-full border border-x-0 bg-white px-6 py-4 md:hidden">
-        <Button className="w-full bg-primary text-white" isLoading={isProcessing} onClick={handleSubmit}>
+        <SubmitButton className="w-full bg-primary text-white" isLoading={isProcessing} onClick={handleSubmit}>
           <div className="flex w-full justify-between">
             {t("checkout.placeOrder")}({shoppingcartItems.length})<div>{checkoutQuery.data?.total}$</div>
           </div>
-        </Button>
+        </SubmitButton>
       </div>
     </>
   );

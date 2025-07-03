@@ -1,7 +1,7 @@
 "use client";
 
-import { LocalLink, useLocalPathname } from "@/components/util/LocalizedNavigation";
-import { useTranslation } from "@/context/Translation";
+import { LocalLink, useLocalPathname } from "@/common/components/utils/LocalizedNavigation";
+import { useTranslation } from "@/common/context/Translation";
 import React from "react";
 
 type Props = {

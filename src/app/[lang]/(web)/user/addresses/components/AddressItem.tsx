@@ -1,13 +1,13 @@
-import useClickRecognition from "@/hooks/useClickRecognition";
+import useClickRecognition from "@/common/hooks/useClickRecognition";
 import React, { useRef, useState } from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { IAddress } from "@/types";
-import { useTranslation } from "@/context/Translation";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import { useTranslation } from "@/common/context/Translation";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import { toast } from "react-toastify";
-import { deleteAddress } from "@/services/user.service";
+import { deleteAddress } from "@/web/services/user.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ADDRESSES_QUERY_KEY } from "@/constants/query-keys";
+import { ADDRESSES_QUERY_KEY } from "@/common/constants/query-keys";
 
 type Props = {
   address: IAddress;

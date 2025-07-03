@@ -1,10 +1,10 @@
 "use client";
 
-import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
+import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
 import OrderItem from "@/app/[lang]/(web)/user/orders/components/OrderItem";
-import { ORDERS_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
-import { useTranslation } from "@/context/Translation";
-import { getOrders } from "@/services/user.service";
+import { ORDERS_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
+import { useTranslation } from "@/common/context/Translation";
+import { getOrders } from "@/web/services/user.service";
 import { useQuery } from "@tanstack/react-query";
 
 export default function OrdersPage() {

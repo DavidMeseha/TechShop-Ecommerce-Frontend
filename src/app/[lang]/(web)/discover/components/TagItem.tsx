@@ -1,4 +1,4 @@
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import { ITag } from "@/types";
 import { BsHash } from "react-icons/bs";
 

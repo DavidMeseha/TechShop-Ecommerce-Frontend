@@ -1,5 +1,5 @@
 import { IOrder } from "@/types";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import React from "react";
 
 type Props = {

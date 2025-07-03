@@ -1,6 +1,6 @@
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { getProduct, homeFeedProducts } from "@/services/catalog.service";
+import { getProduct, homeFeedProducts } from "@/web/services/catalog.service";
 import ProductPage from "../ProductPage";
 
 interface Props {

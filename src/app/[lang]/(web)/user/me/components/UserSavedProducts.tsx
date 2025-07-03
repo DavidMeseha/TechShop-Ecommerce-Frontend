@@ -1,9 +1,9 @@
-import { PRODUCTS_QUERY_KEY, SAVED_PRODUCTS_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
-import { getSavedProducts } from "@/services/user.service";
+import { PRODUCTS_QUERY_KEY, SAVED_PRODUCTS_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
+import { getSavedProducts } from "@/web/services/user.service";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import ProductsGridView from "@/components/product/ProductsGridView";
-import { useTranslation } from "@/context/Translation";
+import ProductsGridView from "@/web/components/product/ProductsGridView";
+import { useTranslation } from "@/common/context/Translation";
 import { BiLoaderCircle } from "react-icons/bi";
 
 export default function UserSavedProducts() {

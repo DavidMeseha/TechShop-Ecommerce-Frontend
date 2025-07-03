@@ -1,6 +1,6 @@
-import en from "@/dictionaries/en.json";
+import en from "@/common/dictionaries/en.json";
 
-export type FieldError = string | false;
+export type FieldError = string | null | undefined;
 
 export type Language = "en" | "ar" | "fr";
 export type Translation = typeof en;
@@ -79,10 +79,10 @@ export interface IPrice {
 }
 
 export interface IProductAttribute {
+  _id: string;
   name: string;
   attributeControlType: string;
   values: IProductAttributeValue[];
-  _id: string;
 }
 
 export interface ICustomeProductAttribute {
@@ -91,10 +91,10 @@ export interface ICustomeProductAttribute {
 }
 
 export interface IProductAttributeValue {
-  name: string;
-  priceAdjustmentValue?: number;
-  colorRgb?: string;
   _id: string;
+  name: string;
+  priceAdjustmentValue: number;
+  colorRgb?: string;
 }
 
 export interface IProductReview {
@@ -139,7 +139,7 @@ export interface IFullProduct {
   sku: string;
   vendor: IVendor;
   price: IPrice;
-  productTags: ITag[];
+  productTags: string[];
   productAttributes: IProductAttribute[];
   hasAttributes: boolean;
   productReviewOverview: {
@@ -150,9 +150,12 @@ export interface IFullProduct {
   carts: number;
   saves: number;
   productReviews: IProductReview[];
+  deleted: boolean;
   inStock: boolean;
+  stock: number;
   _id: string;
   updatedAt: string;
+  createdAt: string;
   isLiked: boolean;
   isSaved: boolean;
   isReviewed: boolean;

@@ -1,6 +1,6 @@
 import { type MiddlewareConfig, type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { getPathnameLang } from "./lib/misc";
+import { getPathnameLang } from "./common/lib/utils";
 
 export async function middleware(req: NextRequest) {
   let res: NextResponse = NextResponse.next();

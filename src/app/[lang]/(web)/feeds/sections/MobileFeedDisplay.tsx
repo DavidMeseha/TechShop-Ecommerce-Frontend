@@ -1,8 +1,8 @@
 import { IFullProduct } from "@/types";
 import React from "react";
-import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
-import { useOverlayStore } from "@/stores/overlayStore";
-import Button from "@/components/ui/Button";
+import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
+import { useOverlayStore } from "@/web/stores/overlayStore";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import { BiMenu } from "react-icons/bi";
 import { BsSearch } from "react-icons/bs";
 import MobileProductScreen from "../components/MobilePost";
@@ -20,13 +20,13 @@ export default function MobileFeedDisplay({ products, isFetchingNextPage }: Prop
     <div className="block md:hidden">
       <div className="fixed end-0 start-0 top-0 z-20 w-full px-2 md:hidden">
         <div className="flex justify-between py-2">
-          <Button aria-label="Open Main Menu" onClick={() => setIsHomeMenuOpen(true)}>
+          <SubmitButton aria-label="Open Main Menu" onClick={() => setIsHomeMenuOpen(true)}>
             <BiMenu className="fill-white" size={35} />
-          </Button>
+          </SubmitButton>
           <div className="w-6" />
-          <Button aria-label="Open Search Page" onClick={() => setIsSearchOpen(true)}>
+          <SubmitButton aria-label="Open Search Page" onClick={() => setIsSearchOpen(true)}>
             <BsSearch className="fill-white" size={30} />
-          </Button>
+          </SubmitButton>
         </div>
       </div>
       <div className="relative">

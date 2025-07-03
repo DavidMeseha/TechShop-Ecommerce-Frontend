@@ -1,8 +1,8 @@
 "use client";
 
-import { useTranslation } from "@/context/Translation";
-import { useUserStore } from "@/stores/userStore";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import { useTranslation } from "@/common/context/Translation";
+import { useUserStore } from "@/web/stores/userStore";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import UserProductsSection from "./sections/UserProductsSection";
 import UserMainInfoSection from "./sections/UserMainInfoSection";
 

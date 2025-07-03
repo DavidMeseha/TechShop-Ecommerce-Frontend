@@ -1,7 +1,7 @@
 import VendorsDiscoverPage from "../../pages/VendorsDiscoverPage";
-import { DISCOVER_QUERY_KEY, VENDORS_QUERY_KEY } from "@/constants/query-keys";
-import { getVendors } from "@/services/catalog.service";
-import configureServerRequests from "@/services/server/configureServerRequest";
+import { DISCOVER_QUERY_KEY, VENDORS_QUERY_KEY } from "@/common/constants/query-keys";
+import { getVendors } from "@/web/services/catalog.service";
+import configureServerRequests from "@/common/services/server/configureServerRequest";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
 export default async function Page() {

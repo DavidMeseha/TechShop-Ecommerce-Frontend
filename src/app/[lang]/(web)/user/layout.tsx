@@ -1,8 +1,8 @@
 import React from "react";
-import configureServerRequests from "@/services/server/configureServerRequest";
+import configureServerRequests from "@/common/services/server/configureServerRequest";
 import { redirect } from "next/navigation";
-import { checkTokenValidity } from "@/services/auth.service";
-import NotRegisterd from "@/components/pages/NotRegisterdDisplay";
+import { checkTokenValidity } from "@/common/services/auth.service";
+import NotRegisterd from "@/web/components/pages/NotRegisterdDisplay";
 
 type Props = {
   children: React.ReactNode;

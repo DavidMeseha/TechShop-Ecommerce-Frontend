@@ -1,6 +1,6 @@
 import CategoriesDiscoverPage from "../../pages/CategoriesDiscoverPage";
-import { CATEGORIES_QUERY_KEY, DISCOVER_QUERY_KEY } from "@/constants/query-keys";
-import { getCategories } from "@/services/catalog.service";
+import { CATEGORIES_QUERY_KEY, DISCOVER_QUERY_KEY } from "@/common/constants/query-keys";
+import { getCategories } from "@/web/services/catalog.service";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
 export const dynamic = "force-static";

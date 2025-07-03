@@ -1,7 +1,7 @@
 import OrderDetailsPage from "../OrderDetailsPage";
-import { ORDERS_QUERY_KEY } from "@/constants/query-keys";
-import { getOrder } from "@/services/user.service";
-import configureServerRequests from "@/services/server/configureServerRequest";
+import { ORDERS_QUERY_KEY } from "@/common/constants/query-keys";
+import { getOrder } from "@/web/services/user.service";
+import configureServerRequests from "@/common/services/server/configureServerRequest";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {

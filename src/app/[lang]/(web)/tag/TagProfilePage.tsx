@@ -1,12 +1,12 @@
 "use client";
 
-import { useTranslation } from "@/context/Translation";
+import { useTranslation } from "@/common/context/Translation";
 import { ITag } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
-import ProductsGridView from "@/components/product/ProductsGridView";
-import { getProductsByTag } from "@/services/catalog.service";
-import { PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY } from "@/constants/query-keys";
+import ProductsGridView from "@/web/components/product/ProductsGridView";
+import { getProductsByTag } from "@/web/services/catalog.service";
+import { PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY } from "@/common/constants/query-keys";
 
 type Props = {
   tag: ITag;
@@ -22,7 +22,7 @@ export default function TagProfilePage({ tag }: Props) {
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching, isFetchedAfterMount } = useInfiniteQuery({
     queryKey: [PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY, tag.seName],
-    queryFn: ({ pageParam }) => getProductsByTag(tag._id, { page: pageParam }),
+    queryFn: ({ pageParam }) => getProductsByTag(tag.seName, { page: pageParam }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1
   });

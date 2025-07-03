@@ -1,7 +1,7 @@
 "use client";
 
-import { useTranslation } from "@/context/Translation";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import { useTranslation } from "@/common/context/Translation";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import { usePathname } from "next/navigation";
 import React, { ReactNode } from "react";
 

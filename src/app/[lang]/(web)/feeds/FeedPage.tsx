@@ -1,11 +1,11 @@
 "use client";
 
 import { useInView } from "react-intersection-observer";
-import { useTranslation } from "@/context/Translation";
+import { useTranslation } from "@/common/context/Translation";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { homeFeedProducts } from "@/services/catalog.service";
-import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
-import { FEED_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/constants/query-keys";
+import { homeFeedProducts } from "@/web/services/catalog.service";
+import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
+import { FEED_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/common/constants/query-keys";
 import MobileFeedDisplay from "@/app/[lang]/(web)/feeds/sections/MobileFeedDisplay";
 import MainFeedDisplay from "./sections/MainFeedDisplay";
 

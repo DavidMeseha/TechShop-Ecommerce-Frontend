@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import RadioGroup from "@/components/ui/RadioGroup";
+import RadioGroup from "@/common/components/ui/extend/RadioGroup";
 
 describe("Radio input group", () => {
   const options = [

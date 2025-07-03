@@ -1,5 +1,5 @@
-import { checkTokenValidity } from "@/services/auth.service";
-import configureServerRequest from "@/services/server/configureServerRequest";
+import { checkTokenValidity } from "@/common/services/auth.service";
+import configureServerRequest from "@/common/services/server/configureServerRequest";
 import { NextResponse } from "next/server";
 
 export async function GET() {

@@ -2,11 +2,11 @@
 
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import Button from "@/components/ui/Button";
-import { useTranslation } from "@/context/Translation";
-import { DISCOVER_QUERY_KEY, VENDORS_QUERY_KEY } from "@/constants/query-keys";
-import { getVendors } from "@/services/catalog.service";
-import ListItemBlockLoading from "@/components/LoadingUi/ListItemBlockLoading";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
+import { useTranslation } from "@/common/context/Translation";
+import { DISCOVER_QUERY_KEY, VENDORS_QUERY_KEY } from "@/common/constants/query-keys";
+import { getVendors } from "@/web/services/catalog.service";
+import ListItemBlockLoading from "@/web/components/loadingUi/ListItemBlockLoading";
 import VendorItem from "../components/VendorItem";
 
 export default function VendorsDiscoverPage() {
@@ -35,9 +35,13 @@ export default function VendorsDiscoverPage() {
 
       {hasNextPage && (
         <div className="py-4 text-center">
-          <Button className="bg-primary text-white" isLoading={isFetchingNextPage} onClick={() => fetchNextPage()}>
+          <SubmitButton
+            className="bg-primary text-white"
+            isLoading={isFetchingNextPage}
+            onClick={() => fetchNextPage()}
+          >
             {t("loadMore")}
-          </Button>
+          </SubmitButton>
         </div>
       )}
     </>

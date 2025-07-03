@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { FeaturedTags } from "@/components/catalogs/FeaturedTags";
-import { FeaturedProducts } from "@/components/catalogs/FeaturedProducts";
-import { FeaturedVendors } from "@/components/catalogs/FeaturedVendors";
-import MoreProducts from "@/components/catalogs/MoreProducts";
+import { FeaturedTags } from "@/web/components/catalogs/FeaturedTags";
+import { FeaturedProducts } from "@/web/components/catalogs/FeaturedProducts";
+import { FeaturedVendors } from "@/web/components/catalogs/FeaturedVendors";
+import MoreProducts from "@/web/components/catalogs/MoreProducts";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import { getTags, homeFeedProducts } from "@/services/catalog.service";
-import { FEATURED_QUERY_KEY, PRODUCTS_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
-import configureServerRequests from "@/services/server/configureServerRequest";
+import { getTags, homeFeedProducts } from "@/web/services/catalog.service";
+import { FEATURED_QUERY_KEY, PRODUCTS_QUERY_KEY, TAGS_QUERY_KEY } from "@/common/constants/query-keys";
+import configureServerRequests from "@/common/services/server/configureServerRequest";
 
 export default async function Page() {
   const queryClient = new QueryClient({});

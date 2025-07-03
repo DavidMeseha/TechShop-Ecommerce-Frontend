@@ -1,9 +1,9 @@
 import CategoryProfilePage from "../CategoryProfilePage";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { getCategoryInfo, getProductsByCateory } from "@/services/catalog.service";
-import { PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY } from "@/constants/query-keys";
-import configureServerRequest from "@/services/server/configureServerRequest";
+import { getCategoryInfo, getProductsByCateory } from "@/web/services/catalog.service";
+import { PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY } from "@/common/constants/query-keys";
+import configureServerRequest from "@/common/services/server/configureServerRequest";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
 type Props = { params: Promise<{ seName: string }> };

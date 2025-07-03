@@ -1,22 +1,22 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { updateAddress } from "@/services/user.service";
+import { updateAddress } from "@/web/services/user.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AddressForm, AddressSchema } from "@/schemas/valdation";
-import { useTranslation } from "@/context/Translation";
+import { AddressForm, AddressSchema } from "@/web/schemas/valdation";
+import { useTranslation } from "@/common/context/Translation";
 import { toast } from "react-toastify";
-import FormDropdownInput from "@/components/ui/FormDropdownInput";
-import Button from "@/components/ui/Button";
-import { useAppStore } from "@/stores/appStore";
+import FormDropdown from "@/common/components/ui/extend/FormDropdown";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
+import { useAppStore } from "@/web/stores/appStore";
 import { IAddress } from "@/types";
-import { ADDRESSES_QUERY_KEY, CITIES_QUERY_KEY } from "@/constants/query-keys";
-import { citiesInCountry } from "@/services/countries.service";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import { ADDRESSES_QUERY_KEY, CITIES_QUERY_KEY } from "@/common/constants/query-keys";
+import { citiesInCountry } from "@/web/services/countries.service";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import { useRouter } from "@bprogress/next";
-import FormTextInput from "@/components/ui/FormTextInput";
+import FormInput from "@/common/components/ui/extend/FormInput";
 
 type Props = {
   addresses: IAddress[];
@@ -86,14 +86,14 @@ export default function EditAddressPage({ addresses, preSelectedAddress }: Props
 
   return (
     <form onSubmit={handleSubmit(updateAddressSubmit)}>
-      <FormDropdownInput
-        error={selectedAddress._id ? false : t("addresses.selectAaddressToUpdate")}
+      <FormDropdown
+        error={selectedAddress._id ? null : t("addresses.selectAaddressToUpdate")}
         label={t("addresses.addressToEdit")}
         options={addresses.map((address) => ({ name: address.address, value: address._id })) || []}
         value={selectedAddress._id}
-        onChange={(e) => selectAddressToEdit(e.currentTarget.value)}
+        onValueChange={(value) => selectAddressToEdit(value)}
       />
-      <FormTextInput
+      <FormInput
         {...register("address", {
           onChange: () => clearErrors("address")
         })}
@@ -103,7 +103,7 @@ export default function EditAddressPage({ addresses, preSelectedAddress }: Props
         type="text"
       />
 
-      <FormDropdownInput
+      <FormDropdown
         {...register("country", {
           onChange: () => clearErrors("country")
         })}
@@ -113,7 +113,7 @@ export default function EditAddressPage({ addresses, preSelectedAddress }: Props
         options={countries.map((country) => ({ name: country.name, value: country._id }))}
       />
 
-      <FormDropdownInput
+      <FormDropdown
         {...register("city", {
           onChange: () => clearErrors("city"),
           value: selectedAddress.city._id
@@ -124,9 +124,9 @@ export default function EditAddressPage({ addresses, preSelectedAddress }: Props
         options={cities.map((city) => ({ name: city.name, value: city._id })) || []}
       />
 
-      <Button className="bg-primary py-2 text-white" isLoading={updateAddressMutation.isPending}>
+      <SubmitButton className="bg-primary py-2 text-white" isLoading={updateAddressMutation.isPending}>
         {t("addresses.editAddress")}
-      </Button>
+      </SubmitButton>
 
       <LocalLink className="ms-2 rounded-sm border border-primary px-4 py-2 text-primary" href="/user/addresses">
         {t("cancel")}

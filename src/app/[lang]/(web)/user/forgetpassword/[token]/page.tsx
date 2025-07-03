@@ -1,8 +1,8 @@
 "use client";
 
-import Button from "@/components/ui/Button";
-import FormTextInput from "@/components/ui/FormTextInput";
-import { useTranslation } from "@/context/Translation";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
+import FormInput from "@/common/components/ui/extend/FormInput";
+import { useTranslation } from "@/common/context/Translation";
 import { FieldError } from "@/types";
 import React, { ChangeEvent, useState } from "react";
 
@@ -10,8 +10,8 @@ export default function Page() {
   const { t } = useTranslation();
   const [form, setForm] = useState({ password: "", confirm: "" });
   const [error, setError] = useState<{ password: FieldError; confirm: FieldError }>({
-    password: false,
-    confirm: false
+    password: null,
+    confirm: null
   });
 
   const fieldChangeHandle = (value: string, name: string) => {
@@ -58,7 +58,7 @@ export default function Page() {
   return (
     <form onSubmit={submit}>
       <h1 className="mb-4 text-center text-2xl font-bold">Reset Your Password</h1>
-      <FormTextInput
+      <FormInput
         error={error.password}
         label={t("auth.password")}
         name="password"
@@ -69,7 +69,7 @@ export default function Page() {
         onBlur={passwordOnBlurValidation}
         onChange={(e) => fieldChangeHandle(e.currentTarget.value, e.currentTarget.name)}
       />
-      <FormTextInput
+      <FormInput
         error={error.confirm}
         label={t("auth.confirmPassword")}
         name="confirmPassword"
@@ -82,7 +82,7 @@ export default function Page() {
           if (e.target.value !== form.password) setError({ ...error, confirm: t("auth.passwordsNotMatch") });
         }}
       />
-      <Button className="bg-primary text-white">{t("auth.confirm")}</Button>
+      <SubmitButton className="bg-primary text-white">{t("auth.confirm")}</SubmitButton>
     </form>
   );
 }

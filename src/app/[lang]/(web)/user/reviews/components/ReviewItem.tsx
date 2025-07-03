@@ -1,5 +1,5 @@
-import RatingStars from "@/components/ui/RatingStars";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import RatingStars from "@/common/components/ui/extend/RatingStars";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import { IProductReview } from "@/types";
 
 export default function ReviewItem({ review }: { review: IProductReview }) {

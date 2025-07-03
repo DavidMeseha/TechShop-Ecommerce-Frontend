@@ -1,12 +1,12 @@
 "use client";
 
-import { useTranslation } from "@/context/Translation";
+import { useTranslation } from "@/common/context/Translation";
 import React from "react";
-import Button from "@/components/ui/Button";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import Loading from "@/components/LoadingUi/LoadingSpinner";
-import { CATEGORIES_QUERY_KEY, DISCOVER_QUERY_KEY } from "@/constants/query-keys";
-import { getCategories } from "@/services/catalog.service";
+import Loading from "@/common/components/loadingUi/LoadingSpinner";
+import { CATEGORIES_QUERY_KEY, DISCOVER_QUERY_KEY } from "@/common/constants/query-keys";
+import { getCategories } from "@/web/services/catalog.service";
 import CategoryItem from "../components/CategoryItem";
 
 export default function CategoriesDiscoverPage() {
@@ -33,13 +33,13 @@ export default function CategoriesDiscoverPage() {
         <Loading />
       ) : hasNextPage ? (
         <div className="px-w py-4 text-center">
-          <Button
+          <SubmitButton
             className="w-full bg-primary text-white"
             isLoading={isFetchingNextPage}
             onClick={() => fetchNextPage()}
           >
             {t("loadMore")}
-          </Button>
+          </SubmitButton>
         </div>
       ) : null}
     </>

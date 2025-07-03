@@ -2,10 +2,10 @@
 
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import Button from "@/components/ui/Button";
-import Loading from "@/components/LoadingUi/LoadingSpinner";
-import { DISCOVER_QUERY_KEY, TAGS_QUERY_KEY } from "@/constants/query-keys";
-import { getTags } from "@/services/catalog.service";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
+import Loading from "@/common/components/loadingUi/LoadingSpinner";
+import { DISCOVER_QUERY_KEY, TAGS_QUERY_KEY } from "@/common/constants/query-keys";
+import { getTags } from "@/web/services/catalog.service";
 import TagItem from "../components/TagItem";
 
 export default function TagsDescoverPage() {
@@ -31,13 +31,13 @@ export default function TagsDescoverPage() {
         <Loading />
       ) : hasNextPage ? (
         <div className="px-w py-4 text-center">
-          <Button
+          <SubmitButton
             className="w-full bg-primary text-white"
             isLoading={isFetchingNextPage}
             onClick={() => fetchNextPage()}
           >
             Load More
-          </Button>
+          </SubmitButton>
         </div>
       ) : null}
     </>

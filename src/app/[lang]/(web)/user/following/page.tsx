@@ -1,16 +1,16 @@
 "use client";
 
-import Button from "@/components/ui/Button";
-import { useTranslation } from "@/context/Translation";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
+import { useTranslation } from "@/common/context/Translation";
 import { IVendor } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import React from "react";
-import useFollow from "@/features/follow-vendor/useFollow";
-import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
-import { getFollowingVendors } from "@/services/user.service";
-import { FOLLOWING_QUERY_KEY, USER_QUERY_KEY, VENDORS_QUERY_KEY } from "@/constants/query-keys";
+import useFollow from "@/web/features/follow-vendor/useFollow";
+import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
+import { getFollowingVendors } from "@/web/services/user.service";
+import { FOLLOWING_QUERY_KEY, USER_QUERY_KEY, VENDORS_QUERY_KEY } from "@/common/constants/query-keys";
 
 export default function FollowingPage() {
   const follwingVendorsQuery = useQuery({
@@ -56,12 +56,12 @@ const ListItem = React.memo(
           </div>
         </div>
         <div>
-          <Button
+          <SubmitButton
             className="flex items-center justify-center rounded-md bg-primary font-bold text-white"
             onClick={() => vendor.isFollowed && handleFollow(false)}
           >
             {t("unfollow")}
-          </Button>
+          </SubmitButton>
         </div>
       </li>
     );

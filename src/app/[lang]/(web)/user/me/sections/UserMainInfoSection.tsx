@@ -1,12 +1,12 @@
 "use client";
 
-import { INFO_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
-import { getUserInfo } from "@/services/user.service";
+import { INFO_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
+import { getUserInfo } from "@/web/services/user.service";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
-import { useOverlayStore } from "@/stores/overlayStore";
-import { useTranslation } from "@/context/Translation";
+import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useTranslation } from "@/common/context/Translation";
 import { FiSettings } from "react-icons/fi";
 import { BiPencil } from "react-icons/bi";
 import { UserActivity } from "../components/UserActivity";

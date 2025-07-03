@@ -1,7 +1,7 @@
-import configureServerRequests from "@/services/server/configureServerRequest";
+import configureServerRequests from "@/common/services/server/configureServerRequest";
 import React from "react";
 import EditAddressPage from "../../../pages/EditAddressPage";
-import { userAdresses } from "@/services/user.service";
+import { userAdresses } from "@/web/services/user.service";
 
 type Props = {
   params: Promise<{ id: string }>;

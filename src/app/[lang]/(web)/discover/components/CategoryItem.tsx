@@ -1,5 +1,5 @@
-import { LocalLink } from "@/components/util/LocalizedNavigation";
-import { useTranslation } from "@/context/Translation";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
+import { useTranslation } from "@/common/context/Translation";
 import { ICategory } from "@/types";
 
 type Props = {

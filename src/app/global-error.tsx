@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import "@/globals.css";
-import Button from "@/components/ui/Button";
-import { useRouter } from "@bprogress/next";
+import { useRouter } from "next/navigation";
+import { Button } from "@/common/components/ui/button";
 
 export default function GlobalError() {
   const router = useRouter();

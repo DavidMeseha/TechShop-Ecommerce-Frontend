@@ -1,6 +1,6 @@
-import { languages } from "@/lib/misc";
+import { languages } from "@/common/lib/utils";
 import { MetadataRoute } from "next";
-import { homeFeedProducts } from "@/services/catalog.service";
+import { homeFeedProducts } from "@/web/services/catalog.service";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import LoadingTheme from "../../../../../components/LoadingUi/LoadingSkeletonTheme";
+import LoadingTheme from "@/common/components/loadingUi/LoadingSkeletonTheme";
 import Skeleton from "react-loading-skeleton";
 
 type Props = {

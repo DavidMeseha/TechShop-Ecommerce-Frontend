@@ -1,13 +1,13 @@
 "use client";
 
-import Button from "@/components/ui/Button";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
-import { getUserReviews } from "@/services/user.service";
-import { useTranslation } from "@/context/Translation";
-import { REVIEWS_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
+import { getUserReviews } from "@/web/services/user.service";
+import { useTranslation } from "@/common/context/Translation";
+import { REVIEWS_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
 import ReviewItem from "./components/ReviewItem";
-import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
+import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
 
 export default function ReviewsPage() {
   const { t } = useTranslation();
@@ -36,13 +36,13 @@ export default function ReviewsPage() {
       )}
 
       {hasNextPage && (
-        <Button
+        <SubmitButton
           className="mx-auto w-full bg-primary text-white"
           isLoading={isFetchingNextPage}
           onClick={() => fetchNextPage()}
         >
           {t("loadMore")}
-        </Button>
+        </SubmitButton>
       )}
     </ul>
   );

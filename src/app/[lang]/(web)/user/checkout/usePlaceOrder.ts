@@ -1,15 +1,15 @@
 "use client";
 
-import { useTranslation } from "@/context/Translation";
-import { CheckoutForm } from "@/schemas/valdation";
-import { placeOrder, preperCardPayment } from "@/services/checkout.service";
+import { useTranslation } from "@/common/context/Translation";
+import { CheckoutForm } from "@/web/schemas/valdation";
+import { placeOrder, preperCardPayment } from "@/web/services/checkout.service";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 // import { useRouter } from "@bprogress/next";
 import { useRouter } from "@bprogress/next";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { ORDERS_QUERY_KEY } from "@/constants/query-keys";
+import { ORDERS_QUERY_KEY } from "@/common/constants/query-keys";
 
 export default function usePlaceOrder() {
   const router = useRouter();

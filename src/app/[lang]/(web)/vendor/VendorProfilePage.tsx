@@ -1,18 +1,18 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { useTranslation } from "@/context/Translation";
+import { useTranslation } from "@/common/context/Translation";
 import { UserActivity } from "../user/me/components/UserActivity";
-import Button from "@/components/ui/Button";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import Image from "next/image";
 import { IVendor } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import useFollow from "@/features/follow-vendor/useFollow";
-import ProductsGridView from "@/components/product/ProductsGridView";
-import { getProductsByVendor } from "@/services/catalog.service";
-import { PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY } from "@/constants/query-keys";
+import useFollow from "@/web/features/follow-vendor/useFollow";
+import ProductsGridView from "@/web/components/product/ProductsGridView";
+import { getProductsByVendor } from "@/web/services/catalog.service";
+import { PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY } from "@/common/constants/query-keys";
 
 const PRODUCTS_PER_PAGE = 10;
 
@@ -77,12 +77,12 @@ export default function VendorProfilePage({ vendor }: Props) {
             </h1>
             <RiVerifiedBadgeFill className="fill-primary" size={25} />
           </div>
-          <Button
+          <SubmitButton
             className="item-center mt-3 block bg-primary px-8 py-1.5 text-[15px] font-semibold text-white"
             onClick={() => handleFollow(!follow.state)}
           >
             {follow.state ? t("unfollow") : t("follow")}
-          </Button>
+          </SubmitButton>
         </div>
       </div>
 

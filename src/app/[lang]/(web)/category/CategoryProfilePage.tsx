@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { useTranslation } from "@/context/Translation";
+import { useTranslation } from "@/common/context/Translation";
 import { ICategory } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
-import ProductsGridView from "@/components/product/ProductsGridView";
-import { getProductsByCateory } from "@/services/catalog.service";
-import { PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY } from "@/constants/query-keys";
+import ProductsGridView from "@/web/components/product/ProductsGridView";
+import { getProductsByCateory } from "@/web/services/catalog.service";
+import { PRODUCTS_QUERY_KEY, SINGLE_CATEGORY_QUERY_KEY } from "@/common/constants/query-keys";
 
 type Props = {
   category: ICategory;

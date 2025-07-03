@@ -2,10 +2,10 @@
 
 import { notFound } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { ORDERS_QUERY_KEY } from "@/constants/query-keys";
-import { getOrder } from "@/services/user.service";
-import { useTranslation } from "@/context/Translation";
-import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
+import { ORDERS_QUERY_KEY } from "@/common/constants/query-keys";
+import { getOrder } from "@/web/services/user.service";
+import { useTranslation } from "@/common/context/Translation";
+import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
 import OrderProductItem from "./components/OrderProductItem";
 
 export default function OrderDetailsPage({ orderId }: { orderId: string }) {

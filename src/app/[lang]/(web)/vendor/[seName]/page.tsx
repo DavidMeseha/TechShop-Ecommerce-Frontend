@@ -1,10 +1,10 @@
 import VendorProfilePage from "../VendorProfilePage";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { getProductsByVendor, getVendorInfo } from "@/services/catalog.service";
+import { getProductsByVendor, getVendorInfo } from "@/web/services/catalog.service";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import configureServerRequest from "@/services/server/configureServerRequest";
-import { PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY } from "@/constants/query-keys";
+import configureServerRequest from "@/common/services/server/configureServerRequest";
+import { PRODUCTS_QUERY_KEY, SINGLE_VENDOR_QUERY_KEY } from "@/common/constants/query-keys";
 
 type Props = { params: Promise<{ seName: string }> };
 

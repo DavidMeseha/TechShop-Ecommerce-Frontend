@@ -2,8 +2,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ReactElement } from "react";
 import "@/globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { languages, seoLanguages } from "@/lib/misc";
-import { getCurrentPath } from "@/lib/server-only/serverPathname";
+import { languages, seoLanguages } from "@/common/lib/utils";
+import { getCurrentPath } from "@/common/lib/server-only/serverPathname";
 import { Language } from "@/types";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";

@@ -1,21 +1,21 @@
 "use client";
 
-import FormTextInput from "@/components/ui/FormTextInput";
+import FormInput from "@/common/components/ui/extend/FormInput";
 import { FieldError } from "@/types";
 import React, { useState } from "react";
-import { useTranslation } from "@/context/Translation";
+import { useTranslation } from "@/common/context/Translation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import Button from "@/components/ui/Button";
-import { useUserStore } from "@/stores/userStore";
-import { changeUserPassword } from "@/services/auth.service";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
+import { useUserStore } from "@/web/stores/userStore";
+import { changeUserPassword } from "@/common/services/auth.service";
 
 interface FormErrors {
   original: FieldError;
   new: FieldError;
   confirm: FieldError;
 }
-const initialErrors: FormErrors = { original: false, new: false, confirm: false };
+const initialErrors: FormErrors = { original: null, new: null, confirm: null };
 const initialForm = { original: "", new: "", confirm: "" };
 
 export default function ChangePasswordPage() {
@@ -72,7 +72,7 @@ export default function ChangePasswordPage() {
   return (
     <form onSubmit={confirm}>
       <div className="p-4 md:mt-0">
-        <FormTextInput
+        <FormInput
           error={error.original}
           label={t("changePassword.current")}
           name="original"
@@ -82,7 +82,7 @@ export default function ChangePasswordPage() {
           onChange={(e) => handleFieldOnChange(e.currentTarget.value, e.currentTarget.name)}
         />
 
-        <FormTextInput
+        <FormInput
           error={error.new}
           label={t("changePassword.new")}
           name="new"
@@ -92,7 +92,7 @@ export default function ChangePasswordPage() {
           onChange={(e) => handleFieldOnChange(e.currentTarget.value, e.currentTarget.name)}
         />
 
-        <FormTextInput
+        <FormInput
           error={error.confirm}
           label={t("changePassword.confirm")}
           name="confirm"
@@ -102,13 +102,13 @@ export default function ChangePasswordPage() {
           onChange={(e) => handleFieldOnChange(e.currentTarget.value, e.currentTarget.name)}
         />
 
-        <Button
+        <SubmitButton
           className="float-end w-full bg-primary text-center text-white md:w-auto"
           disabled={changePasswordMutation.isPending}
           isLoading={changePasswordMutation.isPending}
         >
           {t("changePassword.confirmChange")}
-        </Button>
+        </SubmitButton>
       </div>
     </form>
   );

@@ -1,19 +1,19 @@
 "use client";
 
 import React, { useMemo, useRef, useState } from "react";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
-import { useTranslation } from "@/context/Translation";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
+import { useTranslation } from "@/common/context/Translation";
 import Image from "next/image";
-import { manipulateDescription } from "@/lib/misc";
+import { manipulateDescription } from "@/common/lib/utils";
 import { IFullProduct } from "@/types";
-import useFollow from "@/features/follow-vendor/useFollow";
-import Button from "@/components/ui/Button";
-import ProductCarosel from "@/components/product/ProductPictureCarosel";
-import ViewMoreButton from "@/components/ui/ViewMoreButton";
-import LikeButton from "@/features/like-product/LikeButton";
-import RateButton from "@/components/product/RateButton";
-import SaveButton from "@/features/save-product/SaveButton";
-import AddToCartButton from "@/features/add-to-cart/AddToCartButton";
+import useFollow from "@/web/features/follow-vendor/useFollow";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
+import ProductCarosel from "@/web/components/product/ProductPictureCarosel";
+import ViewMoreButton from "@/common/components/ui/extend/ViewMoreButton";
+import LikeButton from "@/web/features/like-product/LikeButton";
+import RateButton from "@/web/components/product/RateButton";
+import SaveButton from "@/web/features/save-product/SaveButton";
+import AddToCartButton from "@/web/features/add-to-cart/AddToCartButton";
 
 type Props = {
   product: IFullProduct;
@@ -65,12 +65,12 @@ function Post({ product }: Props) {
             </p>
           </div>
 
-          <Button
+          <SubmitButton
             className="border border-primary bg-white fill-primary px-5 py-0.5 text-sm font-semibold text-primary hover:bg-[#ffeef2]"
             onClick={() => handleFollow(!isFollowed)}
           >
             {isFollowed ? t("unfollow") : t("follow")}
-          </Button>
+          </SubmitButton>
         </div>
         <p className="w-[calc(100%-160px)] text-[15px]">
           <span>{main}</span>
@@ -95,10 +95,10 @@ function Post({ product }: Props) {
               aria-label="Navigate to a tag products"
               className="me-4 inline-block h-6 hover:underline"
               dir="ltr"
-              href={`/tag/${tag.seName}`}
-              key={tag._id}
+              href={`/tag/${tag}`}
+              key={tag}
             >
-              #{tag.name}
+              #{tag}
             </LocalLink>
           ))}
         </div>

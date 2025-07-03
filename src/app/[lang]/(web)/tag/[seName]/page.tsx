@@ -1,10 +1,10 @@
 import TagProfilePage from "@/app/[lang]/(web)/tag/TagProfilePage";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { getProductsByTag, getTagInfo } from "@/services/catalog.service";
+import { getProductsByTag, getTagInfo } from "@/web/services/catalog.service";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import configureServerRequest from "@/services/server/configureServerRequest";
-import { PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY } from "@/constants/query-keys";
+import configureServerRequest from "@/common/services/server/configureServerRequest";
+import { PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY } from "@/common/constants/query-keys";
 
 type Props = { params: Promise<{ seName: string }> };
 
@@ -38,7 +38,7 @@ export default async function Page(props: Props) {
 
     await queryClient.prefetchInfiniteQuery({
       queryKey: [PRODUCTS_QUERY_KEY, SINGLE_TAG_QUERY_KEY, seName],
-      queryFn: ({ pageParam }) => getProductsByTag(tag._id, { page: pageParam }),
+      queryFn: ({ pageParam }) => getProductsByTag(tag.seName, { page: pageParam }),
       initialPageParam: 1
     });
 

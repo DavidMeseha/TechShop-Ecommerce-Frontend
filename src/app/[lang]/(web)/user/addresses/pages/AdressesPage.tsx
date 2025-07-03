@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { userAdresses } from "@/services/user.service";
-import LoadingSpinner from "@/components/LoadingUi/LoadingSpinner";
-import { ADDRESSES_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
+import { userAdresses } from "@/web/services/user.service";
+import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
+import { ADDRESSES_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
 import { useQuery } from "@tanstack/react-query";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import AddressItem from "../components/AddressItem";
-import { useTranslation } from "@/context/Translation";
+import { useTranslation } from "@/common/context/Translation";
 
 export default function AdressesPage() {
   const { t } = useTranslation();

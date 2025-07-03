@@ -1,15 +1,15 @@
 "use client";
 
-import CartItem from "@/components/CartItem";
-import { useTranslation } from "@/context/Translation";
+import CartItem from "@/web/components/CartItem";
+import { useTranslation } from "@/common/context/Translation";
 import { useQuery } from "@tanstack/react-query";
-import Button from "@/components/ui/Button";
+import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import { useRouter } from "@bprogress/next";
-import { LocalLink } from "@/components/util/LocalizedNavigation";
-import { useUserStore } from "@/stores/userStore";
-import { CART_QUERY_KEY, CHECKOUT_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
-import { checkoutData } from "@/services/checkout.service";
-import ListItemBlockLoading from "@/components/LoadingUi/ListItemBlockLoading";
+import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
+import { useUserStore } from "@/web/stores/userStore";
+import { CART_QUERY_KEY, CHECKOUT_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
+import { checkoutData } from "@/web/services/checkout.service";
+import ListItemBlockLoading from "@/web/components/loadingUi/ListItemBlockLoading";
 
 export default function CheckoutCartPage() {
   const user = useUserStore((state) => state.user);
@@ -47,7 +47,7 @@ export default function CheckoutCartPage() {
     <div className="mx-2 sm:mx-auto">
       <div className="sticky z-20 flex items-center justify-between border-b bg-white py-2 md:top-[60px]">
         <h1 className="hidden text-3xl font-bold md:block">{t("yourCart")}</h1>
-        <Button
+        <SubmitButton
           className={`block w-full rounded-md bg-primary font-semibold text-white md:mx-0 md:w-auto ${isError ? "cursor-not-allowed opacity-50" : ""}`}
           disabled={isError}
           isLoading={checkoutQuery.isFetching}
@@ -59,7 +59,7 @@ export default function CheckoutCartPage() {
             </div>
             <div>{total}$</div>
           </div>
-        </Button>
+        </SubmitButton>
       </div>
 
       {isError && (

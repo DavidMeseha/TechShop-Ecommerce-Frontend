@@ -1,8 +1,8 @@
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import configureServerRequest from "@/services/server/configureServerRequest";
-import { getUserReviews } from "@/services/user.service";
+import configureServerRequest from "@/common/services/server/configureServerRequest";
+import { getUserReviews } from "@/web/services/user.service";
 import ReviewsPage from "./ReviewsPage";
-import { REVIEWS_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
+import { REVIEWS_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
 
 export default async function Page() {
   const queryClient = new QueryClient();

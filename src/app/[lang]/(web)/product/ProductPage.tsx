@@ -1,27 +1,27 @@
 "use client";
-import AddToCartButton from "@/features/add-to-cart/AddToCartButton";
-import LikeProductButton from "@/features/like-product/LikeButton";
-import ProductAttributes from "@/components/forms/AttributesForm";
-import RatingStars from "@/components/ui/RatingStars";
-import SaveProductButton from "@/features/save-product/SaveButton";
-import { selectDefaultAttributes } from "@/lib/misc";
+import AddToCartButton from "@/web/features/add-to-cart/AddToCartButton";
+import LikeProductButton from "@/web/features/like-product/LikeButton";
+import ProductAttributes from "@/web/components/forms/AttributesForm";
+import RatingStars from "@/common/components/ui/extend/RatingStars";
+import SaveProductButton from "@/web/features/save-product/SaveButton";
+import { selectDefaultAttributes } from "@/common/lib/utils";
 import { ICustomeProductAttribute, IFullProduct } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { getProductUserActions, homeFeedProducts } from "@/services/catalog.service";
-import ProductsGridView from "@/components/product/ProductsGridView";
-import ProductCarosel from "@/components/product/ProductPictureCarosel";
-import { useTranslation } from "@/context/Translation";
+import { getProductUserActions, homeFeedProducts } from "@/web/services/catalog.service";
+import ProductsGridView from "@/web/components/product/ProductsGridView";
+import ProductCarosel from "@/web/components/product/ProductPictureCarosel";
+import { useTranslation } from "@/common/context/Translation";
 import {
   PRODUCT_ACTIONS_QUERY_KEY,
   PRODUCTS_QUERY_KEY,
   SIMILAR_QUERY_KEY,
   SINGLE_PRODUCT_QUERY_KEY
-} from "@/constants/query-keys";
+} from "@/common/constants/query-keys";
 import ProductActionsLoading from "@/app/[lang]/(web)/product/components/ProductActionsLoading";
-import AddReviewForm from "@/components/forms/AddReviewForm";
-import Reviews from "@/components/product/Reviews";
+import AddReviewForm from "@/web/components/forms/AddReviewForm";
+import Reviews from "@/web/components/product/Reviews";
 
 type Props = {
   product: IFullProduct;

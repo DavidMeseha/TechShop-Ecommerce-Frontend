@@ -1,10 +1,10 @@
-import { CART_QUERY_KEY, PRODUCTS_QUERY_KEY, USER_QUERY_KEY } from "@/constants/query-keys";
-import { getCartProducts } from "@/services/user.service";
+import { CART_QUERY_KEY, PRODUCTS_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
+import { getCartProducts } from "@/web/services/user.service";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import ProductsGridView from "@/components/product/ProductsGridView";
+import ProductsGridView from "@/web/components/product/ProductsGridView";
 import { BiLoaderCircle } from "react-icons/bi";
-import { useTranslation } from "@/context/Translation";
+import { useTranslation } from "@/common/context/Translation";
 
 export default function UserCartProducts() {
   const { t } = useTranslation();

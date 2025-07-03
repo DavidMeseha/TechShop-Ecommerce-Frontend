@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import CheckboxGroup from "@/components/ui/CheckboxGroup";
+import CheckboxGroup from "@/common/components/ui/CheckboxGroup";
 
 describe("Checkbox group", () => {
   const options = [

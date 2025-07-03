@@ -1,4 +1,4 @@
-import { languages } from "@/lib/misc";
+import { languages } from "@/common/lib/utils";
 import type { MetadataRoute } from "next";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
