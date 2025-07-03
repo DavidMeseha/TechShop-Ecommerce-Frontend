@@ -62,9 +62,9 @@ export default function RegisterVendorPage() {
     e.preventDefault();
     if (!name.length) return setError("You must have a shop name");
     if (name.length < 5) return setError("Shop Name Must Be more than 4 characters");
-    // if (!image) return setError("You must Add an image");
+    if (!image) return setError("You must Add an image");
     setLoading(true);
-    submitVendorMutation.mutate({ image: "", name, seName });
+    submitVendorMutation.mutate({ image, name, seName });
   };
   return (
     <div className="flex items-center justify-center px-4 pt-16 sm:px-6 lg:px-8">
