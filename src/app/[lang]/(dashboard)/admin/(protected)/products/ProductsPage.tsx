@@ -12,8 +12,10 @@ import CategorySelect from "@/admin/components/selectors/CategorySelect";
 import { ADMIN_PRODUCTS_QUERY_KEY } from "@/common/constants/query-keys";
 import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import { Plus } from "lucide-react";
+import { useTranslation } from "@/common/context/Translation";
 
 export default function ProductsPage() {
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -36,9 +38,9 @@ export default function ProductsPage() {
   return (
     <div className="container space-y-6 py-6">
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-        <h1 className="text-2xl font-bold">Products Dashboard</h1>
+        <h1 className="text-2xl font-bold">{t("admin.productsDashboard")}</h1>
         <div className="w-full md:w-1/3">
-          <Input className="w-full" placeholder="Search products..." onChange={searchProductNameHandle} />
+          <Input className="w-full" placeholder={t("admin.searchProducts")} onChange={searchProductNameHandle} />
         </div>
       </div>
 
@@ -58,7 +60,7 @@ export default function ProductsPage() {
             href="/admin/create-product"
           >
             <Plus size={20} />
-            <span>New Product</span>
+            <span>{t("admin.newProduct")}</span>
           </LocalLink>
 
           {(isLoading || isFetching) && (
@@ -76,7 +78,7 @@ export default function ProductsPage() {
           products?.map((product) => <ProductCard key={product._id} product={product} />)
         ) : (
           <div className="flex h-[50vh] items-center justify-center text-center text-muted-foreground">
-            {isFeltering ? "No products match the search criteria" : "You have no Products Yet"}
+            {isFeltering ? t("admin.noMatchingProducts") : t("admin.noProductsYet")}
           </div>
         )}
       </div>

@@ -8,12 +8,14 @@ import { Input } from "@/common/components/ui/input";
 import { ProductForm } from "@/admin/schemas/valdation";
 import { attributeTypes } from "@/common/constants/values";
 import ErrorMessage from "@/common/components/ui/extend/ErrorMessage";
+import { useTranslation } from "@/common/context/Translation";
 
 type Props = {
   form: UseFormReturn<ProductForm>;
 };
 
 export default function CreateProductAttributesForm({ form }: Props) {
+  const { t } = useTranslation();
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "attributes"
@@ -22,7 +24,7 @@ export default function CreateProductAttributesForm({ form }: Props) {
   return (
     <>
       <div>
-        <Label>Attributes</Label>
+        <Label>{t("admin.attributes")}</Label>
         {fields.map((field, idx) => (
           <div className="mb-2 rounded border p-2" key={field.id}>
             <div className="flex items-center gap-2">
@@ -73,7 +75,7 @@ export default function CreateProductAttributesForm({ form }: Props) {
             })
           }
         >
-          Add Attribute +
+          {t("admin.addAttribute")} +
         </Button>
       )}
     </>

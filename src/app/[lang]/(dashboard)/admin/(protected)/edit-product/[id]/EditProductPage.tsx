@@ -8,21 +8,23 @@ import { IFullProduct } from "@/types";
 import { useRouter } from "@bprogress/next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { useTranslation } from "@/common/context/Translation";
 
 type Props = { product: IFullProduct };
 
 export default function EditProductPage({ product }: Props) {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
   const router = useRouter();
 
   const updateProductMutation = useMutation({
     mutationFn: (form: Partial<ProductInputForm>) => editProduct(form, product._id),
     onSuccess: () => {
       queryClient.invalidateQueries({ predicate: (q) => q.queryKey.includes(ADMIN_PRODUCTS_QUERY_KEY) });
-      toast.success("Product Updated!");
+      toast.success(t("admin.productUpdated"));
       router.push("/admin/products");
     },
-    onError: () => toast.error("Failed to update product")
+    onError: () => toast.error(t("admin.updateProductFailed"))
   });
 
   return (

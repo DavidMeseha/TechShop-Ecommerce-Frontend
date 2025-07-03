@@ -4,6 +4,7 @@ import { Input } from "@/common/components/ui/input";
 import { ProductForm } from "@/admin/schemas/valdation";
 import { Fragment } from "react";
 import { Controller, useFieldArray, UseFormReturn } from "react-hook-form";
+import { useTranslation } from "@/common/context/Translation";
 
 type Props = {
   form: UseFormReturn<ProductForm>;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export function AttributeValuesInput({ form, attrIdx, type }: Props) {
+  const { t } = useTranslation();
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: `attributes.${attrIdx}.values`
@@ -44,7 +46,7 @@ export function AttributeValuesInput({ form, attrIdx, type }: Props) {
               className="w-24"
             />
             <Button type="button" variant="destructive" onClick={() => remove(idx)}>
-              Remove
+              {t("remove")}
             </Button>
           </div>
           <ErrorMessage
@@ -68,7 +70,7 @@ export function AttributeValuesInput({ form, attrIdx, type }: Props) {
             )
           }
         >
-          Add Value
+          {t("admin.addValue")}
         </Button>
       )}
     </div>

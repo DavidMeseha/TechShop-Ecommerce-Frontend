@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { Bookmark, Edit, Heart, Redo2, ShoppingCart, Star, Trash2 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import { useTranslation } from "@/common/context/Translation";
 
 type Props = {
   product: IFullProduct;
@@ -17,6 +18,7 @@ type Props = {
 
 export default function ProductCard({ product }: Props) {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const deleteProductMutation = useMutation({
     mutationKey: ["delete-product", product._id],
@@ -35,8 +37,8 @@ export default function ProductCard({ product }: Props) {
       className={`relative flex flex-col gap-4 rounded-lg border bg-card p-4 text-card-foreground shadow-sm sm:flex-row sm:items-start ${product.stock > 0 && !product.deleted ? "" : "border-destructive"}`}
     >
       <div className="absolute start-2 top-2 z-20 flex gap-2">
-        {product.deleted && <Tag variant="error">Deleted</Tag>}
-        {product.stock < 1 && <Tag variant="error">No Stock</Tag>}
+        {product.deleted && <Tag variant="error">{t("admin.deleted")}</Tag>}
+        {product.stock < 1 && <Tag variant="error">{t("admin.noStock")}</Tag>}
       </div>
       <div className="relative h-32 w-full flex-shrink-0 sm:w-32">
         <Image alt={product.name} className="rounded-md object-contain" fill src={product.pictures[0].imageUrl} />
@@ -47,10 +49,14 @@ export default function ProductCard({ product }: Props) {
           <h3 className="me-4 inline-block font-semibold">{product.name}</h3>
           <p className="inline-block font-bold text-primary">${product.price.price}</p>
         </div>
-        <p className="text-sm text-muted-foreground">Category: {product.category.name}</p>
+        <p className="text-sm text-muted-foreground">
+          {t("admin.category")}: {product.category.name}
+        </p>
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <span className="text-sm text-muted-foreground">Stock: {product.stock}</span>
+          <span className="text-sm text-muted-foreground">
+            {t("admin.stock")}: {product.stock}
+          </span>
           <span className="flex items-center gap-1 text-sm">
             <Star className="h-4 w-4 text-yellow-400" />
             {product.productReviewOverview.totalReviews

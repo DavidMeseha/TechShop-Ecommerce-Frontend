@@ -23,7 +23,7 @@ export default function DataPagination({ currentPage, totalPages, onPageChang }:
 
   if (totalPages === 0)
     return (
-      <Pagination>
+      <Pagination dir="ltr">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
@@ -43,7 +43,7 @@ export default function DataPagination({ currentPage, totalPages, onPageChang }:
     );
 
   return (
-    <Pagination>
+    <Pagination dir="ltr">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious

@@ -15,9 +15,11 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import { isAxiosError } from "axios";
 import { useUserStore } from "@/common/stores/userStore";
+import { useTranslation } from "@/common/context/Translation";
 
 export default function RegisterVendorPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { setUser, user } = useUserStore((state) => ({ user: state.user, setUser: state.setUser }));
   const [name, setName] = useState("");
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -45,9 +47,9 @@ export default function RegisterVendorPage() {
     onError: (err) => {
       setLoading(false);
       if (isAxiosError(err)) {
-        if (err.response?.status === 409) return setError("Vendor Could Be already registered");
+        if (err.response?.status === 409) return setError(t("admin.register.vendorAlreadyRegistered"));
       }
-      setError("Could not register your vendor");
+      setError(t("admin.register.couldNotRegisterVendor"));
     }
   });
 
@@ -60,9 +62,9 @@ export default function RegisterVendorPage() {
 
   const formSubmitHandle = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name.length) return setError("You must have a shop name");
-    if (name.length < 5) return setError("Shop Name Must Be more than 4 characters");
-    if (!image) return setError("You must Add an image");
+    if (!name.length) return setError(t("admin.register.mustHaveAName"));
+    if (name.length < 5) return setError(t("admin.register.shopNameMustBe4Characters"));
+    if (!image) return setError(t("admin.register.mustAddImage"));
     setLoading(true);
     submitVendorMutation.mutate({ image, name, seName });
   };
@@ -105,7 +107,7 @@ export default function RegisterVendorPage() {
         <form className="space-y-2" onSubmit={formSubmitHandle}>
           <FormInput
             error={error}
-            label={"Your Shop's Name"}
+            label={t("admin.register.shopName")}
             placeholder={"Ex. HP, Dell, Nokia, Samsung, ect.... "}
             type="text"
             onChange={(e) => debouncedInputChange(e.currentTarget.value)}
@@ -117,7 +119,7 @@ export default function RegisterVendorPage() {
               isLoading={submitVendorMutation.isPending || isLoading}
               type="submit"
             >
-              Register
+              {t("register")}
             </SubmitButton>
           </div>
         </form>

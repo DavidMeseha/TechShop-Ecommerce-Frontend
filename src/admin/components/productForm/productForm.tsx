@@ -24,6 +24,7 @@ import ErrorMessage from "@/common/components/ui/extend/ErrorMessage";
 import { getChangedFields } from "../utils";
 import { toast } from "react-toastify";
 import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
+import { useTranslation } from "@/common/context/Translation";
 
 type Props = {
   product?: IFullProduct;
@@ -32,6 +33,7 @@ type Props = {
 };
 
 export default function ProductForm({ product, onSubmit, isPending }: Props) {
+  const { t } = useTranslation();
   const initialValues: ProductInputForm = useMemo(
     () =>
       product
@@ -66,7 +68,7 @@ export default function ProductForm({ product, onSubmit, isPending }: Props) {
   const isEdit = !!product;
 
   const form = useForm<ProductInputForm>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productSchema(t)),
     defaultValues: initialValues
   });
 
@@ -88,7 +90,8 @@ export default function ProductForm({ product, onSubmit, isPending }: Props) {
       onSubmit={form.handleSubmit((data) => {
         if (isEdit) {
           const changed = getChangedFields(initialValues, data);
-          if (JSON.stringify(changed) === JSON.stringify({})) return toast.warning("Nothing changed to be submitted");
+          if (JSON.stringify(changed) === JSON.stringify({}))
+            return toast.warning(t("admin.noChangesError"));
           return onSubmit(changed);
         }
         onSubmit(data);
@@ -133,7 +136,7 @@ export default function ProductForm({ product, onSubmit, isPending }: Props) {
         <div>
           <div>
             <FormInput
-              label="Current Price"
+              label={t("admin.currentPrice")}
               step="0.01"
               type="number"
               {...form.register("price.price", { valueAsNumber: true })}
@@ -142,7 +145,7 @@ export default function ProductForm({ product, onSubmit, isPending }: Props) {
           </div>
           <div className="mt-1">
             <FormInput
-              label="Old Price"
+              label={t("admin.oldPrice")}
               step="0.01"
               type="number"
               {...form.register("price.oldPrice", { valueAsNumber: true })}
@@ -152,7 +155,7 @@ export default function ProductForm({ product, onSubmit, isPending }: Props) {
 
         {/* Description */}
         <div className="md:col-span-2">
-          <Label>Full Description</Label>
+          <Label>{t("admin.fullDescription")}</Label>
           <Textarea {...form.register("fullDescription")} className="resize-none" rows={4} />
           <ErrorMessage error={form.formState.errors.fullDescription?.message} />
         </div>
@@ -160,7 +163,7 @@ export default function ProductForm({ product, onSubmit, isPending }: Props) {
         {/* Gender */}
         <div>
           <FormDropdown
-            label="Gender"
+            label={t("admin.gender")}
             options={genders.map((g) => ({ name: g, value: g }))}
             value={form.watch("gender")}
             onValueChange={(val) => form.setValue("gender", val as any)}
@@ -169,25 +172,25 @@ export default function ProductForm({ product, onSubmit, isPending }: Props) {
 
         {/* Category */}
         <div>
-          <Label>Category</Label>
+          <Label>{t("admin.category")}</Label>
           <CategorySelect
             preSelectedCategoryName={product?.category.name}
             selectedCategoryId={form.watch("category")}
             onChange={(category) => form.setValue("category", category)}
           />
-          {}
+          <ErrorMessage error={form.formState.errors.category?.message} />
         </div>
 
         {/* Tags */}
         <div>
-          <Label>Tags</Label>
+          <Label>{t("tags")}</Label>
           <TagsSelector tags={form.watch("tags") ?? []} onChange={handleTagsChange} />
           <ErrorMessage error={form.formState.errors.tags?.message} />
         </div>
 
         {/* Stock */}
         <div>
-          <Label>Stock</Label>
+          <Label>{t("admin.stock")}</Label>
           <Input type="number" {...form.register("stock", { valueAsNumber: true })} />
         </div>
 
@@ -199,10 +202,10 @@ export default function ProductForm({ product, onSubmit, isPending }: Props) {
 
       <div className="mt-8 flex gap-4">
         <SubmitButton disabled={isPending} isLoading={isPending} type="submit">
-          {product ? "Update Product" : "Create Product"}
+          {product ? t("admin.updateProduct") : t("admin.createProduct")}
         </SubmitButton>
         <LocalLink className="border-primary text-primary" href="/admin/products">
-          Cancel
+          {t("cancel")}
         </LocalLink>
       </div>
     </form>
