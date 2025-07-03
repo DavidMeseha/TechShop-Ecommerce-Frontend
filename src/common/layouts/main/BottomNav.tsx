@@ -1,4 +1,4 @@
-import { useUserStore } from "@/web/stores/userStore";
+import { useUserStore } from "@/common/stores/userStore";
 import { useTranslation } from "@/common/context/Translation";
 import { AppRoutes, LocalLink, useLocalPathname } from "@/common/components/utils/LocalizedNavigation";
 import React, { useMemo } from "react";

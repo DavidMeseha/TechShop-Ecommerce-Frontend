@@ -7,7 +7,7 @@ import { useTranslation } from "@/common/context/Translation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
-import { useUserStore } from "@/web/stores/userStore";
+import { useUserStore } from "@/common/stores/userStore";
 import { changeUserPassword } from "@/common/services/auth.service";
 
 interface FormErrors {

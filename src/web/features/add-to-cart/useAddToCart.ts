@@ -1,5 +1,5 @@
-import { useProductStore } from "@/web/stores/productStore";
-import { useUserStore } from "@/web/stores/userStore";
+import { useProductStore } from "@/common/stores/productStore";
+import { useUserStore } from "@/common/stores/userStore";
 import { ICustomeProductAttribute, IFullProduct } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";

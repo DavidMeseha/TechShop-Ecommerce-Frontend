@@ -6,7 +6,7 @@ import { avilableVendorSename } from "@/admin/services/sename-sku";
 import { registerVendor, RegisterVendorBody } from "@/admin/services/register-vendor";
 import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import FormInput from "@/common/components/ui/extend/FormInput";
-import { FieldError } from "@/types";
+import { FieldError, IUser } from "@/types";
 import { useRouter } from "@bprogress/next";
 import useDebounce from "@/common/hooks/useDebounce";
 import ImageInput from "@/common/components/ui/extend/ImageInput";
@@ -14,9 +14,11 @@ import ImageCropAndUpload from "@/common/components/ImageCropAndUpload";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { isAxiosError } from "axios";
+import { useUserStore } from "@/common/stores/userStore";
 
 export default function RegisterVendorPage() {
   const router = useRouter();
+  const { setUser, user } = useUserStore((state) => ({ user: state.user, setUser: state.setUser }));
   const [name, setName] = useState("");
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [image, setImage] = useState<string | null>(null);
@@ -36,7 +38,10 @@ export default function RegisterVendorPage() {
 
   const submitVendorMutation = useMutation({
     mutationFn: (props: RegisterVendorBody) => registerVendor({ ...props }),
-    onSuccess: () => router.push("/admin/products"),
+    onSuccess: () => {
+      setUser({ ...(user as IUser), isVendor: true });
+      router.push("/admin/products");
+    },
     onError: (err) => {
       setLoading(false);
       if (isAxiosError(err)) {

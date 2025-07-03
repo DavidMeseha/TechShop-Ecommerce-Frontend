@@ -1,7 +1,7 @@
 import { IFullProduct } from "@/types";
 import React from "react";
 import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
-import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
 import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import { BiMenu } from "react-icons/bi";
 import { BsSearch } from "react-icons/bs";

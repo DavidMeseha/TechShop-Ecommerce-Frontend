@@ -1,7 +1,7 @@
 import useAdjustVendorsQueries from "@/common/hooks/useAdjustVendorsQueries";
 import useDebounce from "@/common/hooks/useDebounce";
 import { useTranslation } from "@/common/context/Translation";
-import { useUserStore } from "@/web/stores/userStore";
+import { useUserStore } from "@/common/stores/userStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { followVendor, unfollowVendor } from "@/web/services/userActions.service";

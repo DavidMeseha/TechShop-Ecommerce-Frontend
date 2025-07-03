@@ -1,7 +1,7 @@
 import React from "react";
 import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import RatingStars from "@/common/components/ui/extend/RatingStars";
-import { useProductStore } from "@/web/stores/productStore";
+import { useProductStore } from "@/common/stores/productStore";
 import { IFullProduct } from "@/types";
 
 type Props = Pick<IFullProduct, "productReviewOverview" | "name" | "price" | "vendor" | "_id" | "seName"> & {

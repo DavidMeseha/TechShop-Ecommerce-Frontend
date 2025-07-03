@@ -3,7 +3,7 @@
 import { useTranslation } from "@/common/context/Translation";
 import axios from "@/web/services/api/api.config";
 import { getGuestToken, refreshToken } from "@/common/services/auth.service";
-import { useUserStore } from "@/web/stores/userStore";
+import { useUserStore } from "@/common/stores/userStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createContext, ReactNode, useContext, useCallback } from "react";
 import { toast } from "react-toastify";

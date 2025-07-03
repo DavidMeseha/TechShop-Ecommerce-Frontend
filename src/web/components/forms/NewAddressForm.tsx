@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import FormInput from "@/common/components/ui/extend/FormInput";
 import FormDropdown from "@/common/components/ui/extend/FormDropdown";
 import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
-import { useAppStore } from "@/web/stores/appStore";
+import { useAppStore } from "@/common/stores/appStore";
 import { ADDRESSES_QUERY_KEY, CITIES_QUERY_KEY, CHECKOUT_QUERY_KEY } from "@/common/constants/query-keys";
 import { citiesInCountry } from "@/web/services/countries.service";
 

@@ -7,7 +7,7 @@ import { RiCloseLine } from "react-icons/ri";
 import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
 import { BiLoaderCircle } from "react-icons/bi";
 import { Variants, motion } from "framer-motion";
-import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
 import { SEARCH_QUERY_KEY } from "@/common/constants/query-keys";
 import { find } from "@/web/services/find.service";
 import { Button } from "@/common/components/ui/button";

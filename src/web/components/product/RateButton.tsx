@@ -3,9 +3,9 @@
 import React from "react";
 import { IFullProduct } from "@/types";
 import { BsStarFill } from "react-icons/bs";
-import { useUserStore } from "@/web/stores/userStore";
+import { useUserStore } from "@/common/stores/userStore";
 import { toast } from "react-toastify";
-import { useProductStore } from "@/web/stores/productStore";
+import { useProductStore } from "@/common/stores/productStore";
 
 type Props = {
   product: IFullProduct;

@@ -3,7 +3,7 @@
 import { AppRoutes, LocalLink, useLocalPathname } from "@/common/components/utils/LocalizedNavigation";
 import React, { useMemo } from "react";
 import { useTranslation } from "@/common/context/Translation";
-import { useUserStore } from "@/web/stores/userStore";
+import { useUserStore } from "@/common/stores/userStore";
 import DropdownButton from "@/common/components/ui/extend/DropdownButton";
 import { changeLanguage } from "@/app/actions";
 import { languages } from "@/common/lib/utils";

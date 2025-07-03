@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import MainMenu from "./MainMenu";
 import { useTranslation } from "@/common/context/Translation";
-import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
 
 export default function HomeMenu() {
   const setIsHomeMenuOpen = useOverlayStore((state) => state.setIsHomeMenuOpen);

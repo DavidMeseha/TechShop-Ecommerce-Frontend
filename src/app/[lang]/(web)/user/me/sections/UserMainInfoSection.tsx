@@ -5,7 +5,7 @@ import { getUserInfo } from "@/web/services/user.service";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
-import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
 import { useTranslation } from "@/common/context/Translation";
 import { FiSettings } from "react-icons/fi";
 import { BiPencil } from "react-icons/bi";

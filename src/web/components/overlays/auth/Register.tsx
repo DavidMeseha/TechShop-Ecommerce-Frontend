@@ -1,6 +1,6 @@
 import React from "react";
 import OverlayLayout from "@/common/layouts/OverlayLayout";
-import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
 import RegisterPageForm from "@/web/components/forms/RegisterForm";
 
 export default function Register() {

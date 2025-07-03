@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import { useRouter } from "@bprogress/next";
 import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
-import { useUserStore } from "@/web/stores/userStore";
+import { useUserStore } from "@/common/stores/userStore";
 import { CART_QUERY_KEY, CHECKOUT_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
 import { checkoutData } from "@/web/services/checkout.service";
 import ListItemBlockLoading from "@/web/components/loadingUi/ListItemBlockLoading";

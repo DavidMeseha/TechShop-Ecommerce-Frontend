@@ -1,6 +1,6 @@
 import React from "react";
 import OverlayLayout from "@/common/layouts/OverlayLayout";
-import { useProductStore } from "@/web/stores/productStore";
+import { useProductStore } from "@/common/stores/productStore";
 import AddReviewForm from "../forms/AddReviewForm";
 
 export default function AddReviewOverlay() {

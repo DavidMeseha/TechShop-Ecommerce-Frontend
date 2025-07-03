@@ -1,6 +1,6 @@
 import React from "react";
 import OverlayLayout from "@/common/layouts/OverlayLayout";
-import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
 import LoginPageForm from "@/web/components/forms/LoginForm";
 
 export default function Login() {

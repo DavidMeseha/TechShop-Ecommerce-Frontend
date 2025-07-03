@@ -12,7 +12,7 @@ import { useTranslation } from "@/common/context/Translation";
 import useAddToCart from "@/web/features/add-to-cart/useAddToCart";
 import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
 import { getProductDetails } from "@/web/services/catalog.service";
-import { useProductStore } from "@/web/stores/productStore";
+import { useProductStore } from "@/common/stores/productStore";
 import ProductReviews from "../product/Reviews";
 import ProductCarosel from "../product/ProductPictureCarosel";
 import { SINGLE_PRODUCT_QUERY_KEY } from "@/common/constants/query-keys";

@@ -8,7 +8,7 @@ import { useTranslation } from "@/common/context/Translation";
 import { FaRegAddressBook } from "react-icons/fa";
 import { BsStar } from "react-icons/bs";
 import { PiPassword } from "react-icons/pi";
-import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
 import { useUserSetup } from "@/common/context/User";
 
 export default function ProfileMenuOverlay() {

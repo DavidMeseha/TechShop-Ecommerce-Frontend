@@ -3,8 +3,8 @@
 import { useTranslation } from "@/common/context/Translation";
 import React, { useEffect } from "react";
 import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
-import { useOverlayStore } from "@/web/stores/overlayStore";
-import { useUserStore } from "@/web/stores/userStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
+import { useUserStore } from "@/common/stores/userStore";
 import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
 
 export default function NotRegisterd({ children }: { children: React.ReactNode }) {

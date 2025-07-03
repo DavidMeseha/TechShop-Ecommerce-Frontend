@@ -2,7 +2,7 @@ import React from "react";
 import ProductCard from "@/web/components/ProductCard";
 import { IFullProduct } from "@/types";
 import ProductsSetLoading from "../loadingUi/ProductsSetLoading";
-import { useUserStore } from "@/web/stores/userStore";
+import { useUserStore } from "@/common/stores/userStore";
 import { cn } from "@/common/lib/utils";
 
 type Props = {

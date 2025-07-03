@@ -1,4 +1,4 @@
-import { useProductStore } from "@/web/stores/productStore";
+import { useProductStore } from "@/common/stores/productStore";
 import { IFullProduct } from "@/types";
 import React from "react";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";

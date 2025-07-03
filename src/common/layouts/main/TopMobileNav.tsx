@@ -1,6 +1,6 @@
 import { useLocalPathname } from "@/common/components/utils/LocalizedNavigation";
 import { useTranslation } from "@/common/context/Translation";
-import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
 import React from "react";
 import { BiMenu } from "react-icons/bi";
 import { BsSearch } from "react-icons/bs";

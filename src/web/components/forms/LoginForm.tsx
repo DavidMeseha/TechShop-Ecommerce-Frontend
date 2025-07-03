@@ -13,7 +13,7 @@ import { login } from "@/common/services/auth.service";
 import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import { isAxiosError } from "axios";
 import { useUserSetup } from "@/common/context/User";
-import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
 import { Button } from "@/common/components/ui/button";
 import ErrorMessage from "@/common/components/ui/extend/ErrorMessage";
 

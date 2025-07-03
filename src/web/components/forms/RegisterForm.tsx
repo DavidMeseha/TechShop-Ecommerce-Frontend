@@ -15,7 +15,7 @@ import { registerUser } from "@/common/services/auth.service";
 import { FieldError } from "@/types";
 import { useRouter } from "@bprogress/next";
 import { isAxiosError } from "axios";
-import { useOverlayStore } from "@/web/stores/overlayStore";
+import { useOverlayStore } from "@/common/stores/overlayStore";
 import ErrorMessage from "@/common/components/ui/extend/ErrorMessage";
 
 export default function RegisterPageForm() {

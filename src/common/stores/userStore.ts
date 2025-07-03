@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { IUser } from "@/types";
-import { getCartIds } from "../services/userActions.service";
+import { getCartIds } from "../../web/services/userActions.service";
 
 export interface UserStore {
   user: IUser | null;

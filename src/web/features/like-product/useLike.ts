@@ -1,6 +1,6 @@
 import useAdjustProductsQueries from "@/common/hooks/useAdjustProductsQueries";
 import useDebounce from "@/common/hooks/useDebounce";
-import { useUserStore } from "@/web/stores/userStore";
+import { useUserStore } from "@/common/stores/userStore";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "@/common/context/Translation";
 import { toast } from "react-toastify";

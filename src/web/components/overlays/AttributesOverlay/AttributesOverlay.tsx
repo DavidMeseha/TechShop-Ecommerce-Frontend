@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import AttributesOverlayLoading from "./AttributesOverlayLoading";
 import { getProductAttributes } from "@/web/services/catalog.service";
-import { useProductStore } from "@/web/stores/productStore";
+import { useProductStore } from "@/common/stores/productStore";
 import { IAddToCartProduct } from "@/web/features/add-to-cart/useAddToCart";
 import { useTranslation } from "@/common/context/Translation";
 import { PRODUCT_ATTRIBUTES_QUERY_KEY } from "@/common/constants/query-keys";
