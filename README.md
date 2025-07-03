@@ -47,8 +47,14 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 - Vendor shop profiles
 - Advanced search capabilities
 
+### V Vendors Features
+
+- Manage Products like soft delete, republish, create and edit
+
 ### ⚡ Technical Features
 
+- Custome form inputs for better user experiance
+- Croping Images and Obtimizing before upload
 - Infinite scroll implementation
 - Responsive mobile-first design
 - Next.js image optimization
