@@ -37,7 +37,7 @@ function useUserActions() {
     mutationKey: ["set-token"],
     mutationFn: (token: string) => setToken(token),
     onSuccess: () => {
-      if (user?.isRegistered) router.push(getLastPageBeforSignUp());
+      if (user?.isRegistered && !pathname.includes("/admin")) router.push(getLastPageBeforSignUp());
     }
   });
 
