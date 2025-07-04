@@ -90,11 +90,13 @@ export default function VendorProfilePage({ vendor }: Props) {
 
       <div className="mt-2 border-t pt-4" />
 
-      {products.length < 1 && isFetchedAfterMount ? (
-        <div className="py-14 text-center text-gray-400">{t("profile.noProducts")}</div>
-      ) : (
-        <ProductsGridView isLoading={isFetchingNextPage || isPending} limit={PRODUCTS_PER_PAGE} products={products} />
-      )}
+      <div className="mx-2">
+        {products.length < 1 && isFetchedAfterMount ? (
+          <div className="py-14 text-center text-gray-400">{t("profile.noProducts")}</div>
+        ) : (
+          <ProductsGridView isLoading={isFetchingNextPage || isPending} limit={PRODUCTS_PER_PAGE} products={products} />
+        )}
+      </div>
 
       {hasNextPage ? <div className="h-4" ref={ref} /> : null}
     </div>

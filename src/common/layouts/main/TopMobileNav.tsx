@@ -34,11 +34,19 @@ export default function TopMobileNav() {
 
   return (
     <nav className="sticky top-0 z-40 flex w-full justify-between border-b bg-white p-2 px-4 md:hidden">
-      <Button aria-label="Open Main Menu" className="bg-transparent p-0" onClick={() => setIsHomeMenuOpen(true)}>
+      <Button
+        aria-label="Open Main Menu"
+        className="bg-transparent p-0 hover:bg-transparent"
+        onClick={() => setIsHomeMenuOpen(true)}
+      >
         <BiMenu className="fill-black" size={25} />
       </Button>
       <h1 className="text-xl font-bold">{titles[path]}</h1>
-      <Button aria-label="Open Search Page" className="bg-transparent p-0" onClick={() => setIsSearchOpen(true)}>
+      <Button
+        aria-label="Open Search Page"
+        className="bg-transparent p-0 hover:bg-transparent"
+        onClick={() => setIsSearchOpen(true)}
+      >
         <BsSearch className="fill-black" size={20} />
       </Button>
     </nav>

@@ -44,7 +44,7 @@ export default async function Page(props: Props) {
 
     return (
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <TagProfilePage tag={tag} />;
+        <TagProfilePage tag={tag} />
       </HydrationBoundary>
     );
   } catch {

@@ -44,7 +44,7 @@ export default async function Page(props: Props) {
 
     return (
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <VendorProfilePage vendor={vendor} />;
+        <VendorProfilePage vendor={vendor} />
       </HydrationBoundary>
     );
   } catch {

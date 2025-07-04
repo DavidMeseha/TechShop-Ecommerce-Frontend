@@ -24,7 +24,7 @@ export default async function Layout({
 
   return (
     <html className="snap-both snap-mandatory" dir={lang === "ar" ? "rtl" : "ltr"} lang={lang}>
-      <body className={`w-auto overflow-x-hidden md:w-screen ${lang === "ar" ? "md:ms-4" : ""} md:pr-4`} dir="ltr">
+      <body dir="ltr">
         <div dir={lang === "ar" ? "rtl" : "ltr"}>
           <AppProviders dictionary={dictionary} lang={lang}>
             <MainLayout>

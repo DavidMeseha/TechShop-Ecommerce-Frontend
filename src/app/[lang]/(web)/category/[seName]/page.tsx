@@ -44,7 +44,7 @@ export default async function Page({ params }: Props) {
 
     return (
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <CategoryProfilePage category={category} />;
+        <CategoryProfilePage category={category} />
       </HydrationBoundary>
     );
   } catch {

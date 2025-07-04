@@ -90,8 +90,7 @@ export default function ProductForm({ product, onSubmit, isPending }: Props) {
       onSubmit={form.handleSubmit((data) => {
         if (isEdit) {
           const changed = getChangedFields(initialValues, data);
-          if (JSON.stringify(changed) === JSON.stringify({}))
-            return toast.warning(t("admin.noChangesError"));
+          if (JSON.stringify(changed) === JSON.stringify({})) return toast.warning(t("admin.noChangesError"));
           return onSubmit(changed);
         }
         onSubmit(data);
