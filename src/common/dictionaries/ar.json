@@ -143,6 +143,7 @@
   "menu.lowStock": "المنتجات منخفضة المخزون",
   "menu.bestsellers": "الأكثر مبيعا",
   "menu.productsNeverPurchased": "المنتجات التي لم يتم شراؤها",
+  "menu.createProduct": "إنشاء منتج",
 
   "profile.follow": "تابع",
   "profile.addBio": "إضافة سيرة ذاتية",
@@ -273,6 +274,7 @@
   "admin.register.mustAddImage": "يجب عليك إضافة صورة!",
   "admin.register.shopName": "اسم متجرك",
 
+  "admin.registerVendor": "تسجيل بائع",
   "admin.productsDashboard": "لوحة تحكم المنتجات",
   "admin.searchProducts": "البحث عن المنتجات...",
   "admin.newProduct": "منتج جديد",

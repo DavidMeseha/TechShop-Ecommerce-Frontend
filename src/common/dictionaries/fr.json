@@ -143,6 +143,7 @@
   "menu.lowStock": "Stock faible",
   "menu.bestsellers": "Meilleures ventes",
   "menu.productsNeverPurchased": "Produits jamais achetés",
+  "menu.createProduct": "Créer un produit",
 
   "profile.follow": "Suivre",
   "profile.addBio": "Ajouter une bio",
@@ -273,6 +274,7 @@
   "admin.register.mustAddImage": "Vous devez ajouter une image !",
   "admin.register.shopName": "Nom de votre boutique",
 
+  "admin.registerVendor": "S'inscrire Vendeur",
   "admin.productsDashboard": "Tableau de bord des produits",
   "admin.searchProducts": "Rechercher des produits...",
   "admin.newProduct": "Nouveau produit",

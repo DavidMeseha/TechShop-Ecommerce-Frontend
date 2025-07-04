@@ -1,14 +1,15 @@
+import { TFunction } from "@/types";
 import { BiArchive, BiListPlus } from "react-icons/bi";
 
-export function headerVendorProfileMenu() {
+export function vendorMenu(t: TFunction) {
   return [
     {
-      name: "Your Products",
+      name: t("menu.yourProducts"),
       to: "/admin/products",
       icon: <BiArchive size="20" />
     },
     {
-      name: "Create Product",
+      name: t("menu.createProduct"),
       to: "/admin/create-product",
       icon: <BiListPlus size={20} />
     }

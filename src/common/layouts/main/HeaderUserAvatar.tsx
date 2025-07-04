@@ -1,12 +1,12 @@
 import { useTranslation } from "@/common/context/Translation";
 import { useUserSetup } from "@/common/context/User";
-import { headerProfileMenu } from "@/common/constants/menus";
+import { headerProfileMenu } from "@/common/constants/main-menu";
 import { IUser } from "@/types";
 import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { LocalLink } from "@/common/components/utils/LocalizedNavigation";
-import { headerVendorProfileMenu } from "@/common/constants/vendor-menu";
+import { vendorMenu } from "@/common/constants/vendor-menu";
 import { Separator } from "@/common/components/ui/separator";
 import { BiRegistered } from "react-icons/bi";
 
@@ -19,7 +19,7 @@ export default function HeaderUserAvatar({ user }: Props) {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const { t, lang } = useTranslation();
   const menu = useMemo(() => headerProfileMenu(t), [lang]);
-  const vendorMenu = useMemo(() => headerVendorProfileMenu(), [lang]);
+  const vendorMenuItems = useMemo(() => vendorMenu(t), [lang]);
 
   const handleLogout = () => {
     logout();
@@ -58,7 +58,7 @@ export default function HeaderUserAvatar({ user }: Props) {
             {user.isVendor ? (
               <>
                 <Separator />
-                {vendorMenu.map((item, index) => (
+                {vendorMenuItems.map((item, index) => (
                   <LocalLink
                     className="flex w-full gap-1 px-2 py-3 hover:bg-gray-100"
                     href={item.to as any}
