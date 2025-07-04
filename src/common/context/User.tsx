@@ -9,12 +9,12 @@ import { createContext, ReactNode, useContext, useCallback } from "react";
 import { toast } from "react-toastify";
 import { IUser } from "@/types";
 import { useRouter } from "@bprogress/next";
-import { getLastPageBeforSignUp } from "@/common/lib/last-page-before-signup";
 import { CHECK_TOKEN_QUERY_KEY, REFRESH_TOKEN_QUERY_KEY } from "@/common/constants/query-keys";
 import { setToken } from "@/app/actions";
 import initClient from "@/common/services/client/initClient.service";
 import { resetAxiosIterceptor } from "@/common/services/client/resetAxiosIterceptor";
 import { useLocalPathname } from "@/common/components/utils/LocalizedNavigation";
+import { getLastPageBeforSignUp } from "../lib/last-page-before-signup";
 
 type ContextData = {
   loginUser: (user: { user: IUser; token: string }) => Promise<void>;
@@ -37,7 +37,10 @@ function useUserActions() {
     mutationKey: ["set-token"],
     mutationFn: (token: string) => setToken(token),
     onSuccess: () => {
-      if (user?.isRegistered && !pathname.includes("/admin")) router.push(getLastPageBeforSignUp());
+      if (user?.isRegistered) {
+        if (user.isVendor && pathname.includes("/admin")) return;
+        router.push(getLastPageBeforSignUp());
+      }
     }
   });
 

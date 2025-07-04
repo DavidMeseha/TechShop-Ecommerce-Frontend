@@ -18,7 +18,7 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 ## 🔗 Related Projects
 
 - **Backend Repository**: [Node.js Backend](https://github.com/DavidMeseha/allInOne-myShop-back)
-- **Live Demo**: [TechShop Store](https://techshop-commerce.vercel.app/)
+- **Backend Dashboard**: [GoLang Backend](https://github.com/DavidMeseha/myshop-dashboard)
 - **Vue/Nuxt Demo**: [TechShop Store](https://techshop-commerce.vercel.app/)
 - **Vue/Nuxt Codebase**: [TechShop Store](https://github.com/DavidMeseha/myshop-nuxt)
 
@@ -29,8 +29,8 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 - Advanced product search and filtering
 - Customizable product attributes
 - Real-time shopping cart management
-- Wishlist functionality
-- Secure Stripe payment integration
+- Like/Save functionality (Equevelent to socila media interactions)
+- Stripe payment integration
 
 ### 👤 User Features
 
@@ -92,6 +92,7 @@ A modern e-commerce platform built with Next.js and TailwindCSS.
 
 - **Framer Motion** - Smooth animations
 - **TailwindCSS** - Utility-first CSS
+- **UI Components** - Shadcn/ui
 
 ## 🚀 Getting Started
 
@@ -120,8 +121,10 @@ npm install
 3. Configure environment variables
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3000
-NEXT_PUBLIC_STRIPE_KEY=your_stripe_public_key
+NEXT_PUBLIC_API_BASEURL = http://localhost:3000
+NEXT_PUBLIC_STRIP_KEY = pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+NEXT_PUBLIC_SITE_URL = http://localhost:3001
+NEXT_PUBLIC_ADMIN_API_BASEURL = http://localhost:8080
 ```
 
 4. Start development server

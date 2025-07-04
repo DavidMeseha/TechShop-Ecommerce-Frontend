@@ -18,12 +18,11 @@ import { Button } from "@/common/components/ui/button";
 import ErrorMessage from "@/common/components/ui/extend/ErrorMessage";
 
 export default function LoginPageForm() {
-  const [isLoading, setIsLoading] = useState(false);
   const { loginUser } = useUserSetup();
+  const { t } = useTranslation();
   const switchSignupOverlay = useOverlayStore((state) => state.switchSignupOverlay);
   const isLoginOpen = useOverlayStore((state) => state.isLoginOpen);
   const setIsLoginOpen = useOverlayStore((state) => state.setIsLoginOpen);
-  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -33,6 +32,7 @@ export default function LoginPageForm() {
     resolver: zodResolver(loginSchema(t))
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState<FieldError>();
 
   const loginMutation = useMutation({

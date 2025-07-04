@@ -43,8 +43,17 @@ export default function TagsInput({
   }, [autoComplete]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
+    let value = e.target.value.toLowerCase();
     if (value === " " && inputRef.current) value = inputRef.current.value = "";
+
+    if (value.endsWith(" ")) {
+      const trimmed = value.trim();
+      if (trimmed && !tags.includes(trimmed)) {
+        onTagConfirm(trimmed);
+      }
+      if (inputRef.current) value = inputRef.current.value = "";
+    }
+
     onTagTextChange(value);
   };
 
