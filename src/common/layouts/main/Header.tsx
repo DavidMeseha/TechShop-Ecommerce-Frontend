@@ -35,7 +35,7 @@ export default function Header() {
   const languagesList = useMemo(() => languages.map((lang) => ({ name: lang, value: lang })), []);
 
   return (
-    <header className="sticky top-0 z-40 hidden h-[60px] w-screen items-center border-b bg-white md:flex" id="TopNav">
+    <header className="sticky top-0 z-40 hidden h-[60px] w-full items-center border-b bg-white md:flex">
       <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between gap-6 pe-8 ps-4">
         <Logo />
 

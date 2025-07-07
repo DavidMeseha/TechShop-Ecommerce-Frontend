@@ -48,7 +48,7 @@ export default function DropdownButton({
       )}
       {isOpen ? (
         <ul
-          className={`absolute start-0 top-10 z-30 w-44 rounded-md border bg-white text-start text-sm capitalize text-black ${isHoverable ? "hidden group-hover:block" : ""}`}
+          className={`absolute start-0 top-10 z-30 w-full rounded-md border bg-white text-start text-sm capitalize text-black ${isHoverable ? "hidden group-hover:block" : ""}`}
         >
           {options.map((option, index) => (
             <li
