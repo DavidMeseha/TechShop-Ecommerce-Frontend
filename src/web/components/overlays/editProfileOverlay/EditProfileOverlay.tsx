@@ -3,7 +3,6 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { editProfileSchema } from "@/web/schemas/valdation";
-import "react-advanced-cropper/dist/style.css";
 import OverlayLayout from "@/common/layouts/OverlayLayout";
 import { useTranslation } from "@/common/context/Translation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
