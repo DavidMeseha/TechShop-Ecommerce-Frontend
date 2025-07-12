@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslation } from "@/common/context/Translation";
-import axios from "@/web/services/api/api.config";
+import axios from "@/common/services/api/api.config";
 import { getGuestToken, refreshToken } from "@/common/services/auth.service";
 import { useUserStore } from "@/common/stores/userStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

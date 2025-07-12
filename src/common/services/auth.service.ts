@@ -1,4 +1,4 @@
-import axios from "@/web/services/api/api.config";
+import axios from "@/common/services/api/api.config";
 import { LoginForm, RegisterForm } from "@/web/schemas/valdation";
 import { IUser, IVendor } from "@/types";
 

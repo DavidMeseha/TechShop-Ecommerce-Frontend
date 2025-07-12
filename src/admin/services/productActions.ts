@@ -1,4 +1,4 @@
-import api from "./api/adminApi.config";
+import api from "../../common/services/api/adminApi.config";
 
 export async function deleteProduct(id: string) {
   return api.delete(`/api/v1/admin/delete/product/${id}`).then((res) => res.data);

@@ -1,6 +1,6 @@
 import "server-only";
-import adminApi from "@/admin/services/api/adminApi.config";
-import api from "@/web/services/api/api.config";
+import adminApi from "@/common/services/api/adminApi.config";
+import api from "@/common/services/api/api.config";
 import { cookies } from "next/headers";
 
 export default async function configureServerRequest() {

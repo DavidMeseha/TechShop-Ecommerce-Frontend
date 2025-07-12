@@ -1,4 +1,4 @@
-import api from "./api/api.config";
+import api from "@/common/services/api/searchApi.config";
 
 type SearchResponseItem = {
   item: { _id: string; name: string; seName: string; imageUrl: string };
@@ -13,7 +13,7 @@ export async function find(props: {
   query: string;
 }) {
   return api
-    .post<SearchResponseItem[]>("/api/catalog/find", {
+    .post<SearchResponseItem[]>("", {
       searchText: props.query,
       ...props
     })

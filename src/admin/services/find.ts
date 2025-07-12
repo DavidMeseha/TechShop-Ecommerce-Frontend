@@ -1,5 +1,5 @@
 import { ICategory } from "@/types";
-import api from "./api/adminApi.config";
+import api from "../../common/services/api/adminApi.config";
 import { Tag, Vendor } from "./types";
 
 export async function findVendors(params: { query: string }) {

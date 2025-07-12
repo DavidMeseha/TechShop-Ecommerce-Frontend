@@ -1,5 +1,5 @@
 import { IFullProduct } from "@/types";
-import api from "./api/adminApi.config";
+import api from "../../common/services/api/adminApi.config";
 import { PaginatedResponse } from "./types";
 
 export default async function getProducts(params: {

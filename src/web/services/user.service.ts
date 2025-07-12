@@ -1,4 +1,4 @@
-import axios from "@/web/services/api/api.config";
+import axios from "@/common/services/api/api.config";
 import { IAddress, IFullProduct, IOrder, IProductReview, IVendor, Paginated } from "@/types";
 import { UserInfoForm, UserProfile } from "./types";
 

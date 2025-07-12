@@ -300,6 +300,7 @@
   "admin.fullDescription": "Full Description",
   "admin.gender": "Gender",
   "admin.category": "Category",
+  "admin.categoryPlaceholder": "Category...",
   "admin.tags": "Tags",
   "admin.stock": "Stock",
   "admin.attributes": "Attributes",

@@ -300,6 +300,7 @@
   "admin.fullDescription": "الوصف الكامل",
   "admin.gender": "الجنس",
   "admin.category": "الفئة",
+  "admin.categoryPlaceholder": "الفئة...",
   "admin.tags": "العلامات",
   "admin.stock": "الكمية المتاحة",
   "admin.attributes": "السمات",

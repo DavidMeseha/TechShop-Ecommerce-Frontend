@@ -57,7 +57,7 @@ export default function SearchOverlay() {
   const items = searchQuery.data ?? [];
 
   const setupItemLocalLink = (item: SearchResponseItem) => {
-    return `/${item.type === "product" ? `product/${item.item.seName}` : `profile/${item.type}/${item.item.seName}`}` as any;
+    return `/${item.type === "product" ? `product/${item.item.seName}` : `/${item.type}/${item.item.seName}`}` as any;
   };
 
   return (

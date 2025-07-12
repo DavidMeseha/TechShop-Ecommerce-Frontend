@@ -1,6 +1,6 @@
 "use client";
 import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
-import axios from "@/web/services/api/api.config";
+import axios from "@/common/services/api/api.config";
 import { isAxiosError } from "axios";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";

@@ -1,4 +1,4 @@
-import api from "./api/adminApi.config";
+import api from "../../common/services/api/adminApi.config";
 
 export async function avilableSeNameAndSku(body: { name: string }) {
   return await api

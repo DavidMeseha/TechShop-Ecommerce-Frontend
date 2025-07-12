@@ -1,4 +1,4 @@
-import api from "./api/adminApi.config";
+import api from "../../common/services/api/adminApi.config";
 
 export type RegisterVendorBody = { name: string; seName: string; image: string };
 
