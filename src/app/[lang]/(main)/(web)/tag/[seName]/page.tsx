@@ -1,4 +1,4 @@
-import TagProfilePage from "@/app/[lang]/(web)/tag/TagProfilePage";
+import TagProfilePage from "../TagProfilePage";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { getProductsByTag, getTagInfo } from "@/web/services/catalog.service";

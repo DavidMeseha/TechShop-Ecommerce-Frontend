@@ -11,7 +11,7 @@ import { CardElement } from "@stripe/react-stripe-js";
 import { checkoutData } from "@/web/services/checkout.service";
 import { useOverlayStore } from "@/common/stores/overlayStore";
 import { CheckoutForm } from "@/web/schemas/valdation";
-import usePlaceOrder from "@/app/[lang]/(web)/user/checkout/usePlaceOrder";
+import usePlaceOrder from "./usePlaceOrder";
 import { ADDRESSES_QUERY_KEY, CART_QUERY_KEY, CHECKOUT_QUERY_KEY, USER_QUERY_KEY } from "@/common/constants/query-keys";
 
 const initialCheckoutForm: CheckoutForm = {

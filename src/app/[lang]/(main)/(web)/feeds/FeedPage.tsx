@@ -6,7 +6,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { homeFeedProducts } from "@/web/services/catalog.service";
 import LoadingSpinner from "@/common/components/loadingUi/LoadingSpinner";
 import { FEED_QUERY_KEY, PRODUCTS_QUERY_KEY } from "@/common/constants/query-keys";
-import MobileFeedDisplay from "@/app/[lang]/(web)/feeds/sections/MobileFeedDisplay";
+import MobileFeedDisplay from "./sections/MobileFeedDisplay";
 import MainFeedDisplay from "./sections/MainFeedDisplay";
 
 export default function FeedPage() {

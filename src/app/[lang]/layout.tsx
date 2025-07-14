@@ -3,7 +3,6 @@ import { getDictionary } from "@/common/services/server/translation.service";
 import { languages } from "@/common/lib/utils";
 import { Language } from "@/types";
 import { ReactNode } from "react";
-import MainLayout from "@/common/layouts/main/MainLayout";
 import { ToastContainer } from "react-toastify";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -27,10 +26,8 @@ export default async function Layout({
       <body dir="ltr">
         <div dir={lang === "ar" ? "rtl" : "ltr"}>
           <AppProviders dictionary={dictionary} lang={lang}>
-            <MainLayout>
               {children}
               <ToastContainer />
-            </MainLayout>
             <Analytics />
             <SpeedInsights />
           </AppProviders>

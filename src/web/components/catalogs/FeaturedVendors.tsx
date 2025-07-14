@@ -20,15 +20,17 @@ import VendorCardLoading from "../loadingUi/VendorCardLoading";
 import useFollow from "@/web/features/follow-vendor/useFollow";
 import SectionHeader from "@/common/components/ui/extend/SectionHeader";
 import { FEATURED_QUERY_KEY, VENDORS_QUERY_KEY } from "@/common/constants/query-keys";
+import { useUserStore } from "@/common/stores/userStore";
 
 export function FeaturedVendors() {
   const [ref, inView] = useInView();
   const { t } = useTranslation();
+  const user = useUserStore(state=> state.user)
 
   const { isPending, data } = useQuery({
     queryKey: [VENDORS_QUERY_KEY, FEATURED_QUERY_KEY],
     queryFn: () => getVendors({ page: 1, limit: 10 }),
-    enabled: inView
+    enabled: inView && !!user
   });
   const vendors = data?.data ?? [];
 

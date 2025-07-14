@@ -19,7 +19,7 @@ import {
   SIMILAR_QUERY_KEY,
   SINGLE_PRODUCT_QUERY_KEY
 } from "@/common/constants/query-keys";
-import ProductActionsLoading from "@/app/[lang]/(web)/product/components/ProductActionsLoading";
+import ProductActionsLoading from "./components/ProductActionsLoading";
 import AddReviewForm from "@/web/components/forms/AddReviewForm";
 import Reviews from "@/web/components/product/Reviews";
 

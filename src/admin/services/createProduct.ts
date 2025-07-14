@@ -1,5 +1,5 @@
 import { ProductForm } from "@/admin/schemas/valdation";
-import api from "../../common/services/api/adminApi.config";
+import api from "@/common/services/api/adminApi.config";
 
 export async function createProduct(body: ProductForm) {
   return await api

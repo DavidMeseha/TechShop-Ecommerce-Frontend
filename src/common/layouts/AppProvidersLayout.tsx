@@ -9,6 +9,7 @@ import { useAppStore } from "@/common/stores/appStore";
 import TanstackQuery from "@/common/context/TanstackQuery";
 import ProgressBar from "@/common/components/utils/ProgressBar";
 import ReactScan from "@/common/components/utils/ReactScan";
+import UserHandler from "@/common/context/User";
 
 type Props = {
   children: ReactNode;
@@ -28,8 +29,10 @@ export default function AppProvidrs({ children, dictionary, lang }: Props) {
       <TanstackQuery>
         <TranslationProvider lang={lang} translation={dictionary}>
           <NetworkErrors>
-            <ReactScan />
-            {children}
+            <UserHandler>
+              <ReactScan />
+              {children}
+            </UserHandler>
           </NetworkErrors>
         </TranslationProvider>
         <ReactQueryDevtools initialIsOpen={false} />

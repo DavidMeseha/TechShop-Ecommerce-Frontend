@@ -9,19 +9,21 @@ import { homeFeedProducts } from "@/web/services/catalog.service";
 import { useInView } from "react-intersection-observer";
 import SectionHeader from "@/common/components/ui/extend/SectionHeader";
 import { PRODUCTS_QUERY_KEY } from "@/common/constants/query-keys";
+import { useUserStore } from "@/common/stores/userStore";
 
 const PRODUCTS_LIMIT = 5;
 
 export default function MoreProducts() {
   const { t } = useTranslation();
   const [ref, inView] = useInView();
+  const user = useUserStore((state) => state.user);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
     queryKey: [PRODUCTS_QUERY_KEY],
     queryFn: async ({ pageParam = 1 }) => homeFeedProducts({ page: pageParam, limit: PRODUCTS_LIMIT }),
     getNextPageParam: (lastPage) => (lastPage.pages.hasNext ? lastPage.pages.current + 1 : undefined),
     initialPageParam: 1,
-    enabled: inView
+    enabled: inView && !!user
   });
   const products = data?.pages.flatMap((page) => page.data) ?? [];
 
