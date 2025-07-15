@@ -24,11 +24,11 @@ export default function useClickRecognition({ onOutsideClick, containerRef, enab
   useEffect(() => {
     if (!enabled) return;
 
-    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("mouseup", handleOutsideClick);
     document.addEventListener("touchstart", handleOutsideClick);
 
     return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("mouseup", handleOutsideClick);
       document.removeEventListener("touchstart", handleOutsideClick);
     };
   }, [enabled, handleOutsideClick]);
