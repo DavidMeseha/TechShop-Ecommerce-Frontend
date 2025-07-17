@@ -14,7 +14,6 @@ function generateLanguageAlternates(pathname: string) {
   const cleanPath = pathParts.slice(2).join("/");
 
   return {
-    // Make canonical URL point to the current language version
     canonical: cleanPath ? `${baseUrl}/${currentLang}/${cleanPath}` : `${baseUrl}/${currentLang}`,
     languages: languages.reduce(
       (acc, lang) => ({
@@ -28,7 +27,7 @@ function generateLanguageAlternates(pathname: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: Language }> }) {
   const { pathname } = await getCurrentPath();
-  const { canonical, languages: langAlternates } = generateLanguageAlternates(pathname);
+  const { canonical, languages } = generateLanguageAlternates(pathname);
   const { lang } = await params;
 
   return {
@@ -52,7 +51,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
     },
     alternates: {
       canonical,
-      languages: langAlternates
+      languages
     },
     other: {
       "google-site-verification": "LNXuD0OB-K9UiZBq_wJGKs72Ypb6eJ2Y1I-GvhN7a_o"
@@ -60,6 +59,6 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
   };
 }
 
-export default async function RootLayout({ children }: { children: ReactElement }) {
+export default async function RootLayout({ children }: { children: ReactElement<any> }) {
   return children;
 }
