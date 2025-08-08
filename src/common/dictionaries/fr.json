@@ -47,6 +47,7 @@
   "feeds": "Flux",
   "addReview": "Ajouter un avis",
   "ServerDown": "Le serveur est hors service. Réessayez plus tard",
+  "ServerOff": "La facture du serveur du développeur n'a pas pu être vérifiée, alors nous vous remercions pour votre patience. Le serveur est actuellement hors service — veuillez réessayer plus tard. Merci de votre compréhension !",
   "NoNetwork": "Vous êtes hors ligne. Vérifiez votre réseau",
   "male": "Homme",
   "female": "Femme",

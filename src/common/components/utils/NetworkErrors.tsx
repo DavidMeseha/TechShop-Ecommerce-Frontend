@@ -12,11 +12,11 @@ import { useRouter } from "@bprogress/next";
 import { APP_STATUS_QUERY_KEY } from "@/common/constants/query-keys";
 
 export default function NetworkErrors({ children }: { children: React.ReactNode }) {
-  const [error, setError] = useState<"NoNetwork" | "ServerDown" | false>(false);
+  const [error, setError] = useState<"NoNetwork" | "ServerDown" | "ServerOff" | false>(false);
   const router = useRouter();
   const { t } = useTranslation();
 
-  const setOnlineState = useCallback((err: "NoNetwork" | "ServerDown" | false) => {
+  const setOnlineState = useCallback((err: "NoNetwork" | "ServerDown" | "ServerOff" | false) => {
     setError(err);
   }, []);
 
@@ -29,7 +29,7 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
             if (error.response.status === 401) router.push("/login");
             if (error.response.status === 500) toast.error(t("serverFail"));
           } else {
-            setOnlineState("ServerDown");
+            setOnlineState("ServerOff");
           }
         }
 
@@ -63,13 +63,13 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
         .catch(() => {
           return false;
         }),
-    enabled: error === "ServerDown",
+    enabled: error === "ServerDown" || error === "ServerOff",
     refetchInterval: (data) => (data ? false : 1000),
     retry: 3
   });
 
   const check = () => {
-    if ((error === "NoNetwork" && navigator.onLine) || error === "ServerDown") setError(false);
+    if ((error === "NoNetwork" && navigator.onLine) || error === "ServerOff") setError(false);
   };
 
   if (error) {
