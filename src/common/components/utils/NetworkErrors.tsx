@@ -6,11 +6,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FaRedo } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useTranslation } from "@/common/context/Translation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@bprogress/next";
 import { APP_STATUS_QUERY_KEY } from "@/common/constants/query-keys";
 
 export default function NetworkErrors({ children }: { children: React.ReactNode }) {
+  const queryClient = useQueryClient();
   const [error, setError] = useState<"NoNetwork" | "ServerDown" | "ServerOff" | false>(false);
   const router = useRouter();
   const { t } = useTranslation();
@@ -56,6 +57,7 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
       axios
         .get("/api/status")
         .then(() => {
+          queryClient.invalidateQueries({ predicate: (q) => !q.queryKey.includes(APP_STATUS_QUERY_KEY) });
           setError(false);
           return true;
         })
