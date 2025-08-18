@@ -131,7 +131,6 @@ function useUserActions() {
   useQuery({
     queryKey: [CHECK_TOKEN_QUERY_KEY],
     queryFn: handleInit,
-    retry: !!user
   });
 
   useQuery({

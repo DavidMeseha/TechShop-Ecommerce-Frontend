@@ -52,7 +52,7 @@ export default function DropdownButton({
         >
           {options.map((option, index) => (
             <li
-              className="hover:bg-lightGray cursor-pointer px-4 py-2"
+              className="hover:bg-lightGray cursor-pointer px-4 py-2 hover:bg-gray-100 rounded-md"
               key={index}
               onClick={() => onSelectItem(option.value)}
             >
