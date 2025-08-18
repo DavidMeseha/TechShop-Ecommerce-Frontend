@@ -2,7 +2,6 @@
 import { SubmitButton } from "@/common/components/ui/extend/SubmitButton";
 import axios from "@/common/services/api/api.config";
 import { isAxiosError } from "axios";
-import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import { FaRedo } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -51,7 +50,7 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
   }, [setOnlineState, t]);
 
   // Status check query
-  const _status = useQuery({
+  const statusQuery = useQuery({
     queryKey: [APP_STATUS_QUERY_KEY],
     queryFn: async () =>
       axios
@@ -69,22 +68,27 @@ export default function NetworkErrors({ children }: { children: React.ReactNode 
   });
 
   const check = () => {
-    if ((error === "NoNetwork" && navigator.onLine) || error === "ServerOff") setError(false);
+    if ((error === "NoNetwork" && navigator.onLine) || error === "ServerOff") statusQuery.refetch();
   };
 
   if (error) {
     return (
-      <div className="mt-28 flex flex-col items-center justify-center px-4">
-        <Image
+      <div className="flex h-screen flex-col items-center justify-center">
+        {/* <Image
           alt="Error"
           className="object-contain contrast-0 filter"
           height={400}
           priority
           src="/images/product-not-found.png"
           width={400}
-        />
-        <h1 className="text-4xl font-bold text-gray-400">{t(error)}</h1>
-        <SubmitButton className="mt-4 bg-primary text-white hover:underline" onClick={check}>
+        /> */}
+        <h1 className="text-4xl font-bold text-primary">{error === "NoNetwork" ? "No Network" : "500"}</h1>
+        <p className="mt-4 text-gray-400">{t(error)}</p>
+        <SubmitButton
+          className="mt-12 bg-primary text-white hover:underline"
+          isLoading={statusQuery.isFetching}
+          onClick={check}
+        >
           <div className="flex items-center gap-2">
             Retry <FaRedo size={13} />
           </div>

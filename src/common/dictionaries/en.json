@@ -47,7 +47,7 @@
   "feeds": "Feeds",
   "addReview": "Add Review",
   "ServerDown": "Server Is Down. Try Again Later",
-  "ServerOff": "My server bill could not be verified, The server is currently down—please try again later. Thank you for your understanding!",
+  "ServerOff": "My API server bill could not be paied, The server is currently down, please try again later. Thank you for your understanding!",
   "NoNetwork": "You Are Oflline Check Your Network",
   "male": "Male",
   "female": "Female",
